@@ -1,6 +1,8 @@
 import { Hero } from "@/components/Hero";
 import { ValuePropSection } from "@/components/ValuePropSection";
 import { Navbar } from "@/components/Navbar";
+import { SocialProof } from "@/components/SocialProof";
+import { SectionHeader } from "@/components/SectionHeader";
 
 interface LandingContentProps {
   heroVariant: "side" | "bottom";
@@ -12,11 +14,20 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
       <Navbar />
 
       {/* Add padding-top to account for fixed navbar */}
-      <div style={{ paddingTop: "64px" }}>
+      <div style={{ paddingTop: "80px" }}>
         {/* Hero Section */}
         <Hero variant={heroVariant} />
 
-        {/* Value Proposition 1 - Light background */}
+        {/* Social Proof - Customer Logos */}
+        <SocialProof />
+
+        {/* Section Header - Like Harvey's "Augment All of Your Work..." */}
+        <SectionHeader
+          title="Streamline Your Entire Document Collection Workflow"
+          subtitle="Automate reminders, verify uploads, and get the right documents faster—all on one secure platform built specifically for legal professionals."
+        />
+
+        {/* Value Proposition 1 */}
         <ValuePropSection
           title="AI-Powered Client Reminders"
           description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
@@ -26,11 +37,11 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             "Multi-channel reminders via email, SMS, and portal notifications",
             "Automatic escalation for overdue documents",
           ]}
-          imagePlaceholder="AI Reminders Dashboard"
-          backgroundColor="var(--color-background)"
+          imagePath="/images/value-props/prop-1.jpeg"
+          backgroundColor="var(--color-progressive-1)"
         />
 
-        {/* Value Proposition 2 - Slightly darker */}
+        {/* Value Proposition 2 */}
         <ValuePropSection
           title="Document Verification That Actually Works"
           description="Never waste time reviewing the wrong documents again. Our AI verifies that clients upload exactly what you requested—before they hit submit."
@@ -40,12 +51,12 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             "Automatic quality checks for completeness and clarity",
             "Real-time feedback to clients for corrections",
           ]}
-          imagePlaceholder="Document Verification Flow"
+          imagePath="/images/value-props/prop-2.jpeg"
           reverse
-          backgroundColor="var(--color-surface)"
+          backgroundColor="var(--color-progressive-2)"
         />
 
-        {/* Value Proposition 3 - Darker still */}
+        {/* Value Proposition 3 */}
         <ValuePropSection
           title="Built for Legal Workflows"
           description="Designed specifically for law firms and legal professionals. Secure, compliant, and seamlessly integrated with your existing tools."
@@ -55,11 +66,11 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             "Role-based access controls for your entire team",
             "Audit trails and detailed activity logs",
           ]}
-          imagePlaceholder="Security & Integrations"
-          backgroundColor="var(--color-surface-secondary)"
+          imagePath="/images/value-props/prop-3.jpeg"
+          backgroundColor="var(--color-progressive-3)"
         />
 
-        {/* Value Proposition 4 - Darkest */}
+        {/* Value Proposition 4 */}
         <ValuePropSection
           title="Save Hours Every Week"
           description="Focus on practicing law, not project managing document requests. CaseDelta handles the busywork so you can get back to what matters."
@@ -69,9 +80,9 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             "Real-time visibility into client progress",
             "Automatic organization and case file management",
           ]}
-          imagePlaceholder="Time Savings Dashboard"
+          imagePath="/images/value-props/prop-4.jpeg"
           reverse
-          backgroundColor="var(--color-surface-tertiary)"
+          backgroundColor="var(--color-progressive-4)"
         />
 
         {/* CTA Section */}
@@ -82,9 +93,9 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
               <h2
-                className="mb-6"
+                className="mb-8"
                 style={{
-                  fontSize: "var(--font-size-hero)",
+                  fontSize: "var(--font-size-h2)",
                   lineHeight: "var(--line-height-tight)",
                   fontWeight: "var(--font-weight-semibold)",
                   color: "var(--color-text-high-contrast)",
@@ -94,9 +105,10 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
               </h2>
 
               <p
-                className="mb-8"
+                className="mb-10"
                 style={{
                   fontSize: "var(--font-size-large)",
+                  lineHeight: "var(--line-height-relaxed)",
                   color: "var(--color-text-secondary)",
                 }}
               >
@@ -106,19 +118,20 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
 
               <div className="flex gap-4 justify-center flex-wrap">
                 <button
-                  className="px-8 py-4 rounded-lg transition-opacity hover:opacity-90"
+                  className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
                   style={{
                     backgroundColor: "var(--color-button-primary)",
                     color: "var(--color-button-primary-text)",
                     fontSize: "var(--font-size-base)",
                     fontWeight: "var(--font-weight-medium)",
+                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
                   }}
                 >
                   Start Free Trial
                 </button>
 
                 <button
-                  className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)]"
+                  className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-tertiary)]"
                   style={{
                     borderColor: "var(--color-border)",
                     color: "var(--color-text-primary)",

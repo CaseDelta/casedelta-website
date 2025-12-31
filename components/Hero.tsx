@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 interface HeroProps {
   variant?: "side" | "bottom";
@@ -8,6 +9,17 @@ interface HeroProps {
 
 export function Hero({ variant = "side" }: HeroProps) {
   const isSideLayout = variant === "side";
+  const videoRef = useRef(null);
+
+  // Track scroll position for video growth animation (only for bottom variant)
+  // Starts when video enters viewport, completes when video reaches center of screen
+  const { scrollYProgress } = useScroll({
+    target: videoRef,
+    offset: ["start end", "center center"]
+  });
+
+  // Transform scroll progress to scale value (1 to 1.15) - only for bottom variant
+  const scale = useTransform(scrollYProgress, [0, 1], [1, isSideLayout ? 1 : 1.15]);
 
   return (
     <section className="section">
@@ -27,9 +39,8 @@ export function Hero({ variant = "side" }: HeroProps) {
             className={isSideLayout ? "" : "mb-12"}
           >
             <h1
-              className="mb-6"
+              className="mb-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl"
               style={{
-                fontSize: "var(--font-size-hero)",
                 lineHeight: "var(--line-height-tight)",
                 letterSpacing: "var(--letter-spacing-tight)",
                 fontWeight: "var(--font-weight-semibold)",
@@ -43,10 +54,10 @@ export function Hero({ variant = "side" }: HeroProps) {
             </h1>
 
             <p
-              className="mb-8 max-w-2xl"
+              className={`mb-10 max-w-2xl ${isSideLayout ? "" : "mx-auto"}`}
               style={{
                 fontSize: "var(--font-size-large)",
-                lineHeight: "var(--line-height-default)",
+                lineHeight: "var(--line-height-relaxed)",
                 color: "var(--color-text-secondary)",
               }}
             >
@@ -55,21 +66,22 @@ export function Hero({ variant = "side" }: HeroProps) {
               with zero manual follow-up.
             </p>
 
-            <div className="flex gap-4 flex-wrap">
+            <div className={`flex gap-4 flex-wrap ${isSideLayout ? "" : "justify-center"}`}>
               <button
-                className="px-6 py-3 rounded-lg transition-opacity hover:opacity-90"
+                className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   backgroundColor: "var(--color-button-primary)",
                   color: "var(--color-button-primary-text)",
                   fontSize: "var(--font-size-base)",
                   fontWeight: "var(--font-weight-medium)",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
                 }}
               >
                 Get Started Free
               </button>
 
               <button
-                className="px-6 py-3 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)]"
+                className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-tertiary)]"
                 style={{
                   borderColor: "var(--color-border)",
                   color: "var(--color-text-primary)",
@@ -82,46 +94,29 @@ export function Hero({ variant = "side" }: HeroProps) {
             </div>
           </motion.div>
 
-          {/* Video Placeholder */}
+          {/* Demo Video - with scroll-triggered growth animation */}
           <motion.div
+            ref={videoRef}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.33, 1, 0.68, 1] }}
-            className="relative aspect-video rounded-xl overflow-hidden border"
+            className="relative aspect-video overflow-hidden"
             style={{
-              backgroundColor: "var(--color-surface-secondary)",
-              borderColor: "var(--color-border)",
+              scale,
+              borderRadius: "var(--radius-xl)",
+              boxShadow: "var(--shadow-md)",
             }}
           >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className="text-center"
-                style={{ color: "var(--color-text-tertiary)" }}
-              >
-                <svg
-                  className="w-16 h-16 mx-auto mb-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p style={{ fontSize: "var(--font-size-small)" }}>
-                  Product Demo Video
-                </p>
-              </div>
-            </div>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              {/* TODO: Replace with actual product demo video */}
+              <source src="/videos/hero-video.mp4" type="video/mp4" />
+            </video>
           </motion.div>
         </div>
       </div>

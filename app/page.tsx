@@ -33,7 +33,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Light + Side */}
           <Link
             href="/light/side"
@@ -119,6 +119,50 @@ export default function Home() {
               }}
             >
               /light/bottom
+            </div>
+          </Link>
+
+          {/* Light + Fullscreen */}
+          <Link
+            href="/light/fullscreen"
+            className="group p-8 rounded-xl border transition-all hover:scale-105"
+            style={{
+              backgroundColor: "var(--color-surface)",
+              borderColor: "var(--color-border)",
+            }}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="w-4 h-4 rounded-full bg-white border"
+                style={{ borderColor: "var(--color-border)" }}
+              />
+              <h2
+                style={{
+                  fontSize: "var(--font-size-h2)",
+                  fontWeight: "var(--font-weight-semibold)",
+                  color: "var(--color-text-high-contrast)",
+                }}
+              >
+                Light + Fullscreen Video
+              </h2>
+            </div>
+            <p
+              style={{
+                fontSize: "var(--font-size-body)",
+                color: "var(--color-text-secondary)",
+              }}
+            >
+              Light theme with video as full-screen background (Rogo style)
+            </p>
+            <div
+              className="mt-4 inline-block text-sm px-3 py-1 rounded-md"
+              style={{
+                backgroundColor: "var(--color-surface-secondary)",
+                color: "var(--color-text-secondary)",
+                fontSize: "var(--font-size-small)",
+              }}
+            >
+              /light/fullscreen
             </div>
           </Link>
 

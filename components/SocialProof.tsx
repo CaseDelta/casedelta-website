@@ -1,0 +1,80 @@
+"use client";
+
+import { motion } from "framer-motion";
+
+export function SocialProof() {
+  // Placeholder logo names - replace with actual law firm logos
+  const customers = [
+    "Baker McKenzie",
+    "Latham & Watkins",
+    "Kirkland & Ellis",
+    "DLA Piper",
+    "Skadden Arps",
+    "White & Case",
+  ];
+
+  return (
+    <section
+      style={{
+        backgroundColor: "var(--color-background)",
+        borderTop: "1px solid var(--color-border)",
+        borderBottom: "1px solid var(--color-border)",
+        padding: "4rem 0",
+      }}
+    >
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+          className="text-center"
+        >
+          <p
+            className="mb-12"
+            style={{
+              fontSize: "var(--font-size-base)",
+              fontWeight: "var(--font-weight-regular)",
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              color: "var(--color-text-tertiary)",
+            }}
+          >
+            Trusted by Industry Leaders
+          </p>
+
+          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 max-w-5xl mx-auto">
+            {customers.map((customer, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.1 * index,
+                  ease: [0.33, 1, 0.68, 1],
+                }}
+                className="flex items-center justify-center"
+                style={{
+                  minWidth: "140px",
+                  height: "40px",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "var(--font-size-base)",
+                    color: "var(--color-text-tertiary)",
+                    fontWeight: "var(--font-weight-medium)",
+                    letterSpacing: "-0.01em",
+                    opacity: 0.7,
+                  }}
+                >
+                  {customer}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
