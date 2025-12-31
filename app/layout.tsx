@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
+import { PostHogProvider } from "./providers/PostHogProvider";
 
 export const metadata: Metadata = {
   title: "CaseDelta | Legal Document Collection Made Simple",
@@ -47,7 +48,11 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body>{children}</body>
+      <body>
+        <PostHogProvider>
+          {children}
+        </PostHogProvider>
+      </body>
     </html>
   );
 }
