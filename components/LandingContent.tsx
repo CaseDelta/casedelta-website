@@ -3,6 +3,8 @@ import { ValuePropSection } from "@/components/ValuePropSection";
 import { Navbar } from "@/components/Navbar";
 import { SocialProof } from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
+import { QuantifiableImpact } from "@/components/QuantifiableImpact";
+import { Testimonials } from "@/components/Testimonials";
 
 interface LandingContentProps {
   heroVariant: "side" | "bottom";
@@ -84,6 +86,12 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
           reverse
           backgroundColor="var(--color-progressive-4)"
         />
+
+        {/* Quantifiable Impact Section */}
+        <QuantifiableImpact />
+
+        {/* Testimonials Section */}
+        <Testimonials />
 
         {/* CTA Section */}
         <section

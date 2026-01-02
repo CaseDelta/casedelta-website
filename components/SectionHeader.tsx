@@ -18,7 +18,7 @@ export function SectionHeader({ title, subtitle }: SectionHeaderProps) {
       ref={ref}
       className="section"
       style={{
-        backgroundColor: "var(--color-background)",
+        backgroundColor: "var(--color-surface)",
       }}
     >
       <div className="container">

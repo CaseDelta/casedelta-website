@@ -66,7 +66,7 @@ export function Navbar() {
               href="#features"
               className="transition-colors hover:opacity-80"
               style={{
-                fontSize: "var(--font-size-body)",
+                fontSize: "var(--font-size-base)",
                 color: "var(--color-text-secondary)",
               }}
             >
@@ -76,7 +76,7 @@ export function Navbar() {
               href="#pricing"
               className="transition-colors hover:opacity-80"
               style={{
-                fontSize: "var(--font-size-body)",
+                fontSize: "var(--font-size-base)",
                 color: "var(--color-text-secondary)",
               }}
             >
@@ -86,7 +86,7 @@ export function Navbar() {
               href="#about"
               className="transition-colors hover:opacity-80"
               style={{
-                fontSize: "var(--font-size-body)",
+                fontSize: "var(--font-size-base)",
                 color: "var(--color-text-secondary)",
               }}
             >
@@ -99,7 +99,7 @@ export function Navbar() {
             <button
               className="hidden sm:block px-5 py-2.5 rounded-lg transition-all hover:opacity-80"
               style={{
-                fontSize: "var(--font-size-body)",
+                fontSize: "var(--font-size-base)",
                 fontWeight: "var(--font-weight-medium)",
                 color: "var(--color-text-secondary)",
               }}
@@ -111,7 +111,7 @@ export function Navbar() {
               style={{
                 backgroundColor: "var(--color-button-primary)",
                 color: "var(--color-button-primary-text)",
-                fontSize: "var(--font-size-body)",
+                fontSize: "var(--font-size-base)",
                 fontWeight: "var(--font-weight-medium)",
               }}
             >

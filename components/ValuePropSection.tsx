@@ -88,7 +88,8 @@ export function ValuePropSection({
               boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08)",
             }}
           >
-            {imagePath ? (
+            {/* Background image */}
+            {imagePath && (
               <Image
                 src={imagePath}
                 alt={title}
@@ -96,24 +97,37 @@ export function ValuePropSection({
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-            ) : (
+            )}
+
+            {/* White placeholder box with border (video placeholder) */}
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{
+                padding: "2.5rem",
+              }}
+            >
               <div
-                className="absolute inset-0 flex items-center justify-center"
                 style={{
-                  backgroundColor: "var(--color-surface)",
-                  border: "1px solid var(--color-border)",
+                  width: "85%",
+                  height: "85%",
+                  backgroundColor: "#ffffff",
+                  border: "2px solid #3a3a3a",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <p
                   style={{
                     fontSize: "var(--font-size-base)",
-                    color: "var(--color-text-tertiary)",
+                    color: "#6b6b6b",
                   }}
                 >
-                  {imagePlaceholder}
+                  Video Placeholder
                 </p>
               </div>
-            )}
+            </div>
           </motion.div>
         </div>
       </div>
