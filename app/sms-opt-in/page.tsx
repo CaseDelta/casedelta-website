@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function SmsOptInPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,9 +16,14 @@ export default function SmsOptInPage() {
     consent: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock submission - just show success state
+    setIsLoading(true);
+
+    // Simulate API request with 1.8 second delay
+    await new Promise((resolve) => setTimeout(resolve, 1800));
+
+    setIsLoading(false);
     setIsSubmitted(true);
   };
 
@@ -432,22 +438,37 @@ export default function SmsOptInPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!isFormValid}
-              className="w-full px-6 py-4 rounded-lg transition-all"
+              disabled={!isFormValid || isLoading}
+              className="w-full px-6 py-4 rounded-lg transition-all flex items-center justify-center gap-3"
               style={{
-                backgroundColor: isFormValid
+                backgroundColor: isFormValid && !isLoading
                   ? "var(--color-button-primary)"
                   : "var(--color-surface-tertiary)",
-                color: isFormValid
+                color: isFormValid && !isLoading
                   ? "var(--color-button-primary-text)"
                   : "var(--color-text-tertiary)",
                 fontSize: "var(--font-size-base)",
                 fontWeight: "var(--font-weight-medium)",
-                cursor: isFormValid ? "pointer" : "not-allowed",
-                opacity: isFormValid ? 1 : 0.6,
+                cursor: isFormValid && !isLoading ? "pointer" : "not-allowed",
+                opacity: isFormValid && !isLoading ? 1 : 0.6,
               }}
             >
-              Subscribe to Text Updates
+              {isLoading && (
+                <svg
+                  className="animate-spin"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                </svg>
+              )}
+              {isLoading ? "Subscribing..." : "Subscribe to Text Updates"}
             </button>
 
             <p
