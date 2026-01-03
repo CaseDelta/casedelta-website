@@ -394,10 +394,3 @@ After family law, consider adjacent workflows where document intake is the bottl
 5. **Integration expectations:** what “must-have” system is non-negotiable (Clio/MyCase/ShareFile)?
 
 ---
-
-## References (supporting research)
-
-[^1]: TrustRadius (2023) – “2023 B2B Buying Disconnect” (pricing transparency cited): https://solutions.trustradius.com/vendor-blog/2023-b2b-disconnect/  
-[^2]: Gartner (2025) – “Sales Survey Finds 61% of B2B Buyers Prefer a Rep-Free Buying Experience”: https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-sales-survey-finds-61-percent-of-b2b-buyers-prefer-a-rep-free-buying-experience  
-[^3]: McKinsey (2024) – B2B Pulse Survey insights (comfort with self-serve/remote spending): https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/five-fundamental-truths-how-b2b-winners-keep-growing  
-[^4]: McKinsey (2022) – “The future of B2B sales is hybrid”: https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/the-future-of-b2b-sales-is-hybrid  
