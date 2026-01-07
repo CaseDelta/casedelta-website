@@ -27,38 +27,38 @@ export default function PricingCard({
 }: PricingCardProps) {
   return (
     <div
-      className={`flex flex-col rounded-2xl border-2 p-8 ${
+      className={`flex flex-col rounded-2xl border-2 p-8 bg-surface ${
         isPrimary
-          ? "border-black bg-white"
-          : "border-[#E5E5E5] bg-white"
+          ? "border-text-high-contrast"
+          : "border-border"
       }`}
     >
-      <h3 className="mb-3 font-serif text-2xl text-black md:text-3xl">
+      <h3 className="mb-3 font-serif text-2xl md:text-3xl text-text-high-contrast">
         {planName}
       </h3>
 
-      <p className="mb-6 text-lg leading-[1.7] text-[#666666]">
+      <p className="mb-6 text-lg leading-[1.7] text-text-secondary">
         {description}
       </p>
 
       <div className="mb-8">
-        <span className="font-serif text-[clamp(2.5rem,4vw,3rem)] leading-none tracking-tight text-black">
+        <span className="font-serif text-[clamp(2.5rem,4vw,3rem)] leading-none tracking-tight text-text-high-contrast">
           {price}
         </span>
         {period && (
-          <span className="ml-1 text-lg text-[#666666]">{period}</span>
+          <span className="ml-1 text-lg text-text-secondary">{period}</span>
         )}
       </div>
 
       <a
         href={ctaHref}
-        className="mb-8 block rounded-lg border-2 border-[#E5E5E5] bg-transparent px-8 py-3 text-center text-base font-medium text-black transition-colors duration-300 hover:border-black"
+        className="mb-8 block rounded-lg border-2 border-border bg-transparent px-8 py-3 text-center text-base font-medium text-text-high-contrast transition-colors duration-300 hover:border-text-high-contrast"
       >
         {ctaText}
       </a>
 
-      <div className="mb-5 border-t border-[#E5E5E5] pt-5">
-        <p className="text-sm font-medium uppercase tracking-wider text-[#999999]">
+      <div className="mb-5 border-t border-border pt-5">
+        <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
           What's included
         </p>
       </div>
@@ -67,10 +67,10 @@ export default function PricingCard({
         {features.map((feature, index) => (
           <li key={index} className="flex items-start gap-3">
             <Check
-              className="mt-1 shrink-0 text-black"
+              className="mt-1 shrink-0 text-text-high-contrast"
               size={20}
             />
-            <span className="text-base leading-[1.7] text-[#333333]">{feature}</span>
+            <span className="text-base leading-[1.7] text-text-primary">{feature}</span>
           </li>
         ))}
       </ul>
