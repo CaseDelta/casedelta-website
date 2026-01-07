@@ -7,6 +7,7 @@ import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
 import { Footer } from "@/components/Footer";
+import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 interface LandingContentProps {
   heroVariant: "side" | "bottom";
@@ -125,7 +126,8 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
                 </span>
               </h2>
 
-              <button
+              <a
+                href={CTA_URLS.REQUEST_DEMO}
                 className="px-8 py-4 rounded-lg transition-all hover:opacity-90 flex-shrink-0"
                 style={{
                   backgroundColor: "var(--color-button-primary)",
@@ -134,8 +136,8 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
                   fontWeight: "var(--font-weight-medium)",
                 }}
               >
-                Request Demo
-              </button>
+                {CTA.REQUEST_DEMO}
+              </a>
             </div>
           </div>
         </section>

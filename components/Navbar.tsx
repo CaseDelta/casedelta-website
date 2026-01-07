@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { navigationData } from "./navigation/navigationData";
+import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export function Navbar() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -272,7 +273,7 @@ export function Navbar() {
           {/* CTA Buttons */}
           <div className="flex items-center gap-3">
             <a
-              href="https://app.casedelta.com"
+              href={CTA_URLS.SIGN_IN}
               className="hidden sm:block px-5 py-2.5 rounded-lg transition-all hover:opacity-80"
               style={{
                 fontSize: "var(--font-size-base)",
@@ -286,9 +287,10 @@ export function Navbar() {
               onMouseEnter={() => setHoveredItem("sign-in")}
               onMouseLeave={() => setHoveredItem(null)}
             >
-              Sign In
+              {CTA.SIGN_IN}
             </a>
-            <button
+            <a
+              href={CTA_URLS.GET_STARTED}
               className="px-6 py-2.5 rounded-lg"
               style={{
                 backgroundColor: "var(--color-button-primary)",
@@ -297,6 +299,7 @@ export function Navbar() {
                 fontWeight: "var(--font-weight-medium)",
                 opacity: 1,
                 transition: "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                textDecoration: "none",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = "0.85";
@@ -305,8 +308,8 @@ export function Navbar() {
                 e.currentTarget.style.opacity = "1";
               }}
             >
-              Get Started
-            </button>
+              {CTA.GET_STARTED}
+            </a>
           </div>
         </div>
       </div>

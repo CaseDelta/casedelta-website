@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export function HeroFullscreen() {
   return (
@@ -58,7 +59,8 @@ export function HeroFullscreen() {
           </p>
 
           <div className="flex gap-4 justify-center flex-wrap">
-            <button
+            <a
+              href={CTA_URLS.REQUEST_DEMO}
               className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
               style={{
                 backgroundColor: "#ffffff",
@@ -68,10 +70,11 @@ export function HeroFullscreen() {
                 boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
               }}
             >
-              Request a Demo
-            </button>
+              {CTA.REQUEST_DEMO}
+            </a>
 
-            <button
+            <a
+              href={CTA_URLS.WATCH_DEMO}
               className="px-8 py-4 rounded-lg border-2 transition-all hover:bg-white/10"
               style={{
                 borderColor: "rgba(255, 255, 255, 0.8)",
@@ -80,8 +83,8 @@ export function HeroFullscreen() {
                 fontWeight: "var(--font-weight-medium)",
               }}
             >
-              Watch Demo
-            </button>
+              {CTA.WATCH_DEMO}
+            </a>
           </div>
         </motion.div>
       </div>

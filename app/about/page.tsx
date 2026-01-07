@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import AboutHero from "@/components/AboutHero";
 import ValueCard from "@/components/ValueCard";
 import { QuantifiableImpact } from "@/components/QuantifiableImpact";
+import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export default function AboutPage() {
   return (
@@ -151,10 +152,10 @@ export default function AboutPage() {
             className="flex flex-wrap items-center justify-center gap-4"
           >
             <a
-              href="#demo"
+              href={CTA_URLS.SCHEDULE_DEMO}
               className="rounded-lg bg-button-primary px-8 py-4 font-medium text-button-primary-text transition-opacity duration-150 hover:opacity-85"
             >
-              Schedule Demo
+              {CTA.SCHEDULE_DEMO}
             </a>
             <a
               href="mailto:support@casedelta.com"

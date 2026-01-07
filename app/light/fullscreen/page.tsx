@@ -4,6 +4,7 @@ import { HeroFullscreen } from "@/components/HeroFullscreen";
 import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ValuePropSection } from "@/components/ValuePropSection";
+import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export default function LightFullscreenPage() {
   return (
@@ -94,7 +95,8 @@ export default function LightFullscreenPage() {
               </p>
 
               <div className="flex gap-4 justify-center flex-wrap">
-                <button
+                <a
+                  href={CTA_URLS.START_FREE_TRIAL}
                   className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
                   style={{
                     backgroundColor: "var(--color-button-primary)",
@@ -104,10 +106,11 @@ export default function LightFullscreenPage() {
                     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  Start Free Trial
-                </button>
+                  {CTA.START_FREE_TRIAL}
+                </a>
 
-                <button
+                <a
+                  href={CTA_URLS.SCHEDULE_DEMO}
                   className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-tertiary)]"
                   style={{
                     borderColor: "var(--color-border)",
@@ -116,8 +119,8 @@ export default function LightFullscreenPage() {
                     fontWeight: "var(--font-weight-medium)",
                   }}
                 >
-                  Schedule Demo
-                </button>
+                  {CTA.SCHEDULE_DEMO}
+                </a>
               </div>
             </div>
           </div>
