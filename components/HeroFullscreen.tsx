@@ -43,7 +43,10 @@ export function HeroFullscreen() {
               textShadow: "0 2px 20px rgba(0, 0, 0, 0.3)",
             }}
           >
-            The AI Platform for Legal Professionals
+            Get documents from clients{" "}
+            <span style={{ color: "rgba(255, 255, 255, 0.7)" }}>
+              without the follow-up headache
+            </span>
           </h1>
 
           <p
@@ -55,7 +58,7 @@ export function HeroFullscreen() {
               textShadow: "0 1px 10px rgba(0, 0, 0, 0.3)",
             }}
           >
-            Purpose-built AI that helps lawyers and paralegals collect documents faster, verify accuracy automatically, and eliminate manual follow-up—all in one secure platform.
+            CaseDelta uses AI to automatically remind clients, verify documents, and ensure you get exactly what you need—faster and with zero manual follow-up.
           </p>
 
           <div className="flex gap-4 justify-center flex-wrap">

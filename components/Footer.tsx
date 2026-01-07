@@ -81,19 +81,6 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="/about"
-                  style={{
-                    fontSize: "var(--font-size-base)",
-                    color: "var(--color-text-primary)",
-                    textDecoration: "none",
-                  }}
-                  className="hover:opacity-70 transition-opacity"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
                   href="/careers"
                   style={{
                     fontSize: "var(--font-size-base)",

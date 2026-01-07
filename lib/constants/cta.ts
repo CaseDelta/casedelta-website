@@ -39,7 +39,7 @@ export const CTA_URLS = {
   REQUEST_DEMO: "/get-info",
   WATCH_DEMO: "/get-info",
   GET_INFO: "/get-info",
-  LEARN_MORE: "/about",
+  LEARN_MORE: "/get-info",
   SIGN_IN: "https://app.casedelta.com",
   SIGN_UP: "https://app.casedelta.com",
 } as const;

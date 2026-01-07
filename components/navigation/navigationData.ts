@@ -57,9 +57,4 @@ export const navigationData: NavItemData[] = [
     label: "Pricing",
     href: "/pricing",
   },
-  {
-    id: "about",
-    label: "About",
-    href: "/about",
-  },
 ];

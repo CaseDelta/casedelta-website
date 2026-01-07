@@ -17,7 +17,7 @@ export default function PricingPage() {
       <PricingHero />
 
       {/* Pricing Cards Section */}
-      <section style={{ backgroundColor: "#FAFAFA" }} className="py-12 md:py-16">
+      <section className="bg-background py-12 md:py-16">
         <div className="mx-auto max-w-[900px] px-6">
           <div className="grid gap-6 md:grid-cols-2 items-start">
             <PricingCard
