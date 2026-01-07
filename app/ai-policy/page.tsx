@@ -41,11 +41,11 @@ export default function AIPolicy() {
 
           <h1
             style={{
-              fontSize: "clamp(36px, 5vw, 48px)",
+              fontSize: "32px",
               fontWeight: "var(--font-weight-semibold)",
               letterSpacing: "var(--letter-spacing-tight)",
               color: "#000000",
-              marginBottom: "24px",
+              marginBottom: "20px",
               fontFamily: "var(--font-family-serif)",
             }}
           >
@@ -54,9 +54,9 @@ export default function AIPolicy() {
 
           <p
             style={{
-              fontSize: "18px",
+              fontSize: "14px",
               color: "#999999",
-              marginBottom: "48px",
+              marginBottom: "40px",
             }}
           >
             Last updated: January 2026
@@ -72,9 +72,9 @@ export default function AIPolicy() {
           >
             <div
               style={{
-                fontSize: "18px",
+                fontSize: "16px",
                 color: "#333333",
-                lineHeight: "1.8",
+                lineHeight: "1.7",
               }}
             >
               <p style={{ marginBottom: "28px" }}>
