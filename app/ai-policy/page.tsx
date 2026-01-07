@@ -115,7 +115,7 @@ export default function AIPolicy() {
                 Questions about our AI infrastructure or data handling?
               </p>
               <a
-                href="mailto:privacy@casedelta.com"
+                href="mailto:camren@casedelta.com"
                 style={{
                   fontSize: "var(--font-size-base)",
                   color: "#000000",
@@ -123,7 +123,7 @@ export default function AIPolicy() {
                   fontWeight: "var(--font-weight-medium)",
                 }}
               >
-                privacy@casedelta.com
+                camren@casedelta.com
               </a>
             </div>
           </div>
