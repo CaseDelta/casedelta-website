@@ -16,20 +16,18 @@ export default function PricingPage() {
       <PricingHero />
 
       {/* Pricing Cards Section */}
-      <section className="bg-surface py-32 md:py-40">
+      <section style={{ backgroundColor: "#FAFAFA" }} className="py-20 md:py-24">
         <div className="mx-auto max-w-[900px] px-6">
           <div className="grid gap-6 md:grid-cols-2 items-start">
             <PricingCard
               planName="Firm"
               description="For teams up to 5 users"
               price="$449"
-              period="/month"
+              period="/month flat"
               features={[
                 "Up to 5 users included",
                 "Unlimited document requests",
                 "AI-powered verification & reminders",
-                "Email & chat support",
-                "Standard integrations",
               ]}
               ctaText="Start Free Trial"
               ctaHref="/get-info"
@@ -40,19 +38,15 @@ export default function PricingPage() {
               planName="Pro"
               description="For teams greater than 5 users"
               price="$849"
-              period="/month"
+              period="/month flat"
               features={[
                 "Unlimited users",
-                "Everything in Firm, plus:",
                 "Advanced analytics & reporting",
-                "Custom branding",
-                "Priority support",
-                "Dedicated account manager",
+                "Priority support & dedicated account manager",
               ]}
               ctaText="Start Free Trial"
               ctaHref="/get-info"
               isPrimary={true}
-              badge="Popular"
             />
           </div>
         </div>
