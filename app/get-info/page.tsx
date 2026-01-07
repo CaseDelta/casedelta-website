@@ -375,17 +375,24 @@ export default function GetInfoPage() {
                 required
                 value={formData.role}
                 onChange={handleChange}
+                disabled={isSubmitting}
                 style={{
                   width: "100%",
                   padding: "12px 16px",
                   fontSize: "var(--font-size-base)",
-                  color: formData.role ? "#000000" : "#999999",
+                  color: formData.role ? "#000000" : "#666666",
                   backgroundColor: "#FAFAFA",
                   border: "1px solid #E5E5E5",
                   borderRadius: "8px",
                   outline: "none",
                   transition: "all 0.2s ease",
                   cursor: "pointer",
+                  appearance: "none",
+                  backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 12px center",
+                  backgroundSize: "20px",
+                  paddingRight: "40px",
                 }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = "#000000";
@@ -478,7 +485,7 @@ export default function GetInfoPage() {
                 }
               }}
             >
-              {isSubmitting ? "Submitting..." : "Get Info"}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
 
             <p
