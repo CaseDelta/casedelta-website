@@ -1,276 +1,185 @@
-import Link from "next/link";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+const variants = [
+  {
+    id: "light-side",
+    path: "/light/side",
+    name: "Light - Side",
+    description: "Light theme with video beside text",
+    theme: "light",
+  },
+  {
+    id: "light-bottom",
+    path: "/light/bottom",
+    name: "Light - Bottom",
+    description: "Light theme with video below text",
+    theme: "light",
+  },
+  {
+    id: "light-fullscreen",
+    path: "/light/fullscreen",
+    name: "Light - Fullscreen",
+    description: "Light theme with fullscreen video",
+    theme: "light",
+  },
+  {
+    id: "dark-side",
+    path: "/dark/side",
+    name: "Dark - Side",
+    description: "Dark theme with video beside text",
+    theme: "dark",
+  },
+  {
+    id: "dark-bottom",
+    path: "/dark/bottom",
+    name: "Dark - Bottom",
+    description: "Dark theme with video below text",
+    theme: "dark",
+  },
+];
+
+export default function VariantsPage() {
   return (
     <main
-      className="min-h-screen flex items-center justify-center"
+      className="min-h-screen"
       style={{
-        backgroundColor: "var(--color-background)",
-        padding: "var(--spacing-6)",
+        backgroundColor: "#FAFAFA",
+        padding: "var(--spacing-12)",
       }}
     >
-      <div className="max-w-4xl w-full">
-        <div className="text-center mb-12">
-          <h1
-            className="mb-4"
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <Link
+            href="/"
             style={{
-              fontSize: "var(--font-size-hero)",
-              fontWeight: "var(--font-weight-semibold)",
-              letterSpacing: "var(--letter-spacing-tight)",
-              color: "var(--color-text-high-contrast)",
+              fontSize: "var(--font-size-small)",
+              color: "#666666",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              marginBottom: "var(--spacing-8)",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#000000";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "#666666";
             }}
           >
-            CaseDelta Landing Page Variants
+            ← Back to Home
+          </Link>
+
+          <h1
+            style={{
+              fontSize: "48px",
+              fontWeight: "var(--font-weight-semibold)",
+              letterSpacing: "var(--letter-spacing-tight)",
+              color: "#000000",
+              marginBottom: "var(--spacing-4)",
+            }}
+          >
+            CaseDelta Variants
           </h1>
           <p
             style={{
-              fontSize: "var(--font-size-large)",
-              color: "var(--color-text-secondary)",
+              fontSize: "20px",
+              color: "#666666",
+              lineHeight: "1.6",
             }}
           >
-            Choose a variant to preview. Each is a standalone page for A/B
-            testing.
+            Explore different visual approaches for the landing page
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Light + Side */}
-          <Link
-            href="/light/side"
-            className="group p-8 rounded-xl border transition-all hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-surface)",
-              borderColor: "var(--color-border)",
-            }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="w-4 h-4 rounded-full bg-white border"
-                style={{ borderColor: "var(--color-border)" }}
-              />
-              <h2
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gap: "var(--spacing-6)",
+          }}
+        >
+          {variants.map((variant, index) => (
+            <motion.div
+              key={variant.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <Link
+                href={variant.path}
                 style={{
-                  fontSize: "var(--font-size-h2)",
-                  fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--color-text-high-contrast)",
+                  display: "block",
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #E5E5E5",
+                  borderRadius: "8px",
+                  padding: "var(--spacing-6)",
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#000000";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 8px 16px rgba(0, 0, 0, 0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#E5E5E5";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                Light + Side
-              </h2>
-            </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-secondary)",
-              }}
-            >
-              Light theme with video positioned beside hero text
-            </p>
-            <div
-              className="mt-4 inline-block text-sm px-3 py-1 rounded-md"
-              style={{
-                backgroundColor: "var(--color-surface-secondary)",
-                color: "var(--color-text-secondary)",
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              /light/side
-            </div>
-          </Link>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "180px",
+                    backgroundColor:
+                      variant.theme === "dark" ? "#000000" : "#F5F5F5",
+                    borderRadius: "4px",
+                    marginBottom: "var(--spacing-4)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "var(--font-size-small)",
+                    color: variant.theme === "dark" ? "#666666" : "#999999",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                  }}
+                >
+                  Preview
+                </div>
 
-          {/* Light + Bottom */}
-          <Link
-            href="/light/bottom"
-            className="group p-8 rounded-xl border transition-all hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-surface)",
-              borderColor: "var(--color-border)",
-            }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="w-4 h-4 rounded-full bg-white border"
-                style={{ borderColor: "var(--color-border)" }}
-              />
-              <h2
-                style={{
-                  fontSize: "var(--font-size-h2)",
-                  fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--color-text-high-contrast)",
-                }}
-              >
-                Light + Bottom
-              </h2>
-            </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-secondary)",
-              }}
-            >
-              Light theme with video positioned below hero text
-            </p>
-            <div
-              className="mt-4 inline-block text-sm px-3 py-1 rounded-md"
-              style={{
-                backgroundColor: "var(--color-surface-secondary)",
-                color: "var(--color-text-secondary)",
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              /light/bottom
-            </div>
-          </Link>
+                <h3
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "var(--font-weight-semibold)",
+                    color: "#000000",
+                    marginBottom: "var(--spacing-2)",
+                  }}
+                >
+                  {variant.name}
+                </h3>
 
-          {/* Light + Fullscreen */}
-          <Link
-            href="/light/fullscreen"
-            className="group p-8 rounded-xl border transition-all hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-surface)",
-              borderColor: "var(--color-border)",
-            }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="w-4 h-4 rounded-full bg-white border"
-                style={{ borderColor: "var(--color-border)" }}
-              />
-              <h2
-                style={{
-                  fontSize: "var(--font-size-h2)",
-                  fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--color-text-high-contrast)",
-                }}
-              >
-                Light + Fullscreen Video
-              </h2>
-            </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-secondary)",
-              }}
-            >
-              Light theme with video as full-screen background (Rogo style)
-            </p>
-            <div
-              className="mt-4 inline-block text-sm px-3 py-1 rounded-md"
-              style={{
-                backgroundColor: "var(--color-surface-secondary)",
-                color: "var(--color-text-secondary)",
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              /light/fullscreen
-            </div>
-          </Link>
-
-          {/* Dark + Side */}
-          <Link
-            href="/dark/side"
-            className="group p-8 rounded-xl border transition-all hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-surface)",
-              borderColor: "var(--color-border)",
-            }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="w-4 h-4 rounded-full border"
-                style={{
-                  backgroundColor: "#181818",
-                  borderColor: "var(--color-border)",
-                }}
-              />
-              <h2
-                style={{
-                  fontSize: "var(--font-size-h2)",
-                  fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--color-text-high-contrast)",
-                }}
-              >
-                Dark + Side
-              </h2>
-            </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-secondary)",
-              }}
-            >
-              Dark theme with video positioned beside hero text
-            </p>
-            <div
-              className="mt-4 inline-block text-sm px-3 py-1 rounded-md"
-              style={{
-                backgroundColor: "var(--color-surface-secondary)",
-                color: "var(--color-text-secondary)",
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              /dark/side
-            </div>
-          </Link>
-
-          {/* Dark + Bottom */}
-          <Link
-            href="/dark/bottom"
-            className="group p-8 rounded-xl border transition-all hover:scale-105"
-            style={{
-              backgroundColor: "var(--color-surface)",
-              borderColor: "var(--color-border)",
-            }}
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div
-                className="w-4 h-4 rounded-full border"
-                style={{
-                  backgroundColor: "#181818",
-                  borderColor: "var(--color-border)",
-                }}
-              />
-              <h2
-                style={{
-                  fontSize: "var(--font-size-h2)",
-                  fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--color-text-high-contrast)",
-                }}
-              >
-                Dark + Bottom
-              </h2>
-            </div>
-            <p
-              style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-secondary)",
-              }}
-            >
-              Dark theme with video positioned below hero text
-            </p>
-            <div
-              className="mt-4 inline-block text-sm px-3 py-1 rounded-md"
-              style={{
-                backgroundColor: "var(--color-surface-secondary)",
-                color: "var(--color-text-secondary)",
-                fontSize: "var(--font-size-small)",
-              }}
-            >
-              /dark/bottom
-            </div>
-          </Link>
-        </div>
-
-        <div className="mt-12 text-center">
-          <p
-            style={{
-              fontSize: "var(--font-size-small)",
-              color: "var(--color-text-tertiary)",
-            }}
-          >
-            For A/B testing, send traffic directly to variant URLs. This page is
-            for internal preview only.
-          </p>
+                <p
+                  style={{
+                    fontSize: "var(--font-size-base)",
+                    color: "#666666",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  {variant.description}
+                </p>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
     </main>
