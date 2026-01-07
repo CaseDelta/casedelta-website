@@ -1,26 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { useEffect, useState } from "react";
 
 export default function AIPolicy() {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    // Read theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("casedelta-theme") as "light" | "dark" | null;
+    const currentTheme = savedTheme || "light";
+    setTheme(currentTheme);
+    document.documentElement.setAttribute("data-theme", currentTheme);
+  }, []);
+
   return (
-    <main
-      className="min-h-screen bg-background pt-[120px] pb-20 px-6"
-      data-theme="light"
-    >
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center mb-8 text-sm text-text-secondary no-underline transition-colors duration-200 hover:text-text-high-contrast"
+    <div className="min-h-screen bg-background" data-theme={theme}>
+      <Navbar />
+
+      <main className="pt-32 pb-20 px-6">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            ← Back to Home
-          </Link>
 
           <h1 className="text-[32px] font-semibold tracking-tight text-text-high-contrast mb-5 font-serif">
             Our AI Policy
@@ -65,8 +71,11 @@ export default function AIPolicy() {
               </a>
             </div>
           </div>
-        </motion.div>
-      </div>
-    </main>
+          </motion.div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

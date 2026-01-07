@@ -8,10 +8,21 @@ import PricingCard from "@/components/PricingCard";
 import FAQAccordion from "@/components/FAQAccordion";
 import SocialProof from "@/components/SocialProof";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
+import { useEffect, useState } from "react";
 
 export default function PricingPage() {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    // Read theme from localStorage or default to light
+    const savedTheme = localStorage.getItem("casedelta-theme") as "light" | "dark" | null;
+    const currentTheme = savedTheme || "light";
+    setTheme(currentTheme);
+    document.documentElement.setAttribute("data-theme", currentTheme);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background" data-theme="light">
+    <div className="min-h-screen bg-background" data-theme={theme}>
       <Navbar />
 
       <PricingHero />

@@ -9,8 +9,9 @@ interface PageWrapperProps {
 
 export function PageWrapper({ theme, children }: PageWrapperProps) {
   useEffect(() => {
-    // Set theme on mount
+    // Set theme on mount and save to localStorage for persistence
     document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("casedelta-theme", theme);
   }, [theme]);
 
   return <>{children}</>;
