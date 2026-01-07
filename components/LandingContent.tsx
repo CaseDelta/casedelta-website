@@ -1,7 +1,7 @@
 import { Hero } from "@/components/Hero";
 import { ValuePropSection } from "@/components/ValuePropSection";
 import { Navbar } from "@/components/Navbar";
-import { SocialProof } from "@/components/SocialProof";
+import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
 import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";

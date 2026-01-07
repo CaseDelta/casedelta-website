@@ -15,7 +15,8 @@
     "next": "^16.1.1",
     "posthog-js": "^1.311.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react-dom": "^19.2.3",
+    "resend": "^6.6.0"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
