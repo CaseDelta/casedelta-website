@@ -6,6 +6,7 @@ import { useRef } from "react";
 import Image from "next/image";
 
 interface ValuePropSectionProps {
+  id?: string;
   title: string;
   description: string;
   features: string[];
@@ -39,6 +40,7 @@ const VIDEO_PLACEHOLDER_STYLES = {
 };
 
 export function ValuePropSection({
+  id,
   title,
   description,
   features,
@@ -52,12 +54,14 @@ export function ValuePropSection({
 
   return (
     <section
+      id={id}
       ref={ref}
       className="section"
       style={{
         backgroundColor: backgroundColor || "var(--color-background)",
         paddingTop: "3.5rem",
         paddingBottom: "12rem",
+        scrollMarginTop: "100px",
       }}
     >
       <div className="container">

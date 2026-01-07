@@ -186,6 +186,7 @@
 html {
   /* Important: 14px base font size, not 16px */
   font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 body {

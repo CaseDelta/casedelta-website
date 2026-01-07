@@ -24,24 +24,24 @@ export const navigationData: NavItemData[] = [
       {
         items: [
           {
-            title: "Document Collection",
-            description: "Automated client document requests and tracking",
-            href: "#document-collection",
+            title: "AI-Powered Client Reminders",
+            description: "Automated follow-ups that keep cases moving",
+            href: "/#ai-reminders",
           },
           {
-            title: "AI Verification",
-            description: "Smart document validation before submission",
-            href: "#ai-verification",
+            title: "Document Verification",
+            description: "AI that validates documents before submission",
+            href: "/#document-verification",
           },
           {
-            title: "Client Portal",
-            description: "Secure portal for client communications",
-            href: "#client-portal",
+            title: "Built for Legal Workflows",
+            description: "Secure, compliant, and fully integrated",
+            href: "/#legal-workflows",
           },
           {
-            title: "Integrations",
-            description: "Connect with your existing legal tools",
-            href: "#integrations",
+            title: "Save Hours Every Week",
+            description: "Reduce document collection time by 70%",
+            href: "/#time-savings",
           }
         ],
       },
