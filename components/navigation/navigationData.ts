@@ -48,9 +48,9 @@ export const navigationData: NavItemData[] = [
     ],
   },
   {
-    id: "privacy",
-    label: "Privacy",
-    href: "/privacy",
+    id: "ai-policy",
+    label: "AI Policy",
+    href: "/ai-policy",
   },
   {
     id: "pricing",
