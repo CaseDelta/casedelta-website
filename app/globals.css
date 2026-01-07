@@ -166,14 +166,16 @@
   --color-progressive-3: #171717;
   --color-progressive-4: #1c1c1c;
 
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #b0b0b0;
-  --color-text-tertiary: #8a8a8a;
-  --color-text-high-contrast: #ffffff;
+  /* Text colors - Softer whites for reduced eye strain */
+  --color-text-primary: #E0E0E0;        /* Soft white, reduces glare (was #ffffff) */
+  --color-text-secondary: #b0b0b0;      /* Medium emphasis */
+  --color-text-tertiary: #8a8a8a;       /* Low emphasis */
+  --color-text-high-contrast: #F5F5F5;  /* Near white, not pure (was #ffffff) */
 
   --color-border: #282828;
 
-  --color-button-primary: #ffffff;
+  /* Buttons - Softer white for better comfort */
+  --color-button-primary: #F5F5F5;      /* Near white (was #ffffff) */
   --color-button-primary-text: #0d0d0d;
 }
 
