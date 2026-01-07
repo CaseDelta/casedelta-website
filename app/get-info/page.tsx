@@ -58,40 +58,40 @@ export default function GetInfoPage() {
         className="min-h-screen flex items-center justify-center"
         style={{
           backgroundColor: "#FAFAFA",
-          padding: "var(--spacing-6)",
+          padding: "48px 24px",
         }}
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-          className="max-w-lg w-full text-center"
+          className="max-w-2xl w-full text-center"
           style={{
             backgroundColor: "#FFFFFF",
             border: "1px solid #E5E5E5",
-            borderRadius: "12px",
-            padding: "var(--spacing-12)",
+            borderRadius: "16px",
+            padding: "80px 60px",
           }}
         >
           <div
             style={{
-              width: "64px",
-              height: "64px",
+              width: "80px",
+              height: "80px",
               borderRadius: "50%",
               backgroundColor: "#000000",
-              margin: "0 auto var(--spacing-6)",
+              margin: "0 auto 32px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <svg
-              width="32"
-              height="32"
+              width="40"
+              height="40"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#FFFFFF"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -101,11 +101,12 @@ export default function GetInfoPage() {
 
           <h1
             style={{
-              fontSize: "32px",
+              fontSize: "clamp(36px, 5vw, 48px)",
               fontWeight: "var(--font-weight-semibold)",
               letterSpacing: "var(--letter-spacing-tight)",
               color: "#000000",
-              marginBottom: "var(--spacing-4)",
+              marginBottom: "24px",
+              fontFamily: "var(--font-family-serif)",
             }}
           >
             Thanks for your interest
@@ -113,10 +114,12 @@ export default function GetInfoPage() {
 
           <p
             style={{
-              fontSize: "18px",
+              fontSize: "20px",
               color: "#666666",
-              lineHeight: "1.6",
-              marginBottom: "var(--spacing-8)",
+              lineHeight: "1.7",
+              marginBottom: "48px",
+              maxWidth: "500px",
+              margin: "0 auto 48px",
             }}
           >
             We'll be in touch shortly to show you how CaseDelta can transform
@@ -127,7 +130,7 @@ export default function GetInfoPage() {
             href="/"
             style={{
               display: "inline-block",
-              padding: "12px 24px",
+              padding: "16px 32px",
               backgroundColor: "#000000",
               color: "#FFFFFF",
               fontSize: "var(--font-size-base)",
