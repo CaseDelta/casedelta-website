@@ -27,7 +27,7 @@ export default function PricingCard({
 }: PricingCardProps) {
   return (
     <div
-      className={`flex min-h-[600px] flex-col rounded-2xl border-2 p-10 ${
+      className={`flex flex-col rounded-2xl border-2 p-8 ${
         isPrimary
           ? "border-black bg-white"
           : "border-[#E5E5E5] bg-white"
@@ -41,7 +41,7 @@ export default function PricingCard({
         {description}
       </p>
 
-      <div className="mb-10">
+      <div className="mb-8">
         <span className="font-serif text-[clamp(2.5rem,4vw,3rem)] leading-none tracking-tight text-black">
           {price}
         </span>
@@ -52,12 +52,12 @@ export default function PricingCard({
 
       <a
         href={ctaHref}
-        className="mb-10 block rounded-lg border-2 border-[#E5E5E5] bg-transparent px-8 py-4 text-center text-base font-medium text-black transition-colors duration-300 hover:border-black"
+        className="mb-8 block rounded-lg border-2 border-[#E5E5E5] bg-transparent px-8 py-3 text-center text-base font-medium text-black transition-colors duration-300 hover:border-black"
       >
         {ctaText}
       </a>
 
-      <div className="mb-6 border-t border-[#E5E5E5] pt-6">
+      <div className="mb-5 border-t border-[#E5E5E5] pt-5">
         <p className="text-sm font-medium uppercase tracking-wider text-[#999999]">
           What's included
         </p>
