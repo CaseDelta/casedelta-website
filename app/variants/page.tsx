@@ -39,6 +39,13 @@ const variants = [
     description: "Dark theme with video below text",
     theme: "dark",
   },
+  {
+    id: "dark-fullscreen",
+    path: "/dark/fullscreen",
+    name: "Dark - Fullscreen",
+    description: "Dark theme with fullscreen video",
+    theme: "dark",
+  },
 ];
 
 export default function VariantsPage() {
