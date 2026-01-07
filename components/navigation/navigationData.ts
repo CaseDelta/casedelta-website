@@ -18,8 +18,8 @@ export interface NavItemData {
 
 export const navigationData: NavItemData[] = [
   {
-    id: "platform",
-    label: "Platform",
+    id: "product",
+    label: "Product",
     dropdown: [
       {
         items: [
@@ -48,93 +48,18 @@ export const navigationData: NavItemData[] = [
     ],
   },
   {
-    id: "solutions",
-    label: "Solutions",
-    dropdown: [
-      {
-        items: [
-          {
-            title: "Personal Injury Firms",
-            description: "Streamline case intake and documentation",
-            href: "#personal-injury",
-          },
-          {
-            title: "Corporate Law",
-            description: "Manage complex corporate documentation",
-            href: "#corporate-law",
-          },
-          {
-            title: "Family Law",
-            description: "Simplify sensitive client document collection",
-            href: "#family-law",
-          },
-          {
-            title: "Immigration Law",
-            description: "Handle immigration paperwork efficiently",
-            href: "#immigration-law",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "resources",
-    label: "Resources",
-    dropdown: [
-      {
-        items: [
-          {
-            title: "Blog",
-            description: "Industry insights and product updates",
-            href: "#blog",
-          },
-          {
-            title: "Guides & Templates",
-            description: "Free resources for legal professionals",
-            href: "#guides",
-          },
-          {
-            title: "Case Studies",
-            description: "See how firms transform their workflows",
-            href: "#case-studies",
-          },
-          {
-            title: "Support Center",
-            description: "Get help and find answers",
-            href: "#support",
-          },
-        ],
-      },
-    ],
+    id: "privacy",
+    label: "Privacy",
+    href: "/privacy",
   },
   {
     id: "pricing",
     label: "Pricing",
-    href: "#pricing",
+    href: "/pricing",
   },
   {
     id: "about",
     label: "About",
-    dropdown: [
-      {
-        items: [
-          {
-            title: "Our Story",
-            description: "Learn about our mission and values",
-            href: "#our-story",
-          },
-          {
-            title: "Careers",
-            description: "Join our team",
-            href: "#careers",
-          },
-          {
-            title: "Contact Us",
-            description: "Get in touch with our team",
-            href: "#contact",
-          },
-        ],
-      },
-    ],
+    href: "/about",
   },
 ];
