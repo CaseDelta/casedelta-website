@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 
 interface HeroProps {
   variant?: "side" | "bottom";
@@ -67,30 +68,34 @@ export function Hero({ variant = "side" }: HeroProps) {
             </p>
 
             <div className={`flex gap-4 flex-wrap ${isSideLayout ? "" : "justify-center"}`}>
-              <button
-                className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
+              <Link
+                href="/get-info"
+                className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98] inline-block"
                 style={{
                   backgroundColor: "var(--color-button-primary)",
                   color: "var(--color-button-primary-text)",
                   fontSize: "var(--font-size-base)",
                   fontWeight: "var(--font-weight-medium)",
                   boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+                  textDecoration: "none",
                 }}
               >
-                Get Started Free
-              </button>
+                Get Info
+              </Link>
 
-              <button
-                className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-tertiary)]"
+              <Link
+                href="/get-info"
+                className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-tertiary)] inline-block"
                 style={{
                   borderColor: "var(--color-border)",
                   color: "var(--color-text-primary)",
                   fontSize: "var(--font-size-base)",
                   fontWeight: "var(--font-weight-medium)",
+                  textDecoration: "none",
                 }}
               >
                 Watch Demo
-              </button>
+              </Link>
             </div>
           </motion.div>
 
