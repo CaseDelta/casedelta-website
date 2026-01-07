@@ -16,7 +16,7 @@ export default function AboutPage() {
       <AboutHero />
 
       {/* Story Section */}
-      <section className="bg-surface py-32">
+      <section className="bg-surface py-16 md:py-20">
         <div className="mx-auto max-w-[800px] px-6">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

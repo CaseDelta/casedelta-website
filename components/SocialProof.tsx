@@ -59,12 +59,21 @@ export default function SocialProof() {
                 }}
               >
                 <span
+                  className="cursor-default transition-all duration-500 ease-in-out"
                   style={{
                     fontSize: "var(--font-size-base)",
                     color: "var(--color-text-tertiary)",
                     fontWeight: "var(--font-weight-medium)",
                     letterSpacing: "-0.01em",
                     opacity: 0.7,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--color-text-high-contrast)";
+                    e.currentTarget.style.opacity = "1";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--color-text-tertiary)";
+                    e.currentTarget.style.opacity = "0.7";
                   }}
                 >
                   {customer}

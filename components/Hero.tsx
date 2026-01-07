@@ -41,7 +41,7 @@ export function Hero({ variant = "side" }: HeroProps) {
             className={isSideLayout ? "" : "mb-12"}
           >
             <h1
-              className="mb-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl group cursor-default"
+              className="mb-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl"
               style={{
                 lineHeight: "var(--line-height-tight)",
                 letterSpacing: "var(--letter-spacing-tight)",
@@ -49,22 +49,9 @@ export function Hero({ variant = "side" }: HeroProps) {
                 color: "var(--color-text-high-contrast)",
               }}
             >
-              <span
-                className="inline-block px-2 -mx-2 rounded-lg transition-all duration-700 ease-in-out"
-                style={{
-                  backgroundColor: "transparent",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                }}
-              >
-                Get documents from clients{" "}
-                <span style={{ color: "var(--color-text-secondary)" }}>
-                  without the follow-up headache
-                </span>
+              Get documents from clients{" "}
+              <span style={{ color: "var(--color-text-secondary)" }}>
+                without the follow-up headache
               </span>
             </h1>
 
