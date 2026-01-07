@@ -4,6 +4,10 @@ import { HeroFullscreen } from "@/components/HeroFullscreen";
 import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ValuePropSection } from "@/components/ValuePropSection";
+import { QuantifiableImpact } from "@/components/QuantifiableImpact";
+import { Testimonials } from "@/components/Testimonials";
+import { SecuritySection } from "@/components/SecuritySection";
+import { Footer } from "@/components/Footer";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export default function Home() {
@@ -22,7 +26,6 @@ export default function Home() {
         <SectionHeader
           id="workflow-section"
           title="Streamline Your Entire Document Collection Workflow"
-          subtitle="Automate reminders, verify uploads, and get the right documents faster—all on one secure platform built specifically for legal professionals."
         />
 
         {/* Value Proposition 1 - Dark background */}
@@ -63,90 +66,56 @@ export default function Home() {
           backgroundColor="#1f1f1f"
         />
 
+        {/* Quantifiable Impact Section */}
+        <QuantifiableImpact />
+
+        {/* Testimonials Section */}
+        <Testimonials />
+
+        {/* Security Section */}
+        <SecuritySection />
+
         {/* CTA Section */}
         <section
           className="section"
-          style={{ backgroundColor: "var(--color-background)" }}
+          style={{ backgroundColor: "var(--color-surface)", padding: "8rem 0" }}
         >
-          <div className="container">
-            <div className="max-w-3xl mx-auto text-center">
+          <div className="container max-w-4xl">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               <h2
-                className="mb-8"
                 style={{
-                  fontSize: "var(--font-size-h2)",
-                  lineHeight: "var(--line-height-tight)",
-                  fontWeight: "var(--font-weight-semibold)",
+                  fontSize: "clamp(2rem, 4vw, 3rem)",
+                  lineHeight: "1.2",
+                  fontWeight: "400",
                   color: "var(--color-text-high-contrast)",
+                  letterSpacing: "-0.01em",
                 }}
               >
-                Ready to transform your document collection?
+                Stop Chasing Documents.
+                <br />
+                <span style={{ color: "var(--color-text-secondary)" }}>
+                  Start Getting Results.
+                </span>
               </h2>
 
-              <p
-                className="mb-10"
+              <a
+                href={CTA_URLS.REQUEST_DEMO}
+                className="px-8 py-4 rounded-lg transition-all hover:opacity-90 flex-shrink-0"
                 style={{
-                  fontSize: "var(--font-size-large)",
-                  lineHeight: "var(--line-height-relaxed)",
-                  color: "var(--color-text-secondary)",
+                  backgroundColor: "var(--color-button-primary)",
+                  color: "var(--color-button-primary-text)",
+                  fontSize: "var(--font-size-base)",
+                  fontWeight: "var(--font-weight-medium)",
                 }}
               >
-                Join hundreds of legal professionals who've already streamlined
-                their workflows with CaseDelta.
-              </p>
-
-              <div className="flex gap-4 justify-center flex-wrap">
-                <a
-                  href={CTA_URLS.START_FREE_TRIAL}
-                  className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
-                  style={{
-                    backgroundColor: "var(--color-button-primary)",
-                    color: "var(--color-button-primary-text)",
-                    fontSize: "var(--font-size-base)",
-                    fontWeight: "var(--font-weight-medium)",
-                    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  {CTA.START_FREE_TRIAL}
-                </a>
-
-                <a
-                  href={CTA_URLS.SCHEDULE_DEMO}
-                  className="px-8 py-4 rounded-lg border transition-all hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-text-tertiary)]"
-                  style={{
-                    borderColor: "var(--color-border)",
-                    color: "var(--color-text-primary)",
-                    fontSize: "var(--font-size-base)",
-                    fontWeight: "var(--font-weight-medium)",
-                  }}
-                >
-                  {CTA.SCHEDULE_DEMO}
-                </a>
-              </div>
+                {CTA.REQUEST_DEMO}
+              </a>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer
-          className="py-12 border-t"
-          style={{
-            backgroundColor: "var(--color-background)",
-            borderColor: "var(--color-border)",
-          }}
-        >
-          <div className="container">
-            <div className="text-center">
-              <p
-                style={{
-                  fontSize: "var(--font-size-small)",
-                  color: "var(--color-text-tertiary)",
-                }}
-              >
-                © 2025 CaseDelta. All rights reserved.
-              </p>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </PageWrapper>
   );
