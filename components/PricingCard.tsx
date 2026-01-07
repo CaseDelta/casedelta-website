@@ -26,7 +26,7 @@ export default function PricingCard({
   badge,
 }: PricingCardProps) {
   return (
-    <div className="flex flex-col rounded-2xl p-8 bg-surface">
+    <div className="flex flex-col rounded-2xl border border-border p-8 bg-surface">
       <h3 className="mb-3 font-serif text-2xl md:text-3xl text-text-high-contrast">
         {planName}
       </h3>
@@ -51,7 +51,7 @@ export default function PricingCard({
         {ctaText}
       </a>
 
-      <div className="mb-5">
+      <div className="mb-5 border-t border-border pt-5">
         <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
           What's included
         </p>
