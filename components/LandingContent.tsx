@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
 import { QuantifiableImpact } from "@/components/QuantifiableImpact";
+import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
 import { Footer } from "@/components/Footer";
 
@@ -94,6 +95,9 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
 
         {/* Quantifiable Impact Section */}
         <QuantifiableImpact />
+
+        {/* Testimonials Section */}
+        <Testimonials />
 
         {/* Security Section */}
         <SecuritySection />
