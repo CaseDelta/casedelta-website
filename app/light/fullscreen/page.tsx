@@ -1,7 +1,7 @@
 import { PageWrapper } from "@/components/PageWrapper";
 import { Navbar } from "@/components/Navbar";
 import { HeroFullscreen } from "@/components/HeroFullscreen";
-import { SocialProof } from "@/components/SocialProof";
+import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ValuePropSection } from "@/components/ValuePropSection";
 
