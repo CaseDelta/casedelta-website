@@ -26,13 +26,7 @@ export default function PricingCard({
   badge,
 }: PricingCardProps) {
   return (
-    <div
-      className={`flex flex-col rounded-2xl border-2 p-8 bg-surface ${
-        isPrimary
-          ? "border-text-high-contrast"
-          : "border-border"
-      }`}
-    >
+    <div className="flex flex-col rounded-2xl p-8 bg-surface">
       <h3 className="mb-3 font-serif text-2xl md:text-3xl text-text-high-contrast">
         {planName}
       </h3>
@@ -52,12 +46,12 @@ export default function PricingCard({
 
       <a
         href={ctaHref}
-        className="mb-8 block rounded-lg border-2 border-border bg-transparent px-8 py-3 text-center text-base font-medium text-text-high-contrast transition-colors duration-300 hover:border-text-high-contrast"
+        className="mb-8 block rounded-lg bg-button-primary px-8 py-3 text-center text-base font-medium text-button-primary-text transition-opacity duration-300 hover:opacity-85"
       >
         {ctaText}
       </a>
 
-      <div className="mb-5 border-t border-border pt-5">
+      <div className="mb-5">
         <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
           What's included
         </p>
