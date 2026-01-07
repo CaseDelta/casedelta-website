@@ -101,29 +101,28 @@ export default function GetInfoPage() {
 
           <h1
             style={{
-              fontSize: "clamp(36px, 5vw, 48px)",
+              fontSize: "32px",
               fontWeight: "var(--font-weight-semibold)",
               letterSpacing: "var(--letter-spacing-tight)",
               color: "#000000",
-              marginBottom: "24px",
+              marginBottom: "20px",
               fontFamily: "var(--font-family-serif)",
             }}
           >
-            Thanks for your interest
+            We'll be in touch soon
           </h1>
 
           <p
             style={{
-              fontSize: "20px",
+              fontSize: "16px",
               color: "#666666",
-              lineHeight: "1.7",
+              lineHeight: "1.6",
               marginBottom: "48px",
               maxWidth: "500px",
               margin: "0 auto 48px",
             }}
           >
-            We'll be in touch shortly to show you how CaseDelta can transform
-            your document collection workflow.
+            Our team will reach out shortly to show you how CaseDelta can transform your document collection workflow.
           </p>
 
           <Link
