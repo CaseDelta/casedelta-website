@@ -27,10 +27,10 @@ export default function PricingCard({
 }: PricingCardProps) {
   return (
     <div
-      className={`flex min-h-[600px] flex-col rounded-xl border bg-surface p-10 transition-all duration-200 ${
+      className={`group relative flex min-h-[600px] flex-col rounded-2xl border-2 bg-surface p-10 transition-all duration-300 hover:-translate-y-1 ${
         isPrimary
-          ? "border-text-high-contrast"
-          : "border-border"
+          ? "border-text-high-contrast bg-[#FAFAFA]"
+          : "border-border hover:border-text-tertiary"
       }`}
     >
       {badge && (
@@ -49,7 +49,7 @@ export default function PricingCard({
         {description}
       </p>
 
-      <div className="mb-8">
+      <div className="mb-10">
         <span className="font-serif text-[clamp(2.5rem,4vw,3rem)] leading-none tracking-tight text-text-high-contrast">
           {price}
         </span>
@@ -60,14 +60,20 @@ export default function PricingCard({
 
       <a
         href={ctaHref}
-        className={`mb-8 block rounded-lg border px-8 py-4 text-center text-lg font-medium transition-opacity duration-150 ${
+        className={`mb-10 block rounded-lg border-2 px-8 py-4 text-center text-base font-medium transition-all duration-200 ${
           isPrimary
-            ? "border-button-primary bg-button-primary text-button-primary-text hover:opacity-85"
-            : "border-border bg-transparent text-text-primary hover:bg-surface-hover"
+            ? "border-button-primary bg-button-primary text-button-primary-text hover:bg-[#333]"
+            : "border-text-high-contrast bg-transparent text-text-high-contrast hover:bg-text-high-contrast hover:text-white"
         }`}
       >
         {ctaText}
       </a>
+
+      <div className="mb-6 border-t border-border pt-6">
+        <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
+          What's included
+        </p>
+      </div>
 
       <ul className="flex flex-col gap-4">
         {features.map((feature, index) => (
@@ -76,7 +82,7 @@ export default function PricingCard({
               className="mt-1 shrink-0 text-text-high-contrast"
               size={20}
             />
-            <span className="text-lg leading-[1.7] text-text-primary">{feature}</span>
+            <span className="text-base leading-[1.7] text-text-primary">{feature}</span>
           </li>
         ))}
       </ul>

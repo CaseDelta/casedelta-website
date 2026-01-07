@@ -19,10 +19,9 @@ export default function PricingHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.33, 1, 0.68, 1] }}
-          className="mx-auto max-w-[600px] text-xl leading-[1.7] text-text-secondary"
+          className="mx-auto max-w-[600px] text-lg leading-[1.7] text-text-secondary"
         >
-          Professional document automation for law firms of all sizes. No hidden
-          fees, no surprises.
+          Flat monthly pricing for law firms. No per-seat fees, no hidden costs, no surprises.
         </motion.p>
       </div>
     </section>
