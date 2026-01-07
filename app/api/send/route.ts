@@ -6,6 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 interface LeadFormData {
   name: string;
   email: string;
+  role: string;
   company?: string;
 }
 
@@ -14,9 +15,9 @@ export async function POST(request: NextRequest) {
     const body: LeadFormData = await request.json();
     
     // Basic validation
-    if (!body.name || !body.email) {
+    if (!body.name || !body.email || !body.role) {
       return NextResponse.json(
-        { error: 'Name and email are required' },
+        { error: 'Name, email, and role are required' },
         { status: 400 }
       );
     }
@@ -80,7 +81,12 @@ export async function POST(request: NextRequest) {
               <div class="label">Email:</div>
               <div class="value">${body.email}</div>
             </div>
-            
+
+            <div class="field">
+              <div class="label">Role:</div>
+              <div class="value">${body.role.charAt(0).toUpperCase() + body.role.slice(1)}</div>
+            </div>
+
             ${body.company ? `
               <div class="field">
                 <div class="label">Law Firm:</div>
@@ -94,7 +100,7 @@ export async function POST(request: NextRequest) {
           </body>
         </html>
       `,
-      text: `New CaseDelta Lead\n\nName: ${body.name}\nEmail: ${body.email}${body.company ? `\nLaw Firm: ${body.company}` : ''}\n\nThis lead was submitted from casedelta.com/get-info`,
+      text: `New CaseDelta Lead\n\nName: ${body.name}\nEmail: ${body.email}\nRole: ${body.role.charAt(0).toUpperCase() + body.role.slice(1)}${body.company ? `\nLaw Firm: ${body.company}` : ''}\n\nThis lead was submitted from casedelta.com/get-info`,
     });
 
     if (error) {

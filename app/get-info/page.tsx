@@ -8,6 +8,7 @@ export default function GetInfoPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    role: "",
     company: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,7 +44,7 @@ export default function GetInfoPage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     setFormData({
       ...formData,
@@ -353,6 +354,57 @@ export default function GetInfoPage() {
                   e.currentTarget.style.backgroundColor = "#FAFAFA";
                 }}
               />
+            </div>
+
+            <div className="mb-6">
+              <label
+                htmlFor="role"
+                style={{
+                  display: "block",
+                  fontSize: "var(--font-size-base)",
+                  fontWeight: "var(--font-weight-medium)",
+                  color: "#000000",
+                  marginBottom: "var(--spacing-2)",
+                }}
+              >
+                I am *
+              </label>
+              <select
+                id="role"
+                name="role"
+                required
+                value={formData.role}
+                onChange={handleChange}
+                style={{
+                  width: "100%",
+                  padding: "12px 16px",
+                  fontSize: "var(--font-size-base)",
+                  color: formData.role ? "#000000" : "#999999",
+                  backgroundColor: "#FAFAFA",
+                  border: "1px solid #E5E5E5",
+                  borderRadius: "8px",
+                  outline: "none",
+                  transition: "all 0.2s ease",
+                  cursor: "pointer",
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "#000000";
+                  e.currentTarget.style.backgroundColor = "#FFFFFF";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "#E5E5E5";
+                  e.currentTarget.style.backgroundColor = "#FAFAFA";
+                }}
+              >
+                <option value="" disabled>
+                  Select your role
+                </option>
+                <option value="lawyer">A Lawyer</option>
+                <option value="paralegal">A Paralegal</option>
+                <option value="manager">A Manager</option>
+                <option value="developer">A Developer</option>
+                <option value="other">Other</option>
+              </select>
             </div>
 
             <div className="mb-8">
