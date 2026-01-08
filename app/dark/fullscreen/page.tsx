@@ -30,6 +30,7 @@ export default function DarkFullscreenPage() {
 
         {/* Value Proposition 1 - Dark background */}
         <ValuePropSection
+          id="ai-reminders"
           title="AI-Powered Client Reminders"
           description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
           features={[]}
@@ -39,6 +40,7 @@ export default function DarkFullscreenPage() {
 
         {/* Value Proposition 2 - Slightly lighter dark */}
         <ValuePropSection
+          id="document-verification"
           title="Document Verification That Actually Works"
           description="Never waste time reviewing the wrong documents again. Our AI verifies that clients upload exactly what you requested—before they hit submit."
           features={[]}
@@ -49,6 +51,7 @@ export default function DarkFullscreenPage() {
 
         {/* Value Proposition 3 - Mid dark gray */}
         <ValuePropSection
+          id="legal-workflows"
           title="Built for Legal Workflows"
           description="Designed specifically for law firms and legal professionals. Secure, compliant, and seamlessly integrated with your existing tools."
           features={[]}
@@ -58,6 +61,7 @@ export default function DarkFullscreenPage() {
 
         {/* Value Proposition 4 - Dark gray */}
         <ValuePropSection
+          id="time-savings"
           title="Save Hours Every Week"
           description="Focus on practicing law, not project managing document requests. CaseDelta handles the busywork so you can get back to what matters."
           features={[]}
