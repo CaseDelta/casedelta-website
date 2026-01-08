@@ -191,7 +191,11 @@ export function Navbar() {
                 key={item.id}
                 onMouseEnter={() => {
                   setHoveredItem(item.id);
-                  if (item.dropdown) setOpenDropdownId(item.id);
+                  if (item.dropdown) {
+                    setOpenDropdownId(item.id);
+                  } else {
+                    setOpenDropdownId(null);
+                  }
                 }}
                 onMouseLeave={() => {
                   setHoveredItem(null);
@@ -285,7 +289,10 @@ export function Navbar() {
               ref={(el) => {
                 if (el) itemRefs.current.set("sign-in", el);
               }}
-              onMouseEnter={() => setHoveredItem("sign-in")}
+              onMouseEnter={() => {
+                setHoveredItem("sign-in");
+                setOpenDropdownId(null);
+              }}
               onMouseLeave={() => setHoveredItem(null)}
             >
               {CTA.SIGN_IN}
@@ -304,6 +311,7 @@ export function Navbar() {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = "0.85";
+                setOpenDropdownId(null);
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.opacity = "1";
