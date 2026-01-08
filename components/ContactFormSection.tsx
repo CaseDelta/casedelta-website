@@ -9,7 +9,6 @@ export function ContactFormSection() {
     name: "",
     email: "",
     role: "",
-    company: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -44,11 +43,18 @@ export function ContactFormSection() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleRoleSelect = (role: string) => {
+    setFormData({
+      ...formData,
+      role,
     });
   };
 
@@ -316,102 +322,70 @@ export function ContactFormSection() {
                 />
               </div>
 
-              <div className="mb-6">
+              <div className="mb-8">
                 <label
-                  htmlFor="role"
                   style={{
                     display: "block",
                     fontSize: "var(--font-size-base)",
                     fontWeight: "var(--font-weight-medium)",
                     color: "var(--color-text-high-contrast)",
-                    marginBottom: "var(--spacing-2)",
+                    marginBottom: "var(--spacing-4)",
                   }}
                 >
                   I am *
                 </label>
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  value={formData.role}
-                  onChange={handleChange}
-                  disabled={isSubmitting}
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    fontSize: "var(--font-size-base)",
-                    color: formData.role ? "var(--color-text-primary)" : "var(--color-text-secondary)",
-                    backgroundColor: "var(--color-background)",
-                    border: "1px solid var(--color-border)",
-                    borderRadius: "8px",
-                    outline: "none",
-                    transition: "all 0.2s ease",
-                    cursor: "pointer",
-                    appearance: "none",
-                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 12px center",
-                    backgroundSize: "20px",
-                    paddingRight: "40px",
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = "var(--color-text-high-contrast)";
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = "var(--color-border)";
-                  }}
-                >
-                  <option value="" disabled>
-                    Select your role
-                  </option>
-                  <option value="lawyer">A Lawyer</option>
-                  <option value="paralegal">A Paralegal</option>
-                  <option value="manager">A Manager</option>
-                  <option value="developer">A Developer</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div className="mb-8">
-                <label
-                  htmlFor="company"
-                  style={{
-                    display: "block",
-                    fontSize: "var(--font-size-base)",
-                    fontWeight: "var(--font-weight-medium)",
-                    color: "var(--color-text-high-contrast)",
-                    marginBottom: "var(--spacing-2)",
-                  }}
-                >
-                  Law Firm{" "}
-                  <span style={{ color: "var(--color-text-tertiary)", fontWeight: "normal" }}>
-                    (optional)
-                  </span>
-                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { value: "lawyer", label: "A Lawyer" },
+                    { value: "paralegal", label: "A Paralegal" },
+                    { value: "manager", label: "A Manager" },
+                    { value: "developer", label: "A Developer" },
+                    { value: "other", label: "Other" },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => handleRoleSelect(option.value)}
+                      disabled={isSubmitting}
+                      style={{
+                        padding: "12px 16px",
+                        fontSize: "var(--font-size-base)",
+                        fontWeight: "var(--font-weight-medium)",
+                        color: formData.role === option.value
+                          ? "var(--color-button-primary-text)"
+                          : "var(--color-text-primary)",
+                        backgroundColor: formData.role === option.value
+                          ? "var(--color-button-primary)"
+                          : "var(--color-background)",
+                        border: `1px solid ${formData.role === option.value
+                          ? "var(--color-button-primary)"
+                          : "var(--color-border)"}`,
+                        borderRadius: "8px",
+                        cursor: isSubmitting ? "not-allowed" : "pointer",
+                        transition: "all 0.2s ease",
+                        textAlign: "center",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isSubmitting && formData.role !== option.value) {
+                          e.currentTarget.style.borderColor = "var(--color-text-high-contrast)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (formData.role !== option.value) {
+                          e.currentTarget.style.borderColor = "var(--color-border)";
+                        }
+                      }}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+                {/* Hidden input for form validation */}
                 <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  placeholder="Your law firm name"
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    fontSize: "var(--font-size-base)",
-                    color: "var(--color-text-primary)",
-                    backgroundColor: "var(--color-background)",
-                    border: "1px solid var(--color-border)",
-                    borderRadius: "8px",
-                    outline: "none",
-                    transition: "all 0.2s ease",
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = "var(--color-text-high-contrast)";
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = "var(--color-border)";
-                  }}
+                  type="hidden"
+                  name="role"
+                  value={formData.role}
+                  required
                 />
               </div>
 
