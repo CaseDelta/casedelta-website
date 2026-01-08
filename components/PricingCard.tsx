@@ -46,12 +46,12 @@ export default function PricingCard({
 
       <a
         href={ctaHref}
-        className="mb-8 block rounded-lg bg-button-primary px-8 py-3 text-center text-base font-medium text-button-primary-text transition-opacity duration-300 hover:opacity-85"
+        className="mb-8 block rounded-lg border border-border bg-transparent px-8 py-3 text-center text-base font-medium text-text-high-contrast transition-colors duration-300 hover:border-text-high-contrast"
       >
         {ctaText}
       </a>
 
-      <div className="mb-5 border-t border-border pt-5">
+      <div className="mb-5">
         <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
           What's included
         </p>
