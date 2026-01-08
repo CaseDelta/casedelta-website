@@ -33,7 +33,7 @@ export type CTAValue = typeof CTA[keyof typeof CTA];
 
 // CTA URLs - Centralized URLs for each CTA action
 export const CTA_URLS = {
-  GET_STARTED: "https://app.casedelta.com",
+  GET_STARTED: "/get-info",
   START_FREE_TRIAL: "/get-info",
   SCHEDULE_DEMO: "/get-info",
   REQUEST_DEMO: "/get-info",
