@@ -489,31 +489,6 @@ export default function GetInfoPage() {
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>
-
-            <p
-              className="mt-4 text-center"
-              style={{
-                fontSize: "var(--font-size-small)",
-                color: "#999999",
-                lineHeight: "1.5",
-              }}
-            >
-              By submitting, you agree to our{" "}
-              <Link
-                href="/terms"
-                style={{ color: "#666666", textDecoration: "underline" }}
-              >
-                Terms
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/privacy"
-                style={{ color: "#666666", textDecoration: "underline" }}
-              >
-                Privacy Policy
-              </Link>
-              .
-            </p>
           </form>
         </motion.div>
       </div>

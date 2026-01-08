@@ -396,31 +396,6 @@ export function ContactFormSection() {
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
-
-              <p
-                className="mt-4 text-center"
-                style={{
-                  fontSize: "var(--font-size-small)",
-                  color: "var(--color-text-tertiary)",
-                  lineHeight: "1.5",
-                }}
-              >
-                By submitting, you agree to our{" "}
-                <Link
-                  href="/terms"
-                  style={{ color: "var(--color-text-secondary)", textDecoration: "underline" }}
-                >
-                  Terms
-                </Link>{" "}
-                and{" "}
-                <Link
-                  href="/privacy"
-                  style={{ color: "var(--color-text-secondary)", textDecoration: "underline" }}
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </p>
             </form>
           </motion.div>
         </div>
