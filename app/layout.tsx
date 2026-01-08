@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Script from "next/script";
 import { PostHogProvider } from "./providers/PostHogProvider";
+import { PageTransition } from "@/components/transitions/PageTransition";
 
 export const metadata: Metadata = {
   title: "CaseDelta | Legal Document Collection Made Simple",
@@ -50,7 +51,9 @@ export default function RootLayout({
       </head>
       <body>
         <PostHogProvider>
-          {children}
+          <PageTransition>
+            {children}
+          </PageTransition>
         </PostHogProvider>
       </body>
     </html>
