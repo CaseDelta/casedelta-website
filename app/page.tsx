@@ -7,8 +7,8 @@ import { ValuePropSection } from "@/components/ValuePropSection";
 import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
+import { ContactFormSection } from "@/components/ContactFormSection";
 import { Footer } from "@/components/Footer";
-import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export default function Home() {
   return (
@@ -75,44 +75,8 @@ export default function Home() {
         {/* Security Section */}
         <SecuritySection />
 
-        {/* CTA Section */}
-        <section
-          className="section"
-          style={{ backgroundColor: "var(--color-surface)", padding: "8rem 0" }}
-        >
-          <div className="container max-w-4xl">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              <h2
-                style={{
-                  fontSize: "clamp(2rem, 4vw, 3rem)",
-                  lineHeight: "1.2",
-                  fontWeight: "400",
-                  color: "var(--color-text-high-contrast)",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                Stop Chasing Documents.
-                <br />
-                <span style={{ color: "var(--color-text-secondary)" }}>
-                  Start Getting Results.
-                </span>
-              </h2>
-
-              <a
-                href={CTA_URLS.GET_STARTED}
-                className="px-8 py-4 rounded-lg transition-all hover:opacity-90 flex-shrink-0"
-                style={{
-                  backgroundColor: "var(--color-button-primary)",
-                  color: "var(--color-button-primary-text)",
-                  fontSize: "var(--font-size-base)",
-                  fontWeight: "var(--font-weight-medium)",
-                }}
-              >
-                {CTA.GET_STARTED}
-              </a>
-            </div>
-          </div>
-        </section>
+        {/* Contact Form Section */}
+        <ContactFormSection />
 
         {/* Footer */}
         <Footer />

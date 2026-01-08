@@ -33,13 +33,13 @@ export type CTAValue = typeof CTA[keyof typeof CTA];
 
 // CTA URLs - Centralized URLs for each CTA action
 export const CTA_URLS = {
-  GET_STARTED: "/get-info",
-  START_FREE_TRIAL: "/get-info",
-  SCHEDULE_DEMO: "/get-info",
-  REQUEST_DEMO: "/get-info",
-  WATCH_DEMO: "/get-info",
-  GET_INFO: "/get-info",
-  LEARN_MORE: "/get-info",
+  GET_STARTED: "#get-started",
+  START_FREE_TRIAL: "#get-started",
+  SCHEDULE_DEMO: "#get-started",
+  REQUEST_DEMO: "#get-started",
+  WATCH_DEMO: "#get-started",
+  GET_INFO: "#get-started",
+  LEARN_MORE: "#get-started",
   SIGN_IN: "https://app.casedelta.com",
   SIGN_UP: "https://app.casedelta.com",
 } as const;
