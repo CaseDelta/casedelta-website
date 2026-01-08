@@ -1,86 +1,125 @@
-import { PageWrapper } from "@/components/PageWrapper";
-import { HeroFullscreen } from "@/components/HeroFullscreen";
-import SocialProof from "@/components/SocialProof";
-import { SectionHeader } from "@/components/SectionHeader";
-import { ValuePropSection } from "@/components/ValuePropSection";
-import { QuantifiableImpact } from "@/components/QuantifiableImpact";
-import { Testimonials } from "@/components/Testimonials";
-import { SecuritySection } from "@/components/SecuritySection";
-import { ContactFormSection } from "@/components/ContactFormSection";
+"use client";
+
+import { motion } from "framer-motion";
 
 export default function Home() {
+  // Get current date dynamically
+  const getCurrentDate = () => {
+    const now = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const dayName = days[now.getDay()];
+    const monthName = months[now.getMonth()];
+    const dayNumber = now.getDate();
+
+    // Add ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
+    const getOrdinalSuffix = (day: number) => {
+      if (day > 3 && day < 21) return 'th';
+      switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+      }
+    };
+
+    return `${dayName}, ${monthName} ${dayNumber}${getOrdinalSuffix(dayNumber)}`;
+  };
+
   return (
-    <PageWrapper theme="dark">
-      <main>
+    <main
+      className="min-h-screen flex items-center justify-center"
+      style={{
+        backgroundColor: "#000000",
+        padding: "var(--spacing-6)",
+      }}
+    >
+      <motion.div
+        className="max-w-2xl w-full text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          style={{
+            fontSize: "var(--font-size-small)",
+            color: "#666666",
+            marginBottom: "var(--spacing-8)",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+          }}
+        >
+          {getCurrentDate()}
+        </motion.div>
 
-        {/* Fullscreen Hero with Video Background */}
-        <HeroFullscreen />
+        <motion.h1
+          className="mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          style={{
+            fontSize: "48px",
+            fontWeight: "var(--font-weight-semibold)",
+            letterSpacing: "var(--letter-spacing-tight)",
+            color: "#FFFFFF",
+            lineHeight: "1.2",
+          }}
+        >
+          We&apos;re Improving Our Website
+        </motion.h1>
 
-        {/* Social Proof - Customer Logos */}
-        <SocialProof />
+        <motion.p
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+          style={{
+            fontSize: "20px",
+            color: "#A0A0A0",
+            lineHeight: "1.6",
+            maxWidth: "560px",
+            margin: "0 auto",
+          }}
+        >
+          CaseDelta is enhancing our platform to better serve legal
+          professionals. We&apos;ll be back shortly with an improved experience.
+        </motion.p>
 
-        {/* Section Header */}
-        <SectionHeader
-          id="workflow-section"
-          title="Streamline Your Entire Document Collection Workflow"
-        />
-
-        {/* Value Proposition 1 - Dark background */}
-        <ValuePropSection
-          id="ai-reminders"
-          title="AI-Powered Client Reminders"
-          description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
-          features={[]}
-          imagePath="/images/value-props/prop-1.jpeg"
-          backgroundColor="#0d0d0d"
-        />
-
-        {/* Value Proposition 2 - Slightly lighter dark */}
-        <ValuePropSection
-          id="document-verification"
-          title="Document Verification That Actually Works"
-          description="Never waste time reviewing the wrong documents again. Our AI verifies that clients upload exactly what you requested—before they hit submit."
-          features={[]}
-          imagePath="/images/value-props/prop-2.jpeg"
-          reverse
-          backgroundColor="#1a1a1a"
-        />
-
-        {/* Value Proposition 3 - Mid dark gray */}
-        <ValuePropSection
-          id="legal-workflows"
-          title="Built for Legal Workflows"
-          description="Designed specifically for law firms and legal professionals. Secure, compliant, and seamlessly integrated with your existing tools."
-          features={[]}
-          imagePath="/images/value-props/prop-3.jpeg"
-          backgroundColor="#141414"
-        />
-
-        {/* Value Proposition 4 - Dark gray */}
-        <ValuePropSection
-          id="time-savings"
-          title="Save Hours Every Week"
-          description="Focus on practicing law, not project managing document requests. CaseDelta handles the busywork so you can get back to what matters."
-          features={[]}
-          imagePath="/images/value-props/prop-4.jpeg"
-          reverse
-          backgroundColor="#1f1f1f"
-        />
-
-        {/* Quantifiable Impact Section */}
-        <QuantifiableImpact />
-
-        {/* Testimonials Section */}
-        <Testimonials />
-
-        {/* Security Section */}
-        <SecuritySection />
-
-        {/* Contact Form Section */}
-        <ContactFormSection />
-
-        {/* Footer */}
-      </main>
-    </PageWrapper>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          style={{
+            fontSize: "var(--font-size-small)",
+            color: "#666666",
+            marginTop: "var(--spacing-12)",
+          }}
+        >
+          For inquiries, please contact us at{" "}
+          <a
+            href="mailto:contact@casedelta.com"
+            style={{
+              color: "#FFFFFF",
+              textDecoration: "underline",
+              textUnderlineOffset: "4px",
+              transition: "opacity 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = "0.7";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = "1";
+            }}
+          >
+            contact@casedelta.com
+          </a>
+        </motion.div>
+      </motion.div>
+    </main>
   );
 }
