@@ -3,10 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { navigationData } from "./navigation/navigationData";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
 export function Navbar() {
+  const router = useRouter();
+  const pathname = usePathname();
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -141,6 +144,51 @@ export function Navbar() {
       opacity: 1,
     });
   }, [hoveredItem]);
+
+  // Handle scrolling to anchor on page load
+  useEffect(() => {
+    // Only run on homepage
+    if (pathname !== "/") return;
+
+    // Check if there's a hash in the URL
+    const hash = window.location.hash;
+    if (hash) {
+      // Small delay to ensure page is fully rendered
+      const timeoutId = setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [pathname]);
+
+  // Handle cross-page anchor navigation
+  const handleAnchorClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    setOpenDropdownId(null);
+
+    // Check if the link is an anchor link (starts with /#)
+    if (href.startsWith("/#")) {
+      const anchor = href.substring(1); // Get the hash part (e.g., #ai-reminders)
+
+      // If we're already on the homepage, just scroll
+      if (pathname === "/") {
+        const element = document.querySelector(anchor);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
+        // Navigate to homepage with hash, the useEffect above will handle scrolling
+        router.push(href);
+      }
+    } else {
+      // Regular navigation
+      router.push(href);
+    }
+  };
 
   const logoSrc = theme === "dark"
     ? "/assets/branding/trimmed-logo-white.png"
@@ -373,7 +421,7 @@ export function Navbar() {
                       opacity: isDimmed ? 0.35 : 1,
                       transition: "opacity 0.2s ease-in-out",
                     }}
-                    onClick={() => setOpenDropdownId(null)}
+                    onClick={(e) => handleAnchorClick(e, dropdownItem.href)}
                     onMouseEnter={() => setHoveredDropdownItem(dropdownItem.title)}
                     onMouseLeave={() => setHoveredDropdownItem(null)}
                   >
