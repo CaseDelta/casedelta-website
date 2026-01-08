@@ -1,13 +1,10 @@
 "use client";
 
 import { PageWrapper } from "@/components/PageWrapper";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 
 export default function PrivacyPage() {
   return (
     <PageWrapper theme="light">
-      <Navbar />
       <main className="pt-20">
         <article className="container max-w-4xl mx-auto px-6 py-16 md:py-24">
           {/* Header */}
@@ -292,7 +289,6 @@ export default function PrivacyPage() {
             </section>
           </div>
         </article>
-        <Footer />
       </main>
     </PageWrapper>
   );

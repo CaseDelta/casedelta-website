@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import PricingHero from "@/components/PricingHero";
 import PricingCard from "@/components/PricingCard";
 import FAQAccordion from "@/components/FAQAccordion";
@@ -23,7 +21,6 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-background" data-theme={theme}>
-      <Navbar />
 
       <PricingHero />
 
@@ -106,7 +103,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 }

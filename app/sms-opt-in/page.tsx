@@ -1,8 +1,6 @@
 "use client";
 
 import { PageWrapper } from "@/components/PageWrapper";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { useState } from "react";
 
 export default function SmsOptInPage() {
@@ -44,7 +42,6 @@ export default function SmsOptInPage() {
   if (isSubmitted) {
     return (
       <PageWrapper theme="light">
-        <Navbar />
         <main className="pt-20">
           <div className="container max-w-2xl mx-auto px-6 py-16 md:py-24">
             <div className="text-center">
@@ -136,7 +133,6 @@ export default function SmsOptInPage() {
               </button>
             </div>
           </div>
-          <Footer />
         </main>
       </PageWrapper>
     );
@@ -144,7 +140,6 @@ export default function SmsOptInPage() {
 
   return (
     <PageWrapper theme="light">
-      <Navbar />
       <main className="pt-20">
         <div className="container max-w-2xl mx-auto px-6 py-16 md:py-24">
           {/* Header */}
@@ -482,7 +477,6 @@ export default function SmsOptInPage() {
             </p>
           </form>
         </div>
-        <Footer />
       </main>
     </PageWrapper>
   );

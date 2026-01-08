@@ -3,6 +3,8 @@ import "./globals.css";
 import Script from "next/script";
 import { PostHogProvider } from "./providers/PostHogProvider";
 import { PageTransition } from "@/components/transitions/PageTransition";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "CaseDelta | Legal Document Collection Made Simple",
@@ -51,9 +53,11 @@ export default function RootLayout({
       </head>
       <body>
         <PostHogProvider>
+          <Navbar />
           <PageTransition>
             {children}
           </PageTransition>
+          <Footer />
         </PostHogProvider>
       </body>
     </html>

@@ -1,13 +1,11 @@
 import { Hero } from "@/components/Hero";
 import { ValuePropSection } from "@/components/ValuePropSection";
-import { Navbar } from "@/components/Navbar";
 import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
 import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
 import { ContactFormSection } from "@/components/ContactFormSection";
-import { Footer } from "@/components/Footer";
 
 interface LandingContentProps {
   heroVariant: "side" | "bottom";
@@ -16,12 +14,8 @@ interface LandingContentProps {
 export function LandingContent({ heroVariant }: LandingContentProps) {
   return (
     <main>
-      <Navbar />
-
-      {/* Add padding-top to account for fixed navbar */}
-      <div style={{ paddingTop: "80px" }}>
-        {/* Hero Section */}
-        <Hero variant={heroVariant} />
+      {/* Hero Section */}
+      <Hero variant={heroVariant} />
 
         {/* Social Proof - Customer Logos */}
         <SocialProof />
@@ -103,12 +97,8 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
         {/* Security Section */}
         <SecuritySection />
 
-        {/* Contact Form Section */}
-        <ContactFormSection />
-
-        {/* Footer */}
-        <Footer />
-      </div>
+      {/* Contact Form Section */}
+      <ContactFormSection />
     </main>
   );
 }

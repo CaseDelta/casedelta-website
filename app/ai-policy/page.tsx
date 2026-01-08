@@ -1,8 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { useEffect, useState } from "react";
 
 export default function AIPolicy() {
@@ -18,7 +16,6 @@ export default function AIPolicy() {
 
   return (
     <div className="min-h-screen bg-background" data-theme={theme}>
-      <Navbar />
 
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-3xl mx-auto">
@@ -75,7 +72,6 @@ export default function AIPolicy() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }
