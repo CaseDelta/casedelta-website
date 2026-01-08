@@ -5,6 +5,7 @@ import { PostHogProvider } from "./providers/PostHogProvider";
 import { PageTransition } from "@/components/transitions/PageTransition";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { RoutePreloader } from "@/components/RoutePreloader";
 
 export const metadata: Metadata = {
   title: "CaseDelta | Legal Document Collection Made Simple",
@@ -53,6 +54,7 @@ export default function RootLayout({
       </head>
       <body>
         <PostHogProvider>
+          <RoutePreloader />
           <Navbar />
           <PageTransition>
             {children}

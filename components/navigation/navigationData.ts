@@ -1,3 +1,5 @@
+import { ROUTES } from "@/lib/routes/routes";
+
 export interface DropdownItem {
   title: string;
   description: string;
@@ -50,11 +52,11 @@ export const navigationData: NavItemData[] = [
   {
     id: "ai-policy",
     label: "AI Policy",
-    href: "/ai-policy",
+    href: ROUTES.AI_POLICY,
   },
   {
     id: "pricing",
     label: "Pricing",
-    href: "/pricing",
+    href: ROUTES.PRICING,
   },
 ];

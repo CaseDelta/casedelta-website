@@ -1,3 +1,5 @@
+import { ROUTES } from "@/lib/routes/routes";
+
 /**
  * Footer Navigation Configuration
  *
@@ -35,7 +37,7 @@ export const footerCategories: FooterCategory[] = [
       },
       {
         label: "Pricing",
-        href: "/pricing",
+        href: ROUTES.PRICING,
       },
       {
         label: "Security",
@@ -57,19 +59,19 @@ export const footerCategories: FooterCategory[] = [
     links: [
       {
         label: "Terms of Service",
-        href: "/terms",
+        href: ROUTES.TERMS,
       },
       {
         label: "Privacy Policy",
-        href: "/privacy",
+        href: ROUTES.PRIVACY,
       },
       {
         label: "AI Policy",
-        href: "/ai-policy",
+        href: ROUTES.AI_POLICY,
       },
       {
         label: "SMS Opt-in",
-        href: "/sms-opt-in",
+        href: ROUTES.SMS_OPT_IN,
       },
     ],
   },
