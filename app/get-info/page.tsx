@@ -292,7 +292,7 @@ export default function GetInfoPage() {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Your full name"
+                placeholder="Your name"
                 style={{
                   width: "100%",
                   padding: "12px 16px",
