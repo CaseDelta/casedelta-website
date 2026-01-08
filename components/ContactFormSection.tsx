@@ -260,7 +260,7 @@ export function ContactFormSection() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Your full name"
+                  placeholder="Your name"
                   style={{
                     width: "100%",
                     padding: "12px 16px",
@@ -329,17 +329,17 @@ export function ContactFormSection() {
                     fontSize: "var(--font-size-base)",
                     fontWeight: "var(--font-weight-medium)",
                     color: "var(--color-text-high-contrast)",
-                    marginBottom: "var(--spacing-4)",
+                    marginBottom: "var(--spacing-3)",
                   }}
                 >
-                  I am *
+                  I am a *
                 </label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   {[
-                    { value: "lawyer", label: "A Lawyer" },
-                    { value: "paralegal", label: "A Paralegal" },
-                    { value: "manager", label: "A Manager" },
-                    { value: "developer", label: "A Developer" },
+                    { value: "lawyer", label: "Lawyer" },
+                    { value: "paralegal", label: "Paralegal" },
+                    { value: "manager", label: "Manager" },
+                    { value: "developer", label: "Developer" },
                     { value: "other", label: "Other" },
                   ].map((option) => (
                     <button
@@ -348,8 +348,8 @@ export function ContactFormSection() {
                       onClick={() => handleRoleSelect(option.value)}
                       disabled={isSubmitting}
                       style={{
-                        padding: "12px 16px",
-                        fontSize: "var(--font-size-base)",
+                        padding: "10px 12px",
+                        fontSize: "var(--font-size-small)",
                         fontWeight: "var(--font-weight-medium)",
                         color: formData.role === option.value
                           ? "var(--color-button-primary-text)"
@@ -360,7 +360,7 @@ export function ContactFormSection() {
                         border: `1px solid ${formData.role === option.value
                           ? "var(--color-button-primary)"
                           : "var(--color-border)"}`,
-                        borderRadius: "8px",
+                        borderRadius: "6px",
                         cursor: isSubmitting ? "not-allowed" : "pointer",
                         transition: "all 0.2s ease",
                         textAlign: "center",
