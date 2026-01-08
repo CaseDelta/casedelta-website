@@ -3,8 +3,7 @@ import "./globals.css";
 import Script from "next/script";
 import { PostHogProvider } from "./providers/PostHogProvider";
 import { PageTransition } from "@/components/transitions/PageTransition";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
+import { ConditionalLayout } from "@/components/ConditionalLayout";
 import { RoutePreloader } from "@/components/RoutePreloader";
 
 export const metadata: Metadata = {
@@ -55,11 +54,11 @@ export default function RootLayout({
       <body>
         <PostHogProvider>
           <RoutePreloader />
-          <Navbar />
-          <PageTransition>
-            {children}
-          </PageTransition>
-          <Footer />
+          <ConditionalLayout>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </ConditionalLayout>
         </PostHogProvider>
       </body>
     </html>
