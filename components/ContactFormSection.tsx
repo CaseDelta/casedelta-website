@@ -181,27 +181,6 @@ export function ContactFormSection() {
               automatically. See how leading legal professionals are saving 70% of
               their time.
             </p>
-
-            <div
-              style={{
-                fontSize: "var(--font-size-small)",
-                color: "var(--color-text-tertiary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                marginBottom: "var(--spacing-4)",
-              }}
-            >
-              Trusted by legal professionals
-            </div>
-
-            <div className="flex items-center gap-8 opacity-50">
-              <div style={{ color: "var(--color-text-secondary)", fontSize: "14px" }}>
-                500+ Attorneys
-              </div>
-              <div style={{ color: "var(--color-text-secondary)", fontSize: "14px" }}>
-                10k+ Documents
-              </div>
-            </div>
           </motion.div>
 
           {/* Right Side - Form */}
