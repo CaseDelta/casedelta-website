@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer
@@ -24,8 +26,9 @@ export function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <a
+                <Link
                   href="/#features"
+                  scroll={false}
                   style={{
                     fontSize: "var(--font-size-base)",
                     color: "var(--color-text-primary)",
@@ -34,11 +37,12 @@ export function Footer() {
                   className="hover:opacity-70 transition-opacity"
                 >
                   Features
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/#pricing"
+                  scroll={false}
                   style={{
                     fontSize: "var(--font-size-base)",
                     color: "var(--color-text-primary)",
@@ -47,11 +51,12 @@ export function Footer() {
                   className="hover:opacity-70 transition-opacity"
                 >
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/#security"
+                  scroll={false}
                   style={{
                     fontSize: "var(--font-size-base)",
                     color: "var(--color-text-primary)",
@@ -60,7 +65,7 @@ export function Footer() {
                   className="hover:opacity-70 transition-opacity"
                 >
                   Security
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -80,7 +85,7 @@ export function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <a
+                <Link
                   href="/careers"
                   style={{
                     fontSize: "var(--font-size-base)",
@@ -90,7 +95,7 @@ export function Footer() {
                   className="hover:opacity-70 transition-opacity"
                 >
                   Careers
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -110,7 +115,7 @@ export function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <a
+                <Link
                   href="/terms"
                   style={{
                     fontSize: "var(--font-size-base)",
@@ -120,10 +125,10 @@ export function Footer() {
                   className="hover:opacity-70 transition-opacity"
                 >
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a
+                <Link
                   href="/privacy"
                   style={{
                     fontSize: "var(--font-size-base)",
@@ -133,7 +138,7 @@ export function Footer() {
                   className="hover:opacity-70 transition-opacity"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

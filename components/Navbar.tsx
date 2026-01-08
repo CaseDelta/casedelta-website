@@ -169,7 +169,7 @@ export function Navbar() {
           <div ref={navbarInnerRef} className="flex items-center justify-between h-24 relative">
           {/* Logo */}
           <div className="flex items-center">
-            <a
+            <Link
               href="/"
               className="flex items-center gap-2"
             >
@@ -181,7 +181,7 @@ export function Navbar() {
                 priority
                 className="h-14 w-auto"
               />
-            </a>
+            </Link>
           </div>
 
           {/* Navigation Links */}
@@ -233,8 +233,8 @@ export function Navbar() {
                     </svg>
                   </button>
                 ) : (
-                  <a
-                    href={item.href}
+                  <Link
+                    href={item.href || "/"}
                     className="py-2 px-1 transition-colors hover:text-[var(--color-text-high-contrast)]"
                     style={{
                       fontSize: "var(--font-size-base)",
@@ -247,7 +247,7 @@ export function Navbar() {
                     }}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 )}
               </div>
             ))}
@@ -273,7 +273,7 @@ export function Navbar() {
 
           {/* CTA Buttons */}
           <div className="flex items-center gap-3">
-            <a
+            <Link
               href={CTA_URLS.SIGN_IN}
               className="hidden sm:block px-5 py-2.5 rounded-lg transition-all hover:opacity-80"
               style={{
@@ -289,8 +289,8 @@ export function Navbar() {
               onMouseLeave={() => setHoveredItem(null)}
             >
               {CTA.SIGN_IN}
-            </a>
-            <a
+            </Link>
+            <Link
               href={CTA_URLS.GET_STARTED}
               className="px-6 py-2.5 rounded-lg"
               style={{
@@ -310,7 +310,7 @@ export function Navbar() {
               }}
             >
               {CTA.GET_STARTED}
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -355,9 +355,10 @@ export function Navbar() {
                 const isDimmed = hasHoveredItem && !isHovered;
 
                 return (
-                  <a
+                  <Link
                     key={dropdownItem.title}
                     href={dropdownItem.href}
+                    scroll={false}
                     className="block p-4 rounded-lg transition-all"
                     style={{
                       textDecoration: "none",
@@ -396,7 +397,7 @@ export function Navbar() {
                     >
                       {dropdownItem.description}
                     </div>
-                  </a>
+                  </Link>
                 );
               })}
           </div>
