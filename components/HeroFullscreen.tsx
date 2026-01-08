@@ -60,35 +60,6 @@ export function HeroFullscreen() {
           >
             CaseDelta uses AI to automatically remind clients, verify documents, and ensure you get exactly what you need—faster and with zero manual follow-up.
           </p>
-
-          <div className="flex gap-4 justify-center flex-wrap">
-            <a
-              href={CTA_URLS.REQUEST_DEMO}
-              className="px-8 py-4 rounded-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{
-                backgroundColor: "#ffffff",
-                color: "#0d0d0d",
-                fontSize: "var(--font-size-base)",
-                fontWeight: "var(--font-weight-medium)",
-                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              {CTA.REQUEST_DEMO}
-            </a>
-
-            <a
-              href={CTA_URLS.WATCH_DEMO}
-              className="px-8 py-4 rounded-lg border-2 transition-all hover:bg-white/10"
-              style={{
-                borderColor: "rgba(255, 255, 255, 0.8)",
-                color: "#ffffff",
-                fontSize: "var(--font-size-base)",
-                fontWeight: "var(--font-weight-medium)",
-              }}
-            >
-              {CTA.WATCH_DEMO}
-            </a>
-          </div>
         </motion.div>
       </div>
 
