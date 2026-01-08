@@ -366,7 +366,6 @@ export function Navbar() {
                   <Link
                     key={dropdownItem.title}
                     href={dropdownItem.href}
-                    scroll={false}
                     className="block p-4 rounded-lg transition-all"
                     style={{
                       textDecoration: "none",
@@ -374,6 +373,7 @@ export function Navbar() {
                       opacity: isDimmed ? 0.35 : 1,
                       transition: "opacity 0.2s ease-in-out",
                     }}
+                    onClick={() => setOpenDropdownId(null)}
                     onMouseEnter={() => setHoveredDropdownItem(dropdownItem.title)}
                     onMouseLeave={() => setHoveredDropdownItem(null)}
                   >
