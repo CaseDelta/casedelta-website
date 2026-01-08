@@ -99,7 +99,7 @@ export default function LightFullscreenPage() {
               </h2>
 
               <a
-                href={CTA_URLS.REQUEST_DEMO}
+                href={CTA_URLS.GET_STARTED}
                 className="px-8 py-4 rounded-lg transition-all hover:opacity-90 flex-shrink-0"
                 style={{
                   backgroundColor: "var(--color-button-primary)",
@@ -108,7 +108,7 @@ export default function LightFullscreenPage() {
                   fontWeight: "var(--font-weight-medium)",
                 }}
               >
-                {CTA.REQUEST_DEMO}
+                {CTA.GET_STARTED}
               </a>
             </div>
           </div>

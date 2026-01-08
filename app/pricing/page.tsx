@@ -41,8 +41,8 @@ export default function PricingPage() {
                 "Unlimited document requests",
                 "AI-powered verification & reminders",
               ]}
-              ctaText={CTA.START_FREE_TRIAL}
-              ctaHref={CTA_URLS.START_FREE_TRIAL}
+              ctaText={CTA.GET_STARTED}
+              ctaHref={CTA_URLS.GET_STARTED}
               isPrimary={false}
             />
 
@@ -56,8 +56,8 @@ export default function PricingPage() {
                 "Advanced analytics & reporting",
                 "Priority support & dedicated account manager",
               ]}
-              ctaText={CTA.START_FREE_TRIAL}
-              ctaHref={CTA_URLS.START_FREE_TRIAL}
+              ctaText={CTA.GET_STARTED}
+              ctaHref={CTA_URLS.GET_STARTED}
               isPrimary={true}
             />
           </div>
@@ -97,16 +97,10 @@ export default function PricingPage() {
             className="flex flex-wrap items-center justify-center gap-4"
           >
             <a
-              href={CTA_URLS.START_FREE_TRIAL}
+              href={CTA_URLS.GET_STARTED}
               className="rounded-lg bg-button-primary px-8 py-4 font-medium text-button-primary-text transition-opacity duration-150 hover:opacity-85"
             >
-              {CTA.START_FREE_TRIAL}
-            </a>
-            <a
-              href={CTA_URLS.SCHEDULE_DEMO}
-              className="rounded-lg border border-border bg-transparent px-8 py-4 font-medium text-text-primary transition-colors duration-150 hover:bg-surface-hover"
-            >
-              {CTA.SCHEDULE_DEMO}
+              {CTA.GET_STARTED}
             </a>
           </motion.div>
         </div>
