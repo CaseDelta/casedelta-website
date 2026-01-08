@@ -95,12 +95,12 @@ export async function POST(request: NextRequest) {
             ` : ''}
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #999;">
-              This lead was submitted from casedelta.com/get-info
+              This lead was submitted from casedelta.com
             </div>
           </body>
         </html>
       `,
-      text: `New CaseDelta Lead\n\nName: ${body.name}\nEmail: ${body.email}\nRole: ${body.role.charAt(0).toUpperCase() + body.role.slice(1)}${body.company ? `\nLaw Firm: ${body.company}` : ''}\n\nThis lead was submitted from casedelta.com/get-info`,
+      text: `New CaseDelta Lead\n\nName: ${body.name}\nEmail: ${body.email}\nRole: ${body.role.charAt(0).toUpperCase() + body.role.slice(1)}${body.company ? `\nLaw Firm: ${body.company}` : ''}\n\nThis lead was submitted from casedelta.com`,
     });
 
     if (error) {

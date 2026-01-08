@@ -5,6 +5,7 @@ import PricingHero from "@/components/PricingHero";
 import PricingCard from "@/components/PricingCard";
 import FAQAccordion from "@/components/FAQAccordion";
 import SocialProof from "@/components/SocialProof";
+import { ContactFormSection } from "@/components/ContactFormSection";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 import { useEffect, useState } from "react";
 
@@ -102,6 +103,8 @@ export default function PricingPage() {
           </motion.div>
         </div>
       </section>
+
+      <ContactFormSection />
 
     </div>
   );

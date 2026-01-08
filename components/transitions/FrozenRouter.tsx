@@ -7,7 +7,7 @@ import { useSelectedLayoutSegment } from 'next/navigation'
  * Hook to retain previous value during renders
  */
 function usePreviousValue<T>(value: T): T | undefined {
-  const prevValue = useRef<T>()
+  const prevValue = useRef<T | undefined>(undefined)
 
   useEffect(() => {
     prevValue.current = value
