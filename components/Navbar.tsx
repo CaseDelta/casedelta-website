@@ -150,19 +150,40 @@ export function Navbar() {
     // Only run on homepage
     if (pathname !== "/") return;
 
-    // Check if there's a hash in the URL
     const hash = window.location.hash;
-    if (hash) {
-      // Small delay to ensure page is fully rendered
-      const timeoutId = setTimeout(() => {
-        const element = document.querySelector(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
+    if (!hash) return;
 
-      return () => clearTimeout(timeoutId);
-    }
+    const scrollToElement = () => {
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        return true;
+      }
+      return false;
+    };
+
+    // Try immediately first
+    if (scrollToElement()) return;
+
+    // If not found, wait for it to appear in DOM
+    const observer = new MutationObserver(() => {
+      if (scrollToElement()) {
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Cleanup after 5 seconds max
+    const timeout = setTimeout(() => observer.disconnect(), 5000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
   }, [pathname]);
 
   // Handle cross-page anchor navigation
