@@ -34,10 +34,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-      className="relative overflow-hidden"
-      style={{
-        minHeight: "85vh",
-      }}
+      className="relative overflow-hidden min-h-[400px] md:min-h-[600px] lg:min-h-[85vh]"
     >
       {/* Background Image */}
       <Image
@@ -52,7 +49,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Content */}
-      <div className="relative h-full flex flex-col justify-between p-12 lg:p-16 max-w-7xl mx-auto" style={{ minHeight: "85vh" }}>
+      <div className="relative h-full flex flex-col justify-between p-6 sm:p-8 md:p-12 lg:p-16 max-w-7xl mx-auto min-h-[400px] md:min-h-[600px] lg:min-h-[85vh]">
         {/* Company Name at Top */}
         <div
           style={{

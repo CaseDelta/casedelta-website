@@ -40,7 +40,7 @@ export function SecuritySection() {
       }}
     >
       <div className="flex items-center justify-center px-6">
-        <div className="grid md:grid-cols-2 gap-20 items-center max-w-6xl">
+        <div className="grid lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center max-w-6xl">
           {/* Left: Heading and Subheading */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}

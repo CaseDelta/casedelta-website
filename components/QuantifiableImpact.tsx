@@ -19,12 +19,12 @@ function Stat({ value, description }: StatProps) {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-      className="flex-1 text-center px-8"
+      className="flex-1 text-center px-4 md:px-8 py-6 md:py-0"
     >
       <div
         className="mb-4"
         style={{
-          fontSize: "clamp(3rem, 8vw, 5rem)",
+          fontSize: "clamp(2.5rem, 8vw, 5rem)",
           lineHeight: "1",
           fontWeight: "var(--font-weight-regular)",
           color: "#ffffff",
@@ -76,7 +76,7 @@ export function QuantifiableImpact() {
           Quantifiable Impact
         </motion.h2>
 
-        <div className="flex flex-col md:flex-row items-center justify-center divide-y md:divide-y-0 md:divide-x divide-gray-800">
+        <div className="flex flex-col md:flex-row items-center justify-center divide-y md:divide-y-0 md:divide-x divide-gray-800 gap-4 md:gap-0">
           <Stat value="70%" description="Reduction in document collection time" />
           <Stat value="$836" description="Value created per case (from hourly rate*)" />
           <Stat value="4 hours" description="Average time saved per case" />

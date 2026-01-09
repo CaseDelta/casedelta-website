@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { navigationData } from "./navigation/navigationData";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
@@ -16,6 +17,8 @@ export function Navbar() {
   const [hasReachedWorkflow, setHasReachedWorkflow] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
     width: 0,
@@ -48,6 +51,18 @@ export function Navbar() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   // Watch for when the workflow section comes into view
   useEffect(() => {
@@ -386,8 +401,36 @@ export function Navbar() {
             />
           </div>
 
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 -mr-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--color-text-secondary)",
+            }}
+          >
+            {mobileMenuOpen ? (
+              // Close icon
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              // Hamburger icon
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
+          </button>
+
           {/* CTA Buttons */}
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-4">
             <Link
               href={CTA_URLS.SIGN_IN}
               className="hidden sm:block px-5 py-2.5 rounded-lg"
@@ -442,9 +485,9 @@ export function Navbar() {
       </div>
     </nav>
 
-      {/* Dropdown Section - Appears BELOW navbar */}
+      {/* Dropdown Section - Appears BELOW navbar (Desktop only) */}
       <div
-        className="border-t border-b"
+        className="hidden md:block border-t border-b"
         style={{
           backgroundColor: "var(--color-surface)",
           borderColor: "var(--color-border)",
@@ -529,6 +572,167 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
+            className="fixed inset-0 z-50 md:hidden"
+            style={{
+              backgroundColor: "var(--color-background)",
+              paddingTop: "96px", // Account for navbar height
+            }}
+          >
+            <div className="h-full overflow-y-auto px-6 py-8">
+              {/* Mobile Navigation Items */}
+              <nav className="space-y-1">
+                {navigationData.map((item) => (
+                  <div key={item.id}>
+                    {item.dropdown ? (
+                      <>
+                        <button
+                          onClick={() => setMobileDropdownOpen(mobileDropdownOpen === item.id ? null : item.id)}
+                          className="w-full flex items-center justify-between py-4 px-4 rounded-lg"
+                          style={{
+                            backgroundColor: mobileDropdownOpen === item.id ? "var(--color-surface)" : "transparent",
+                            fontSize: "var(--font-size-large)",
+                            fontWeight: "var(--font-weight-medium)",
+                            color: "var(--color-text-high-contrast)",
+                            border: "none",
+                            cursor: "pointer",
+                            transition: "background-color 0.2s ease",
+                          }}
+                        >
+                          <span>{item.label}</span>
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            className="transition-transform"
+                            style={{
+                              transform: mobileDropdownOpen === item.id ? "rotate(180deg)" : "rotate(0deg)",
+                            }}
+                          >
+                            <path
+                              d="M3 4.5L6 7.5L9 4.5"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                        <AnimatePresence>
+                          {mobileDropdownOpen === item.id && item.dropdown && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden pl-4"
+                            >
+                              {item.dropdown.map((section, sectionIndex) => (
+                                <div key={sectionIndex} className="py-2 space-y-1">
+                                  {section.items?.map((dropdownItem, itemIndex) => (
+                                    <Link
+                                      key={itemIndex}
+                                      href={dropdownItem.href}
+                                      onClick={() => setMobileMenuOpen(false)}
+                                      className="block py-3 px-4 rounded-lg"
+                                      style={{
+                                        fontSize: "var(--font-size-base)",
+                                        color: "var(--color-text-secondary)",
+                                        textDecoration: "none",
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          fontWeight: "var(--font-weight-medium)",
+                                          color: "var(--color-text-primary)",
+                                          marginBottom: "4px",
+                                        }}
+                                      >
+                                        {dropdownItem.title}
+                                      </div>
+                                      <div
+                                        style={{
+                                          fontSize: "var(--font-size-small)",
+                                          color: "var(--color-text-tertiary)",
+                                        }}
+                                      >
+                                        {dropdownItem.description}
+                                      </div>
+                                    </Link>
+                                  ))}
+                                </div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.href || "/"}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-4 px-4 rounded-lg"
+                        style={{
+                          fontSize: "var(--font-size-large)",
+                          fontWeight: "var(--font-weight-medium)",
+                          color: "var(--color-text-high-contrast)",
+                          textDecoration: "none",
+                        }}
+                      >
+                        {item.label}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </nav>
+
+              {/* Mobile CTA Buttons */}
+              <div className="mt-8 pt-8 border-t space-y-3" style={{ borderColor: "var(--color-border)" }}>
+                <Link
+                  href={CTA_URLS.SIGN_IN}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center py-3 px-6 rounded-lg"
+                  style={{
+                    fontSize: "var(--font-size-base)",
+                    fontWeight: "var(--font-weight-medium)",
+                    color: "var(--color-text-high-contrast)",
+                    backgroundColor: "var(--color-surface)",
+                    textDecoration: "none",
+                    border: "1px solid var(--color-border)",
+                  }}
+                >
+                  {CTA.SIGN_IN}
+                </Link>
+                <button
+                  onClick={(e) => {
+                    setMobileMenuOpen(false);
+                    handleAnchorClick(e, `/${CTA_URLS.GET_STARTED}`);
+                  }}
+                  className="block w-full text-center py-3 px-6 rounded-lg"
+                  style={{
+                    fontSize: "var(--font-size-base)",
+                    fontWeight: "var(--font-weight-medium)",
+                    color: "var(--color-button-primary-text)",
+                    backgroundColor: "var(--color-button-primary)",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  {CTA.GET_STARTED}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -17,7 +17,7 @@ interface ValuePropSectionProps {
 
 // Standardized container styles for consistency across all value prop sections
 const IMAGE_CONTAINER_STYLES = {
-  aspectRatio: "8 / 5",
+  aspectRatio: "4 / 3",
   borderRadius: "8px",
   overflow: "hidden" as const,
   boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08)",
@@ -64,7 +64,7 @@ export function ValuePropSection({
     >
       <div className="container">
         <div
-          className={`grid grid-cols-1 gap-20 items-center ${
+          className={`grid grid-cols-1 gap-8 md:gap-12 lg:gap-20 items-center ${
             reverse ? "lg:grid-cols-[1fr_460px]" : "lg:grid-cols-[460px_1fr]"
           }`}
         >

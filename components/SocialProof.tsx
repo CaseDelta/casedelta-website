@@ -41,7 +41,7 @@ export default function SocialProof() {
             Built for Legal Practices
           </p>
 
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center items-center gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8 max-w-5xl mx-auto">
             {customers.map((customer, index) => (
               <motion.div
                 key={index}
@@ -54,8 +54,8 @@ export default function SocialProof() {
                 }}
                 className="flex items-center justify-center"
                 style={{
-                  minWidth: "140px",
-                  height: "40px",
+                  minWidth: "120px",
+                  minHeight: "44px",
                 }}
               >
                 <span
