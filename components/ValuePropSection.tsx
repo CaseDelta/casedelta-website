@@ -9,7 +9,7 @@ interface ValuePropSectionProps {
   id?: string;
   title: string;
   description: string;
-  features: string[];
+  features: readonly string[];
   imagePath?: string;
   imagePlaceholder?: string;
   reverse?: boolean;

@@ -7,6 +7,7 @@ import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
 import { ContactFormSection } from "@/components/ContactFormSection";
+import { LANDING_CONTENT } from "@/lib/constants/landing";
 
 export default function LightFullscreenPage() {
   return (
@@ -24,46 +25,46 @@ export default function LightFullscreenPage() {
           {/* Section Header */}
           <SectionHeader
             id="workflow-section"
-            title="Streamline Your Entire Document Collection Workflow"
+            title={LANDING_CONTENT.workflowSectionTitle}
           />
 
           {/* Value Proposition 1 - White background */}
           <ValuePropSection
-          title="AI-Powered Client Reminders"
-          description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
-          features={[]}
-          imagePath="/images/value-props/prop-1.jpeg"
-          backgroundColor="#ffffff"
-        />
+            title={LANDING_CONTENT.valueProps.aiReminders.title}
+            description={LANDING_CONTENT.valueProps.aiReminders.description}
+            features={[]}
+            imagePath={LANDING_CONTENT.valueProps.aiReminders.imagePath}
+            backgroundColor="#ffffff"
+          />
 
-        {/* Value Proposition 2 - Very light gray */}
-        <ValuePropSection
-          title="Document Verification That Actually Works"
-          description="Never waste time reviewing the wrong documents again. Our AI verifies that clients upload exactly what you requested—before they hit submit."
-          features={[]}
-          imagePath="/images/value-props/prop-2.jpeg"
-          reverse
-          backgroundColor="#fafafa"
-        />
+          {/* Value Proposition 2 - Very light gray */}
+          <ValuePropSection
+            title={LANDING_CONTENT.valueProps.documentVerification.title}
+            description={LANDING_CONTENT.valueProps.documentVerification.description}
+            features={[]}
+            imagePath={LANDING_CONTENT.valueProps.documentVerification.imagePath}
+            reverse
+            backgroundColor="#fafafa"
+          />
 
-        {/* Value Proposition 3 - Light gray */}
-        <ValuePropSection
-          title="Built for Legal Workflows"
-          description="Designed specifically for law firms and legal professionals. Secure, compliant, and seamlessly integrated with your existing tools."
-          features={[]}
-          imagePath="/images/value-props/prop-3.jpeg"
-          backgroundColor="#f5f5f5"
-        />
+          {/* Value Proposition 3 - Light gray */}
+          <ValuePropSection
+            title={LANDING_CONTENT.valueProps.legalWorkflows.title}
+            description={LANDING_CONTENT.valueProps.legalWorkflows.description}
+            features={[]}
+            imagePath={LANDING_CONTENT.valueProps.legalWorkflows.imagePath}
+            backgroundColor="#f5f5f5"
+          />
 
-        {/* Value Proposition 4 - Light gray */}
-        <ValuePropSection
-          title="Save Hours Every Week"
-          description="Focus on practicing law, not project managing document requests. CaseDelta handles the busywork so you can get back to what matters."
-          features={[]}
-          imagePath="/images/value-props/prop-4.jpeg"
-          reverse
-          backgroundColor="#f0f0f0"
-        />
+          {/* Value Proposition 4 - Light gray */}
+          <ValuePropSection
+            title={LANDING_CONTENT.valueProps.timeSavings.title}
+            description={LANDING_CONTENT.valueProps.timeSavings.description}
+            features={[]}
+            imagePath={LANDING_CONTENT.valueProps.timeSavings.imagePath}
+            reverse
+            backgroundColor="#f0f0f0"
+          />
         </div>
 
         {/* Quantifiable Impact Section */}
