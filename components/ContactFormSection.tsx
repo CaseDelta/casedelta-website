@@ -73,12 +73,11 @@ export function ContactFormSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
-            className="max-w-2xl mx-auto text-center"
+            className="max-w-2xl mx-auto text-center p-8 sm:p-12 md:p-16 lg:p-20"
             style={{
               backgroundColor: "var(--color-surface)",
               border: "1px solid var(--color-border)",
               borderRadius: "16px",
-              padding: "80px 60px",
             }}
           >
             <div
@@ -147,7 +146,7 @@ export function ContactFormSection() {
       }}
     >
       <div className="container max-w-6xl">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Copy */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -157,7 +156,7 @@ export function ContactFormSection() {
           >
             <h2
               style={{
-                fontSize: "clamp(40px, 5vw, 56px)",
+                fontSize: "clamp(32px, 5vw, 56px)",
                 fontWeight: "var(--font-weight-semibold)",
                 letterSpacing: "var(--letter-spacing-tight)",
                 color: "var(--color-text-high-contrast)",
@@ -295,7 +294,7 @@ export function ContactFormSection() {
                     >
                       I am a *
                     </label>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
                         { value: "lawyer", label: "Lawyer" },
                         { value: "paralegal", label: "Paralegal" },

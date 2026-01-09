@@ -31,7 +31,7 @@ export default function PricingCard({
         {planName}
       </h3>
 
-      <p className="mb-6 text-lg leading-[1.7] text-text-secondary">
+      <p className="mb-6 text-base md:text-lg leading-[1.7] text-text-secondary">
         {description}
       </p>
 

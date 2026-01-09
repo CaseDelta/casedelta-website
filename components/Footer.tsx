@@ -42,7 +42,7 @@ export function Footer() {
       }}
     >
       <div className="container">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
           {categories.map((category) => {
             // Skip empty categories
             if (category.links.length === 0) {

@@ -35,7 +35,7 @@ export function HeroFullscreen() {
           className="max-w-4xl mx-auto text-center"
         >
           <h1
-            className="mb-6 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl"
+            className="mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl"
             style={{
               lineHeight: "1.1",
               letterSpacing: "var(--letter-spacing-tight)",

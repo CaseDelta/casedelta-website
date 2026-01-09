@@ -25,7 +25,7 @@ export function Hero({ variant = "side" }: HeroProps) {
   const scale = useTransform(scrollYProgress, [0, 1], [1, isSideLayout ? 1 : 1.15]);
 
   return (
-    <section className="section" style={{ paddingTop: "16rem", paddingBottom: "10rem" }}>
+    <section className="section pt-32 md:pt-48 lg:pt-64 pb-16 md:pb-40">
       <div className="container">
         <div
           className={`${
