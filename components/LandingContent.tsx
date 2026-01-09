@@ -32,18 +32,18 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
           {/* Value Proposition 1 */}
           <ValuePropSection
             id="ai-reminders"
-            title={LANDING_CONTENT.valueProps.aiReminders.title}
-            description={LANDING_CONTENT.valueProps.aiReminders.description}
-            imagePath={LANDING_CONTENT.valueProps.aiReminders.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp1.title}
+            description={LANDING_CONTENT.valueProps.valueProp1.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp1.imagePath}
             backgroundColor="var(--color-progressive-1)"
           />
 
           {/* Value Proposition 2 */}
           <ValuePropSection
             id="document-verification"
-            title={LANDING_CONTENT.valueProps.documentVerification.title}
-            description={LANDING_CONTENT.valueProps.documentVerification.description}
-            imagePath={LANDING_CONTENT.valueProps.documentVerification.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp2.title}
+            description={LANDING_CONTENT.valueProps.valueProp2.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp2.imagePath}
             reverse
             backgroundColor="var(--color-progressive-2)"
           />
@@ -51,18 +51,18 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
           {/* Value Proposition 3 */}
           <ValuePropSection
             id="legal-workflows"
-            title={LANDING_CONTENT.valueProps.legalWorkflows.title}
-            description={LANDING_CONTENT.valueProps.legalWorkflows.description}
-            imagePath={LANDING_CONTENT.valueProps.legalWorkflows.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp3.title}
+            description={LANDING_CONTENT.valueProps.valueProp3.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp3.imagePath}
             backgroundColor="var(--color-progressive-3)"
           />
 
           {/* Value Proposition 4 */}
           <ValuePropSection
             id="time-savings"
-            title={LANDING_CONTENT.valueProps.timeSavings.title}
-            description={LANDING_CONTENT.valueProps.timeSavings.description}
-            imagePath={LANDING_CONTENT.valueProps.timeSavings.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp4.title}
+            description={LANDING_CONTENT.valueProps.valueProp4.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp4.imagePath}
             reverse
             backgroundColor="var(--color-progressive-4)"
           />

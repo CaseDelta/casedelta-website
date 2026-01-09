@@ -30,34 +30,34 @@ export default function LightFullscreenPage() {
 
           {/* Value Proposition 1 - White background */}
           <ValuePropSection
-            title={LANDING_CONTENT.valueProps.aiReminders.title}
-            description={LANDING_CONTENT.valueProps.aiReminders.description}
-            imagePath={LANDING_CONTENT.valueProps.aiReminders.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp1.title}
+            description={LANDING_CONTENT.valueProps.valueProp1.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp1.imagePath}
             backgroundColor="#ffffff"
           />
 
           {/* Value Proposition 2 - Very light gray */}
           <ValuePropSection
-            title={LANDING_CONTENT.valueProps.documentVerification.title}
-            description={LANDING_CONTENT.valueProps.documentVerification.description}
-            imagePath={LANDING_CONTENT.valueProps.documentVerification.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp2.title}
+            description={LANDING_CONTENT.valueProps.valueProp2.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp2.imagePath}
             reverse
             backgroundColor="#fafafa"
           />
 
           {/* Value Proposition 3 - Light gray */}
           <ValuePropSection
-            title={LANDING_CONTENT.valueProps.legalWorkflows.title}
-            description={LANDING_CONTENT.valueProps.legalWorkflows.description}
-            imagePath={LANDING_CONTENT.valueProps.legalWorkflows.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp3.title}
+            description={LANDING_CONTENT.valueProps.valueProp3.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp3.imagePath}
             backgroundColor="#f5f5f5"
           />
 
           {/* Value Proposition 4 - Light gray */}
           <ValuePropSection
-            title={LANDING_CONTENT.valueProps.timeSavings.title}
-            description={LANDING_CONTENT.valueProps.timeSavings.description}
-            imagePath={LANDING_CONTENT.valueProps.timeSavings.imagePath}
+            title={LANDING_CONTENT.valueProps.valueProp4.title}
+            description={LANDING_CONTENT.valueProps.valueProp4.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp4.imagePath}
             reverse
             backgroundColor="#f0f0f0"
           />

@@ -27,22 +27,22 @@ export const navigationData: NavItemData[] = [
       {
         items: [
           {
-            title: LANDING_CONTENT.valueProps.aiReminders.title,
+            title: LANDING_CONTENT.valueProps.valueProp1.title,
             description: "Automated follow-ups that keep cases moving",
             href: "/#ai-reminders",
           },
           {
-            title: LANDING_CONTENT.valueProps.documentVerification.title,
+            title: LANDING_CONTENT.valueProps.valueProp2.title,
             description: "AI that validates documents before submission",
             href: "/#document-verification",
           },
           {
-            title: LANDING_CONTENT.valueProps.legalWorkflows.title,
+            title: LANDING_CONTENT.valueProps.valueProp3.title,
             description: "Secure, compliant, and fully integrated",
             href: "/#legal-workflows",
           },
           {
-            title: LANDING_CONTENT.valueProps.timeSavings.title,
+            title: LANDING_CONTENT.valueProps.valueProp4.title,
             description: "Reduce document collection time by 70%",
             href: "/#time-savings",
           }
