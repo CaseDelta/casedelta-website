@@ -299,3 +299,22 @@ a:hover {
     transform: translateY(0);
   }
 }
+
+/* Global Text Link Hover Utility */
+.text-link-hover {
+  transition: color 0.2s ease-in-out !important;
+}
+
+.text-link-hover:hover {
+  color: var(--color-text-high-contrast) !important;
+}
+
+/* For muted text links that brighten on hover */
+.text-link-hover-muted {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease-in-out;
+}
+
+.text-link-hover-muted:hover {
+  color: var(--color-text-high-contrast);
+}

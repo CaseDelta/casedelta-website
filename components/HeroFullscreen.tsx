@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
+import { HERO_CONTENT } from "@/lib/constants/hero";
 
 export function HeroFullscreen() {
   return (
@@ -43,23 +44,20 @@ export function HeroFullscreen() {
               textShadow: "0 2px 20px rgba(0, 0, 0, 0.3)",
             }}
           >
-            Get documents from clients{" "}
-            <span style={{ color: "rgba(255, 255, 255, 0.7)" }}>
-              without the follow-up headache
-            </span>
+            {HERO_CONTENT.heading}
           </h1>
 
           <p
-            className="mb-10 max-w-3xl mx-auto"
+            className="mb-10 max-w-2xl mx-auto text-xl sm:text-2xl"
             style={{
-              fontSize: "1.25rem",
-              lineHeight: "1.7",
-              color: "rgba(255, 255, 255, 0.95)",
-              textShadow: "0 1px 10px rgba(0, 0, 0, 0.3)",
+              lineHeight: "var(--line-height-relaxed)",
+              color: "rgba(255, 255, 255, 0.9)",
+              textShadow: "0 2px 15px rgba(0, 0, 0, 0.4)",
             }}
           >
-            CaseDelta uses AI to automatically remind clients, verify documents, and ensure you get exactly what you need—faster and with zero manual follow-up.
+            {HERO_CONTENT.subheading}
           </p>
+
         </motion.div>
       </div>
 

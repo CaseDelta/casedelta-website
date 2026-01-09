@@ -9,7 +9,6 @@ interface ValuePropSectionProps {
   id?: string;
   title: string;
   description: string;
-  features: string[];
   imagePath?: string;
   imagePlaceholder?: string;
   reverse?: boolean;
@@ -43,7 +42,6 @@ export function ValuePropSection({
   id,
   title,
   description,
-  features,
   imagePath,
   imagePlaceholder = "Feature Illustration",
   reverse = false,
@@ -59,8 +57,8 @@ export function ValuePropSection({
       className="section"
       style={{
         backgroundColor: backgroundColor || "var(--color-background)",
-        paddingTop: "3.5rem",
-        paddingBottom: "12rem",
+        paddingTop: "8rem",
+        paddingBottom: "8rem",
         scrollMarginTop: "100px",
       }}
     >
@@ -82,7 +80,7 @@ export function ValuePropSection({
               style={{
                 lineHeight: "var(--line-height-tight)",
                 fontWeight: "400",
-                color: "var(--color-text-high-contrast)",
+                color: "#ffffff",
               }}
             >
               {title}

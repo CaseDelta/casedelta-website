@@ -3,7 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { Lock, Shield, FileCheck } from "lucide-react";
+import { ShieldCheck, Award, Scale } from "lucide-react";
+import Link from "next/link";
 
 export function SecuritySection() {
   const ref = useRef(null);
@@ -11,9 +12,9 @@ export function SecuritySection() {
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   const features = [
-    { icon: Shield, label: "Bank-grade encryption" },
-    { icon: Lock, label: "Zero-knowledge architecture" },
-    { icon: FileCheck, label: "Continuous compliance monitoring" },
+    { icon: ShieldCheck, label: "PII-Safe" },
+    { icon: Award, label: "SOC 2 & HIPAA Certified" },
+    { icon: Scale, label: "State Bar Approved" },
   ];
 
   // Cycle through features every 3 seconds
@@ -29,6 +30,7 @@ export function SecuritySection() {
 
   return (
     <section
+      id="security"
       ref={ref}
       className="section"
       style={{
@@ -57,9 +59,7 @@ export function SecuritySection() {
                 color: "#FFFFFF",
               }}
             >
-              Secure by Design.
-              <br />
-              Built for Legal.
+              Security & Confidentiality First.
             </h2>
 
             {/* Subheading */}
@@ -72,8 +72,7 @@ export function SecuritySection() {
                 fontWeight: 400,
               }}
             >
-              Your client data is protected with enterprise-grade security.
-              We're built to meet the stringent requirements of legal practices.
+              Your clients' data stays completely confidential. No third-party AI services, no data leaving our systems, no exceptions.
             </p>
 
             {/* Learn More Link */}
@@ -82,20 +81,30 @@ export function SecuritySection() {
               animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              <a
-                href="/security"
-                className="inline-flex items-center gap-2 group hover:opacity-70 transition-opacity"
+              <Link
+                href="/ai-policy"
+                className="inline-flex items-center gap-2 group"
                 style={{
-                  fontSize: "var(--font-size-base)",
+                  fontSize: "var(--font-size-large)",
                   color: "rgba(255, 255, 255, 0.7)",
                   textDecoration: "none",
+                  transition: "color 0.2s ease-in-out",
+                  opacity: 1,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#ffffff";
+                  e.currentTarget.style.opacity = "1";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
+                  e.currentTarget.style.opacity = "1";
                 }}
               >
                 <span>Our AI and security policy</span>
-                <span className="group-hover:translate-x-1 transition-transform">
+                <span className="group-hover:translate-x-1 transition-transform" style={{ fontSize: "1.25rem" }}>
                   →
                 </span>
-              </a>
+              </Link>
             </motion.div>
           </motion.div>
 
@@ -104,7 +113,8 @@ export function SecuritySection() {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1], delay: 0.2 }}
-            className="relative h-64 flex items-center justify-center"
+            className="relative h-96 flex items-center justify-center"
+            style={{ marginTop: "-3rem" }}
           >
             <AnimatePresence mode="wait">
               {features.map((feature, index) => {
@@ -121,8 +131,8 @@ export function SecuritySection() {
                     className="absolute inset-0 flex flex-col items-center justify-center text-center px-8"
                   >
                     <Icon
-                      size={48}
-                      className="mb-6"
+                      size={80}
+                      className="mb-8"
                       style={{
                         color: "rgba(255, 255, 255, 0.9)",
                         strokeWidth: 1.5,
@@ -130,7 +140,7 @@ export function SecuritySection() {
                     />
                     <span
                       style={{
-                        fontSize: "var(--font-size-h3)",
+                        fontSize: "clamp(20px, 3vw, 28px)",
                         color: "rgba(255, 255, 255, 0.95)",
                         fontWeight: 400,
                         lineHeight: 1.4,

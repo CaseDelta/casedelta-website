@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
+import { HERO_CONTENT } from "@/lib/constants/hero";
 
 interface HeroProps {
   variant?: "side" | "bottom";
@@ -24,7 +25,7 @@ export function Hero({ variant = "side" }: HeroProps) {
   const scale = useTransform(scrollYProgress, [0, 1], [1, isSideLayout ? 1 : 1.15]);
 
   return (
-    <section className="section" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
+    <section className="section" style={{ paddingTop: "16rem", paddingBottom: "10rem" }}>
       <div className="container">
         <div
           className={`${
@@ -41,18 +42,16 @@ export function Hero({ variant = "side" }: HeroProps) {
             className={isSideLayout ? "" : "mb-12"}
           >
             <h1
-              className="mb-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl"
+              className="mb-6"
               style={{
-                lineHeight: "var(--line-height-tight)",
-                letterSpacing: "var(--letter-spacing-tight)",
+                fontSize: "clamp(40px, 5vw, 56px)",
                 fontWeight: "var(--font-weight-semibold)",
+                letterSpacing: "var(--letter-spacing-tight)",
                 color: "var(--color-text-high-contrast)",
+                lineHeight: "1.1",
               }}
             >
-              Get documents from clients{" "}
-              <span style={{ color: "var(--color-text-secondary)" }}>
-                without the follow-up headache
-              </span>
+              {HERO_CONTENT.heading}
             </h1>
 
             <p
@@ -63,9 +62,7 @@ export function Hero({ variant = "side" }: HeroProps) {
                 color: "var(--color-text-secondary)",
               }}
             >
-              CaseDelta uses AI to automatically remind clients, verify
-              documents, and ensure you get exactly what you need—faster and
-              with zero manual follow-up.
+              {HERO_CONTENT.subheading}
             </p>
           </motion.div>
 

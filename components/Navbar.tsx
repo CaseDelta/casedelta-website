@@ -51,22 +51,40 @@ export function Navbar() {
 
   // Watch for when the workflow section comes into view
   useEffect(() => {
-    const workflowSection = document.getElementById("workflow-section");
-    if (!workflowSection) return;
+    const setupObserver = () => {
+      const workflowSection = document.getElementById("workflow-section");
+      if (!workflowSection) return null;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Once the section is reached, keep it true (don't set back to false)
-        if (entry.isIntersecting) {
-          setHasReachedWorkflow(true);
-        }
-      },
-      { threshold: 0, rootMargin: "0px 0px -80% 0px" }
-    );
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          // Once the section is reached, keep it true (don't set back to false)
+          if (entry.isIntersecting) {
+            setHasReachedWorkflow(true);
+          }
+        },
+        { threshold: 0, rootMargin: "-20% 0px -60% 0px" }
+      );
 
-    observer.observe(workflowSection);
+      observer.observe(workflowSection);
+      return observer;
+    };
 
-    return () => observer.disconnect();
+    // Try immediately
+    let observer = setupObserver();
+
+    // If element not found, retry after a short delay
+    if (!observer) {
+      const timeout = setTimeout(() => {
+        observer = setupObserver();
+      }, 100);
+
+      return () => {
+        clearTimeout(timeout);
+        observer?.disconnect();
+      };
+    }
+
+    return () => observer?.disconnect();
   }, []);
 
   useEffect(() => {
@@ -195,8 +213,12 @@ export function Navbar() {
     if (href.startsWith("/#")) {
       const anchor = href.substring(1); // Get the hash part (e.g., #ai-reminders)
 
-      // If we're already on the homepage, just scroll
-      if (pathname === "/") {
+      // Check if we're on a page that has the anchor (homepage or variant pages)
+      const isVariantPath = pathname.startsWith('/dark/') || pathname.startsWith('/light/');
+      const isHomepage = pathname === "/";
+
+      // If we're on the homepage or a variant page, just scroll
+      if (isHomepage || isVariantPath) {
         const element = document.querySelector(anchor);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
@@ -272,7 +294,7 @@ export function Navbar() {
               >
                 {item.dropdown ? (
                   <button
-                    className="flex items-center gap-1 py-2 px-1 transition-colors hover:text-[var(--color-text-high-contrast)]"
+                    className="flex items-center gap-1 py-2 px-1"
                     style={{
                       fontSize: "var(--font-size-base)",
                       fontWeight: "var(--font-weight-medium)",
@@ -280,9 +302,19 @@ export function Navbar() {
                       background: "none",
                       border: "none",
                       cursor: "pointer",
+                      transition: "color 0.2s ease-in-out",
+                      opacity: 1,
                     }}
                     ref={(el) => {
                       if (el) itemRefs.current.set(item.id, el);
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "var(--color-text-high-contrast)";
+                      e.currentTarget.style.opacity = "1";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "var(--color-text-secondary)";
+                      e.currentTarget.style.opacity = "1";
                     }}
                   >
                     <span>{item.label}</span>
@@ -308,15 +340,25 @@ export function Navbar() {
                 ) : (
                   <Link
                     href={item.href || "/"}
-                    className="py-2 px-1 transition-colors hover:text-[var(--color-text-high-contrast)]"
+                    className="py-2 px-1"
                     style={{
                       fontSize: "var(--font-size-base)",
                       fontWeight: "var(--font-weight-medium)",
                       color: "var(--color-text-secondary)",
                       textDecoration: "none",
+                      transition: "color 0.2s ease-in-out",
+                      opacity: 1,
                     }}
                     ref={(el) => {
                       if (el) itemRefs.current.set(item.id, el);
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "var(--color-text-high-contrast)";
+                      e.currentTarget.style.opacity = "1";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "var(--color-text-secondary)";
+                      e.currentTarget.style.opacity = "1";
                     }}
                   >
                     {item.label}
@@ -348,27 +390,35 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             <Link
               href={CTA_URLS.SIGN_IN}
-              className="hidden sm:block px-5 py-2.5 rounded-lg transition-all hover:opacity-80"
+              className="hidden sm:block px-5 py-2.5 rounded-lg"
               style={{
                 fontSize: "var(--font-size-base)",
                 fontWeight: "var(--font-weight-medium)",
                 color: "var(--color-text-secondary)",
                 textDecoration: "none",
+                transition: "color 0.2s ease-in-out",
+                opacity: 1,
               }}
               ref={(el) => {
                 if (el) itemRefs.current.set("sign-in", el);
               }}
-              onMouseEnter={() => {
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--color-text-high-contrast)";
+                e.currentTarget.style.opacity = "1";
                 setHoveredItem("sign-in");
                 setOpenDropdownId(null);
               }}
-              onMouseLeave={() => setHoveredItem(null)}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "var(--color-text-secondary)";
+                e.currentTarget.style.opacity = "1";
+                setHoveredItem(null);
+              }}
             >
               {CTA.SIGN_IN}
             </Link>
-            <Link
-              href={CTA_URLS.GET_STARTED}
-              className="px-6 py-2.5 rounded-lg"
+            <button
+              onClick={(e) => handleAnchorClick(e, `/${CTA_URLS.GET_STARTED}`)}
+              className="px-6 py-2.5 rounded-lg cursor-pointer border-none"
               style={{
                 backgroundColor: "var(--color-button-primary)",
                 color: "var(--color-button-primary-text)",
@@ -376,7 +426,6 @@ export function Navbar() {
                 fontWeight: "var(--font-weight-medium)",
                 opacity: 1,
                 transition: "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                textDecoration: "none",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = "0.85";
@@ -387,7 +436,7 @@ export function Navbar() {
               }}
             >
               {CTA.GET_STARTED}
-            </Link>
+            </button>
           </div>
         </div>
       </div>

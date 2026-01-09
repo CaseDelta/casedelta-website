@@ -22,7 +22,7 @@ export function SectionHeader({ title, subtitle, id }: SectionHeaderProps) {
       style={{
         backgroundColor: "var(--color-surface)",
         paddingTop: "8rem",
-        paddingBottom: "4.5rem",
+        paddingBottom: "8rem",
       }}
     >
       <div className="container">

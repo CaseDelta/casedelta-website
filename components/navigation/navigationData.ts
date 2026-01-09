@@ -1,4 +1,5 @@
 import { ROUTES } from "@/lib/routes/routes";
+import { LANDING_CONTENT } from "@/lib/constants/landing";
 
 export interface DropdownItem {
   title: string;
@@ -26,23 +27,23 @@ export const navigationData: NavItemData[] = [
       {
         items: [
           {
-            title: "AI-Powered Client Reminders",
-            description: "Automated follow-ups that keep cases moving",
+            title: LANDING_CONTENT.valueProps.valueProp1.title,
+            description: LANDING_CONTENT.valueProps.valueProp1.navDescription,
             href: "/#ai-reminders",
           },
           {
-            title: "Document Verification",
-            description: "AI that validates documents before submission",
+            title: LANDING_CONTENT.valueProps.valueProp2.title,
+            description: LANDING_CONTENT.valueProps.valueProp2.navDescription,
             href: "/#document-verification",
           },
           {
-            title: "Built for Legal Workflows",
-            description: "Secure, compliant, and fully integrated",
+            title: LANDING_CONTENT.valueProps.valueProp3.title,
+            description: LANDING_CONTENT.valueProps.valueProp3.navDescription,
             href: "/#legal-workflows",
           },
           {
-            title: "Save Hours Every Week",
-            description: "Reduce document collection time by 70%",
+            title: LANDING_CONTENT.valueProps.valueProp4.title,
+            description: LANDING_CONTENT.valueProps.valueProp4.navDescription,
             href: "/#time-savings",
           }
         ],

@@ -7,6 +7,7 @@ import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
 import { ContactFormSection } from "@/components/ContactFormSection";
+import { LANDING_CONTENT } from "@/lib/constants/landing";
 
 export default function DarkFullscreenPage() {
   return (
@@ -19,53 +20,52 @@ export default function DarkFullscreenPage() {
         {/* Social Proof - Customer Logos */}
         <SocialProof />
 
-        {/* Section Header */}
-        <SectionHeader
-          id="workflow-section"
-          title="Streamline Your Entire Document Collection Workflow"
-        />
+        {/* Features Section - Wraps all value props */}
+        <div id="features">
+          {/* Section Header */}
+          <SectionHeader
+            id="workflow-section"
+            title={LANDING_CONTENT.workflowSectionTitle}
+          />
 
-        {/* Value Proposition 1 - Dark background */}
-        <ValuePropSection
-          id="ai-reminders"
-          title="AI-Powered Client Reminders"
-          description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
-          features={[]}
-          imagePath="/images/value-props/prop-1.jpeg"
-          backgroundColor="#0d0d0d"
-        />
+          {/* Value Proposition 1 - Dark background */}
+          <ValuePropSection
+            id="ai-reminders"
+            title={LANDING_CONTENT.valueProps.valueProp1.title}
+            description={LANDING_CONTENT.valueProps.valueProp1.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp1.imagePath}
+            backgroundColor="#0d0d0d"
+          />
 
-        {/* Value Proposition 2 - Slightly lighter dark */}
-        <ValuePropSection
-          id="document-verification"
-          title="Document Verification That Actually Works"
-          description="Never waste time reviewing the wrong documents again. Our AI verifies that clients upload exactly what you requested—before they hit submit."
-          features={[]}
-          imagePath="/images/value-props/prop-2.jpeg"
-          reverse
-          backgroundColor="#1a1a1a"
-        />
+          {/* Value Proposition 2 - Slightly lighter dark */}
+          <ValuePropSection
+            id="document-verification"
+            title={LANDING_CONTENT.valueProps.valueProp2.title}
+            description={LANDING_CONTENT.valueProps.valueProp2.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp2.imagePath}
+            reverse
+            backgroundColor="#1a1a1a"
+          />
 
-        {/* Value Proposition 3 - Mid dark gray */}
-        <ValuePropSection
-          id="legal-workflows"
-          title="Built for Legal Workflows"
-          description="Designed specifically for law firms and legal professionals. Secure, compliant, and seamlessly integrated with your existing tools."
-          features={[]}
-          imagePath="/images/value-props/prop-3.jpeg"
-          backgroundColor="#141414"
-        />
+          {/* Value Proposition 3 - Mid dark gray */}
+          <ValuePropSection
+            id="legal-workflows"
+            title={LANDING_CONTENT.valueProps.valueProp3.title}
+            description={LANDING_CONTENT.valueProps.valueProp3.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp3.imagePath}
+            backgroundColor="#141414"
+          />
 
-        {/* Value Proposition 4 - Dark gray */}
-        <ValuePropSection
-          id="time-savings"
-          title="Save Hours Every Week"
-          description="Focus on practicing law, not project managing document requests. CaseDelta handles the busywork so you can get back to what matters."
-          features={[]}
-          imagePath="/images/value-props/prop-4.jpeg"
-          reverse
-          backgroundColor="#1f1f1f"
-        />
+          {/* Value Proposition 4 - Dark gray */}
+          <ValuePropSection
+            id="time-savings"
+            title={LANDING_CONTENT.valueProps.valueProp4.title}
+            description={LANDING_CONTENT.valueProps.valueProp4.description}
+            imagePath={LANDING_CONTENT.valueProps.valueProp4.imagePath}
+            reverse
+            backgroundColor="#1f1f1f"
+          />
+        </div>
 
         {/* Quantifiable Impact Section */}
         <QuantifiableImpact />

@@ -78,8 +78,8 @@ export function QuantifiableImpact() {
 
         <div className="flex flex-col md:flex-row items-center justify-center divide-y md:divide-y-0 md:divide-x divide-gray-800">
           <Stat value="70%" description="Reduction in document collection time" />
-          <Stat value="500+" description="Legal professionals using CaseDelta" />
-          <Stat value="10k+" description="Documents collected and verified" />
+          <Stat value="$836" description="Value created per case (from hourly rate*)" />
+          <Stat value="4 hours" description="Average time saved per case" />
         </div>
       </div>
     </section>

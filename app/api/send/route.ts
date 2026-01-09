@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
+import { CONTACT_EMAILS } from '@/lib/constants/contact';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
     // Send email
     const { data, error } = await resend.emails.send({
       from: 'CaseDelta Leads <casedeltaleads@blueprintsw.com>',
-      to: ['camren@casedelta.com'],
+      to: [CONTACT_EMAILS.SUPPORT],
       replyTo: body.email,
       subject: `New Lead: ${body.name}`,
       html: `
