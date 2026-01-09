@@ -3,13 +3,13 @@
 import { motion } from "framer-motion";
 
 export default function SocialProof() {
-  // Placeholder logo names - replace with actual law firm logos
+  // Fictional law firm names for visual demonstration
   const customers = [
-    "Baker McKenzie",
-    "Latham & Watkins",
-    "Kirkland & Ellis",
-    "DLA Piper",
-    "Skadden Arps"
+    "Morrison & Chen",
+    "Hartley Associates",
+    "Sterling Legal Group",
+    "Blackwood & Partners",
+    "Riverside Law"
   ];
 
   return (
@@ -38,7 +38,7 @@ export default function SocialProof() {
               color: "var(--color-text-tertiary)",
             }}
           >
-            Trusted by Many Law Firms
+            Built for Legal Practices
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 max-w-5xl mx-auto">

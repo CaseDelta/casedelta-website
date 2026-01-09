@@ -16,10 +16,10 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "CaseDelta has completely changed our document collection process. What used to take us 2-3 weeks of constant follow-up now happens in 3-4 days. The AI verification is incredible - clients get it right the first time.",
-    author: "Sarah Mitchell",
+      "What used to take us 2-3 weeks of follow-up for our paralegals now happens in a few days. I appreciate being able to audit AI emails, and automatically store files in Dropbox.",
+    author: "Jason Havencroft",
     title: "Managing Partner",
-    company: "Mitchell & Associates",
+    company: "Havencroft & Associates",
     imagePath: "/images/testimonial.jpg",
   },
 ];
@@ -34,9 +34,9 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-      className="relative overflow-hidden rounded-2xl"
+      className="relative overflow-hidden"
       style={{
-        minHeight: "600px",
+        minHeight: "85vh",
       }}
     >
       {/* Background Image */}
@@ -52,7 +52,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; ind
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Content */}
-      <div className="relative h-full flex flex-col justify-between p-12 lg:p-16" style={{ minHeight: "600px" }}>
+      <div className="relative h-full flex flex-col justify-between p-12 lg:p-16 max-w-7xl mx-auto" style={{ minHeight: "85vh" }}>
         {/* Company Name at Top */}
         <div
           style={{
@@ -105,16 +105,12 @@ export function Testimonials() {
       className="section"
       style={{
         backgroundColor: "var(--color-surface)",
-        padding: "12rem 0",
+        padding: "0",
       }}
     >
-      <div className="container">
-        <div>
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={index} testimonial={testimonial} index={index} />
-          ))}
-        </div>
-      </div>
+      {testimonials.map((testimonial, index) => (
+        <TestimonialCard key={index} testimonial={testimonial} index={index} />
+      ))}
     </section>
   );
 }

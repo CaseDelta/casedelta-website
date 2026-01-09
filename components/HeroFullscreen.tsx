@@ -47,6 +47,17 @@ export function HeroFullscreen() {
             {HERO_CONTENT.heading}
           </h1>
 
+          <p
+            className="mb-10 max-w-2xl mx-auto text-xl sm:text-2xl"
+            style={{
+              lineHeight: "var(--line-height-relaxed)",
+              color: "rgba(255, 255, 255, 0.9)",
+              textShadow: "0 2px 15px rgba(0, 0, 0, 0.4)",
+            }}
+          >
+            {HERO_CONTENT.subheading}
+          </p>
+
         </motion.div>
       </div>
 

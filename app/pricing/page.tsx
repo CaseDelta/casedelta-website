@@ -102,8 +102,8 @@ export default function PricingPage() {
                   </svg>
                   <span
                     style={{
-                      fontSize: "var(--font-size-base)",
-                      color: "var(--color-text-primary)",
+                      fontSize: "var(--font-size-large)",
+                      color: "var(--color-text-secondary)",
                       lineHeight: "1.7",
                     }}
                   >

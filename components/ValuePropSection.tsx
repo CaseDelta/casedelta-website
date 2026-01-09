@@ -57,8 +57,8 @@ export function ValuePropSection({
       className="section"
       style={{
         backgroundColor: backgroundColor || "var(--color-background)",
-        paddingTop: "3.5rem",
-        paddingBottom: "12rem",
+        paddingTop: "8rem",
+        paddingBottom: "8rem",
         scrollMarginTop: "100px",
       }}
     >

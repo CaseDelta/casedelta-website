@@ -64,7 +64,7 @@ export function ContactFormSection() {
         className="section"
         style={{
           backgroundColor: "var(--color-background)",
-          padding: "8rem 0",
+          padding: "14rem 0",
           scrollMarginTop: "100px",
         }}
       >
@@ -142,7 +142,7 @@ export function ContactFormSection() {
       className="section"
       style={{
         backgroundColor: "var(--color-background)",
-        padding: "8rem 0",
+        padding: "14rem 0",
         scrollMarginTop: "100px",
       }}
     >
