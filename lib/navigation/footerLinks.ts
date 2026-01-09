@@ -23,9 +23,9 @@ export interface FooterCategory {
  *
  * Categories:
  * - Product: Features and pricing information (hash links to homepage sections)
- * - Company: Company information and resources
  * - Legal: Legal documents and policies
- * - Contact: Contact methods (email links)
+ * - Company: Getting started and sales inquiry
+ * - Account: User login
  */
 export const footerCategories: FooterCategory[] = [
   {
@@ -38,19 +38,6 @@ export const footerCategories: FooterCategory[] = [
       {
         label: "Pricing",
         href: ROUTES.PRICING,
-      },
-      {
-        label: "Security",
-        href: "/#security",
-      },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      {
-        label: "Get Started",
-        href: "/#get-started",
       },
     ],
   },
@@ -69,23 +56,28 @@ export const footerCategories: FooterCategory[] = [
         label: "AI Policy",
         href: ROUTES.AI_POLICY,
       },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
       {
-        label: "SMS Opt-in",
-        href: ROUTES.SMS_OPT_IN,
+        label: "Get Started",
+        href: "/#get-started",
       },
     ],
   },
   {
-    title: "Contact",
+    title: "Account",
     links: [
       {
-        label: "Support",
-        href: "mailto:support@casedelta.com",
+        label: "Sign In",
+        href: "https://app.casedelta.com",
         isExternal: true,
       },
       {
-        label: "Sales",
-        href: "mailto:sales@casedelta.com",
+        label: "Forgot Password",
+        href: "https://app.casedelta.com/forgot-password",
         isExternal: true,
       },
     ],

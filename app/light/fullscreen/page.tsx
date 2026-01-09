@@ -19,14 +19,16 @@ export default function LightFullscreenPage() {
         {/* Social Proof - Customer Logos */}
         <SocialProof />
 
-        {/* Section Header */}
-        <SectionHeader
-          id="workflow-section"
-          title="Streamline Your Entire Document Collection Workflow"
-        />
+        {/* Features Section - Wraps all value props */}
+        <div id="features">
+          {/* Section Header */}
+          <SectionHeader
+            id="workflow-section"
+            title="Streamline Your Entire Document Collection Workflow"
+          />
 
-        {/* Value Proposition 1 - White background */}
-        <ValuePropSection
+          {/* Value Proposition 1 - White background */}
+          <ValuePropSection
           title="AI-Powered Client Reminders"
           description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
           features={[]}
@@ -62,6 +64,7 @@ export default function LightFullscreenPage() {
           reverse
           backgroundColor="#f0f0f0"
         />
+        </div>
 
         {/* Quantifiable Impact Section */}
         <QuantifiableImpact />

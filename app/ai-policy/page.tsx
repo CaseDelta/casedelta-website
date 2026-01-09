@@ -1,77 +1,27 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { LegalPageLayout, LegalSection } from "@/components/LegalPageLayout";
 
 export default function AIPolicy() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    // Read theme from localStorage or default to light
-    const savedTheme = localStorage.getItem("casedelta-theme") as "light" | "dark" | null;
-    const currentTheme = savedTheme || "light";
-    setTheme(currentTheme);
-    document.documentElement.setAttribute("data-theme", currentTheme);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-background" data-theme={theme}>
+    <LegalPageLayout title="Our AI Policy">
+      <LegalSection title="We Run Our Own AI Infrastructure">
+        <p>
+          Unlike other AI tools that send your data to third-party services like OpenAI or Anthropic, we own and operate our entire AI infrastructure. When you use most AI tools, your data takes a trip through someone else's servers. With CaseDelta, everything happens inside our walls—your client documents never leave our systems and are never processed by anyone else's AI.
+        </p>
+      </LegalSection>
 
-      <main className="pt-32 pb-20 px-6">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+      <LegalSection title="What We Don't Do With Your Data">
+        <p>
+          We don't share, sell, or allow third parties to access your client data. We don't use your documents to train AI models. We don't send your information to external AI providers. What you upload to CaseDelta stays in CaseDelta.
+        </p>
+      </LegalSection>
 
-          <h1 className="text-[32px] font-semibold tracking-tight text-text-high-contrast mb-5 font-serif">
-            Our AI Policy
-          </h1>
-
-          <p className="text-sm text-text-tertiary mb-10">
-            Last updated: January 2026
-          </p>
-
-          <div className="bg-surface border border-border rounded-xl p-12">
-            <div className="text-base text-text-primary leading-relaxed">
-              <p className="mb-7">
-                We built CaseDelta with a simple principle: your client data stays yours. Period.
-              </p>
-
-              <p className="mb-7">
-                Unlike other AI tools that send your data to third-party services like OpenAI or Anthropic, we run our own AI infrastructure. This means we own and operate all the servers, containers, and AI models that power CaseDelta. Your client documents never leave our systems, and they're never processed by anyone else's AI.
-              </p>
-
-              <p className="mb-7">
-                Think of it this way: when you use most AI tools, your data takes a trip through someone else's servers before coming back to you. With CaseDelta, everything happens inside our walls. We host our own AI models on our own servers, so your documents stay exactly where they should be—under your control and protected by our security.
-              </p>
-
-              <p className="mb-7">
-                We don't share, sell, or allow third parties to access your client data. We don't use your documents to train AI models. We don't send your information to external AI providers. What you upload to CaseDelta stays in CaseDelta.
-              </p>
-
-              <p className="mb-0">
-                This approach costs us more and takes more work to maintain, but we believe it's the only responsible way to handle sensitive legal documents. Your clients trust you with their information, and you should be able to trust us with it too.
-              </p>
-            </div>
-
-            <div className="mt-12 pt-8 border-t border-border">
-              <p className="text-base text-text-secondary mb-4">
-                Questions about our AI infrastructure or data handling?
-              </p>
-              <a
-                href="mailto:camren@casedelta.com"
-                className="text-base text-text-high-contrast underline font-medium hover:opacity-70 transition-opacity duration-150"
-              >
-                camren@casedelta.com
-              </a>
-            </div>
-          </div>
-          </motion.div>
-        </div>
-      </main>
-
-    </div>
+      <LegalSection title="Why We Built It This Way">
+        <p>
+          This approach costs us more and takes more work to maintain, but we believe it's the only responsible way to handle sensitive legal documents. Your clients trust you with their information, and you should be able to trust us with it too.
+        </p>
+      </LegalSection>
+    </LegalPageLayout>
   );
 }

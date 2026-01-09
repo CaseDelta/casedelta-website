@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function PricingHero() {
   return (
-    <section className="relative pb-16 pt-40 md:pb-20 md:pt-48 bg-progressive-2">
+    <section className="relative pb-8 pt-40 md:pb-10 md:pt-48 bg-progressive-2">
       <div className="mx-auto max-w-[900px] px-6 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -21,7 +21,7 @@ export default function PricingHero() {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.33, 1, 0.68, 1] }}
           className="mx-auto max-w-[600px] text-lg leading-[1.7] text-text-secondary"
         >
-          Flat monthly pricing for law firms. No per-seat fees, no hidden costs, no surprises.
+          Month-to-month billing. Cancel anytime.
         </motion.p>
       </div>
     </section>

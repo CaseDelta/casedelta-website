@@ -19,14 +19,16 @@ export default function DarkFullscreenPage() {
         {/* Social Proof - Customer Logos */}
         <SocialProof />
 
-        {/* Section Header */}
-        <SectionHeader
-          id="workflow-section"
-          title="Streamline Your Entire Document Collection Workflow"
-        />
+        {/* Features Section - Wraps all value props */}
+        <div id="features">
+          {/* Section Header */}
+          <SectionHeader
+            id="workflow-section"
+            title="Streamline Your Entire Document Collection Workflow"
+          />
 
-        {/* Value Proposition 1 - Dark background */}
-        <ValuePropSection
+          {/* Value Proposition 1 - Dark background */}
+          <ValuePropSection
           id="ai-reminders"
           title="AI-Powered Client Reminders"
           description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
@@ -66,6 +68,7 @@ export default function DarkFullscreenPage() {
           reverse
           backgroundColor="#1f1f1f"
         />
+        </div>
 
         {/* Quantifiable Impact Section */}
         <QuantifiableImpact />

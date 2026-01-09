@@ -7,7 +7,7 @@ interface PricingCardProps {
   description: string;
   price: string;
   period?: string;
-  features: string[];
+  features?: string[];
   ctaText: string;
   ctaHref: string;
   isPrimary?: boolean;
@@ -46,28 +46,50 @@ export default function PricingCard({
 
       <a
         href={ctaHref}
-        className="mb-8 block rounded-lg border border-border bg-transparent px-8 py-3 text-center text-base font-medium text-text-high-contrast transition-colors duration-300 hover:border-text-high-contrast"
+        className="block rounded-lg px-8 py-3 text-center"
+        style={{
+          border: "1px solid var(--color-border)",
+          backgroundColor: "transparent",
+          fontSize: "var(--font-size-base)",
+          fontWeight: "var(--font-weight-medium)",
+          color: "var(--color-text-high-contrast)",
+          textDecoration: "none",
+          transition: "all 0.2s ease",
+          opacity: 1,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "var(--color-text-high-contrast)";
+          e.currentTarget.style.opacity = "1";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "var(--color-border)";
+          e.currentTarget.style.opacity = "1";
+        }}
       >
         {ctaText}
       </a>
 
-      <div className="mb-5">
-        <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
-          What's included
-        </p>
-      </div>
+      {features && features.length > 0 && (
+        <>
+          <div className="mb-5 mt-8">
+            <p className="text-sm font-medium uppercase tracking-wider text-text-tertiary">
+              What's included
+            </p>
+          </div>
 
-      <ul className="flex flex-col gap-4">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <Check
-              className="mt-1 shrink-0 text-text-high-contrast"
-              size={20}
-            />
-            <span className="text-base leading-[1.7] text-text-primary">{feature}</span>
-          </li>
-        ))}
-      </ul>
+          <ul className="flex flex-col gap-4">
+            {features.map((feature, index) => (
+              <li key={index} className="flex items-start gap-3">
+                <Check
+                  className="mt-1 shrink-0 text-text-high-contrast"
+                  size={20}
+                />
+                <span className="text-base leading-[1.7] text-text-primary">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }

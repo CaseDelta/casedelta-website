@@ -20,14 +20,16 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
         {/* Social Proof - Customer Logos */}
         <SocialProof />
 
-        {/* Section Header - Like Harvey's "Augment All of Your Work..." */}
-        <SectionHeader
-          id="workflow-section"
-          title="Streamline Your Entire Document Collection Workflow"
-        />
+        {/* Features Section - Wraps all value props */}
+        <div id="features">
+          {/* Section Header - Like Harvey's "Augment All of Your Work..." */}
+          <SectionHeader
+            id="workflow-section"
+            title="Streamline Your Entire Document Collection Workflow"
+          />
 
-        {/* Value Proposition 1 */}
-        <ValuePropSection
+          {/* Value Proposition 1 */}
+          <ValuePropSection
           id="ai-reminders"
           title="AI-Powered Client Reminders"
           description="Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward."
@@ -87,6 +89,7 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
           reverse
           backgroundColor="var(--color-progressive-4)"
         />
+        </div>
 
         {/* Quantifiable Impact Section */}
         <QuantifiableImpact />

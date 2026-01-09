@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ContactFormSection() {
   const [formData, setFormData] = useState({
@@ -157,7 +156,6 @@ export function ContactFormSection() {
             transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
           >
             <h2
-              className="mb-6"
               style={{
                 fontSize: "clamp(40px, 5vw, 56px)",
                 fontWeight: "var(--font-weight-semibold)",
@@ -166,21 +164,8 @@ export function ContactFormSection() {
                 lineHeight: "1.1",
               }}
             >
-              Get documents from clients without the follow-up headache
+              Let us show you how to save hours getting documents from clients.
             </h2>
-
-            <p
-              className="mb-8"
-              style={{
-                fontSize: "20px",
-                color: "var(--color-text-secondary)",
-                lineHeight: "1.6",
-              }}
-            >
-              CaseDelta uses AI to collect, verify, and organize client documents
-              automatically. See how leading legal professionals are saving 70% of
-              their time.
-            </p>
           </motion.div>
 
           {/* Right Side - Form */}
@@ -196,17 +181,6 @@ export function ContactFormSection() {
               padding: "var(--spacing-10)",
             }}
           >
-            <h3
-              className="mb-2"
-              style={{
-                fontSize: "24px",
-                fontWeight: "var(--font-weight-semibold)",
-                color: "var(--color-text-high-contrast)",
-                letterSpacing: "var(--letter-spacing-tight)",
-              }}
-            >
-              Get Started
-            </h3>
 
             <p
               className="mb-8"
@@ -215,7 +189,7 @@ export function ContactFormSection() {
                 color: "var(--color-text-secondary)",
               }}
             >
-              Tell us a bit about yourself and we'll show you how CaseDelta works.
+              We'll reach out via email and schedule a phone call or demo.
             </p>
 
             <form onSubmit={handleSubmit}>
@@ -301,72 +275,81 @@ export function ContactFormSection() {
                 />
               </div>
 
-              <div className="mb-8">
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: "var(--font-size-base)",
-                    fontWeight: "var(--font-weight-medium)",
-                    color: "var(--color-text-high-contrast)",
-                    marginBottom: "var(--spacing-3)",
-                  }}
-                >
-                  I am a *
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { value: "lawyer", label: "Lawyer" },
-                    { value: "paralegal", label: "Paralegal" },
-                    { value: "manager", label: "Manager" },
-                    { value: "developer", label: "Developer" },
-                    { value: "other", label: "Other" },
-                  ].map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => handleRoleSelect(option.value)}
-                      disabled={isSubmitting}
+              <AnimatePresence>
+                {formData.name.trim() !== "" && formData.email.trim() !== "" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                    className="mb-8"
+                  >
+                    <label
                       style={{
-                        padding: "10px 12px",
-                        fontSize: "var(--font-size-small)",
+                        display: "block",
+                        fontSize: "var(--font-size-base)",
                         fontWeight: "var(--font-weight-medium)",
-                        color: formData.role === option.value
-                          ? "var(--color-button-primary-text)"
-                          : "var(--color-text-primary)",
-                        backgroundColor: formData.role === option.value
-                          ? "var(--color-button-primary)"
-                          : "var(--color-background)",
-                        border: `1px solid ${formData.role === option.value
-                          ? "var(--color-button-primary)"
-                          : "var(--color-border)"}`,
-                        borderRadius: "6px",
-                        cursor: isSubmitting ? "not-allowed" : "pointer",
-                        transition: "all 0.2s ease",
-                        textAlign: "center",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!isSubmitting && formData.role !== option.value) {
-                          e.currentTarget.style.borderColor = "var(--color-text-high-contrast)";
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (formData.role !== option.value) {
-                          e.currentTarget.style.borderColor = "var(--color-border)";
-                        }
+                        color: "var(--color-text-high-contrast)",
+                        marginBottom: "var(--spacing-3)",
                       }}
                     >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-                {/* Hidden input for form validation */}
-                <input
-                  type="hidden"
-                  name="role"
-                  value={formData.role}
-                  required
-                />
-              </div>
+                      I am a *
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { value: "lawyer", label: "Lawyer" },
+                        { value: "paralegal", label: "Paralegal" },
+                        { value: "manager", label: "Manager" },
+                        { value: "developer", label: "Developer" }
+                      ].map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => handleRoleSelect(option.value)}
+                          disabled={isSubmitting}
+                          style={{
+                            padding: "10px 12px",
+                            fontSize: "var(--font-size-medium)",
+                            fontWeight: "var(--font-weight-medium)",
+                            color: formData.role === option.value
+                              ? "var(--color-button-primary-text)"
+                              : "var(--color-text-primary)",
+                            backgroundColor: formData.role === option.value
+                              ? "var(--color-button-primary)"
+                              : "var(--color-background)",
+                            border: `1px solid ${formData.role === option.value
+                              ? "var(--color-button-primary)"
+                              : "var(--color-border)"}`,
+                            borderRadius: "6px",
+                            cursor: isSubmitting ? "not-allowed" : "pointer",
+                            transition: "all 0.2s ease",
+                            textAlign: "center",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!isSubmitting && formData.role !== option.value) {
+                              e.currentTarget.style.borderColor = "var(--color-text-high-contrast)";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (formData.role !== option.value) {
+                              e.currentTarget.style.borderColor = "var(--color-border)";
+                            }
+                          }}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                    {/* Hidden input for form validation */}
+                    <input
+                      type="hidden"
+                      name="role"
+                      value={formData.role}
+                      required
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <button
                 type="submit"

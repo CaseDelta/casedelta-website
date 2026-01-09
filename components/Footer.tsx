@@ -1,8 +1,37 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { getFooterCategories } from "@/lib/navigation/footerLinks";
 
 export function Footer() {
+  const router = useRouter();
+  const pathname = usePathname();
   const categories = getFooterCategories();
+
+  // Handle cross-page anchor navigation
+  const handleAnchorClick = (e: React.MouseEvent, href: string) => {
+    // Only handle anchor links that start with /#
+    if (!href.startsWith("/#")) return;
+
+    e.preventDefault();
+    const anchor = href.substring(1); // Get the hash part (e.g., #security)
+
+    // Check if we're on a page that has the anchor (homepage or variant pages)
+    const isVariantPath = pathname.startsWith('/dark/') || pathname.startsWith('/light/');
+    const isHomepage = pathname === "/";
+
+    // If we're on the homepage or a variant page, just scroll
+    if (isHomepage || isVariantPath) {
+      const element = document.querySelector(anchor);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Navigate to homepage with hash (for pages like /privacy, /terms, etc.)
+      router.push(href);
+    }
+  };
 
   return (
     <footer
@@ -43,8 +72,17 @@ export function Footer() {
                             fontSize: "var(--font-size-base)",
                             color: "var(--color-text-primary)",
                             textDecoration: "none",
+                            transition: "color 0.2s ease-in-out",
+                            opacity: 1,
                           }}
-                          className="hover:opacity-70 transition-opacity"
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = "var(--color-text-high-contrast)";
+                            e.currentTarget.style.opacity = "1";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = "var(--color-text-primary)";
+                            e.currentTarget.style.opacity = "1";
+                          }}
                         >
                           {link.label}
                         </a>
@@ -52,12 +90,22 @@ export function Footer() {
                         <Link
                           href={link.href}
                           scroll={link.href.startsWith("/#") ? false : undefined}
+                          onClick={(e) => handleAnchorClick(e, link.href)}
                           style={{
                             fontSize: "var(--font-size-base)",
                             color: "var(--color-text-primary)",
                             textDecoration: "none",
+                            transition: "color 0.2s ease-in-out",
+                            opacity: 1,
                           }}
-                          className="hover:opacity-70 transition-opacity"
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.color = "var(--color-text-high-contrast)";
+                            e.currentTarget.style.opacity = "1";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.color = "var(--color-text-primary)";
+                            e.currentTarget.style.opacity = "1";
+                          }}
                         >
                           {link.label}
                         </Link>

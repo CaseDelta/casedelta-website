@@ -1,6 +1,7 @@
 "use client";
 
 import { PageWrapper } from "@/components/PageWrapper";
+import { CONTACT_EMAILS } from "@/lib/constants/contact";
 import { useState } from "react";
 
 export default function SmsOptInPage() {
@@ -417,14 +418,14 @@ export default function SmsOptInPage() {
                 >
                   • Reply <strong>HELP</strong> for assistance or contact{" "}
                   <a
-                    href="mailto:support@casedelta.com"
+                    href={`mailto:${CONTACT_EMAILS.SUPPORT}`}
                     style={{
                       color: "var(--color-text-primary)",
                       textDecoration: "underline",
                       textUnderlineOffset: "2px",
                     }}
                   >
-                    support@casedelta.com
+                    {CONTACT_EMAILS.SUPPORT}
                   </a>
                 </li>
               </ul>
@@ -465,16 +466,6 @@ export default function SmsOptInPage() {
               )}
               {isLoading ? "Subscribing..." : "Subscribe to Text Updates"}
             </button>
-
-            <p
-              className="mt-4 text-center"
-              style={{
-                fontSize: "var(--font-size-small)",
-                color: "var(--color-text-tertiary)",
-              }}
-            >
-              Your information is secure and will never be shared with third parties
-            </p>
           </form>
         </div>
       </main>

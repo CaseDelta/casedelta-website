@@ -38,7 +38,7 @@ export default function SocialProof() {
               color: "var(--color-text-tertiary)",
             }}
           >
-            Trusted by Industry Leaders
+            Trusted by Many Law Firms
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 max-w-5xl mx-auto">
@@ -59,13 +59,14 @@ export default function SocialProof() {
                 }}
               >
                 <span
-                  className="cursor-default transition-all duration-500 ease-in-out"
+                  className="cursor-default"
                   style={{
                     fontSize: "var(--font-size-base)",
                     color: "var(--color-text-tertiary)",
                     fontWeight: "var(--font-weight-medium)",
                     letterSpacing: "-0.01em",
-                    opacity: 0.7,
+                    transition: "color 0.2s ease-in-out",
+                    opacity: 1,
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "var(--color-text-high-contrast)";
@@ -73,7 +74,7 @@ export default function SocialProof() {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = "var(--color-text-tertiary)";
-                    e.currentTarget.style.opacity = "0.7";
+                    e.currentTarget.style.opacity = "1";
                   }}
                 >
                   {customer}

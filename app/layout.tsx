@@ -5,10 +5,11 @@ import { PostHogProvider } from "./providers/PostHogProvider";
 import { PageTransition } from "@/components/transitions/PageTransition";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
 import { RoutePreloader } from "@/components/RoutePreloader";
+import { HERO_CONTENT } from "@/lib/constants/hero";
 
 export const metadata: Metadata = {
   title: "CaseDelta | Legal Document Collection Made Simple",
-  description: "AI-powered document collection platform for legal professionals. Get documents from clients faster with automated reminders and intelligent verification.",
+  description: HERO_CONTENT.metaDescription,
 };
 
 export default function RootLayout({
