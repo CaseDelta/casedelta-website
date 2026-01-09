@@ -1,6 +1,6 @@
 export const LANDING_CONTENT = {
   // Section Headers
-  workflowSectionTitle: "Streamline Your Entire Document Collection Workflow",
+  workflowSectionTitle: "What if you got documents from clients all-correct the first time?",
 
   // Value Propositions
   valueProps: {

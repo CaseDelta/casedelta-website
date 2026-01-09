@@ -82,7 +82,7 @@ export function ValuePropSection({
               style={{
                 lineHeight: "var(--line-height-tight)",
                 fontWeight: "400",
-                color: "var(--color-text-high-contrast)",
+                color: "#ffffff",
               }}
             >
               {title}
