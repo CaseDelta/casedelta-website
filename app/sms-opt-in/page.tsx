@@ -43,7 +43,7 @@ export default function SmsOptInPage() {
   if (isSubmitted) {
     return (
       <PageWrapper theme="light">
-        <main className="pt-20">
+        <main className="pt-32">
           <div className="container max-w-2xl mx-auto px-6 py-16 md:py-24">
             <div className="text-center">
               {/* Success Icon */}
@@ -141,7 +141,7 @@ export default function SmsOptInPage() {
 
   return (
     <PageWrapper theme="light">
-      <main className="pt-20">
+      <main className="pt-32">
         <div className="container max-w-2xl mx-auto px-6 py-16 md:py-24">
           {/* Header */}
           <header className="mb-12 text-center">

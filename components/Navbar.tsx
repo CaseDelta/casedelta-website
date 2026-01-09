@@ -106,6 +106,13 @@ export function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
+      // Always show navbar when near the top of the page
+      if (currentScrollY < 50) {
+        setIsVisible(true);
+        setLastScrollY(currentScrollY);
+        return;
+      }
+
       // Only hide navbar if we've reached the workflow section
       if (!hasReachedWorkflow) {
         setIsVisible(true);
@@ -581,10 +588,14 @@ export function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
-            className="fixed inset-0 z-50 md:hidden"
+            className="fixed md:hidden"
             style={{
+              top: "96px", // Start below navbar
+              left: 0,
+              right: 0,
+              bottom: 0,
               backgroundColor: "var(--color-background)",
-              paddingTop: "96px", // Account for navbar height
+              zIndex: 40, // Below navbar (z-50)
             }}
           >
             <div className="h-full overflow-y-auto px-6 py-8">
@@ -630,10 +641,10 @@ export function Navbar() {
                         <AnimatePresence>
                           {mobileDropdownOpen === item.id && item.dropdown && (
                             <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2 }}
+                              initial={{ maxHeight: 0, opacity: 0 }}
+                              animate={{ maxHeight: 2000, opacity: 1 }}
+                              exit={{ maxHeight: 0, opacity: 0 }}
+                              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                               className="overflow-hidden pl-4"
                             >
                               {item.dropdown.map((section, sectionIndex) => (
