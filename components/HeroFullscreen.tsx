@@ -1,19 +1,61 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CTA, CTA_URLS } from "@/lib/constants/cta";
+import { useEffect, useRef } from "react";
 import { HERO_CONTENT } from "@/lib/constants/hero";
 
 export function HeroFullscreen() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Force video playback on mount (helps with iOS autoplay issues)
+    const playVideo = async () => {
+      if (videoRef.current) {
+        try {
+          await videoRef.current.play();
+        } catch (error) {
+          // Autoplay was prevented - this is expected on some iOS devices
+          console.log('Autoplay prevented:', error);
+        }
+      }
+    };
+
+    playVideo();
+
+    // Also play on any user interaction (fallback for iOS Low Power Mode)
+    const handleInteraction = () => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.play().catch(() => {
+          // Ignore errors
+        });
+      }
+    };
+
+    document.addEventListener('touchstart', handleInteraction, { once: true });
+    document.addEventListener('click', handleInteraction, { once: true });
+
+    return () => {
+      document.removeEventListener('touchstart', handleInteraction);
+      document.removeEventListener('click', handleInteraction);
+    };
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
       {/* Background Video */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
+        disablePictureInPicture
+        disableRemotePlayback
         className="absolute inset-0 w-full h-full object-cover"
+        style={{
+          pointerEvents: 'none', // Prevent video controls on iOS
+        }}
       >
         <source src="/videos/hero-video.mp4" type="video/mp4" />
       </video>

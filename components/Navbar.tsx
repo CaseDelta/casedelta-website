@@ -645,20 +645,29 @@ export function Navbar() {
                               animate={{ maxHeight: 2000, opacity: 1 }}
                               exit={{ maxHeight: 0, opacity: 0 }}
                               transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                              className="overflow-hidden pl-4"
+                              className="overflow-hidden"
+                              style={{
+                                backgroundColor: "var(--color-surface)",
+                                borderRadius: "8px",
+                                marginTop: "8px",
+                              }}
                             >
                               {item.dropdown.map((section, sectionIndex) => (
-                                <div key={sectionIndex} className="py-2 space-y-1">
+                                <div key={sectionIndex} className="py-2 px-2 space-y-2">
                                   {section.items?.map((dropdownItem, itemIndex) => (
                                     <Link
                                       key={itemIndex}
                                       href={dropdownItem.href}
                                       onClick={() => setMobileMenuOpen(false)}
-                                      className="block py-3 px-4 rounded-lg"
+                                      className="block py-4 px-4 rounded-lg"
                                       style={{
                                         fontSize: "var(--font-size-base)",
-                                        color: "var(--color-text-secondary)",
                                         textDecoration: "none",
+                                        backgroundColor: "var(--color-background)",
+                                        minHeight: "80px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "center",
                                       }}
                                     >
                                       <div
@@ -674,6 +683,7 @@ export function Navbar() {
                                         style={{
                                           fontSize: "var(--font-size-small)",
                                           color: "var(--color-text-tertiary)",
+                                          lineHeight: "1.4",
                                         }}
                                       >
                                         {dropdownItem.description}
