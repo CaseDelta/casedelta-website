@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { Disclosure } from "@headlessui/react";
 import { navigationData } from "./navigation/navigationData";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
@@ -18,7 +19,6 @@ export function Navbar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({
     left: 0,
     width: 0,
@@ -600,71 +600,64 @@ export function Navbar() {
           >
             <div className="h-full overflow-y-auto px-6 py-8">
               {/* Mobile Navigation Items */}
-              <nav className="space-y-1">
+              <nav className="space-y-2">
                 {navigationData.map((item) => (
                   <div key={item.id}>
                     {item.dropdown ? (
-                      <>
-                        <button
-                          onClick={() => setMobileDropdownOpen(mobileDropdownOpen === item.id ? null : item.id)}
-                          className="w-full flex items-center justify-between py-4 px-4 rounded-lg"
-                          style={{
-                            backgroundColor: mobileDropdownOpen === item.id ? "var(--color-surface)" : "transparent",
-                            fontSize: "var(--font-size-large)",
-                            fontWeight: "var(--font-weight-medium)",
-                            color: "var(--color-text-high-contrast)",
-                            border: "none",
-                            cursor: "pointer",
-                            transition: "background-color 0.2s ease",
-                          }}
-                        >
-                          <span>{item.label}</span>
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            className="transition-transform"
-                            style={{
-                              transform: mobileDropdownOpen === item.id ? "rotate(180deg)" : "rotate(0deg)",
-                            }}
-                          >
-                            <path
-                              d="M3 4.5L6 7.5L9 4.5"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </button>
-                        <AnimatePresence>
-                          {mobileDropdownOpen === item.id && item.dropdown && (
-                            <motion.div
-                              initial={{ maxHeight: 0, opacity: 0 }}
-                              animate={{ maxHeight: 2000, opacity: 1 }}
-                              exit={{ maxHeight: 0, opacity: 0 }}
-                              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-                              className="overflow-hidden"
+                      <Disclosure>
+                        {({ open }) => (
+                          <>
+                            <Disclosure.Button
+                              className="w-full flex items-center justify-between py-4 px-4 rounded-lg"
+                              style={{
+                                backgroundColor: open ? "var(--color-surface)" : "transparent",
+                                fontSize: "var(--font-size-large)",
+                                fontWeight: "var(--font-weight-medium)",
+                                color: "var(--color-text-high-contrast)",
+                                border: "none",
+                                cursor: "pointer",
+                                transition: "background-color 0.2s ease",
+                              }}
+                            >
+                              <span>{item.label}</span>
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                className="transition-transform duration-200"
+                                style={{
+                                  transform: open ? "rotate(180deg)" : "rotate(0deg)",
+                                }}
+                              >
+                                <path
+                                  d="M3 4.5L6 7.5L9 4.5"
+                                  stroke="currentColor"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </Disclosure.Button>
+                            <Disclosure.Panel
+                              className="mt-2 rounded-lg overflow-hidden"
                               style={{
                                 backgroundColor: "var(--color-surface)",
-                                borderRadius: "8px",
-                                marginTop: "8px",
                               }}
                             >
                               {item.dropdown.map((section, sectionIndex) => (
-                                <div key={sectionIndex} className="py-2 px-2 space-y-2">
+                                <div key={sectionIndex} className="p-3 space-y-2">
                                   {section.items?.map((dropdownItem, itemIndex) => (
                                     <Link
                                       key={itemIndex}
                                       href={dropdownItem.href}
                                       onClick={() => setMobileMenuOpen(false)}
-                                      className="block py-4 px-4 rounded-lg"
+                                      className="block py-5 px-4 rounded-lg transition-colors"
                                       style={{
                                         fontSize: "var(--font-size-base)",
                                         textDecoration: "none",
                                         backgroundColor: "var(--color-background)",
-                                        minHeight: "80px",
+                                        minHeight: "88px",
                                         display: "flex",
                                         flexDirection: "column",
                                         justifyContent: "center",
@@ -672,9 +665,10 @@ export function Navbar() {
                                     >
                                       <div
                                         style={{
-                                          fontWeight: "var(--font-weight-medium)",
-                                          color: "var(--color-text-primary)",
-                                          marginBottom: "4px",
+                                          fontWeight: "var(--font-weight-semibold)",
+                                          color: "var(--color-text-high-contrast)",
+                                          marginBottom: "6px",
+                                          fontSize: "var(--font-size-large)",
                                         }}
                                       >
                                         {dropdownItem.title}
@@ -682,8 +676,8 @@ export function Navbar() {
                                       <div
                                         style={{
                                           fontSize: "var(--font-size-small)",
-                                          color: "var(--color-text-tertiary)",
-                                          lineHeight: "1.4",
+                                          color: "var(--color-text-secondary)",
+                                          lineHeight: "1.5",
                                         }}
                                       >
                                         {dropdownItem.description}
@@ -692,10 +686,10 @@ export function Navbar() {
                                   ))}
                                 </div>
                               ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </>
+                            </Disclosure.Panel>
+                          </>
+                        )}
+                      </Disclosure>
                     ) : (
                       <Link
                         href={item.href || "/"}
