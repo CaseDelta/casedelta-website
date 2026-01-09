@@ -7,6 +7,7 @@ const VARIANTS = [
   'light/fullscreen',
   'dark/side',
   'dark/bottom',
+  'dark/fullscreen',
 ] as const
 
 type Variant = typeof VARIANTS[number]

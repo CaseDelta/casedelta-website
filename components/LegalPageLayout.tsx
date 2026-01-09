@@ -14,7 +14,7 @@ export function LegalPageLayout({ title, children }: LegalPageLayoutProps) {
 
   return (
     <PageWrapper theme="light">
-      <main className="pt-20">
+      <main className="pt-32">
         <article className="container max-w-4xl mx-auto px-6 py-16 md:py-24">
           {/* Header */}
           <header className="mb-12 md:mb-16">

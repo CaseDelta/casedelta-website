@@ -6,7 +6,7 @@ import { HERO_CONTENT } from "@/lib/constants/hero";
 
 export function HeroFullscreen() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
       {/* Background Video */}
       <video
         autoPlay
