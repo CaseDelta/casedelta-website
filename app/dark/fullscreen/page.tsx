@@ -33,7 +33,6 @@ export default function DarkFullscreenPage() {
             id="ai-reminders"
             title={LANDING_CONTENT.valueProps.aiReminders.title}
             description={LANDING_CONTENT.valueProps.aiReminders.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.aiReminders.imagePath}
             backgroundColor="#0d0d0d"
           />
@@ -43,7 +42,6 @@ export default function DarkFullscreenPage() {
             id="document-verification"
             title={LANDING_CONTENT.valueProps.documentVerification.title}
             description={LANDING_CONTENT.valueProps.documentVerification.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.documentVerification.imagePath}
             reverse
             backgroundColor="#1a1a1a"
@@ -54,7 +52,6 @@ export default function DarkFullscreenPage() {
             id="legal-workflows"
             title={LANDING_CONTENT.valueProps.legalWorkflows.title}
             description={LANDING_CONTENT.valueProps.legalWorkflows.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.legalWorkflows.imagePath}
             backgroundColor="#141414"
           />
@@ -64,7 +61,6 @@ export default function DarkFullscreenPage() {
             id="time-savings"
             title={LANDING_CONTENT.valueProps.timeSavings.title}
             description={LANDING_CONTENT.valueProps.timeSavings.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.timeSavings.imagePath}
             reverse
             backgroundColor="#1f1f1f"

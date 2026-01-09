@@ -32,7 +32,6 @@ export default function LightFullscreenPage() {
           <ValuePropSection
             title={LANDING_CONTENT.valueProps.aiReminders.title}
             description={LANDING_CONTENT.valueProps.aiReminders.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.aiReminders.imagePath}
             backgroundColor="#ffffff"
           />
@@ -41,7 +40,6 @@ export default function LightFullscreenPage() {
           <ValuePropSection
             title={LANDING_CONTENT.valueProps.documentVerification.title}
             description={LANDING_CONTENT.valueProps.documentVerification.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.documentVerification.imagePath}
             reverse
             backgroundColor="#fafafa"
@@ -51,7 +49,6 @@ export default function LightFullscreenPage() {
           <ValuePropSection
             title={LANDING_CONTENT.valueProps.legalWorkflows.title}
             description={LANDING_CONTENT.valueProps.legalWorkflows.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.legalWorkflows.imagePath}
             backgroundColor="#f5f5f5"
           />
@@ -60,7 +57,6 @@ export default function LightFullscreenPage() {
           <ValuePropSection
             title={LANDING_CONTENT.valueProps.timeSavings.title}
             description={LANDING_CONTENT.valueProps.timeSavings.description}
-            features={[]}
             imagePath={LANDING_CONTENT.valueProps.timeSavings.imagePath}
             reverse
             backgroundColor="#f0f0f0"

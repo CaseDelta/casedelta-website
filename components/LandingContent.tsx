@@ -34,7 +34,6 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             id="ai-reminders"
             title={LANDING_CONTENT.valueProps.aiReminders.title}
             description={LANDING_CONTENT.valueProps.aiReminders.description}
-            features={LANDING_CONTENT.valueProps.aiReminders.features}
             imagePath={LANDING_CONTENT.valueProps.aiReminders.imagePath}
             backgroundColor="var(--color-progressive-1)"
           />
@@ -44,7 +43,6 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             id="document-verification"
             title={LANDING_CONTENT.valueProps.documentVerification.title}
             description={LANDING_CONTENT.valueProps.documentVerification.description}
-            features={LANDING_CONTENT.valueProps.documentVerification.features}
             imagePath={LANDING_CONTENT.valueProps.documentVerification.imagePath}
             reverse
             backgroundColor="var(--color-progressive-2)"
@@ -55,7 +53,6 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             id="legal-workflows"
             title={LANDING_CONTENT.valueProps.legalWorkflows.title}
             description={LANDING_CONTENT.valueProps.legalWorkflows.description}
-            features={LANDING_CONTENT.valueProps.legalWorkflows.features}
             imagePath={LANDING_CONTENT.valueProps.legalWorkflows.imagePath}
             backgroundColor="var(--color-progressive-3)"
           />
@@ -65,7 +62,6 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             id="time-savings"
             title={LANDING_CONTENT.valueProps.timeSavings.title}
             description={LANDING_CONTENT.valueProps.timeSavings.description}
-            features={LANDING_CONTENT.valueProps.timeSavings.features}
             imagePath={LANDING_CONTENT.valueProps.timeSavings.imagePath}
             reverse
             backgroundColor="var(--color-progressive-4)"

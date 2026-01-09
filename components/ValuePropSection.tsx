@@ -9,7 +9,6 @@ interface ValuePropSectionProps {
   id?: string;
   title: string;
   description: string;
-  features: readonly string[];
   imagePath?: string;
   imagePlaceholder?: string;
   reverse?: boolean;
@@ -43,7 +42,6 @@ export function ValuePropSection({
   id,
   title,
   description,
-  features,
   imagePath,
   imagePlaceholder = "Feature Illustration",
   reverse = false,
