@@ -109,24 +109,6 @@ export function Testimonials() {
       }}
     >
       <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-          className="mb-24 text-center"
-        >
-          <h2
-            style={{
-              fontSize: "var(--font-size-h2)",
-              lineHeight: "var(--line-height-tight)",
-              fontWeight: "var(--font-weight-regular)",
-              color: "var(--color-text-high-contrast)",
-            }}
-          >
-            What Customers Say
-          </h2>
-        </motion.div>
-
         <div>
           {testimonials.map((testimonial, index) => (
             <TestimonialCard key={index} testimonial={testimonial} index={index} />

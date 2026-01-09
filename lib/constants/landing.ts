@@ -1,27 +1,27 @@
 export const LANDING_CONTENT = {
   // Section Headers
-  workflowSectionTitle: "Made to handle RFPs, Interrogatories, and Law Professionals",
+  workflowSectionTitle: "Made for RFPs, Interrogatories, and Legal Workflows.",
 
   // Value Propositions
   valueProps: {
     valueProp1: {
       title: "Simple Case Creation and Management",
-      description: "Stop chasing clients for documents. Our AI automatically sends personalized follow-ups at the right time, keeping your cases moving forward.",
+      description: "Upload a list of requirements like an opposing RFP, select from a pre-saved list, or enter requirements yourself.",
       imagePath: "/images/value-props/prop-1.jpeg",
     },
     valueProp2: {
-      title: "AI-Powered Document Verification",
-      description: "Never waste time reviewing the wrong documents again. Our AI verifies that clients upload exactly what you requested—before they hit submit.",
+      title: "Intelligent Document Verification & Feedback",
+      description: "AI analyzes client-submitted documents against provided requirements, like date ranges, and follows-up if incorrect documents are uploaded.",
       imagePath: "/images/value-props/prop-2.jpeg",
     },
     valueProp3: {
-      title: "Reviewable Email Follow-Up",
-      description: "Designed specifically for law firms and legal professionals. Secure, compliant, and seamlessly integrated with your existing tools.",
+      title: "Reviewable Follow-Up Emails",
+      description: "Audit AI emails before turning on auto-send. Editable email drafts ensure you maintain control.",
       imagePath: "/images/value-props/prop-3.jpeg",
     },
     valueProp4: {
-      title: "One-Click Download and Integration",
-      description: "Focus on practicing law, not project managing document requests. CaseDelta handles the busywork so you can get back to what matters.",
+      title: "Not Another Portal for Clients (or You)",
+      description: "Clients can still upload documents and answer questions via email with no change. You receive updates via email or the dashboard.",
       imagePath: "/images/value-props/prop-4.jpeg",
     },
   },
