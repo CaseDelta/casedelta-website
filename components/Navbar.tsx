@@ -594,6 +594,24 @@ export function Navbar() {
             cursor: 'pointer',
           }}
         >
+            {/* Close Button */}
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="absolute top-8 right-6 p-2"
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: theme === "dark" ? "#ffffff" : "#0d0d0d",
+                fontSize: "24px",
+                lineHeight: 1,
+                zIndex: 10000,
+              }}
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
+
             <div
               className="h-full overflow-y-auto"
               style={{
@@ -618,10 +636,13 @@ export function Navbar() {
                             fontSize: "1.125rem",
                             fontWeight: 500,
                             color: theme === "dark" ? "#ffffff" : "#0d0d0d",
-                            backgroundColor: "transparent",
+                            backgroundColor: openDropdownId === item.id
+                              ? (theme === "dark" ? "#1a1a1a" : "#f0f0f0")
+                              : "transparent",
                             border: "none",
                             cursor: "pointer",
                             textAlign: "left",
+                            transition: "background-color 0.2s ease",
                           }}
                         >
                           <span>{item.label}</span>
