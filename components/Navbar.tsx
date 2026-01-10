@@ -598,7 +598,12 @@ export function Navbar() {
               zIndex: 40, // Below navbar (z-50)
             }}
           >
-            <div className="h-full overflow-y-auto px-6 py-8">
+            <div
+              className="h-full overflow-y-auto px-6 py-8"
+              style={{
+                WebkitOverflowScrolling: "touch",
+              }}
+            >
               {/* Mobile Navigation Items */}
               <nav className="space-y-2">
                 {navigationData.map((item) => (
@@ -643,9 +648,6 @@ export function Navbar() {
                               className="mt-2 rounded-lg"
                               style={{
                                 backgroundColor: "var(--color-surface)",
-                                maxHeight: "70vh",
-                                overflowY: "auto",
-                                WebkitOverflowScrolling: "touch",
                               }}
                             >
                               {item.dropdown?.map((section, sectionIndex) => (
