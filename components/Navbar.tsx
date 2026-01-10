@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { navigationData } from "./navigation/navigationData";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
@@ -580,23 +579,18 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3, ease: [0.33, 1, 0.68, 1] }}
-            className="fixed md:hidden"
-            style={{
-              top: "96px", // Start below navbar
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: "var(--color-background)",
-              zIndex: 40, // Below navbar (z-50)
-            }}
-          >
+      {mobileMenuOpen && (
+        <div
+          className="fixed md:hidden"
+          style={{
+            top: "96px",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: theme === "dark" ? "#0d0d0d" : "#f8f8f8",
+            zIndex: 40,
+          }}
+        >
             <div
               className="h-full overflow-y-auto px-6 py-8"
               style={{
@@ -612,9 +606,9 @@ export function Navbar() {
                         <summary
                           className="w-full flex items-center justify-between py-4 px-4 rounded-lg cursor-pointer"
                           style={{
-                            fontSize: "var(--font-size-large)",
-                            fontWeight: "var(--font-weight-medium)",
-                            color: "var(--color-text-high-contrast)",
+                            fontSize: "1.125rem",
+                            fontWeight: 500,
+                            color: theme === "dark" ? "#ffffff" : "#0d0d0d",
                             listStyle: "none",
                           }}
                         >
@@ -638,7 +632,7 @@ export function Navbar() {
                         <div
                           className="mt-2 rounded-lg"
                           style={{
-                            backgroundColor: "var(--color-surface)",
+                            backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
                           }}
                         >
                           {item.dropdown?.map((section, sectionIndex) => (
@@ -650,9 +644,9 @@ export function Navbar() {
                                   onClick={() => setMobileMenuOpen(false)}
                                   className="block py-5 px-4 rounded-lg transition-colors"
                                   style={{
-                                    fontSize: "var(--font-size-base)",
+                                    fontSize: "1rem",
                                     textDecoration: "none",
-                                    backgroundColor: "var(--color-background)",
+                                    backgroundColor: theme === "dark" ? "#0d0d0d" : "#f8f8f8",
                                     minHeight: "88px",
                                     display: "flex",
                                     flexDirection: "column",
@@ -661,18 +655,18 @@ export function Navbar() {
                                 >
                                   <div
                                     style={{
-                                      fontWeight: "var(--font-weight-semibold)",
-                                      color: "var(--color-text-high-contrast)",
+                                      fontWeight: 600,
+                                      color: theme === "dark" ? "#ffffff" : "#0d0d0d",
                                       marginBottom: "6px",
-                                      fontSize: "var(--font-size-large)",
+                                      fontSize: "1.125rem",
                                     }}
                                   >
                                     {dropdownItem.title}
                                   </div>
                                   <div
                                     style={{
-                                      fontSize: "var(--font-size-small)",
-                                      color: "var(--color-text-secondary)",
+                                      fontSize: "0.875rem",
+                                      color: theme === "dark" ? "#a3a3a3" : "#5d5d5d",
                                       lineHeight: "1.5",
                                     }}
                                   >
@@ -690,9 +684,9 @@ export function Navbar() {
                         onClick={() => setMobileMenuOpen(false)}
                         className="block py-4 px-4 rounded-lg"
                         style={{
-                          fontSize: "var(--font-size-large)",
-                          fontWeight: "var(--font-weight-medium)",
-                          color: "var(--color-text-high-contrast)",
+                          fontSize: "1.125rem",
+                          fontWeight: 500,
+                          color: theme === "dark" ? "#ffffff" : "#0d0d0d",
                           textDecoration: "none",
                         }}
                       >
@@ -704,18 +698,18 @@ export function Navbar() {
               </nav>
 
               {/* Mobile CTA Buttons */}
-              <div className="mt-8 pt-8 border-t space-y-3" style={{ borderColor: "var(--color-border)" }}>
+              <div className="mt-8 pt-8 border-t space-y-3" style={{ borderColor: theme === "dark" ? "#2a2a2a" : "#ededed" }}>
                 <Link
                   href={CTA_URLS.SIGN_IN}
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full text-center py-3 px-6 rounded-lg"
                   style={{
-                    fontSize: "var(--font-size-base)",
-                    fontWeight: "var(--font-weight-medium)",
-                    color: "var(--color-text-high-contrast)",
-                    backgroundColor: "var(--color-surface)",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    color: theme === "dark" ? "#ffffff" : "#0d0d0d",
+                    backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
                     textDecoration: "none",
-                    border: "1px solid var(--color-border)",
+                    border: theme === "dark" ? "1px solid #2a2a2a" : "1px solid #ededed",
                   }}
                 >
                   {CTA.SIGN_IN}
@@ -727,10 +721,10 @@ export function Navbar() {
                   }}
                   className="block w-full text-center py-3 px-6 rounded-lg"
                   style={{
-                    fontSize: "var(--font-size-base)",
-                    fontWeight: "var(--font-weight-medium)",
-                    color: "var(--color-button-primary-text)",
-                    backgroundColor: "var(--color-button-primary)",
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    color: "#ffffff",
+                    backgroundColor: "#212121",
                     border: "none",
                     cursor: "pointer",
                   }}
@@ -739,9 +733,8 @@ export function Navbar() {
                 </button>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }
