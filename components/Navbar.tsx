@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Disclosure } from "@headlessui/react";
 import { navigationData } from "./navigation/navigationData";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
 
@@ -609,92 +608,82 @@ export function Navbar() {
                 {navigationData.map((item) => (
                   <div key={item.id}>
                     {item.dropdown ? (
-                      <Disclosure>
-                        {({ open }) => (
-                          <>
-                            <Disclosure.Button
-                              className="w-full flex items-center justify-between py-4 px-4 rounded-lg"
-                              style={{
-                                backgroundColor: open ? "var(--color-surface)" : "transparent",
-                                fontSize: "var(--font-size-large)",
-                                fontWeight: "var(--font-weight-medium)",
-                                color: "var(--color-text-high-contrast)",
-                                border: "none",
-                                cursor: "pointer",
-                                transition: "background-color 0.2s ease",
-                              }}
-                            >
-                              <span>{item.label}</span>
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 12 12"
-                                fill="none"
-                                className="transition-transform duration-200"
-                                style={{
-                                  transform: open ? "rotate(180deg)" : "rotate(0deg)",
-                                }}
-                              >
-                                <path
-                                  d="M3 4.5L6 7.5L9 4.5"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </Disclosure.Button>
-                            <Disclosure.Panel
-                              className="mt-2 rounded-lg"
-                              style={{
-                                backgroundColor: "var(--color-surface)",
-                              }}
-                            >
-                              {item.dropdown?.map((section, sectionIndex) => (
-                                <div key={sectionIndex} className="p-3 space-y-2">
-                                  {section.items?.map((dropdownItem, itemIndex) => (
-                                    <Link
-                                      key={itemIndex}
-                                      href={dropdownItem.href}
-                                      onClick={() => setMobileMenuOpen(false)}
-                                      className="block py-5 px-4 rounded-lg transition-colors"
-                                      style={{
-                                        fontSize: "var(--font-size-base)",
-                                        textDecoration: "none",
-                                        backgroundColor: "var(--color-background)",
-                                        minHeight: "88px",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <div
-                                        style={{
-                                          fontWeight: "var(--font-weight-semibold)",
-                                          color: "var(--color-text-high-contrast)",
-                                          marginBottom: "6px",
-                                          fontSize: "var(--font-size-large)",
-                                        }}
-                                      >
-                                        {dropdownItem.title}
-                                      </div>
-                                      <div
-                                        style={{
-                                          fontSize: "var(--font-size-small)",
-                                          color: "var(--color-text-secondary)",
-                                          lineHeight: "1.5",
-                                        }}
-                                      >
-                                        {dropdownItem.description}
-                                      </div>
-                                    </Link>
-                                  ))}
-                                </div>
+                      <details className="mobile-nav-accordion">
+                        <summary
+                          className="w-full flex items-center justify-between py-4 px-4 rounded-lg cursor-pointer"
+                          style={{
+                            fontSize: "var(--font-size-large)",
+                            fontWeight: "var(--font-weight-medium)",
+                            color: "var(--color-text-high-contrast)",
+                            listStyle: "none",
+                          }}
+                        >
+                          <span>{item.label}</span>
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            className="accordion-icon"
+                          >
+                            <path
+                              d="M3 4.5L6 7.5L9 4.5"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </summary>
+                        <div
+                          className="mt-2 rounded-lg"
+                          style={{
+                            backgroundColor: "var(--color-surface)",
+                          }}
+                        >
+                          {item.dropdown?.map((section, sectionIndex) => (
+                            <div key={sectionIndex} className="p-3 space-y-2">
+                              {section.items?.map((dropdownItem, itemIndex) => (
+                                <Link
+                                  key={itemIndex}
+                                  href={dropdownItem.href}
+                                  onClick={() => setMobileMenuOpen(false)}
+                                  className="block py-5 px-4 rounded-lg transition-colors"
+                                  style={{
+                                    fontSize: "var(--font-size-base)",
+                                    textDecoration: "none",
+                                    backgroundColor: "var(--color-background)",
+                                    minHeight: "88px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontWeight: "var(--font-weight-semibold)",
+                                      color: "var(--color-text-high-contrast)",
+                                      marginBottom: "6px",
+                                      fontSize: "var(--font-size-large)",
+                                    }}
+                                  >
+                                    {dropdownItem.title}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: "var(--font-size-small)",
+                                      color: "var(--color-text-secondary)",
+                                      lineHeight: "1.5",
+                                    }}
+                                  >
+                                    {dropdownItem.description}
+                                  </div>
+                                </Link>
                               ))}
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
                     ) : (
                       <Link
                         href={item.href || "/"}

@@ -318,3 +318,24 @@ a:hover {
 .text-link-hover-muted:hover {
   color: var(--color-text-high-contrast);
 }
+
+/* Mobile Navigation Accordion - Native Details Element */
+.mobile-nav-accordion summary {
+  transition: background-color 0.2s ease;
+}
+
+.mobile-nav-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-nav-accordion[open] summary {
+  background-color: var(--color-surface);
+}
+
+.mobile-nav-accordion .accordion-icon {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-accordion[open] .accordion-icon {
+  transform: rotate(180deg);
+}
