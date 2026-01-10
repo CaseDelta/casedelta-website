@@ -640,12 +640,15 @@ export function Navbar() {
                               </svg>
                             </Disclosure.Button>
                             <Disclosure.Panel
-                              className="mt-2 rounded-lg overflow-hidden"
+                              className="mt-2 rounded-lg"
                               style={{
                                 backgroundColor: "var(--color-surface)",
+                                maxHeight: "70vh",
+                                overflowY: "auto",
+                                WebkitOverflowScrolling: "touch",
                               }}
                             >
-                              {item.dropdown.map((section, sectionIndex) => (
+                              {item.dropdown?.map((section, sectionIndex) => (
                                 <div key={sectionIndex} className="p-3 space-y-2">
                                   {section.items?.map((dropdownItem, itemIndex) => (
                                     <Link
