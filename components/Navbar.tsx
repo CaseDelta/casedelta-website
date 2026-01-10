@@ -583,17 +583,25 @@ export function Navbar() {
         <div
           className="fixed md:hidden"
           style={{
-            top: "96px",
+            top: 0,
             left: 0,
             right: 0,
-            bottom: 0,
+            height: '100dvh',
             backgroundColor: theme === "dark" ? "#0d0d0d" : "#f8f8f8",
-            zIndex: 40,
+            zIndex: 9999,
+            transform: 'translate3d(0,0,0)',
+            WebkitTransform: 'translate3d(0,0,0)',
+            cursor: 'pointer',
           }}
         >
             <div
-              className="h-full overflow-y-auto px-6 py-8"
+              className="h-full overflow-y-auto"
               style={{
+                paddingTop: '96px',
+                paddingBottom: '32px',
+                paddingLeft: '24px',
+                paddingRight: '24px',
+                touchAction: 'pan-y',
                 WebkitOverflowScrolling: "touch",
               }}
             >
@@ -602,14 +610,18 @@ export function Navbar() {
                 {navigationData.map((item) => (
                   <div key={item.id}>
                     {item.dropdown ? (
-                      <details className="mobile-nav-accordion">
-                        <summary
-                          className="w-full flex items-center justify-between py-4 px-4 rounded-lg cursor-pointer"
+                      <div>
+                        <button
+                          onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
+                          className="w-full flex items-center justify-between py-4 px-4 rounded-lg"
                           style={{
                             fontSize: "1.125rem",
                             fontWeight: 500,
                             color: theme === "dark" ? "#ffffff" : "#0d0d0d",
-                            listStyle: "none",
+                            backgroundColor: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                            textAlign: "left",
                           }}
                         >
                           <span>{item.label}</span>
@@ -618,7 +630,10 @@ export function Navbar() {
                             height="20"
                             viewBox="0 0 12 12"
                             fill="none"
-                            className="accordion-icon"
+                            style={{
+                              transform: openDropdownId === item.id ? "rotate(180deg)" : "rotate(0deg)",
+                              transition: "transform 0.3s ease",
+                            }}
                           >
                             <path
                               d="M3 4.5L6 7.5L9 4.5"
@@ -628,13 +643,14 @@ export function Navbar() {
                               strokeLinejoin="round"
                             />
                           </svg>
-                        </summary>
-                        <div
-                          className="mt-2 rounded-lg"
-                          style={{
-                            backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
-                          }}
-                        >
+                        </button>
+                        {openDropdownId === item.id && (
+                          <div
+                            className="mt-2 rounded-lg"
+                            style={{
+                              backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
+                            }}
+                          >
                           {item.dropdown?.map((section, sectionIndex) => (
                             <div key={sectionIndex} className="p-3 space-y-2">
                               {section.items?.map((dropdownItem, itemIndex) => (
@@ -651,6 +667,7 @@ export function Navbar() {
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
+                                    cursor: "pointer",
                                   }}
                                 >
                                   <div
@@ -677,7 +694,8 @@ export function Navbar() {
                             </div>
                           ))}
                         </div>
-                      </details>
+                        )}
+                      </div>
                     ) : (
                       <Link
                         href={item.href || "/"}
@@ -688,6 +706,7 @@ export function Navbar() {
                           fontWeight: 500,
                           color: theme === "dark" ? "#ffffff" : "#0d0d0d",
                           textDecoration: "none",
+                          cursor: "pointer",
                         }}
                       >
                         {item.label}
@@ -710,6 +729,7 @@ export function Navbar() {
                     backgroundColor: theme === "dark" ? "#1a1a1a" : "#ffffff",
                     textDecoration: "none",
                     border: theme === "dark" ? "1px solid #2a2a2a" : "1px solid #ededed",
+                    cursor: "pointer",
                   }}
                 >
                   {CTA.SIGN_IN}
