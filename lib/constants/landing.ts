@@ -8,6 +8,7 @@ export const LANDING_CONTENT = {
       title: "Simple Case Creation and Management",
       description: "Upload a list of requirements like a RFP, select from a pre-saved list, or enter requirements yourself.",
       imagePath: "/images/value-props/prop-1.jpeg",
+      videoPath: "/videos/case-creation-demo.mp4",
       navDescription: "Setup from RFP, template, or manual entry",
     },
     valueProp2: {
@@ -26,6 +27,7 @@ export const LANDING_CONTENT = {
       title: "Not Another Portal for Clients (or You)",
       description: "Clients can still upload documents and answer questions via email with no change. You receive updates via email or the dashboard.",
       imagePath: "/images/value-props/prop-4.jpeg",
+      videoPath: "/videos/email-workflow-demo.mp4",
       navDescription: "Email-based workflow, no forced portal usage",
     },
   },

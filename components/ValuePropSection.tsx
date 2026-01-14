@@ -10,6 +10,7 @@ interface ValuePropSectionProps {
   title: string;
   description: string;
   imagePath?: string;
+  videoPath?: string;
   imagePlaceholder?: string;
   reverse?: boolean;
   backgroundColor?: string;
@@ -43,6 +44,7 @@ export function ValuePropSection({
   title,
   description,
   imagePath,
+  videoPath,
   imagePlaceholder = "Feature Illustration",
   reverse = false,
   backgroundColor,
@@ -119,21 +121,43 @@ export function ValuePropSection({
               />
             )}
 
-            {/* White placeholder box with border (video placeholder) */}
+            {/* Video or placeholder box */}
             <div
               className="absolute inset-0 flex items-center justify-center"
-              style={VIDEO_PLACEHOLDER_WRAPPER_STYLES}
+              style={{
+                ...VIDEO_PLACEHOLDER_WRAPPER_STYLES,
+                zIndex: 10,
+              }}
             >
-              <div style={VIDEO_PLACEHOLDER_STYLES}>
-                <p
+              {videoPath ? (
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   style={{
-                    fontSize: "var(--font-size-base)",
-                    color: "#6b6b6b",
+                    width: "88%",
+                    height: "82%",
+                    backgroundColor: "#ffffff",
+                    border: "3px solid rgba(58, 58, 58, 0.5)",
+                    borderRadius: "4px",
+                    objectFit: "cover",
                   }}
                 >
-                  Video Placeholder
-                </p>
-              </div>
+                  <source src={videoPath} type="video/mp4" />
+                </video>
+              ) : (
+                <div style={VIDEO_PLACEHOLDER_STYLES}>
+                  <p
+                    style={{
+                      fontSize: "var(--font-size-base)",
+                      color: "#6b6b6b",
+                    }}
+                  >
+                    Video Placeholder
+                  </p>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>

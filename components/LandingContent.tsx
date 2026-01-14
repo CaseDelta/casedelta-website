@@ -35,6 +35,7 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             title={LANDING_CONTENT.valueProps.valueProp1.title}
             description={LANDING_CONTENT.valueProps.valueProp1.description}
             imagePath={LANDING_CONTENT.valueProps.valueProp1.imagePath}
+            videoPath={LANDING_CONTENT.valueProps.valueProp1.videoPath}
             backgroundColor="var(--color-progressive-1)"
           />
 
@@ -63,6 +64,7 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             title={LANDING_CONTENT.valueProps.valueProp4.title}
             description={LANDING_CONTENT.valueProps.valueProp4.description}
             imagePath={LANDING_CONTENT.valueProps.valueProp4.imagePath}
+            videoPath={LANDING_CONTENT.valueProps.valueProp4.videoPath}
             reverse
             backgroundColor="var(--color-progressive-4)"
           />
