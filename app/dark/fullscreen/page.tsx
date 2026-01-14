@@ -34,6 +34,7 @@ export default function DarkFullscreenPage() {
             title={LANDING_CONTENT.valueProps.valueProp1.title}
             description={LANDING_CONTENT.valueProps.valueProp1.description}
             imagePath={LANDING_CONTENT.valueProps.valueProp1.imagePath}
+            videoPath={LANDING_CONTENT.valueProps.valueProp1.videoPath}
             backgroundColor="#0d0d0d"
           />
 
@@ -62,6 +63,7 @@ export default function DarkFullscreenPage() {
             title={LANDING_CONTENT.valueProps.valueProp4.title}
             description={LANDING_CONTENT.valueProps.valueProp4.description}
             imagePath={LANDING_CONTENT.valueProps.valueProp4.imagePath}
+            videoPath={LANDING_CONTENT.valueProps.valueProp4.videoPath}
             reverse
             backgroundColor="#1f1f1f"
           />
