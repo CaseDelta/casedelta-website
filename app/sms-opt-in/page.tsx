@@ -37,8 +37,7 @@ export default function SmsOptInPage() {
   const isFormValid =
     formData.firstName.trim() !== "" &&
     formData.lastName.trim() !== "" &&
-    formData.phone.trim() !== "" &&
-    formData.consent;
+    formData.phone.trim() !== "";
 
   if (isSubmitted) {
     return (
@@ -312,7 +311,6 @@ export default function SmsOptInPage() {
                     name="consent"
                     checked={formData.consent}
                     onChange={handleChange}
-                    required
                     className="mt-1 w-5 h-5 cursor-pointer"
                     style={{
                       accentColor: "var(--color-button-primary)",
@@ -325,7 +323,7 @@ export default function SmsOptInPage() {
                       color: "var(--color-text-primary)",
                     }}
                   >
-                    I consent to receive automated text messages from CaseDelta regarding my document requests and case updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time or HELP for help. By checking this box, I agree to the{" "}
+                    I consent to receive automated text messages from CaseDelta regarding my document requests and case updates. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time or HELP for help. By submitting this form, I agree to the{" "}
                     <a
                       href="/terms"
                       style={{
@@ -347,7 +345,7 @@ export default function SmsOptInPage() {
                     >
                       Privacy Policy
                     </a>
-                    . <span style={{ color: "var(--color-error)" }}>*</span>
+                    .
                   </span>
                 </label>
               </div>

@@ -6,6 +6,7 @@ import { QuantifiableImpact } from "@/components/QuantifiableImpact";
 import { Testimonials } from "@/components/Testimonials";
 import { SecuritySection } from "@/components/SecuritySection";
 import { ContactFormSection } from "@/components/ContactFormSection";
+import { Footer } from "@/components/Footer";
 import { LANDING_CONTENT } from "@/lib/constants/landing";
 
 interface LandingContentProps {
@@ -81,6 +82,9 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
 
       {/* Contact Form Section */}
       <ContactFormSection />
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }

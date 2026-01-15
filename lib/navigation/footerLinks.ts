@@ -62,8 +62,16 @@ export const footerCategories: FooterCategory[] = [
     title: "Company",
     links: [
       {
+        label: "About",
+        href: ROUTES.ABOUT,
+      },
+      {
         label: "Get Started",
         href: "/#get-started",
+      },
+      {
+        label: "SMS Opt In",
+        href: ROUTES.SMS_OPT_IN,
       },
     ],
   },
