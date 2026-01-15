@@ -39,25 +39,27 @@ export default function RootLayout({
               (function() {
                 try {
                   const pathname = window.location.pathname;
-                  let theme = 'light';
+                  let theme = 'dark'; // Default to dark for consistent experience
 
-                  // Determine theme based on route
-                  if (pathname.startsWith('/dark/')) {
-                    theme = 'dark';
-                  } else if (pathname.startsWith('/light/')) {
+                  // Explicit light theme for specific variant paths
+                  if (pathname.startsWith('/light/')) {
                     theme = 'light';
-                  } else if (pathname === '/') {
+                  }
+                  // Explicit dark theme for dark variant paths
+                  else if (pathname.startsWith('/dark/') || pathname === '/') {
                     theme = 'dark';
-                  } else {
-                    // For non-variant pages, check localStorage or default to light
-                    theme = localStorage.getItem('casedelta-theme') || 'light';
+                  }
+                  // All other pages default to dark (consistent with homepage)
+                  // Examples: /about, /ai-policy, /pricing, /terms, /privacy, /sms-opt-in
+                  else {
+                    theme = 'dark';
                   }
 
-                  // Set theme attribute immediately
+                  // Set theme attribute immediately (before first paint)
                   document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {
-                  // Fallback to light theme if any error occurs
-                  document.documentElement.setAttribute('data-theme', 'light');
+                  // Fallback to dark theme if any error occurs
+                  document.documentElement.setAttribute('data-theme', 'dark');
                 }
               })();
             `,

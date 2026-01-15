@@ -1,36 +1,17 @@
-"use client";
+/**
+ * PageWrapper - Simple wrapper component (no theme management)
+ *
+ * Theme is managed by the inline script in layout.tsx for reliability.
+ * This component is now just a simple wrapper for consistency.
+ */
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { ReactNode } from "react";
 
 interface PageWrapperProps {
-  theme?: "light" | "dark"; // Optional default theme
-  children: React.ReactNode;
+  theme?: "light" | "dark"; // Kept for API compatibility, but not used
+  children: ReactNode;
 }
 
-export function PageWrapper({ theme = "light", children }: PageWrapperProps) {
-  const pathname = usePathname();
-  const [currentTheme, setCurrentTheme] = useState<"light" | "dark">(theme);
-
-  useEffect(() => {
-    // Check if we're on a variant path (e.g., /dark/*, /light/*)
-    const isVariantPath = pathname.startsWith('/dark/') || pathname.startsWith('/light/');
-
-    let selectedTheme: "light" | "dark";
-
-    if (isVariantPath) {
-      // For variant pages, always use the explicit theme prop and save it
-      selectedTheme = theme;
-      localStorage.setItem("casedelta-theme", theme);
-    } else {
-      // For other pages, read from localStorage or use the provided theme
-      const savedTheme = localStorage.getItem("casedelta-theme") as "light" | "dark" | null;
-      selectedTheme = savedTheme || theme;
-    }
-
-    setCurrentTheme(selectedTheme);
-    document.documentElement.setAttribute("data-theme", selectedTheme);
-  }, [theme, pathname]);
-
+export function PageWrapper({ children }: PageWrapperProps) {
   return <>{children}</>;
 }
