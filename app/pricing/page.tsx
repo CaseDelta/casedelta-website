@@ -6,21 +6,13 @@ import PricingCard from "@/components/PricingCard";
 import SocialProof from "@/components/SocialProof";
 import { ContactFormSection } from "@/components/ContactFormSection";
 import { CTA, CTA_URLS } from "@/lib/constants/cta";
-import { useEffect, useState } from "react";
 
 export default function PricingPage() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    // Read theme from localStorage or default to light
-    const savedTheme = localStorage.getItem("casedelta-theme") as "light" | "dark" | null;
-    const currentTheme = savedTheme || "light";
-    setTheme(currentTheme);
-    document.documentElement.setAttribute("data-theme", currentTheme);
-  }, []);
+  // Theme is managed by root layout's blocking script (app/layout.tsx)
+  // No client-side theme logic needed here
 
   return (
-    <div className="min-h-screen bg-background" data-theme={theme}>
+    <div className="min-h-screen bg-background">
 
       <PricingHero />
 
