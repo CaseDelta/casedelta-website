@@ -1,6 +1,5 @@
 "use client";
 
-import { PageWrapper } from "@/components/PageWrapper";
 import { getLastUpdatedDate } from "@/lib/utils/legalDates";
 import { ReactNode } from "react";
 
@@ -13,8 +12,7 @@ export function LegalPageLayout({ title, children }: LegalPageLayoutProps) {
   const lastUpdatedText = getLastUpdatedDate();
 
   return (
-    <PageWrapper theme="light">
-      <main className="pt-32">
+    <main className="pt-32">
         <article className="container max-w-4xl mx-auto px-6 py-16 md:py-24">
           {/* Header */}
           <header className="mb-12 md:mb-16">
@@ -52,7 +50,6 @@ export function LegalPageLayout({ title, children }: LegalPageLayoutProps) {
           </div>
         </article>
       </main>
-    </PageWrapper>
   );
 }
 

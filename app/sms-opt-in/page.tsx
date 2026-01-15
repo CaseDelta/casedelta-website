@@ -1,6 +1,5 @@
 "use client";
 
-import { PageWrapper } from "@/components/PageWrapper";
 import { CONTACT_EMAILS } from "@/lib/constants/contact";
 import { useState } from "react";
 
@@ -41,8 +40,7 @@ export default function SmsOptInPage() {
 
   if (isSubmitted) {
     return (
-      <PageWrapper theme="light">
-        <main className="pt-32">
+      <main className="pt-32">
           <div className="container max-w-2xl mx-auto px-6 py-16 md:py-24">
             <div className="text-center">
               {/* Success Icon */}
@@ -134,13 +132,11 @@ export default function SmsOptInPage() {
             </div>
           </div>
         </main>
-      </PageWrapper>
     );
   }
 
   return (
-    <PageWrapper theme="light">
-      <main className="pt-32">
+    <main className="pt-32">
         <div className="container max-w-2xl mx-auto px-6 py-16 md:py-24">
           {/* Header */}
           <header className="mb-12 text-center">
@@ -467,6 +463,5 @@ export default function SmsOptInPage() {
           </form>
         </div>
       </main>
-    </PageWrapper>
   );
 }

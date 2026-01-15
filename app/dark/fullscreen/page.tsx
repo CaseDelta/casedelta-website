@@ -1,4 +1,3 @@
-import { PageWrapper } from "@/components/PageWrapper";
 import { HeroFullscreen } from "@/components/HeroFullscreen";
 import SocialProof from "@/components/SocialProof";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -11,8 +10,7 @@ import { LANDING_CONTENT } from "@/lib/constants/landing";
 
 export default function DarkFullscreenPage() {
   return (
-    <PageWrapper theme="dark">
-      <main>
+    <main>
 
         {/* Fullscreen Hero with Video Background */}
         <HeroFullscreen />
@@ -81,6 +79,5 @@ export default function DarkFullscreenPage() {
         {/* Contact Form Section */}
         <ContactFormSection />
       </main>
-    </PageWrapper>
   );
 }

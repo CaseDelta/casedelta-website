@@ -12,7 +12,7 @@ export default function PricingPage() {
   // No client-side theme logic needed here
 
   return (
-    <div className="min-h-screen bg-background">
+    <main className="min-h-screen">
 
       <PricingHero />
 
@@ -114,6 +114,6 @@ export default function PricingPage() {
 
       <ContactFormSection />
 
-    </div>
+    </main>
   );
 }
