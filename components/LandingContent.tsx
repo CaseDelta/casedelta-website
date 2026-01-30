@@ -46,6 +46,7 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             title={LANDING_CONTENT.valueProps.valueProp2.title}
             description={LANDING_CONTENT.valueProps.valueProp2.description}
             imagePath={LANDING_CONTENT.valueProps.valueProp2.imagePath}
+            videoPath="/videos/document-verification-demo.mp4"
             reverse
             backgroundColor="var(--color-progressive-2)"
           />
@@ -56,6 +57,7 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
             title={LANDING_CONTENT.valueProps.valueProp3.title}
             description={LANDING_CONTENT.valueProps.valueProp3.description}
             imagePath={LANDING_CONTENT.valueProps.valueProp3.imagePath}
+            videoPath="/videos/email-approval-demo.mp4"
             backgroundColor="var(--color-progressive-3)"
           />
 

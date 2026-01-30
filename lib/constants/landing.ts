@@ -1,4 +1,4 @@
-export const LANDING_CONTENT = {
+const content = {
   // Section Headers
   workflowSectionTitle: "Made for RFPs, Interrogatories, and Legal Workflows.",
 
@@ -15,12 +15,14 @@ export const LANDING_CONTENT = {
       title: "AI-Powered Document Verification & Feedback",
       description: "CaseDelta analyzes client-submitted documents against provided requirements, like date ranges, and follows-up if incorrect documents are uploaded.",
       imagePath: "/images/value-props/prop-2.jpeg",
+      videoPath: "/videos/document-verification-demo.mp4",
       navDescription: "Automated verification against scoped requirements",
     },
     valueProp3: {
       title: "Reviewable Follow-Up Emails",
       description: "Audit AI emails before turning on auto-send. Editable email drafts ensure you maintain control.",
       imagePath: "/images/value-props/prop-3.jpeg",
+      videoPath: "/videos/email-approval-demo.mp4",
       navDescription: "Audit and approve before auto-send",
     },
     valueProp4: {
@@ -31,4 +33,6 @@ export const LANDING_CONTENT = {
       navDescription: "Email-based workflow, no forced portal usage",
     },
   },
-} as const;
+};
+
+export const LANDING_CONTENT = content;
