@@ -156,9 +156,8 @@ export function Navbar() {
             >
               Login
             </Link>
-            <Link
-              href="/#get-started"
-              onClick={(e) => handleNav(e, "/#get-started")}
+            <a
+              href="https://app.casedelta.com/signup"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -186,7 +185,7 @@ export function Navbar() {
               }}
             >
               Create Free Account
-            </Link>
+            </a>
           </div>
 
           {/* Mobile hamburger */}
@@ -285,9 +284,8 @@ export function Navbar() {
             >
               Login
             </Link>
-            <Link
-              href="/#get-started"
-              onClick={(e) => handleNav(e, "/#get-started")}
+            <a
+              href="https://app.casedelta.com/signup"
               style={{
                 display: "block",
                 textAlign: "center",
@@ -301,7 +299,7 @@ export function Navbar() {
               }}
             >
               Create Free Account
-            </Link>
+            </a>
           </div>
         </div>
       )}

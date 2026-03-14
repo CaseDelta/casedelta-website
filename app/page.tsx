@@ -171,7 +171,7 @@ function Hero() {
               custom={2}
             >
               <Link
-                href="#get-started"
+                href="https://app.casedelta.com/signup"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
