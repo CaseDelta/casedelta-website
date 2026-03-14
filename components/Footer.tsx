@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { getFooterCategories } from "@/lib/navigation/footerLinks";
 
@@ -9,127 +10,141 @@ export function Footer() {
   const pathname = usePathname();
   const categories = getFooterCategories();
 
-  // Handle cross-page anchor navigation
   const handleAnchorClick = (e: React.MouseEvent, href: string) => {
-    // Only handle anchor links that start with /#
     if (!href.startsWith("/#")) return;
-
     e.preventDefault();
-    const anchor = href.substring(1); // Get the hash part (e.g., #security)
-
-    // Check if we're on a page that has the anchor (homepage or variant pages)
-    const isVariantPath = pathname.startsWith('/dark/') || pathname.startsWith('/light/');
-    const isHomepage = pathname === "/";
-
-    // If we're on the homepage or a variant page, just scroll
-    if (isHomepage || isVariantPath) {
-      const element = document.querySelector(anchor);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+    const anchor = href.substring(1);
+    if (pathname === "/") {
+      document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" });
     } else {
-      // Navigate to homepage with hash (for pages like /privacy, /terms, etc.)
       router.push(href);
     }
   };
 
   return (
     <footer
-      className="py-16 border-t"
       style={{
-        backgroundColor: "var(--color-surface)",
-        borderColor: "var(--color-border)",
+        backgroundColor: "#0F0E0D",
+        padding: "64px 32px",
       }}
     >
-      <div className="container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
-          {categories.map((category) => {
-            // Skip empty categories
-            if (category.links.length === 0) {
-              return null;
-            }
-
-            return (
-              <div key={category.title}>
-                <h3
-                  className="mb-4 uppercase tracking-wider"
-                  style={{
-                    fontSize: "var(--font-size-small)",
-                    color: "var(--color-text-tertiary)",
-                    fontWeight: "var(--font-weight-medium)",
-                    letterSpacing: "0.1em",
-                  }}
-                >
-                  {category.title}
-                </h3>
-                <ul className="space-y-3">
-                  {category.links.map((link) => (
-                    <li key={link.href}>
-                      {link.isExternal ? (
-                        <a
-                          href={link.href}
-                          style={{
-                            fontSize: "var(--font-size-base)",
-                            color: "var(--color-text-primary)",
-                            textDecoration: "none",
-                            transition: "color 0.2s ease-in-out",
-                            opacity: 1,
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color = "var(--color-text-high-contrast)";
-                            e.currentTarget.style.opacity = "1";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.color = "var(--color-text-primary)";
-                            e.currentTarget.style.opacity = "1";
-                          }}
-                        >
-                          {link.label}
-                        </a>
-                      ) : (
-                        <Link
-                          href={link.href}
-                          scroll={link.href.startsWith("/#") ? false : undefined}
-                          onClick={(e) => handleAnchorClick(e, link.href)}
-                          style={{
-                            fontSize: "var(--font-size-base)",
-                            color: "var(--color-text-primary)",
-                            textDecoration: "none",
-                            transition: "color 0.2s ease-in-out",
-                            opacity: 1,
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.color = "var(--color-text-high-contrast)";
-                            e.currentTarget.style.opacity = "1";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.color = "var(--color-text-primary)";
-                            e.currentTarget.style.opacity = "1";
-                          }}
-                        >
-                          {link.label}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        {/* Top row: Logo + copyright */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            marginBottom: 48,
+            flexWrap: "wrap",
+            gap: 24,
+          }}
+        >
+          <div>
+            <Image
+              src="/assets/branding/trimmed-logo-white.png"
+              alt="CaseDelta"
+              width={120}
+              height={28}
+              style={{ height: 24, width: "auto", opacity: 0.5, marginBottom: 12 }}
+            />
+            <p
+              style={{
+                fontFamily: '"CaseDelta Sans", sans-serif',
+                fontSize: 13,
+                color: "#8F8B85",
+              }}
+            >
+              © {new Date().getFullYear()} CaseDelta. All rights reserved.
+            </p>
+          </div>
         </div>
 
+        {/* Footer columns */}
         <div
-          className="pt-8 border-t text-center"
-          style={{ borderColor: "var(--color-border)" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: 16,
+          }}
         >
-          <p
-            style={{
-              fontSize: "var(--font-size-small)",
-              color: "var(--color-text-tertiary)",
-            }}
-          >
-            © 2026 CaseDelta. All rights reserved.
-          </p>
+          {categories.map((category) => (
+            <div key={category.title}>
+              <h3
+                style={{
+                  fontFamily: '"CaseDelta Sans", sans-serif',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: "#8F8B85",
+                  letterSpacing: "-0.14px",
+                  marginBottom: 16,
+                }}
+              >
+                {category.title}
+              </h3>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                }}
+              >
+                {category.links.map((link, i) => (
+                  <li key={`${category.title}-${i}`}>
+                    {link.isExternal ? (
+                      <a
+                        href={link.href}
+                        style={{
+                          fontFamily: '"CaseDelta Sans", sans-serif',
+                          fontSize: 14,
+                          fontWeight: 500,
+                          color: "#FAFAF9",
+                          textDecoration: "none",
+                          lineHeight: 1.3,
+                          transition: "opacity 0.2s",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.opacity = "0.6")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.opacity = "1")
+                        }
+                      >
+                        {link.label}{" "}
+                        <span style={{ color: "#8F8B85" }}>→</span>
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        onClick={(e) => handleAnchorClick(e, link.href)}
+                        style={{
+                          fontFamily: '"CaseDelta Sans", sans-serif',
+                          fontSize: 14,
+                          fontWeight: 500,
+                          color: "#FAFAF9",
+                          textDecoration: "none",
+                          lineHeight: 1.3,
+                          transition: "opacity 0.2s",
+                        }}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.opacity = "0.6")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.opacity = "1")
+                        }
+                      >
+                        {link.label}{" "}
+                        <span style={{ color: "#8F8B85" }}>→</span>
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </footer>

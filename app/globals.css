@@ -153,30 +153,30 @@
 }
 
 [data-theme="dark"] {
-  /* Colors - Dark Theme */
-  --color-background: #0d0d0d;
-  --color-surface: #181818;
-  --color-surface-secondary: #212121;
-  --color-surface-tertiary: #282828;
+  /* Colors - Dark Theme (Harvey-inspired warm blacks) */
+  --color-background: #0F0E0D;
+  --color-surface: #1A1918;
+  --color-surface-secondary: #222120;
+  --color-surface-tertiary: #2A2928;
   --color-surface-hover: rgba(255, 255, 255, 0.05);
 
   /* Progressive backgrounds for value prop sections (dark theme) */
-  --color-progressive-1: #0d0d0d;
-  --color-progressive-2: #121212;
-  --color-progressive-3: #171717;
-  --color-progressive-4: #1c1c1c;
+  --color-progressive-1: #0F0E0D;
+  --color-progressive-2: #141312;
+  --color-progressive-3: #191817;
+  --color-progressive-4: #1E1D1C;
 
-  /* Text colors - Softer whites for reduced eye strain */
-  --color-text-primary: #E0E0E0;        /* Soft white, reduces glare (was #ffffff) */
-  --color-text-secondary: #b0b0b0;      /* Medium emphasis */
-  --color-text-tertiary: #8a8a8a;       /* Low emphasis */
-  --color-text-high-contrast: #F5F5F5;  /* Near white, not pure (was #ffffff) */
+  /* Text colors - Warm whites */
+  --color-text-primary: #E8E6E3;
+  --color-text-secondary: #A8A5A0;
+  --color-text-tertiary: #7A7772;
+  --color-text-high-contrast: #FAFAF9;
 
-  --color-border: #282828;
+  --color-border: #2A2928;
 
-  /* Buttons - Softer white for better comfort */
-  --color-button-primary: #F5F5F5;      /* Near white (was #ffffff) */
-  --color-button-primary-text: #0d0d0d;
+  /* Buttons - Harvey-style warm white */
+  --color-button-primary: #FAFAF9;
+  --color-button-primary-text: #0F0E0D;
 }
 
 * {
@@ -286,6 +286,16 @@ a:hover {
   .section {
     padding: 10rem 0; /* 160px on desktop - matching Rogo's generous spacing */
   }
+}
+
+/* Marquee ticker animation */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
 }
 
 /* Dropdown animations */

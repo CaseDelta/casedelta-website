@@ -7,7 +7,7 @@ import { RoutePreloader } from "@/components/RoutePreloader";
 import { HERO_CONTENT } from "@/lib/constants/hero";
 
 export const metadata: Metadata = {
-  title: "CaseDelta | Legal Document Collection Made Simple",
+  title: "CaseDelta | AI Associate for Law Firms",
   description: HERO_CONTENT.metaDescription,
   icons: {
     icon: [
@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
         {/* Blocking script to prevent FOUC (Flash of Unstyled Content) */}
         {/* This sets the theme BEFORE first paint, eliminating theme flashing */}
