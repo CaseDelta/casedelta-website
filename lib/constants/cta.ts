@@ -14,14 +14,14 @@ export const CTA = {
 export type CTAValue = (typeof CTA)[keyof typeof CTA];
 
 export const CTA_URLS = {
-  GET_STARTED: "https://app.casedelta.com",
-  START_FREE_TRIAL: "https://app.casedelta.com",
-  SCHEDULE_DEMO: "https://app.casedelta.com",
-  REQUEST_DEMO: "https://app.casedelta.com",
-  WATCH_DEMO: "https://app.casedelta.com",
-  GET_INFO: "https://app.casedelta.com",
-  LEARN_MORE: "https://app.casedelta.com",
+  GET_STARTED: "https://app.casedelta.com/signup",
+  START_FREE_TRIAL: "https://app.casedelta.com/signup",
+  SCHEDULE_DEMO: "https://app.casedelta.com/signup",
+  REQUEST_DEMO: "https://app.casedelta.com/signup",
+  WATCH_DEMO: "https://app.casedelta.com/signup",
+  GET_INFO: "https://app.casedelta.com/signup",
+  LEARN_MORE: "https://app.casedelta.com/signup",
   SEE_HOW: "#platform",
   SIGN_IN: "https://app.casedelta.com",
-  SIGN_UP: "https://app.casedelta.com",
+  SIGN_UP: "https://app.casedelta.com/signup",
 } as const;
