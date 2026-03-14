@@ -188,7 +188,7 @@ export function ContactFormSection() {
                 color: "var(--color-text-secondary)",
               }}
             >
-              We'll reach out via email and schedule a phone call or demo.
+              We'll reach out via email.
             </p>
 
             <form onSubmit={handleSubmit}>

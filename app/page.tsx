@@ -194,7 +194,7 @@ function Hero() {
                   (e.currentTarget.style.opacity = "1")
                 }
               >
-                Request a Demo
+                Create Free Account
               </Link>
             </motion.div>
           </div>
@@ -1195,7 +1195,7 @@ function FooterCta() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.88")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Request a Demo
+            Create Free Account
           </a>
         </motion.div>
 
