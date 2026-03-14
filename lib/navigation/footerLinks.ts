@@ -1,16 +1,9 @@
 import { ROUTES } from "@/lib/routes/routes";
 
-/**
- * Footer Navigation Configuration
- *
- * This file defines the footer link structure and categorization.
- * Links are organized by category, and only existing pages are rendered.
- */
-
 export interface FooterLink {
   label: string;
   href: string;
-  isExternal?: boolean; // For mailto: links or external URLs
+  isExternal?: boolean;
 }
 
 export interface FooterCategory {
@@ -18,88 +11,65 @@ export interface FooterCategory {
   links: FooterLink[];
 }
 
-/**
- * Footer navigation structure
- *
- * Categories:
- * - Product: Features and pricing information (hash links to homepage sections)
- * - Legal: Legal documents and policies
- * - Company: Getting started and sales inquiry
- * - Account: User login
- */
 export const footerCategories: FooterCategory[] = [
   {
-    title: "Product",
+    title: "Platform",
     links: [
-      {
-        label: "Features",
-        href: "/#features",
-      },
-      {
-        label: "Pricing",
-        href: ROUTES.PRICING,
-      },
+      { label: "Document Analysis", href: "/#platform" },
+      { label: "Case Monitoring", href: "/#platform" },
+      { label: "Institutional Memory", href: "/#platform" },
+      { label: "Integrations", href: "/#platform" },
     ],
   },
   {
-    title: "Legal",
+    title: "Solutions",
     links: [
-      {
-        label: "Terms of Service",
-        href: ROUTES.TERMS,
-      },
-      {
-        label: "Privacy Policy",
-        href: ROUTES.PRIVACY,
-      },
-      {
-        label: "AI Policy",
-        href: ROUTES.AI_POLICY,
-      },
+      { label: "Personal Injury", href: ROUTES.SOLUTIONS_PI },
+      { label: "Medical Malpractice", href: ROUTES.SOLUTIONS_MED_MAL },
+      { label: "Employment Law", href: ROUTES.SOLUTIONS_EMPLOYMENT },
+      { label: "Commercial Litigation", href: ROUTES.SOLUTIONS_COMMERCIAL_LIT },
+      { label: "Mid-Sized Firms", href: ROUTES.SOLUTIONS_MID_SIZED },
     ],
   },
   {
-    title: "Company",
+    title: "About",
     links: [
-      {
-        label: "About",
-        href: ROUTES.ABOUT,
-      },
+      { label: "Company", href: ROUTES.ABOUT },
+      { label: "Security", href: "/#security" },
+      { label: "AI Policy", href: ROUTES.AI_POLICY },
+      { label: "Pricing", href: ROUTES.PRICING },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Terms of Service", href: ROUTES.TERMS },
+      { label: "Privacy Policy", href: ROUTES.PRIVACY },
+      { label: "SMS Opt In", href: ROUTES.SMS_OPT_IN },
+    ],
+  },
+  {
+    title: "Connect",
+    links: [
       {
         label: "Get Started",
-        href: "/#get-started",
+        href: "https://app.casedelta.com",
+        isExternal: true,
       },
-      {
-        label: "SMS Opt In",
-        href: ROUTES.SMS_OPT_IN,
-      },
-    ],
-  },
-  {
-    title: "Account",
-    links: [
       {
         label: "Sign In",
         href: "https://app.casedelta.com",
         isExternal: true,
       },
       {
-        label: "Forgot Password",
-        href: "https://app.casedelta.com/forgot-password",
+        label: "Email Us",
+        href: "mailto:camren@casedelta.com",
         isExternal: true,
       },
     ],
   },
 ];
 
-/**
- * Get filtered footer categories
- *
- * This function can be extended to filter out non-existent pages
- * based on filesystem checks or feature flags.
- *
- * For now, it returns all categories as-is since all pages exist.
- */
 export function getFooterCategories(): FooterCategory[] {
   return footerCategories;
 }

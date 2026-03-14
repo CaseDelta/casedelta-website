@@ -1,45 +1,27 @@
-/**
- * Centralized CTA (Call-to-Action) Text Constants
- *
- * This file contains all CTA text used across the CaseDelta website.
- * Use these constants to maintain consistency across all components and pages.
- *
- * Usage:
- * import { CTA } from '@/lib/constants/cta';
- * <button>{CTA.GET_STARTED}</button>
- */
-
 export const CTA = {
-  // Primary CTAs
   GET_STARTED: "Get Started",
   START_FREE_TRIAL: "Start Free Trial",
-
-  // Demo CTAs
   SCHEDULE_DEMO: "Schedule Demo",
-  REQUEST_DEMO: "Request Demo",
+  REQUEST_DEMO: "Request a Demo",
   WATCH_DEMO: "Watch Demo",
-
-  // Info CTAs
   GET_INFO: "Get Info",
   LEARN_MORE: "Learn More",
-
-  // Auth CTAs
+  SEE_HOW: "See How It Works",
   SIGN_IN: "Sign In",
   SIGN_UP: "Sign Up",
 } as const;
 
-// Type for CTA values (useful for TypeScript)
-export type CTAValue = typeof CTA[keyof typeof CTA];
+export type CTAValue = (typeof CTA)[keyof typeof CTA];
 
-// CTA URLs - Centralized URLs for each CTA action
 export const CTA_URLS = {
-  GET_STARTED: "#get-started",
-  START_FREE_TRIAL: "#get-started",
-  SCHEDULE_DEMO: "#get-started",
-  REQUEST_DEMO: "#get-started",
-  WATCH_DEMO: "#get-started",
-  GET_INFO: "#get-started",
-  LEARN_MORE: "#get-started",
+  GET_STARTED: "https://app.casedelta.com",
+  START_FREE_TRIAL: "https://app.casedelta.com",
+  SCHEDULE_DEMO: "https://app.casedelta.com",
+  REQUEST_DEMO: "https://app.casedelta.com",
+  WATCH_DEMO: "https://app.casedelta.com",
+  GET_INFO: "https://app.casedelta.com",
+  LEARN_MORE: "https://app.casedelta.com",
+  SEE_HOW: "#platform",
   SIGN_IN: "https://app.casedelta.com",
   SIGN_UP: "https://app.casedelta.com",
 } as const;

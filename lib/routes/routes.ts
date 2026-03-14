@@ -15,6 +15,11 @@ export const ROUTES = {
   TERMS: "/terms",
   PRIVACY: "/privacy",
   SMS_OPT_IN: "/sms-opt-in",
+  SOLUTIONS_PI: "/solutions/personal-injury",
+  SOLUTIONS_MED_MAL: "/solutions/medical-malpractice",
+  SOLUTIONS_EMPLOYMENT: "/solutions/employment-law",
+  SOLUTIONS_COMMERCIAL_LIT: "/solutions/commercial-litigation",
+  SOLUTIONS_MID_SIZED: "/solutions/mid-sized-firms",
 } as const;
 
 // Extract route values for type safety
