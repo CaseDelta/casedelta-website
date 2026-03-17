@@ -1176,7 +1176,7 @@ function FooterCta() {
           custom={2}
         >
           <a
-            href="mailto:camren@casedelta.com"
+            href="https://app.casedelta.com/signup"
             style={{
               display: "inline-flex",
               alignItems: "center",

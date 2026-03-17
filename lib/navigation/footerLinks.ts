@@ -53,7 +53,7 @@ export const footerCategories: FooterCategory[] = [
     links: [
       {
         label: "Get Started",
-        href: "https://app.casedelta.com",
+        href: "https://app.casedelta.com/signup",
         isExternal: true,
       },
       {
