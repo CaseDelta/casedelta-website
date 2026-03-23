@@ -5,27 +5,27 @@ export default function CommercialLitigationPage() {
     <SolutionPage
       headline="Delta for"
       headlineAccent="Commercial Litigation"
-      subtitle="Discovery is the most expensive phase of any case. Delta cuts the document review time your clients hate paying for."
-      problem="Commercial litigation generates more documents per case than any other practice area. Contracts, correspondence, financial records, internal communications, regulatory filings — discovery alone can produce tens of thousands of pages. Your clients watch the bills climb during document review and ask why it costs $50,000 to read emails. The firms that reduce that cost win the business."
+      subtitle="Complex discovery. Cross-party patterns. Judge tendencies that determine strategy. Delta learns it all."
+      problem="Commercial litigation generates more documents per case than any other practice area. Your clients watch bills climb during document review and ask why it costs $50,000 to read emails. But the real cost isn't document review — it's the strategic intelligence that takes decades to develop. Which judges are favorable for MSJ, how opposing counsel approaches settlement, what arguments land in this jurisdiction. That intelligence is trapped in senior partners' heads."
       points={[
         {
+          heading: "Judge and opposing counsel intelligence",
+          body: "Delta profiles every judge and opposing counsel your firm encounters — and draws from the anonymized Intelligence Network for the ones you haven't. Motion grant rates, settlement patterns, preferred brief formats, tendencies on discovery disputes. Strategy before the first filing.",
+        },
+        {
           heading: "Contract analysis and cross-reference",
-          body: "Delta reads contracts, amendments, and side letters together. When a term in the original agreement was modified by a later amendment that contradicts an email representation, Delta flags it.",
+          body: "Delta reads contracts, amendments, and side letters together. When a term in the original agreement was modified by a later amendment that contradicts an email representation, Delta flags it. Financial discrepancies across documents surfaced automatically.",
         },
         {
-          heading: "Financial discrepancy detection",
-          body: "Upload financial statements, invoices, and payment records. Delta cross-references the numbers. Revenue reported in one document that doesn't match another, payments that don't align with contract terms — surfaced automatically.",
+          heading: "Institutional memory for complex matters",
+          body: "Commercial litigation cases span years. Delta maintains the full context — every filing, every communication pattern, every strategic decision. When an associate picks up a file, Delta's case thread gives them complete context without reading thousands of pages.",
         },
         {
-          heading: "Discovery document classification",
-          body: "Thousands of produced documents sorted by type, date, and relevance. Delta classifies at scale so your associates spend time analyzing, not organizing.",
-        },
-        {
-          heading: "Cross-party communication filtering",
-          body: "When you need to find every communication between specific parties about a specific issue across years of correspondence, Delta handles the search and surfaces the relevant threads with source citations.",
+          heading: "Discovery document classification at scale",
+          body: "Thousands of produced documents sorted by type, date, and relevance. Your associates spend time analyzing, not organizing. Delta learns your firm's classification preferences and gets faster with every production.",
         },
       ]}
-      closingLine="Discovery costs are the number one client complaint in commercial litigation. Delta makes document review faster and cheaper. Try it on your next production."
+      closingLine="The firms that win commercial litigation are the ones with better intelligence. Delta builds that intelligence for your firm — and it never walks out the door."
     />
   );
 }

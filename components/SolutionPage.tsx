@@ -178,7 +178,7 @@ export default function SolutionPage({
                 e.currentTarget.style.opacity = "1";
               }}
             >
-              Create Account — $25 Free Credit
+              Start Free — $50 Credit
             </a>
           </motion.div>
         </div>

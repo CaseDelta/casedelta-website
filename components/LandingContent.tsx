@@ -26,7 +26,7 @@ export function LandingContent({ heroVariant }: LandingContentProps) {
         <div id="features">
           {/* Section Header */}
           <SectionHeader
-            id="workflow-section"
+            id="platform"
             title={LANDING_CONTENT.workflowSectionTitle}
           />
 

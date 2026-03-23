@@ -38,7 +38,7 @@ export default function SocialProof() {
               color: "var(--color-text-tertiary)",
             }}
           >
-            Built for Legal Practices
+            Trusted by Firms Across Kansas City
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-x-8 sm:gap-x-12 gap-y-6 sm:gap-y-8 max-w-5xl mx-auto">

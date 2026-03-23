@@ -184,7 +184,7 @@ export function Navbar() {
                 e.currentTarget.style.borderColor = "rgba(250,250,249,0.35)";
               }}
             >
-              Create Free Account
+              Get Started Free
             </a>
           </div>
 
@@ -298,7 +298,7 @@ export function Navbar() {
                 textDecoration: "none",
               }}
             >
-              Create Free Account
+              Get Started Free
             </a>
           </div>
         </div>

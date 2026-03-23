@@ -73,13 +73,13 @@ export function QuantifiableImpact() {
             letterSpacing: "var(--letter-spacing-tight)",
           }}
         >
-          Quantifiable Impact
+          The Math Is Simple
         </motion.h2>
 
         <div className="flex flex-col md:flex-row items-center justify-center divide-y md:divide-y-0 md:divide-x divide-gray-800 gap-4 md:gap-0">
-          <Stat value="70%" description="Reduction in document collection time" />
-          <Stat value="$836" description="Value created per case (from hourly rate*)" />
-          <Stat value="4 hours" description="Average time saved per case" />
+          <Stat value="$50-70K" description="What a paralegal costs per year — and takes everything when they leave" />
+          <Stat value="$500-1,500" description="What Delta costs per month — and everything it learns stays permanently" />
+          <Stat value="18 mo" description="What a new hire needs to learn your firm. Delta does it in weeks." />
         </div>
       </div>
     </section>

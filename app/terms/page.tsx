@@ -8,7 +8,7 @@ export default function TermsPage() {
     <LegalPageLayout title="Terms of Service">
       <LegalSection title="Using CaseDelta">
         <p>
-          By using CaseDelta, you agree to these Terms and our Privacy Policy. CaseDelta provides automated document collection and organization for legal professionals. The Service is a productivity tool—it does not provide legal advice or create an attorney-client relationship. You remain fully responsible for all legal work and professional judgment.
+          By using CaseDelta, you agree to these Terms and our Privacy Policy. CaseDelta provides AI-powered legal practice intelligence for law firms. Delta learns your firm, monitors your cases, and surfaces findings proactively. The Service is a productivity tool — it does not provide legal advice or create an attorney-client relationship. You remain fully responsible for all legal work and professional judgment.
         </p>
       </LegalSection>
 

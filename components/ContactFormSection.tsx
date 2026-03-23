@@ -127,7 +127,7 @@ export function ContactFormSection() {
                 margin: "0 auto",
               }}
             >
-              Our team will reach out shortly to show you how CaseDelta can transform your document collection workflow.
+              We'll reach out to show you what Delta can learn about your firm. Expect to hear from us within one business day.
             </p>
           </motion.div>
         </div>
@@ -163,7 +163,7 @@ export function ContactFormSection() {
                 lineHeight: "1.1",
               }}
             >
-              Let us show you how to save hours getting documents from clients.
+              See what Delta learns about your firm in the first 30 minutes.
             </h2>
           </motion.div>
 

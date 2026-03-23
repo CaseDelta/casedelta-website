@@ -8,13 +8,13 @@ export default function AboutPage() {
     <LegalPageLayout title="About CaseDelta">
       <LegalSection title="Who We Are">
         <p>
-          CaseDelta is a legal technology platform that helps law firms collect and verify documents from clients efficiently. We eliminate the follow-up headache of document collection by automating reminders, verification, and organization—allowing legal professionals to focus on their cases, not chasing paperwork.
+          CaseDelta is the only legal AI that learns how your firm works. Delta connects to your existing tools, learns your cases, your clients, your team's workflows and preferences — and gets smarter every day. Built for the 80% of firms that enterprise legal AI ignores.
         </p>
       </LegalSection>
 
-      <LegalSection title="What We Do">
+      <LegalSection title="What Delta Does">
         <p>
-          Our AI-powered platform streamlines the document collection process for law firms by:
+          Delta is your firm's AI associate — one that builds persistent institutional memory and never walks out the door:
         </p>
         <ul style={{
           listStyleType: "disc",
@@ -25,16 +25,16 @@ export default function AboutPage() {
           lineHeight: "var(--line-height-relaxed)"
         }}>
           <li style={{ marginBottom: "0.5rem" }}>
-            <strong>Automated Client Reminders:</strong> Smart, timely text and email reminders that adapt to client behavior, reducing manual follow-up by 80%
+            <strong>Learns Your Firm:</strong> Connects to your Clio, documents, and email. Builds a compounding understanding of your clients, cases, document patterns, and workflows that deepens every day.
           </li>
           <li style={{ marginBottom: "0.5rem" }}>
-            <strong>Document Verification:</strong> AI-powered verification ensures documents are complete, legible, and properly formatted before submission
+            <strong>Proactive Intelligence:</strong> Morning briefings across all active cases. Missing documents flagged, deadlines surfaced, anomalies caught, drafts ready for review — before you ask.
           </li>
           <li style={{ marginBottom: "0.5rem" }}>
-            <strong>Secure Portal:</strong> Client-friendly upload portal with bank-level encryption and compliance with legal industry standards
+            <strong>Intelligence Network:</strong> Anonymized intelligence across all firms on the platform — jurisdictional insights, practice patterns, court-specific knowledge. The first network effect in legal tech.
           </li>
           <li style={{ marginBottom: "0.5rem" }}>
-            <strong>Workflow Integration:</strong> Seamlessly integrates with existing legal practice management systems
+            <strong>Secure by Architecture:</strong> No client data ever leaves CaseDelta's environment. No OpenAI, no Google, no third-party AI. Full audit trail for bar compliance.
           </li>
         </ul>
       </LegalSection>
@@ -86,7 +86,7 @@ export default function AboutPage() {
 
           <p>
             <strong style={{ color: "var(--color-text-high-contrast)" }}>Business Hours:</strong><br />
-            Monday - Friday: 9:00 AM - 6:00 PM PST<br />
+            Monday - Friday: 9:00 AM - 6:00 PM CST<br />
             Saturday - Sunday: Closed
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function AboutPage() {
 
       <LegalSection title="SMS Notifications">
         <p>
-          CaseDelta uses text messaging to send important notifications about document requests and case updates to our customers. We comply with all carrier regulations and 10DLC requirements.
+          CaseDelta uses text messaging to send important notifications about case updates and Delta's findings to our customers. We comply with all carrier regulations and 10DLC requirements.
         </p>
         <p style={{ marginTop: "1rem" }}>
           To opt in to text notifications, visit our{" "}
@@ -114,7 +114,7 @@ export default function AboutPage() {
 
       <LegalSection title="Service Areas">
         <p>
-          CaseDelta serves law firms throughout the United States. Our platform is designed to work with firms of all sizes, from solo practitioners to large multi-office practices.
+          CaseDelta serves law firms of all sizes throughout the United States — from solo practitioners to firms with 50+ attorneys. Delta works across every practice area where institutional knowledge compounds: personal injury, medical malpractice, employment law, commercial litigation, business law, insurance defense, and more.
         </p>
       </LegalSection>
     </LegalPageLayout>

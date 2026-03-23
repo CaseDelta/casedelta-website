@@ -13,16 +13,16 @@ export default function PricingHero() {
           transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
           className="mb-6 font-serif text-[clamp(2.5rem,5vw,3.5rem)] leading-[1.15] tracking-tight"
         >
-          <span className="text-text-high-contrast">Pay for what </span>
-          <span className="text-text-secondary">Delta does</span>
+          <span className="text-text-high-contrast">A fraction of </span>
+          <span className="text-text-secondary">a paralegal</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.33, 1, 0.68, 1] }}
-          className="mx-auto max-w-[500px] text-lg leading-[1.7] text-text-secondary"
+          className="mx-auto max-w-[600px] text-lg leading-[1.7] text-text-secondary"
         >
-          No per-seat fees. No contracts. Start with $25 in free credits.
+          No per-seat fees. No contracts. Flat firm pricing or usage-based credits. Start with $50 free.
         </motion.p>
       </div>
     </section>

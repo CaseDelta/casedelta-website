@@ -4,26 +4,26 @@ import { motion } from "framer-motion";
 import PricingHero from "@/components/PricingHero";
 import { CTA_URLS } from "@/lib/constants/cta";
 
-const unitPricing = [
+const ease = [0.33, 1, 0.68, 1] as const;
+
+const salesLedTiers = [
   {
-    name: "Case Analysis",
-    price: "$2",
-    unit: "per analysis",
-    description:
-      "Document review, anomaly detection, and completeness tracking.",
+    name: "Practice",
+    price: "$799",
+    target: "5-10 attorneys",
+    included: "~500 analyses + 200 queries/mo",
   },
   {
-    name: "Query",
-    price: "$0.50",
-    unit: "per query",
-    description: "Ask Delta anything about your cases — with source citations.",
+    name: "Firm",
+    price: "$1,499",
+    target: "10-25 attorneys",
+    included: "~1,200 analyses + 500 queries/mo",
   },
   {
-    name: "Case Briefing",
-    price: "$5",
-    unit: "per briefing",
-    description:
-      "Full case summary with findings and recommended next steps.",
+    name: "Enterprise",
+    price: "$2,499",
+    target: "25-50 attorneys",
+    included: "~2,500 analyses + 1,000 queries/mo",
   },
 ];
 
@@ -32,11 +32,69 @@ export default function PricingPage() {
     <main className="min-h-screen">
       <PricingHero />
 
-      {/* Unit Pricing */}
+      {/* Self-Serve Track */}
       <section className="bg-progressive-3 pt-12 pb-16 md:pt-16 md:pb-24">
-        <div className="mx-auto max-w-[1000px] px-6">
+        <div className="mx-auto max-w-[900px] px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease }}
+          >
+            <p
+              className="mb-3 font-medium uppercase tracking-wider text-center"
+              style={{
+                fontSize: "var(--font-size-body)",
+                color: "var(--color-text-tertiary)",
+              }}
+            >
+              Self-Serve
+            </p>
+            <h2
+              className="font-serif mb-4 text-center"
+              style={{
+                fontSize: "var(--font-size-h2)",
+                color: "var(--color-text-high-contrast)",
+                letterSpacing: "var(--letter-spacing-tight)",
+              }}
+            >
+              Start free. Pay as Delta works.
+            </h2>
+            <p
+              className="mb-10 text-center mx-auto max-w-[600px]"
+              style={{
+                fontSize: "var(--font-size-large)",
+                color: "var(--color-text-secondary)",
+                lineHeight: "var(--line-height-relaxed)",
+              }}
+            >
+              Sign up and get $50 in free credits. No credit card required. Delta starts learning your jurisdiction immediately.
+            </p>
+          </motion.div>
+
           <div className="grid gap-6 md:grid-cols-3">
-            {unitPricing.map((unit, index) => (
+            {[
+              {
+                name: "Document Analysis",
+                price: "$1-3",
+                unit: "per document",
+                description:
+                  "AI classification, anomaly detection, completeness tracking, and cross-document analysis.",
+              },
+              {
+                name: "Case Query",
+                price: "$0.50",
+                unit: "per query",
+                description: "Ask Delta anything about your cases — with source citations from your documents.",
+              },
+              {
+                name: "Case Briefing",
+                price: "$5",
+                unit: "per briefing",
+                description:
+                  "Full case summary with findings, flags, and recommended next steps.",
+              },
+            ].map((unit, index) => (
               <motion.div
                 key={unit.name}
                 initial={{ opacity: 0, y: 20 }}
@@ -45,7 +103,7 @@ export default function PricingPage() {
                 transition={{
                   duration: 0.5,
                   delay: index * 0.1,
-                  ease: [0.33, 1, 0.68, 1],
+                  ease,
                 }}
                 className="flex flex-col rounded-2xl border p-8"
                 style={{
@@ -95,12 +153,11 @@ export default function PricingPage() {
             ))}
           </div>
 
-          {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3, ease: [0.33, 1, 0.68, 1] }}
+            transition={{ duration: 0.5, delay: 0.3, ease }}
             className="mt-12 text-center"
           >
             <a
@@ -121,57 +178,63 @@ export default function PricingPage() {
                 e.currentTarget.style.opacity = "1";
               }}
             >
-              Create Account — $25 Free Credit
+              Start Free — $50 Credit
             </a>
           </motion.div>
         </div>
       </section>
 
-      {/* What Firms Typically Spend */}
+      {/* Sales-Led Tiers */}
       <section className="bg-progressive-2 pt-16 pb-16 md:pt-20 md:pb-20">
         <div className="mx-auto max-w-[900px] px-6">
-          <motion.h2
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
-            className="font-serif mb-10 text-center"
-            style={{
-              fontSize: "var(--font-size-h2)",
-              color: "var(--color-text-high-contrast)",
-              letterSpacing: "var(--letter-spacing-tight)",
-            }}
+            transition={{ duration: 0.6, ease }}
           >
-            What firms like yours typically spend
-          </motion.h2>
+            <p
+              className="mb-3 font-medium uppercase tracking-wider text-center"
+              style={{
+                fontSize: "var(--font-size-body)",
+                color: "var(--color-text-tertiary)",
+              }}
+            >
+              For Growing Firms
+            </p>
+            <h2
+              className="font-serif mb-4 text-center"
+              style={{
+                fontSize: "var(--font-size-h2)",
+                color: "var(--color-text-high-contrast)",
+                letterSpacing: "var(--letter-spacing-tight)",
+              }}
+            >
+              Flat firm pricing. Your whole team gets access.
+            </h2>
+            <p
+              className="mb-10 text-center mx-auto max-w-[600px]"
+              style={{
+                fontSize: "var(--font-size-large)",
+                color: "var(--color-text-secondary)",
+                lineHeight: "var(--line-height-relaxed)",
+              }}
+            >
+              Every other legal AI charges per seat. Delta charges per firm. The more your team uses it, the more Delta learns.
+            </p>
+          </motion.div>
 
           <div className="flex flex-col gap-4">
-            {[
-              {
-                label: "Solo / Small Firm",
-                size: "1–3 attorneys",
-                range: "$75 – 200",
-              },
-              {
-                label: "Growing Firm",
-                size: "5–15 attorneys",
-                range: "$500 – 2,000",
-              },
-              {
-                label: "Established Firm",
-                size: "15–50 attorneys",
-                range: "$2,000 – 6,000",
-              },
-            ].map((firm, index) => (
+            {salesLedTiers.map((tier, index) => (
               <motion.div
-                key={firm.label}
+                key={tier.name}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
                   duration: 0.5,
                   delay: index * 0.08,
-                  ease: [0.33, 1, 0.68, 1],
+                  ease,
                 }}
                 className="flex items-center justify-between rounded-2xl border p-6 md:p-8"
                 style={{
@@ -187,7 +250,7 @@ export default function PricingPage() {
                       color: "var(--color-text-high-contrast)",
                     }}
                   >
-                    {firm.label}
+                    {tier.name}
                   </p>
                   <p
                     className="mt-1"
@@ -196,7 +259,7 @@ export default function PricingPage() {
                       color: "var(--color-text-tertiary)",
                     }}
                   >
-                    {firm.size}
+                    {tier.target} &middot; {tier.included}
                   </p>
                 </div>
                 <div className="text-right">
@@ -207,7 +270,7 @@ export default function PricingPage() {
                       color: "var(--color-text-high-contrast)",
                     }}
                   >
-                    {firm.range}
+                    {tier.price}
                   </p>
                   <p
                     style={{
@@ -215,7 +278,7 @@ export default function PricingPage() {
                       color: "var(--color-text-tertiary)",
                     }}
                   >
-                    /month typical
+                    /month flat
                   </p>
                 </div>
               </motion.div>
@@ -234,8 +297,7 @@ export default function PricingPage() {
               lineHeight: "var(--line-height-relaxed)",
             }}
           >
-            A paralegal costs $4,000–6,000/month fully loaded. Most firms spend
-            less than that with Delta.
+            A paralegal costs $50-70K/year fully loaded — and takes everything when they leave. Delta costs a fraction of that, and everything it learns stays permanently.
           </motion.p>
         </div>
       </section>
@@ -247,7 +309,7 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+            transition={{ duration: 0.6, ease }}
           >
             <h3
               className="mb-8 text-center font-serif"
@@ -266,11 +328,12 @@ export default function PricingPage() {
                 style={{ display: "inline-block", textAlign: "left" }}
               >
                 {[
-                  "Unlimited cases, clients, and documents",
+                  "Persistent institutional memory — Delta learns and remembers",
+                  "Morning briefings across all active cases",
+                  "Clio, Google Drive, and email integrations",
+                  "Full audit trail — every action logged for bar compliance",
+                  "Jurisdiction intelligence for your courts and practice area",
                   "Secure client portal for document uploads",
-                  "Full audit trail — every action logged",
-                  "Clio, MyCase, and Google Drive integrations",
-                  "SOC 2 & HIPAA compliant",
                 ].map((feature, index) => (
                   <motion.div
                     key={index}
@@ -280,7 +343,7 @@ export default function PricingPage() {
                     transition={{
                       duration: 0.4,
                       delay: index * 0.05,
-                      ease: [0.33, 1, 0.68, 1],
+                      ease,
                     }}
                     className="flex items-start gap-3"
                   >

@@ -5,27 +5,27 @@ export default function MidSizedFirmsPage() {
     <SolutionPage
       headline="Delta for"
       headlineAccent="Mid-Sized Firms"
-      subtitle="Too big to do everything manually. Too small for Harvey. Delta is built for the firms in between."
-      problem="You have 5 to 50 attorneys handling real caseloads with real complexity. But enterprise legal AI requires 25-seat minimums at $1,000 per lawyer per month — that's not built for you. Your partners are doing work that associates should handle because you can't hire fast enough, can't train fast enough, and can't afford the overhead. You need capacity, not another tool that sits unused."
+      subtitle="Too big to do everything manually. Too small for Harvey. Delta is built for the 80% of firms that enterprise legal AI ignores."
+      problem="You have 5 to 50 attorneys handling real caseloads. Enterprise legal AI requires 25-40 seat minimums at $1,000 per lawyer per month — that's not built for you. Your partners are doing work associates should handle. And every time a senior paralegal or partner leaves, years of institutional knowledge — your clients, your processes, the details that make your practice run — disappear overnight."
       points={[
         {
           heading: "Flat firm pricing, not per-seat",
-          body: "Every other legal AI tool charges per attorney. Delta charges for the work it does. Your whole firm gets access. Whether 3 attorneys use it or 30, the pricing stays tied to value delivered — not headcount.",
-        },
-        {
-          heading: "Works inside your existing stack",
-          body: "Delta connects to Clio, MyCase, and Google Drive with its own credentials — separate from your attorneys' logins. No migration, no new platform to learn. Like onboarding a new associate who shows up already knowing how your systems work.",
+          body: "Harvey charges $1,000/lawyer/month with a 40-seat minimum. Paxton charges $159-499 per seat. Delta charges per firm. Your whole team gets access at one flat price — $799 to $2,499/month depending on firm size. The more your team uses Delta, the more it learns.",
         },
         {
           heading: "Institutional memory that stays",
-          body: "When a paralegal leaves, they take years of case knowledge with them. Delta builds institutional memory that compounds over time and never walks out the door. After six months, Delta knows your firm's clients, document patterns, and workflows better than a new hire would after a year.",
+          body: "When a paralegal leaves after eight years, they take everything they knew about your clients, your cases, and your workflows. Delta captures it all permanently. After six months, Delta knows your firm better than a new hire would after 18 months — and none of that knowledge ever walks out.",
         },
         {
-          heading: "Audit trail for bar compliance",
-          body: "Every action Delta takes is logged with a timestamp, the document accessed, the query asked, and the sources cited. If your bar association asks how your firm uses AI, you show them the log. No client data ever leaves CaseDelta or goes to a third party.",
+          heading: "Intelligence Network advantage",
+          body: "A 10-attorney firm has appeared before a judge 3 times. A 50-attorney firm has appeared 30 times. Delta gives both firms access to aggregated, anonymized intelligence across all firms on the platform. The small firm gets the intelligence advantage of a firm ten times its size.",
+        },
+        {
+          heading: "Works inside your existing stack",
+          body: "Delta connects to Clio, Google Drive, and email with its own credentials — like onboarding a new associate who shows up already knowing your systems. No migration, no new platform. Full audit trail for bar compliance. No client data ever leaves CaseDelta.",
         },
       ]}
-      closingLine="Harvey built legal AI for the Am Law 100. Delta is built for the firms that actually need it. Start with $25 in free credits — no seat minimums, no contracts."
+      closingLine="Harvey built legal AI for the AmLaw 100. Delta is built for the firms that actually need it. Start with $50 in free credits — no seat minimums, no contracts."
     />
   );
 }

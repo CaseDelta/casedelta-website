@@ -1,7 +1,7 @@
 export const CTA = {
-  GET_STARTED: "Get Started",
-  CREATE_ACCOUNT: "Create Free Account",
-  SEE_HOW: "See How It Works",
+  GET_STARTED: "Get Started Free",
+  CREATE_ACCOUNT: "Start Free — $50 Credit",
+  SEE_HOW: "See How Delta Learns",
   SIGN_IN: "Sign In",
 } as const;
 

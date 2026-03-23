@@ -11,24 +11,29 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "What's included in the free trial?",
+    question: "How does the free tier work?",
     answer:
-      "14-day trial with full access to Professional plan features. No credit card required. Export all data if you don't continue.",
+      "Sign up and get $50 in free credits — no credit card required. Delta immediately researches your jurisdiction and starts learning. Use credits for document analysis, case queries, and briefings. When credits run out, add more or upgrade to a flat firm plan.",
   },
   {
-    question: "How does per-user pricing work?",
+    question: "How is pricing different from Harvey or Paxton?",
     answer:
-      "Professional plan includes 5 users. Additional users are $219/month each. Adjust team size anytime from your billing dashboard.",
+      "Harvey requires 40+ seats at $1,000/lawyer/month. Paxton charges $159-499 per seat. Delta charges per firm — not per seat. Your whole team gets access at one flat price. The more your team uses Delta, the more it learns, and the more valuable it becomes.",
   },
   {
-    question: "Can I change or cancel my plan?",
+    question: "What does Delta actually learn about my firm?",
     answer:
-      "Yes. Upgrade, downgrade, or cancel anytime. Changes take effect at your next billing cycle. No cancellation fees.",
+      "Delta learns your cases, clients, document types, drafting preferences, team workflows, and the patterns specific to your practice. This knowledge compounds over time and is visible on the 'What Delta Knows' page. You can review and edit anything Delta has learned.",
   },
   {
     question: "Is my client data secure?",
     answer:
-      "Yes. Bank-level encryption, SOC 2 compliance, zero-knowledge architecture. See our Security page for details.",
+      "No client data ever leaves CaseDelta's environment. No OpenAI, no Google, no third-party AI services. Delta connects to your tools with its own credentials. Every action is logged with a full audit trail for bar compliance. Your firm's intelligence is yours alone.",
+  },
+  {
+    question: "What happens to what Delta learned if I cancel?",
+    answer:
+      "Your data is always yours. You can export everything. But the institutional memory Delta has built — the learning, the patterns, the intelligence — that resets. It's like a senior associate leaving. Starting over means starting from zero.",
   },
 ];
 

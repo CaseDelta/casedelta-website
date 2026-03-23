@@ -15,9 +15,9 @@ export const footerCategories: FooterCategory[] = [
   {
     title: "Platform",
     links: [
-      { label: "Document Analysis", href: "/#platform" },
-      { label: "Case Monitoring", href: "/#platform" },
-      { label: "Institutional Memory", href: "/#platform" },
+      { label: "How Delta Learns", href: "/#platform" },
+      { label: "Intelligence Network", href: "/#platform" },
+      { label: "Proactive Briefings", href: "/#platform" },
       { label: "Integrations", href: "/#platform" },
     ],
   },
@@ -52,7 +52,7 @@ export const footerCategories: FooterCategory[] = [
     title: "Connect",
     links: [
       {
-        label: "Get Started",
+        label: "Get Started Free",
         href: "https://app.casedelta.com/signup",
         isExternal: true,
       },

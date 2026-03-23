@@ -1,7 +1,7 @@
 export const HERO_CONTENT = {
-  heading: "Another Seat in Your Firm",
+  heading: "Delta Learns Your Firm",
   subheading:
-    "Delta is your firm's AI associate — reviews your cases overnight, flags what needs attention, and has drafts ready before you ask. Works while you're in court. Costs less than a paralegal.",
+    "Delta connects to your Clio, learns your cases, your clients, your team's workflows — and gets smarter every day. After six months, Delta knows your firm better than a new hire would after 18 months. And none of that knowledge ever walks out the door.",
   metaDescription:
-    "CaseDelta is the AI associate for small-to-mid market law firms. Delta connects to your Clio, monitors your cases, and brings you findings before you ask — at a fraction of the cost of a paralegal.",
+    "CaseDelta is the only legal AI that learns how your firm works. Delta connects to your Clio, builds institutional memory that compounds daily, and costs a fraction of a paralegal.",
 } as const;

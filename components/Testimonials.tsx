@@ -16,7 +16,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "What used to take us 2-3 weeks of follow-up for our paralegals now happens in a few days. I appreciate being able to audit AI emails, and automatically store files in Dropbox.",
+      "After two weeks, Delta already knew our clients, our cases, and how our team prefers to work. It's like having an associate who remembers everything and never walks out the door.",
     author: "Jason Havencroft",
     title: "Managing Partner",
     company: "Havencroft & Associates",

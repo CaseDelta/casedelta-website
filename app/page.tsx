@@ -139,9 +139,9 @@ function Hero() {
                 marginBottom: 20,
               }}
             >
-              Practice Made
+              Delta Learns
               <br />
-              Proactive
+              Your Firm
             </motion.h1>
 
             <motion.p
@@ -159,9 +159,9 @@ function Hero() {
                 maxWidth: 520,
               }}
             >
-              Delta reviews your cases overnight, flags what needs attention, and
-              has drafts ready before you walk in. The AI associate for firms
-              that move fast.
+              Delta connects to your Clio, learns your cases, your clients,
+              your workflows — and gets smarter every day. The only legal AI
+              that builds institutional memory.
             </motion.p>
 
             <motion.div
@@ -194,7 +194,7 @@ function Hero() {
                   (e.currentTarget.style.opacity = "1")
                 }
               >
-                Create Free Account
+                Get Started Free
               </Link>
             </motion.div>
           </div>
@@ -228,11 +228,11 @@ function TickerBar() {
     "Medical Malpractice",
     "Employment Law",
     "Commercial Litigation",
-    "Insurance Bad Faith",
-    "Family Law",
-    "Tax Controversy",
-    "Estate Planning",
-    "Immigration",
+    "Business Law",
+    "Insurance Defense",
+    "Government Defense",
+    "Workers Compensation",
+    "Corporate Counsel",
   ];
 
   return (
@@ -357,12 +357,12 @@ function PlatformSection() {
           }}
         >
           <strong style={{ color: C.ink }}>
-            Delta is an AI associate that lives inside your firm.
+            Delta learns how your firm works — and gets smarter every day.
           </strong>{" "}
           <span style={{ color: C.muted }}>
-            It connects to your Clio, monitors your cases overnight, and brings
-            you findings before you ask — not a chatbot you prompt, a colleague
-            that shows up.
+            It connects to your Clio, learns your cases, your clients, your
+            team&apos;s preferences — and builds an institutional memory that
+            compounds without limit and never walks out the door.
           </span>
         </motion.h3>
 
@@ -556,13 +556,13 @@ function BriefingEmbed() {
 // ═══════════════════════════════════════════════════════════════════════════
 function UseCaseSection() {
   const useCases = [
-    "Document Analysis",
-    "Case Monitoring",
-    "Income Verification",
-    "Deadline Tracking",
-    "Draft Generation",
-    "Anomaly Detection",
-    "Completeness Tracking",
+    "Learns Your Firm",
+    "Morning Briefings",
+    "Institutional Memory",
+    "Cross-Document Analysis",
+    "Jurisdiction Intelligence",
+    "Intelligence Network",
+    "Deadline Monitoring",
   ];
   const [active, setActive] = useState(3);
 
@@ -596,7 +596,7 @@ function UseCaseSection() {
                 marginBottom: 20,
               }}
             >
-              Delta handles
+              What Delta knows
             </p>
             <Link
               href="#platform"
@@ -711,10 +711,10 @@ function TestimonialSection() {
               margin: "0 0 32px",
             }}
           >
-            It&apos;s like having an extra person in the firm who&apos;s always
-            working. I come out of a three-hour deposition and there&apos;s a
-            summary waiting — here&apos;s what happened with all my cases,
-            here&apos;s what still needs attention. It just runs.
+            After two weeks, Delta knew our practice better than a new hire
+            would after six months. I walk out of a meeting and Delta already
+            has findings waiting — it knows our cases, our clients, our
+            preferences. And it gets better every week.
           </motion.blockquote>
 
           <motion.div
@@ -758,20 +758,20 @@ function TestimonialSection() {
 function FeaturesSection() {
   const features = [
     {
-      title: "Proactive Case Monitoring",
-      desc: "Delta runs across all your active cases overnight — surfaces deadlines, flags missing documents, and queues drafted actions for your morning review.",
+      title: "Learns Your Firm",
+      desc: "Delta connects to your Clio, documents, and email. Within a week, it knows your caseload. Within a month, it knows which clients submit late, how your team prefers to work, and when to send early warnings.",
     },
     {
-      title: "Cross-Document Intelligence",
-      desc: "Upload any set of legal documents. Delta compares data across them — income discrepancies, conflicting dates, unsigned pages — insights a manual review would miss.",
+      title: "Smarter With Every Firm on the Platform",
+      desc: "Delta doesn\u2019t just learn from your firm. It draws from anonymized intelligence across every firm on CaseDelta — courts, jurisdictions, local rules, practice patterns. The more firms that join, the smarter everyone gets.",
     },
     {
-      title: "Institutional Memory",
-      desc: "Delta learns your firm over time. Your clients, your opposing counsel\u2019s patterns, your drafting style. Knowledge that compounds and never walks out the door.",
+      title: "Institutional Memory That Stays",
+      desc: "When a senior paralegal leaves, she takes 8 years of case knowledge. Delta captures it all permanently. The longer you use it, the more valuable it becomes — and the more you\u2019d lose by leaving.",
     },
     {
-      title: "Works Inside Your Stack",
-      desc: "Connects to Clio, Google Drive, and your existing tools via OAuth. Delta gets its own credentials — like onboarding a new hire. No migration required.",
+      title: "Secure Inside Your Walls",
+      desc: "No client data ever leaves CaseDelta. No OpenAI, no Google. Delta connects with its own credentials. Every action logged for bar compliance. Your firm\u2019s intelligence is yours alone.",
     },
   ];
 
@@ -795,11 +795,11 @@ function FeaturesSection() {
           }}
         >
           <strong style={{ color: C.ivory }}>
-            Built for the way lawyers actually work.
+            The only legal AI that actually learns your firm.
           </strong>{" "}
           <span style={{ color: C.muted }}>
-            Not another tool to learn — a colleague that handles what&apos;s
-            eating your billable time.
+            Not a chatbot you prompt. Not a search engine for your files.
+            An associate that gets smarter every day.
           </span>
         </motion.h3>
 
@@ -868,16 +868,16 @@ function FeaturesSection() {
 // 6. STATS — Dark BG, horizontal label→number rows (Harvey's layout)
 // ═══════════════════════════════════════════════════════════════════════════
 function StatsSection() {
-  const c1 = useCounter(20);
-  const c2 = useCounter(80);
+  const c1 = useCounter(80);
+  const c2 = useCounter(18);
   const c3 = useCounter(100);
 
   const stats = [
-    { label: "Average hours saved per attorney per month", value: `${c1.count}+`, ref: c1.ref },
-    { label: "Of law firms underserved by enterprise AI", value: `${c2.count}%`, ref: c2.ref },
-    { label: "Audit trail coverage for bar compliance", value: `${c3.count}%`, ref: c3.ref },
-    { label: "Delta works while you\u2019re away", value: "24/7", ref: undefined },
-    { label: "Cost of a paralegal CaseDelta replaces", value: "$50\u201370K", ref: undefined },
+    { label: "Of law firms ignored by enterprise AI like Harvey", value: `${c1.count}%`, ref: c1.ref },
+    { label: "Months for a new hire to learn your firm — Delta does it in weeks", value: `${c2.count}`, ref: c2.ref },
+    { label: "Audit trail coverage — every action logged for bar compliance", value: `${c3.count}%`, ref: c3.ref },
+    { label: "Delta learns while you\u2019re in court", value: "24/7", ref: undefined },
+    { label: "What a paralegal costs — and takes everything when they leave", value: "$50\u201370K", ref: undefined },
   ];
 
   return (
@@ -1001,7 +1001,7 @@ function SecuritySection() {
                 marginBottom: 20,
               }}
             >
-              Enterprise-grade security and controls
+              Delta learns inside your firm&apos;s walls
             </motion.h3>
 
             <motion.p
@@ -1146,7 +1146,7 @@ function FooterCta() {
             marginBottom: 24,
           }}
         >
-          See Delta on your actual cases.
+          See what Delta learns about your firm.
         </motion.h3>
 
         <motion.p
@@ -1164,8 +1164,8 @@ function FooterCta() {
             maxWidth: 440,
           }}
         >
-          We&apos;ll run Delta on your documents — live, in 10 minutes. No
-          slides. No feature tour. Your cases.
+          Connect your Clio. Watch Delta learn your firm in real time. $50
+          in free credits — no contracts, no seat minimums.
         </motion.p>
 
         <motion.div
@@ -1195,7 +1195,7 @@ function FooterCta() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.88")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Create Free Account
+            Get Started Free
           </a>
         </motion.div>
 

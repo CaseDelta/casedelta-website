@@ -12,9 +12,9 @@ export function SecuritySection() {
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   const features = [
-    { icon: ShieldCheck, label: "PII-Safe" },
-    { icon: Award, label: "SOC 2 & HIPAA Certified" },
-    { icon: Scale, label: "State Bar Approved" },
+    { icon: ShieldCheck, label: "Zero Data to Third-Party AI" },
+    { icon: Award, label: "Full Audit Trail — Every Action Logged" },
+    { icon: Scale, label: "ABA Rule 1.6 Compliant by Architecture" },
   ];
 
   // Cycle through features every 3 seconds
@@ -59,7 +59,7 @@ export function SecuritySection() {
                 color: "#FFFFFF",
               }}
             >
-              Security & Confidentiality First.
+              Delta Learns Inside Your Firm's Walls.
             </h2>
 
             {/* Subheading */}
@@ -72,7 +72,7 @@ export function SecuritySection() {
                 fontWeight: 400,
               }}
             >
-              Your clients' data stays completely confidential. No third-party AI services, no data leaving our systems, no exceptions.
+              No client data ever leaves CaseDelta's environment. No OpenAI. No Google. Delta connects to your tools with its own credentials, learns inside your firm's space, and every action is logged for bar compliance.
             </p>
 
             {/* Learn More Link */}
