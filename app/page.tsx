@@ -2,7 +2,6 @@
 
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { useRef, useEffect, useState, useCallback } from "react";
 
 // ---------------------------------------------------------------------------
@@ -959,10 +958,44 @@ function StatsSection() {
 // ═══════════════════════════════════════════════════════════════════════════
 function SecuritySection() {
   const badges = [
-    { icon: "/images/harvey-assets/shield-soc2.svg", label: "SOC2 II" },
-    { icon: "/images/harvey-assets/euro-security.svg", label: "CCPA" },
-    { icon: "/images/harvey-assets/iso-badge.svg", label: "ISO 27001" },
-    { icon: "/images/harvey-assets/euro-security.svg", label: "GDPR" },
+    {
+      label: "Zero Third-Party AI",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      ),
+    },
+    {
+      label: "Full Audit Trail",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
+        </svg>
+      ),
+    },
+    {
+      label: "ABA 1.6 Compliant",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="8" r="7" />
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+        </svg>
+      ),
+    },
+    {
+      label: "Own Credentials",
+      icon: (
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      ),
+    },
   ];
 
   return (
@@ -1033,7 +1066,7 @@ function SecuritySection() {
               custom={2}
             >
               <Link
-                href="#security"
+                href="/ai-policy"
                 style={{
                   fontFamily: sans,
                   fontSize: 14,
@@ -1049,12 +1082,12 @@ function SecuritySection() {
                   (e.currentTarget.style.opacity = "1")
                 }
               >
-                More About Security →
+                Our AI and Security Policy →
               </Link>
             </motion.div>
           </div>
 
-          {/* Right badges — single row */}
+          {/* Right badges */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
@@ -1063,8 +1096,8 @@ function SecuritySection() {
             custom={2}
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "clamp(24px, 3vw, 48px)",
+              gridTemplateColumns: "repeat(2, 1fr)",
+              gap: "clamp(32px, 4vw, 48px)",
               alignItems: "start",
             }}
           >
@@ -1076,15 +1109,10 @@ function SecuritySection() {
                   flexDirection: "column",
                   alignItems: "center",
                   gap: 12,
+                  color: "rgba(250,250,249,0.4)",
                 }}
               >
-                <Image
-                  src={b.icon}
-                  alt={b.label}
-                  width={80}
-                  height={80}
-                  style={{ opacity: 0.45 }}
-                />
+                {b.icon}
                 <p
                   style={{
                     fontFamily: sans,
