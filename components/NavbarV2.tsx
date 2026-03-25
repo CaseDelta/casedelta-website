@@ -245,41 +245,40 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               transition: "opacity 0.5s ease",
             }}
           >
-            <Link href="https://app.casedelta.com" style={{ textDecoration: "none" }}>
-              <motion.span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: FONT,
-                  fontSize: 15,
-                  fontWeight: 500,
-                  color: "#0A0A0A",
-                  height: 40,
-                  padding: "0 18px",
-                  borderRadius: 5,
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #E0E0E0",
-                  letterSpacing: "-0.01em",
-                  cursor: "pointer",
-                }}
-                whileHover={{
-                  y: -2,
-                  borderColor: "#C8C8C8",
-                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
-                }}
-                whileTap={{
-                  y: 0,
-                  scale: 0.97,
-                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.06)",
-                }}
-                transition={springBounce}
-              >
-                Sign in
-              </motion.span>
+            <Link
+              href="https://app.casedelta.com"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontFamily: FONT,
+                fontSize: 15,
+                fontWeight: 500,
+                color: "#0A0A0A",
+                height: 40,
+                padding: "0 18px",
+                borderRadius: 5,
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E0E0E0",
+                letterSpacing: "-0.01em",
+                textDecoration: "none",
+                transition: "all 0.25s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#CCC";
+                e.currentTarget.style.color = "#555";
+                e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#E0E0E0";
+                e.currentTarget.style.color = "#0A0A0A";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              Sign in
             </Link>
 
-            <motion.a
+            <a
               href="https://app.casedelta.com/signup"
               className="cd-btn-cta"
               style={{
@@ -299,26 +298,23 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
                 letterSpacing: "-0.01em",
                 boxShadow: `0 1px 3px ${ACCENT}20`,
                 opacity: hideLinks ? 0 : 1,
-                pointerEvents: hideLinks ? "none" as const : "auto" as const,
-                transition: "opacity 0.5s ease",
+                pointerEvents: hideLinks ? "none" : "auto",
+                transition: "all 0.25s ease",
               }}
-              whileHover={{
-                y: -2,
-                backgroundColor: ACCENT_DEEP,
-                boxShadow: `0 6px 20px ${ACCENT}35`,
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = ACCENT_DEEP;
+                e.currentTarget.style.boxShadow = `0 4px 16px ${ACCENT}35`;
               }}
-              whileTap={{
-                y: 0,
-                scale: 0.97,
-                boxShadow: `0 2px 6px ${ACCENT}25`,
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = ACCENT;
+                e.currentTarget.style.boxShadow = `0 1px 3px ${ACCENT}20`;
               }}
-              transition={springBounce}
             >
               Get Started
               <svg className="cd-cta-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none">
                 <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </motion.a>
+            </a>
           </div>
 
           {/* Mobile hamburger */}
