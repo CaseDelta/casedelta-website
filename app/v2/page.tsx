@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useSpring } from "framer-motion";
 import { HeroV2 } from "@/components/HeroV2";
 import { NavbarV2 } from "@/components/NavbarV2";
 import { HeroDeco } from "@/components/HeroDecorations";
@@ -15,10 +15,27 @@ export default function V2Page() {
     setNavVisible(true);
   }, []);
 
+  const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
   const deco = <HeroDeco />;
 
   return (
     <main style={{ backgroundColor: "#FFFFFF" }}>
+      {/* Scroll progress bar — always visible */}
+      <motion.div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 2,
+          backgroundColor: "#2563EB",
+          transformOrigin: "0%",
+          scaleX: smoothProgress,
+          zIndex: 200,
+        }}
+      />
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={navVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
@@ -28,8 +45,16 @@ export default function V2Page() {
         <NavbarV2 />
       </motion.div>
       <HeroV2 onReveal={handleReveal} deco={deco} />
-      <BelowFold />
-      <FooterV2 />
+      <div style={{
+        height: navVisible ? "auto" : 0,
+        overflow: navVisible ? "visible" : "hidden",
+        opacity: navVisible ? 1 : 0,
+        transition: "opacity 0.8s ease 0.3s",
+        pointerEvents: navVisible ? "auto" : "none",
+      }}>
+        <BelowFold />
+        <FooterV2 />
+      </div>
     </main>
   );
 }

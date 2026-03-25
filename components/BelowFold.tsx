@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 
 const ACCENT = "#2563EB";
 const DELTA_BLUE = "#1D4ED8";
@@ -115,6 +115,14 @@ export function BelowFold() {
     return () => clearInterval(id);
   }, []);
 
+  // Parallax for SVG decorations
+  const decoRef1 = useRef(null);
+  const decoRef2 = useRef(null);
+  const { scrollYProgress: sp1 } = useScroll({ target: decoRef1, offset: ["start end", "end start"] });
+  const { scrollYProgress: sp2 } = useScroll({ target: decoRef2, offset: ["start end", "end start"] });
+  const decoY1 = useTransform(sp1, [0, 1], [80, -80]);
+  const decoY2 = useTransform(sp2, [0, 1], [60, -60]);
+
   return (
     <div
       style={{
@@ -122,6 +130,19 @@ export function BelowFold() {
         fontFamily: FONT,
       }}
     >
+      <style>{`
+        @keyframes ctaPulse {
+          0%, 100% { box-shadow: 0 2px 8px ${ACCENT}25; }
+          50% { box-shadow: 0 4px 20px ${ACCENT}40; }
+        }
+        .cd-cta-pulse {
+          animation: ctaPulse 3s ease-in-out infinite;
+        }
+        .cd-cta-pulse:hover {
+          animation: none;
+        }
+      `}</style>
+
       {/* ── Continuous ruler lines ── */}
       <div
         aria-hidden
@@ -230,6 +251,18 @@ export function BelowFold() {
             Your client data stays inside your firm.{" "}
             <span style={{ color: "#888" }}>Nothing is ever shared.</span>
           </motion.h2>
+          <motion.p {...fade(0.1)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#999",
+            lineHeight: 1.5,
+            letterSpacing: "-0.01em",
+            maxWidth: 520,
+            marginTop: 16,
+          }}>
+            Most legal AI sends your client data to outside companies to process it. We don&apos;t. Everything runs inside CaseDelta, and we pay the cost to keep it that way.
+          </motion.p>
         </div>
       </section>
 
@@ -251,15 +284,71 @@ export function BelowFold() {
             Delta works with what you already use.{" "}
             <span style={{ color: "#888" }}>No switching. No learning curve.</span>
           </motion.h2>
+
+          {/* Integration logos */}
+          <motion.div {...fade(0.15)} style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: "clamp(24px, 3vw, 40px)",
+            marginTop: "clamp(32px, 4vw, 48px)",
+          }}>
+            {[
+              { src: "/assets/integrations/clio.svg", name: "Clio", h: 22 },
+              { src: "/assets/integrations/google-drive.svg", name: "Google Drive", h: 28 },
+              { src: "/assets/integrations/gmail.svg", name: "Gmail", h: 24 },
+              { src: "/assets/integrations/google-calendar.svg", name: "Google Calendar", h: 26 },
+              { src: "/assets/integrations/outlook.svg", name: "Outlook", h: 26 },
+              { src: "/assets/integrations/dropbox.svg", name: "Dropbox", h: 26 },
+              { src: "/assets/integrations/quickbooks.svg", name: "QuickBooks", h: 22 },
+              { src: "/assets/integrations/docusign.svg", name: "DocuSign", h: 20 },
+              { src: "/assets/integrations/mycase.webp", name: "MyCase", h: 20 },
+            ].map((logo, i) => (
+              <motion.div
+                key={logo.name}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE }}
+              >
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  title={logo.name}
+                  style={{
+                    height: logo.h,
+                    width: "auto",
+                    opacity: 0.5,
+                    transition: "opacity 0.3s ease",
+                    cursor: "default",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = "1"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = "0.5"; }}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+          <motion.p {...fade(0.25)} style={{
+            fontFamily: FONT,
+            fontSize: 14,
+            fontWeight: 500,
+            color: "#BBB",
+            letterSpacing: "-0.01em",
+            marginTop: 16,
+          }}>
+            + any service you use
+          </motion.p>
         </div>
       </section>
 
       {/* ════════════════════════════════════════
           4. VALUE PROP 2 — Big sell, full scale
           ════════════════════════════════════════ */}
-      <section style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0", overflow: "hidden" }}>
+      <section ref={decoRef1} style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
-        <DecoTopLeft />
+        <motion.div style={{ y: decoY1, position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <DecoTopLeft />
+        </motion.div>
         <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
           <motion.h2 {...fade()} style={{
             fontFamily: FONT,
@@ -270,11 +359,23 @@ export function BelowFold() {
             letterSpacing: "-0.035em",
             maxWidth: 780,
           }}>
-            Delta gets smarter every time you use it.{" "}
+            Delta gets smarter with every case.{" "}
             <span style={{ color: ACCENT }}>
-              No other legal AI does.
+              Like a great associate, except it never forgets.
             </span>
           </motion.h2>
+          <motion.p {...fade(0.1)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#999",
+            lineHeight: 1.5,
+            letterSpacing: "-0.01em",
+            maxWidth: 520,
+            marginTop: 16,
+          }}>
+            Your preferences, your judges, your drafting style. Delta remembers and applies them automatically.
+          </motion.p>
         </div>
       </section>
 
@@ -333,14 +434,16 @@ export function BelowFold() {
       {/* ════════════════════════════════════════
           6. CTA — Destination feel, centered
           ════════════════════════════════════════ */}
-      <section id="cta" style={{
+      <section ref={decoRef2} id="cta" style={{
         position: "relative",
         padding: "clamp(120px, 14vw, 200px) 0 clamp(140px, 16vw, 220px)",
         background: "linear-gradient(180deg, #FFFFFF 0%, #F8FAFF 100%)",
         overflow: "hidden",
       }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
-        <DecoWide />
+        <motion.div style={{ y: decoY2, position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <DecoWide />
+        </motion.div>
         <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)", textAlign: "center" }}>
           <motion.h2 {...fade()} style={{
             fontFamily: FONT,
@@ -352,13 +455,13 @@ export function BelowFold() {
             maxWidth: 600,
             margin: "0 auto 40px",
           }}>
-            Sign up and see what Delta already knows about your judges.
+            Meet the associate that already knows your judges.
           </motion.h2>
 
           <motion.div {...fade(0.15)} style={{ display: "flex", justifyContent: "center" }}>
             <motion.a
               href="https://app.casedelta.com/signup"
-              className="cd-btn-cta"
+              className="cd-btn-cta cd-cta-pulse"
               style={{
                 display: "inline-flex",
                 alignItems: "center",

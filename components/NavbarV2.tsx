@@ -19,8 +19,10 @@ export function NavbarV2() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navHovered, setNavHovered] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
+    const sectionIds = ["value-prop", "security", "cta"];
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 60);
@@ -32,6 +34,17 @@ export function NavbarV2() {
         setIsVisible(true);
       }
       setLastScrollY(y);
+
+      // Determine active section
+      let current = "";
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.getBoundingClientRect().top;
+          if (top <= 200) current = `#${id}`;
+        }
+      }
+      setActiveSection(current);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -83,7 +96,8 @@ export function NavbarV2() {
           opacity: 0;
           transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
         }
-        .cd-nav-link:hover .cd-nav-underline {
+        .cd-nav-link:hover .cd-nav-underline,
+        .cd-nav-active .cd-nav-underline {
           transform: scaleX(1);
           opacity: 1;
         }
@@ -159,14 +173,14 @@ export function NavbarV2() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="cd-nav-link"
+                  className={`cd-nav-link${activeSection === item.href ? " cd-nav-active" : ""}`}
                   style={{
                     textDecoration: "none",
                     position: "relative",
                     fontFamily: FONT,
                     fontSize: 15,
                     fontWeight: 500,
-                    color: "#0A0A0A",
+                    color: activeSection === item.href ? "#555" : "#0A0A0A",
                     padding: "8px 14px",
                     letterSpacing: "-0.01em",
                     cursor: "pointer",
