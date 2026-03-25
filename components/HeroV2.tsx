@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ─── Design tokens ─── */
@@ -45,6 +45,10 @@ const T = { deltaAppear: 200, firstSub: 900, revealAfterFinal: 900 };
 
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/* ─── Session-level flag: survives client-side nav, resets on full reload ─── */
+let hasPlayedIntro = false;
+export function getHasPlayedIntro() { return hasPlayedIntro; }
+
 /* ─── Component ─── */
 interface HeroV2Props {
   onReveal?: () => void;
@@ -52,16 +56,22 @@ interface HeroV2Props {
 }
 
 export function HeroV2({ onReveal, deco }: HeroV2Props) {
-  const [showDelta, setShowDelta] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const skipIntro = hasPlayedIntro || !!prefersReducedMotion;
+  const [showDelta, setShowDelta] = useState(skipIntro);
   const [subtitleIndex, setSubtitleIndex] = useState(-1);
-  const [revealed, setRevealed] = useState(false);
-  const [introExited, setIntroExited] = useState(false);
+  const [revealed, setRevealed] = useState(skipIntro);
+  const [introExited, setIntroExited] = useState(skipIntro);
 
   const onRevealRef = useRef(onReveal);
   onRevealRef.current = onReveal;
   const holdTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
+    if (skipIntro) {
+      onRevealRef.current?.();
+      return;
+    }
     const t1 = setTimeout(() => setShowDelta(true), T.deltaAppear);
     const t2 = setTimeout(() => setSubtitleIndex(0), T.firstSub);
     return () => {
@@ -69,13 +79,14 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
       clearTimeout(t2);
       clearTimeout(holdTimer.current);
     };
-  }, []);
+  }, [skipIntro]);
 
   const onSubtitleAnimEnd = useCallback(() => {
     clearTimeout(holdTimer.current);
     if (subtitleIndex === SUBTITLES.length - 1) {
       holdTimer.current = setTimeout(() => {
         setRevealed(true);
+        hasPlayedIntro = true;
         onRevealRef.current?.();
       }, T.revealAfterFinal);
     } else {
@@ -311,6 +322,7 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
           {/* ── Large video right column ── */}
           <motion.div
+            className="max-h-[60vh] lg:max-h-none overflow-hidden"
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={
               revealed
@@ -414,14 +426,14 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
                     <span style={{ fontSize: 13, fontWeight: 600, color: "#1A1A1A", letterSpacing: "-0.01em" }}>Delta</span>
                     <span style={{ fontSize: 11, color: "#999", marginLeft: 4 }}>Graves Law</span>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, backgroundColor: "#F5F5F5", borderRadius: 6, padding: "6px 14px", minWidth: 220 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, backgroundColor: "#F5F5F5", borderRadius: 6, padding: "6px 14px", flex: 1, minWidth: 0 }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#AAA" strokeWidth="1.5" /><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="#AAA" strokeWidth="1.5" strokeLinecap="round" /></svg>
                     <span style={{ fontSize: 11, color: "#AAA" }}>Search</span>
                   </div>
                 </div>
 
                 {/* Chat messages — pushed to bottom, large text */}
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 32px 12px" }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 clamp(16px, 4vw, 32px) 12px" }}>
                   {/* Today divider */}
                   <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
                     <div style={{ flex: 1, height: 1, backgroundColor: BORDER }} />
@@ -431,9 +443,9 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
                   {/* Delta morning briefing */}
                   <motion.div
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                     animate={revealed ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 1.0, ease: EASE_OUT }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 1.0, ease: EASE_OUT }}
                     style={{ display: "flex", gap: 12, padding: "8px 0" }}
                   >
                     <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: "#1A1A1A", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
@@ -452,9 +464,9 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
                   {/* User asks for chronology + learning */}
                   <motion.div
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                     animate={revealed ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 2.4, ease: EASE_OUT }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 2.4, ease: EASE_OUT }}
                     style={{ display: "flex", gap: 12, padding: "8px 0" }}
                   >
                     <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: `${ACCENT}15`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -473,9 +485,9 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
                   {/* Delta response with artifact */}
                   <motion.div
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                     animate={revealed ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 3.8, ease: EASE_OUT }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 3.8, ease: EASE_OUT }}
                     style={{ display: "flex", gap: 12, padding: "8px 0" }}
                   >
                     <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: "#1A1A1A", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
@@ -490,16 +502,16 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
                         Chronology built. Flagging surgical timeline gaps on all med mal cases going forward.
                       </p>
                       {/* PDF artifact card */}
-                      <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "10px 14px", border: `1px solid ${BORDER}`, borderRadius: 8, backgroundColor: "#FAFAFA" }}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="#E74C3C" strokeWidth="1.5" strokeLinecap="round" /><polyline points="14 2 14 8 20 8" stroke="#E74C3C" strokeWidth="1.5" strokeLinecap="round" /><text x="8" y="17" fontSize="6" fill="#E74C3C" fontWeight="700" fontFamily="sans-serif">PDF</text></svg>
-                        <span style={{ fontSize: 12, fontWeight: 500, color: "#333" }}>Chen_v_Mercy_Surgical_Chronology.pdf</span>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "10px 14px", border: `1px solid ${BORDER}`, borderRadius: 8, backgroundColor: "#FAFAFA", maxWidth: "100%", overflow: "hidden" }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="#E74C3C" strokeWidth="1.5" strokeLinecap="round" /><polyline points="14 2 14 8 20 8" stroke="#E74C3C" strokeWidth="1.5" strokeLinecap="round" /><text x="8" y="17" fontSize="6" fill="#E74C3C" fontWeight="700" fontFamily="sans-serif">PDF</text></svg>
+                        <span style={{ fontSize: 12, fontWeight: 500, color: "#333", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chen_v_Mercy_Surgical_Chronology.pdf</span>
                       </div>
                     </div>
                   </motion.div>
                 </div>
 
                 {/* Message input */}
-                <div style={{ padding: "0 32px 14px", flexShrink: 0 }}>
+                <div style={{ padding: "0 clamp(16px, 4vw, 32px) 14px", flexShrink: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", border: `1px solid ${BORDER}`, borderRadius: 8, padding: "10px 12px 10px 16px" }}>
                     <span style={{ fontSize: 13, color: "#BBB", flex: 1 }}>Message Delta...</span>
                     <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>

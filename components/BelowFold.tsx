@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 
 const ACCENT = "#2563EB";
@@ -98,30 +98,40 @@ const ROTATE_PAIRS = [
 ];
 const ROTATE_INTERVAL = 3000;
 
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 } as const,
-  whileInView: { opacity: 1, y: 0 } as const,
-  viewport: { once: true, margin: "-80px" } as const,
-  transition: { duration: 0.8, delay, ease: EASE },
-});
+const fade = (delay = 0, reduced = false) => reduced
+  ? {
+      initial: { opacity: 1, y: 0 } as const,
+      whileInView: { opacity: 1, y: 0 } as const,
+      viewport: { once: true } as const,
+      transition: { duration: 0 },
+    }
+  : {
+      initial: { opacity: 0, y: 20 } as const,
+      whileInView: { opacity: 1, y: 0 } as const,
+      viewport: { once: true, margin: "-80px" } as const,
+      transition: { duration: 0.8, delay, ease: EASE },
+    };
 
 export function BelowFold() {
+  const prefersReducedMotion = useReducedMotion();
+  const reduced = !!prefersReducedMotion;
   const [pairIndex, setPairIndex] = useState(0);
 
   useEffect(() => {
+    if (reduced) return;
     const id = setInterval(() => {
       setPairIndex((i) => (i + 1) % ROTATE_PAIRS.length);
     }, ROTATE_INTERVAL);
     return () => clearInterval(id);
-  }, []);
+  }, [reduced]);
 
   // Parallax for SVG decorations
   const decoRef1 = useRef(null);
   const decoRef2 = useRef(null);
   const { scrollYProgress: sp1 } = useScroll({ target: decoRef1, offset: ["start end", "end start"] });
   const { scrollYProgress: sp2 } = useScroll({ target: decoRef2, offset: ["start end", "end start"] });
-  const decoY1 = useTransform(sp1, [0, 1], [80, -80]);
-  const decoY2 = useTransform(sp2, [0, 1], [60, -60]);
+  const decoY1 = useTransform(sp1, [0, 1], reduced ? [0, 0] : [80, -80]);
+  const decoY2 = useTransform(sp2, [0, 1], reduced ? [0, 0] : [60, -60]);
 
   return (
     <div
@@ -171,7 +181,7 @@ export function BelowFold() {
       <section id="value-prop" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.div {...fade()} style={{ maxWidth: 780 }}>
+          <motion.div {...fade(0, reduced)} style={{ maxWidth: 780 }}>
             <h2 style={{
               fontFamily: FONT,
               fontSize: "clamp(32px, 4.5vw, 56px)",
@@ -227,8 +237,41 @@ export function BelowFold() {
               margin: 0,
               marginTop: 4,
             }}>
-              and builds chronologies, anomaly reports, and case briefs.
+              and builds
             </h2>
+
+            <div style={{
+              height: "clamp(40px, 5.5vw, 68px)",
+              overflow: "hidden",
+              position: "relative",
+              marginTop: 4,
+            }}>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={`output-${pairIndex}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -24 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  style={{
+                    fontFamily: FONT,
+                    fontSize: "clamp(32px, 4.5vw, 56px)",
+                    fontWeight: 700,
+                    color: ACCENT,
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.035em",
+                    margin: 0,
+                    position: "absolute",
+                    whiteSpace: "nowrap",
+                    maxWidth: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {ROTATE_PAIRS[pairIndex].output}.
+                </motion.p>
+              </AnimatePresence>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -239,7 +282,7 @@ export function BelowFold() {
       <section id="security" style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.h2 {...fade()} style={{
+          <motion.h2 {...fade(0, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(24px, 3.2vw, 42px)",
             fontWeight: 600,
@@ -251,7 +294,7 @@ export function BelowFold() {
             Your client data stays inside your firm.{" "}
             <span style={{ color: "#888" }}>Nothing is ever shared.</span>
           </motion.h2>
-          <motion.p {...fade(0.1)} style={{
+          <motion.p {...fade(0.1, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(15px, 1.3vw, 18px)",
             fontWeight: 400,
@@ -263,6 +306,27 @@ export function BelowFold() {
           }}>
             Most legal AI sends your client data to outside companies to process it. We don&apos;t. Everything runs inside CaseDelta, and we pay the cost to keep it that way.
           </motion.p>
+          <motion.a
+            {...fade(0.15, reduced)}
+            href="/security"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              fontFamily: FONT,
+              fontSize: 15,
+              fontWeight: 500,
+              color: ACCENT,
+              textDecoration: "none",
+              marginTop: 20,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            How we protect your data
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </motion.a>
         </div>
       </section>
 
@@ -272,7 +336,7 @@ export function BelowFold() {
       <section style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.h2 {...fade()} style={{
+          <motion.h2 {...fade(0, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(24px, 3.2vw, 42px)",
             fontWeight: 600,
@@ -286,11 +350,11 @@ export function BelowFold() {
           </motion.h2>
 
           {/* Integration logos */}
-          <motion.div {...fade(0.15)} style={{
+          <motion.div {...fade(0.15, reduced)} style={{
             display: "flex",
             flexWrap: "wrap",
             alignItems: "center",
-            gap: "clamp(24px, 3vw, 40px)",
+            gap: "clamp(16px, 3vw, 40px)",
             marginTop: "clamp(32px, 4vw, 48px)",
           }}>
             {[
@@ -306,10 +370,10 @@ export function BelowFold() {
             ].map((logo, i) => (
               <motion.div
                 key={logo.name}
-                initial={{ opacity: 0, y: 8 }}
+                initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE }}
+                transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE }}
               >
                 <img
                   src={logo.src}
@@ -328,7 +392,7 @@ export function BelowFold() {
               </motion.div>
             ))}
           </motion.div>
-          <motion.p {...fade(0.25)} style={{
+          <motion.p {...fade(0.25, reduced)} style={{
             fontFamily: FONT,
             fontSize: 14,
             fontWeight: 500,
@@ -350,7 +414,7 @@ export function BelowFold() {
           <DecoTopLeft />
         </motion.div>
         <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.h2 {...fade()} style={{
+          <motion.h2 {...fade(0, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(32px, 4.5vw, 56px)",
             fontWeight: 700,
@@ -364,7 +428,7 @@ export function BelowFold() {
               Like a great associate, except it never forgets.
             </span>
           </motion.h2>
-          <motion.p {...fade(0.1)} style={{
+          <motion.p {...fade(0.1, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(15px, 1.3vw, 18px)",
             fontWeight: 400,
@@ -385,7 +449,7 @@ export function BelowFold() {
       <section style={{ position: "relative", padding: "clamp(100px, 12vw, 180px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.div {...fade()} style={{ maxWidth: 720, margin: "0 auto", textAlign: "center", position: "relative" }}>
+          <motion.div {...fade(0, reduced)} style={{ maxWidth: 720, margin: "0 auto", textAlign: "center", position: "relative" }}>
             {/* Opening quote mark */}
             <svg aria-hidden width="48" height="36" viewBox="0 0 48 36" fill="none" style={{ marginBottom: 24 }}>
               <path d="M0 36V20.4C0 14.4 1.2 9.6 3.6 6C6 2.4 10.2 0 16.2 0L18 6C14.4 6.6 11.7 8.1 9.9 10.5C8.1 12.9 7.2 15.6 7.2 18.6H15.6V36H0ZM26.4 36V20.4C26.4 14.4 27.6 9.6 30 6C32.4 2.4 36.6 0 42.6 0L44.4 6C40.8 6.6 38.1 8.1 36.3 10.5C34.5 12.9 33.6 15.6 33.6 18.6H42V36H26.4Z" fill={ACCENT} opacity="0.12" />
@@ -445,7 +509,7 @@ export function BelowFold() {
           <DecoWide />
         </motion.div>
         <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)", textAlign: "center" }}>
-          <motion.h2 {...fade()} style={{
+          <motion.h2 {...fade(0, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(32px, 4.5vw, 56px)",
             fontWeight: 700,
@@ -458,10 +522,10 @@ export function BelowFold() {
             Meet the associate that already knows your judges.
           </motion.h2>
 
-          <motion.div {...fade(0.15)} style={{ display: "flex", justifyContent: "center" }}>
+          <motion.div {...fade(0.15, reduced)} style={{ display: "flex", justifyContent: "center" }}>
             <motion.a
               href="https://app.casedelta.com/signup"
-              className="cd-btn-cta cd-cta-pulse"
+              className={`cd-btn-cta${reduced ? "" : " cd-cta-pulse"}`}
               style={{
                 display: "inline-flex",
                 alignItems: "center",

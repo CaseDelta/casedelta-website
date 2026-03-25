@@ -13,7 +13,11 @@ const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
 const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30 };
 const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 
-export function NavbarV2() {
+interface NavbarV2Props {
+  basePath?: string;
+}
+
+export function NavbarV2({ basePath = "" }: NavbarV2Props) {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -22,7 +26,7 @@ export function NavbarV2() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const sectionIds = ["value-prop", "security", "cta"];
+    const sectionIds = ["value-prop"];
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 60);
@@ -56,9 +60,9 @@ export function NavbarV2() {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { label: "Features", href: "#value-prop" },
-    { label: "Security", href: "#security" },
-    { label: "Get Started", href: "#cta" },
+    { label: "Features", href: `${basePath}#value-prop` },
+    { label: "Security", href: "/security" },
+    { label: "Pricing", href: "/pricing" },
   ];
 
   return (
@@ -166,7 +170,7 @@ export function NavbarV2() {
             </motion.div>
 
             <div
-              className="hidden md:flex"
+              className="hidden lg:flex"
               style={{ alignItems: "center", gap: 2 }}
             >
               {navLinks.map((item) => (
@@ -196,7 +200,7 @@ export function NavbarV2() {
 
           {/* Right: Sign in + CTA */}
           <div
-            className="hidden md:flex"
+            className="hidden lg:flex"
             style={{ alignItems: "center", gap: 10 }}
           >
             {/* Sign in */}
@@ -276,7 +280,7 @@ export function NavbarV2() {
 
           {/* Mobile hamburger */}
           <motion.button
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
             style={{
@@ -311,7 +315,7 @@ export function NavbarV2() {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden"
+          className="lg:hidden"
           style={{
             position: "fixed",
             inset: 0,

@@ -18,14 +18,11 @@ export function FooterV2() {
       }}
     >
       <div
+        className="flex flex-col items-center lg:flex-row lg:justify-between"
         style={{
           maxWidth: 1320,
           margin: "0 auto",
           padding: "0 clamp(24px, 4vw, 48px)",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-          alignItems: "center",
           gap: 24,
         }}
       >

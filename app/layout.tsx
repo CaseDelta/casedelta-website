@@ -3,9 +3,9 @@ import "./globals.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
 
 export const metadata: Metadata = {
-  title: "CaseDelta | AI Associate for Law Firms",
+  title: "CaseDelta — Your AI Associate Attorney",
   description:
-    "CaseDelta is the only legal AI that learns how your firm works. Delta connects to your Clio, builds institutional memory that compounds daily, and costs a fraction of a paralegal.",
+    "Delta analyzes thousands of records and builds chronologies, anomaly reports, and case briefs. The only legal AI that remembers your firm.",
   icons: {
     icon: [
       {
@@ -17,6 +17,19 @@ export const metadata: Metadata = {
         media: "(prefers-color-scheme: dark)",
       },
     ],
+  },
+  openGraph: {
+    title: "CaseDelta — Your AI Associate Attorney",
+    description:
+      "Delta analyzes thousands of records and builds chronologies, anomaly reports, and case briefs. The only legal AI that remembers your firm.",
+    siteName: "CaseDelta",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CaseDelta — Your AI Associate Attorney",
+    description:
+      "Delta analyzes thousands of records and builds chronologies, anomaly reports, and case briefs. The only legal AI that remembers your firm.",
   },
 };
 
