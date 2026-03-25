@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Harvey Serif - For headings (mockup purposes) */
 @font-face {
   font-family: 'Harvey Serif';

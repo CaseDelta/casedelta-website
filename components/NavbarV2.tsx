@@ -43,9 +43,9 @@ export function NavbarV2() {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { label: "Features", href: "/#features" },
-    { label: "Security", href: "/#security" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Features", href: "#value-prop" },
+    { label: "Security", href: "#security" },
+    { label: "Get Started", href: "#cta" },
   ];
 
   return (
@@ -64,6 +64,28 @@ export function NavbarV2() {
         }
         .cd-btn-cta:hover .cd-cta-arrow {
           transform: translateX(3px);
+        }
+        .cd-nav-link {
+          transition: color 0.6s ease;
+        }
+        .cd-nav-link:hover {
+          color: #555;
+        }
+        .cd-nav-underline {
+          position: absolute;
+          bottom: 4px;
+          left: 14px;
+          right: 14px;
+          height: 1px;
+          background: #999;
+          border-radius: 1px;
+          transform: scaleX(0);
+          opacity: 0;
+          transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+        }
+        .cd-nav-link:hover .cd-nav-underline {
+          transform: scaleX(1);
+          opacity: 1;
         }
       `}</style>
 
@@ -137,31 +159,22 @@ export function NavbarV2() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  style={{ textDecoration: "none" }}
+                  className="cd-nav-link"
+                  style={{
+                    textDecoration: "none",
+                    position: "relative",
+                    fontFamily: FONT,
+                    fontSize: 15,
+                    fontWeight: 500,
+                    color: "#0A0A0A",
+                    padding: "8px 14px",
+                    letterSpacing: "-0.01em",
+                    cursor: "pointer",
+                    display: "block",
+                  }}
                 >
-                  <motion.span
-                    style={{
-                      display: "block",
-                      fontFamily: FONT,
-                      fontSize: 15,
-                      fontWeight: 500,
-                      color: "#0A0A0A",
-                      padding: "8px 14px",
-                      borderRadius: 8,
-                      letterSpacing: "-0.01em",
-                      cursor: "pointer",
-                    }}
-                    whileHover={{
-                      backgroundColor: "rgba(0, 0, 0, 0.05)",
-                    }}
-                    whileTap={{
-                      backgroundColor: "rgba(0, 0, 0, 0.08)",
-                      scale: 0.97,
-                    }}
-                    transition={springSnappy}
-                  >
-                    {item.label}
-                  </motion.span>
+                  {item.label}
+                  <span className="cd-nav-underline" />
                 </Link>
               ))}
             </div>

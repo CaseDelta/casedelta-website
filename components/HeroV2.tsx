@@ -16,8 +16,8 @@ const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
 /* ─── Subtitle sequence ─── */
 const SUBTITLES = [
   "remembers how your firm works",
-  "researches while you're away",
-  "saves you hours reviewing records",
+  "learns your judges and jurisdiction",
+  "gets smarter every week",
 ];
 
 /* ─── SSO icons ─── */
@@ -215,7 +215,7 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
         }}
       >
         <div
-          className="grid grid-cols-1 lg:grid-cols-[38fr_62fr] gap-4 lg:gap-0 items-center"
+          className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-4 lg:gap-8 items-center"
         >
           {/* ── Compact left column ── */}
           <motion.div
@@ -253,39 +253,44 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
               Your associate attorney that reviews every detail and has a briefing ready before your morning coffee.
             </span>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 28 }}>
             <motion.a
               href="https://app.casedelta.com/signup"
               className="cd-btn-cta"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 8,
+                gap: 10,
                 fontFamily: FONT,
+                marginTop: 28,
                 height: 44,
                 padding: "0 20px",
-                backgroundColor: ACCENT,
-                color: "#FFFFFF",
+                backgroundColor: "#FFFFFF",
+                color: "#333333",
                 fontSize: 14,
                 fontWeight: 500,
                 borderRadius: 5,
                 textDecoration: "none",
                 letterSpacing: "-0.011em",
-                boxShadow: `0 1px 3px ${ACCENT}20`,
+                border: `1px solid ${BORDER}`,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
               }}
               whileHover={{
                 y: -2,
-                backgroundColor: "#1D4ED8",
-                boxShadow: `0 6px 20px ${ACCENT}35`,
+                borderColor: "#CCCCCC",
+                boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
               }}
               whileTap={{
                 y: 0,
                 scale: 0.97,
-                boxShadow: `0 2px 6px ${ACCENT}25`,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
               }}
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
             >
-              Get Started Free
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <span style={{ display: "inline-flex" }}>{GoogleIcon}</span>
+                <span style={{ display: "inline-flex" }}>{MicrosoftIcon}</span>
+              </span>
+              Sign up - Free $25 Credit
               <svg
                 className="cd-cta-arrow"
                 width="14"
@@ -302,41 +307,6 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
                 />
               </svg>
             </motion.a>
-
-            {/* SSO button — Google / Office */}
-            <motion.a
-              href="https://app.casedelta.com/signup"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                fontFamily: FONT,
-                height: 44,
-                padding: "0 20px",
-                backgroundColor: "#FFFFFF",
-                color: "#333333",
-                fontSize: 14,
-                fontWeight: 500,
-                borderRadius: 5,
-                textDecoration: "none",
-                letterSpacing: "-0.011em",
-                border: `1px solid ${BORDER}`,
-              }}
-              whileHover={{
-                y: -2,
-                borderColor: "#CCCCCC",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-              }}
-              whileTap={{ y: 0, scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            >
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                <span style={{ display: "inline-flex" }}>{GoogleIcon}</span>
-                <span style={{ display: "inline-flex" }}>{MicrosoftIcon}</span>
-              </span>
-              Sign up with Google / Office
-            </motion.a>
-            </div>
           </motion.div>
 
           {/* ── Large video right column ── */}
@@ -425,7 +395,7 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
               {/* App content area — minimal chrome, big chat */}
               <div
                 style={{
-                  aspectRatio: "15 / 9",
+                  aspectRatio: "4 / 3",
                   display: "flex",
                   flexDirection: "column",
                   backgroundColor: "#FFFFFF",

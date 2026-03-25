@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { HeroV2 } from "@/components/HeroV2";
 import { NavbarV2 } from "@/components/NavbarV2";
 import { HeroDeco } from "@/components/HeroDecorations";
+import { BelowFold } from "@/components/BelowFold";
+import { FooterV2 } from "@/components/FooterV2";
 
 export default function V2Page() {
   const [navVisible, setNavVisible] = useState(false);
@@ -26,6 +28,8 @@ export default function V2Page() {
         <NavbarV2 />
       </motion.div>
       <HeroV2 onReveal={handleReveal} deco={deco} />
+      <BelowFold />
+      <FooterV2 />
     </main>
   );
 }
