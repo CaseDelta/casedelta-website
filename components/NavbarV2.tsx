@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -14,19 +15,17 @@ const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30 };
 const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 
 interface NavbarV2Props {
-  basePath?: string;
+  hideLinks?: boolean;
 }
 
-export function NavbarV2({ basePath = "" }: NavbarV2Props) {
+export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navHovered, setNavHovered] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const sectionIds = ["value-prop"];
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 60);
@@ -38,17 +37,6 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
         setIsVisible(true);
       }
       setLastScrollY(y);
-
-      // Determine active section
-      let current = "";
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.getBoundingClientRect().top;
-          if (top <= 200) current = `#${id}`;
-        }
-      }
-      setActiveSection(current);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -59,8 +47,10 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
     return () => { document.body.style.overflow = ""; };
   }, [mobileMenuOpen]);
 
+  const pathname = usePathname();
+
   const navLinks = [
-    { label: "Features", href: `${basePath}#value-prop` },
+    { label: "Features", href: "/features" },
     { label: "Security", href: "/security" },
     { label: "Pricing", href: "/pricing" },
   ];
@@ -127,15 +117,15 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
               bottom: 0,
               left: "clamp(8px, calc(4vw - 16px), 32px)",
               right: "clamp(8px, calc(4vw - 16px), 32px)",
-              backgroundColor: (scrolled || navHovered) ? "rgba(255, 255, 255, 0.95)" : "transparent",
-              backdropFilter: (scrolled || navHovered) ? "blur(16px)" : "none",
-              WebkitBackdropFilter: (scrolled || navHovered) ? "blur(16px)" : "none",
-              borderLeft: (scrolled || navHovered) ? "1px solid #EDEDED" : "1px solid transparent",
-              borderRight: (scrolled || navHovered) ? "1px solid #EDEDED" : "1px solid transparent",
-              borderBottom: (scrolled || navHovered) ? "1px solid #EDEDED" : "1px solid transparent",
+              backgroundColor: (!hideLinks && (scrolled || navHovered)) ? "rgba(255, 255, 255, 0.95)" : "transparent",
+              backdropFilter: (!hideLinks && (scrolled || navHovered)) ? "blur(16px)" : "none",
+              WebkitBackdropFilter: (!hideLinks && (scrolled || navHovered)) ? "blur(16px)" : "none",
+              borderLeft: (!hideLinks && (scrolled || navHovered)) ? "1px solid #EDEDED" : "1px solid transparent",
+              borderRight: (!hideLinks && (scrolled || navHovered)) ? "1px solid #EDEDED" : "1px solid transparent",
+              borderBottom: (!hideLinks && (scrolled || navHovered)) ? "1px solid #EDEDED" : "1px solid transparent",
               borderTop: "none",
               borderRadius: "0 0 12px 12px",
-              boxShadow: (scrolled || navHovered) ? "0 2px 16px rgba(0, 0, 0, 0.06)" : "0 0 0 rgba(0, 0, 0, 0)",
+              boxShadow: (!hideLinks && (scrolled || navHovered)) ? "0 2px 16px rgba(0, 0, 0, 0.06)" : "0 0 0 rgba(0, 0, 0, 0)",
               transition: "all 0.3s ease",
               pointerEvents: "none",
             }}
@@ -171,20 +161,26 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
 
             <div
               className="hidden lg:flex"
-              style={{ alignItems: "center", gap: 2 }}
+              style={{
+                alignItems: "center",
+                gap: 2,
+                opacity: hideLinks ? 0 : 1,
+                pointerEvents: hideLinks ? "none" : "auto",
+                transition: "opacity 0.5s ease",
+              }}
             >
               {navLinks.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`cd-nav-link${activeSection === item.href ? " cd-nav-active" : ""}`}
+                  className={`cd-nav-link${pathname === item.href ? " cd-nav-active" : ""}`}
                   style={{
                     textDecoration: "none",
                     position: "relative",
                     fontFamily: FONT,
                     fontSize: 15,
                     fontWeight: 500,
-                    color: activeSection === item.href ? "#555" : "#0A0A0A",
+                    color: pathname === item.href ? "#555" : "#0A0A0A",
                     padding: "8px 14px",
                     letterSpacing: "-0.01em",
                     cursor: "pointer",
@@ -198,12 +194,57 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
             </div>
           </div>
 
-          {/* Right: Sign in + CTA */}
+          {/* Intro-only sign in — always right-aligned */}
+          <Link
+            href="https://app.casedelta.com"
+            className="hidden lg:flex"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontFamily: FONT,
+              fontSize: 15,
+              fontWeight: 500,
+              color: "#999",
+              textDecoration: "none",
+              letterSpacing: "-0.01em",
+              height: 40,
+              padding: "0 18px",
+              borderRadius: 5,
+              border: "1px solid #E8E8E8",
+              marginLeft: "auto",
+              opacity: hideLinks ? 1 : 0,
+              pointerEvents: hideLinks ? "auto" as const : "none" as const,
+              position: hideLinks ? "relative" as const : "absolute" as const,
+              transition: "all 0.25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "#CCC";
+              e.currentTarget.style.color = "#555";
+              e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.06)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "#E8E8E8";
+              e.currentTarget.style.color = "#999";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          >
+            Sign in
+          </Link>
+
+          {/* Full nav buttons — visible after intro */}
           <div
             className="hidden lg:flex"
-            style={{ alignItems: "center", gap: 10 }}
+            style={{
+              alignItems: "center",
+              gap: 10,
+              opacity: hideLinks ? 0 : 1,
+              pointerEvents: hideLinks ? "none" as const : "auto" as const,
+              position: hideLinks ? "absolute" as const : "relative" as const,
+              right: hideLinks ? 0 : undefined,
+              transition: "opacity 0.5s ease",
+            }}
           >
-            {/* Sign in */}
             <Link href="https://app.casedelta.com" style={{ textDecoration: "none" }}>
               <motion.span
                 style={{
@@ -238,7 +279,6 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
               </motion.span>
             </Link>
 
-            {/* CTA */}
             <motion.a
               href="https://app.casedelta.com/signup"
               className="cd-btn-cta"
@@ -258,6 +298,9 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
                 textDecoration: "none",
                 letterSpacing: "-0.01em",
                 boxShadow: `0 1px 3px ${ACCENT}20`,
+                opacity: hideLinks ? 0 : 1,
+                pointerEvents: hideLinks ? "none" as const : "auto" as const,
+                transition: "opacity 0.5s ease",
               }}
               whileHover={{
                 y: -2,
@@ -290,6 +333,9 @@ export function NavbarV2({ basePath = "" }: NavbarV2Props) {
               color: "#1A1A1A",
               padding: 8,
               borderRadius: 8,
+              opacity: hideLinks ? 0 : 1,
+              pointerEvents: hideLinks ? "none" : "auto",
+              transition: "opacity 0.5s ease",
             }}
             whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
             whileTap={{ scale: 0.9 }}

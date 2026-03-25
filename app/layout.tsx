@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
+import { ClientLayout } from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
   title: "CaseDelta — Your AI Associate Attorney",
@@ -49,7 +50,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <PostHogProvider>{children}</PostHogProvider>
+        <PostHogProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </PostHogProvider>
       </body>
     </html>
   );

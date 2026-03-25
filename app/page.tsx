@@ -1,31 +1,61 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { motion, useScroll, useSpring, useReducedMotion } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { HeroV2, getHasPlayedIntro } from "@/components/HeroV2";
-import { NavbarV2 } from "@/components/NavbarV2";
 import { HeroDeco } from "@/components/HeroDecorations";
 import { BelowFold } from "@/components/BelowFold";
 import { FooterV2 } from "@/components/FooterV2";
 
 export default function Home() {
-  const prefersReducedMotion = useReducedMotion();
-  const skipIntro = getHasPlayedIntro() || !!prefersReducedMotion;
-  const [navVisible, setNavVisible] = useState(skipIntro);
+  const [skipIntro, setSkipIntro] = useState(false);
+  const [navVisible, setNavVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const skip = getHasPlayedIntro();
+    if (skip) {
+      setSkipIntro(true);
+      setNavVisible(true);
+    } else {
+      window.dispatchEvent(new Event("cd:nav-hide"));
+    }
+    setMounted(true);
+    return () => {
+      window.dispatchEvent(new Event("cd:nav-show"));
+    };
+  }, []);
+
+  // Manual scroll progress — only starts tracking after content is visible
+  useEffect(() => {
+    if (!navVisible) return;
+    const onScroll = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) {
+        setScrollProgress(0);
+      } else {
+        setScrollProgress(window.scrollY / scrollable);
+      }
+    };
+    // Wait a frame for the DOM to update with full height
+    requestAnimationFrame(onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [navVisible]);
 
   const handleReveal = useCallback(() => {
     setNavVisible(true);
+    window.dispatchEvent(new Event("cd:nav-show"));
   }, []);
-
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   const deco = <HeroDeco />;
 
   return (
     <main style={{ backgroundColor: "#FFFFFF" }}>
-      {/* Scroll progress bar — always visible */}
-      <motion.div
+      {/* Scroll progress bar */}
+      <div
+        ref={progressRef}
         style={{
           position: "fixed",
           top: 0,
@@ -34,19 +64,14 @@ export default function Home() {
           height: 2,
           backgroundColor: "#2563EB",
           transformOrigin: "0%",
-          scaleX: smoothProgress,
+          transform: `scaleX(${scrollProgress})`,
+          opacity: (navVisible && scrollProgress > 0.001) ? 1 : 0,
+          transition: "opacity 0.3s ease",
           zIndex: 200,
+          willChange: "transform",
         }}
       />
-      <motion.div
-        initial={skipIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
-        animate={navVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
-        transition={{ duration: skipIntro ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
-        style={{ pointerEvents: navVisible ? "auto" : "none" }}
-      >
-        <NavbarV2 />
-      </motion.div>
-      <HeroV2 onReveal={handleReveal} deco={deco} />
+      <HeroV2 onReveal={handleReveal} deco={deco} skipIntro={mounted && skipIntro} />
       <div style={{
         height: navVisible ? "auto" : 0,
         overflow: navVisible ? "visible" : "hidden",

@@ -237,41 +237,8 @@ export function BelowFold() {
               margin: 0,
               marginTop: 4,
             }}>
-              and builds
+              and builds chronologies, anomaly reports, and case briefs.
             </h2>
-
-            <div style={{
-              height: "clamp(40px, 5.5vw, 68px)",
-              overflow: "hidden",
-              position: "relative",
-              marginTop: 4,
-            }}>
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={`output-${pairIndex}`}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -24 }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: "clamp(32px, 4.5vw, 56px)",
-                    fontWeight: 700,
-                    color: ACCENT,
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.035em",
-                    margin: 0,
-                    position: "absolute",
-                    whiteSpace: "nowrap",
-                    maxWidth: "100%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {ROTATE_PAIRS[pairIndex].output}.
-                </motion.p>
-              </AnimatePresence>
-            </div>
           </motion.div>
         </div>
       </section>

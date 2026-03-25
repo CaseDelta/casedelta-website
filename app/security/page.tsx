@@ -1,6 +1,5 @@
 "use client";
 
-import { NavbarV2 } from "@/components/NavbarV2";
 import { FooterV2 } from "@/components/FooterV2";
 
 const ACCENT = "#2563EB";
@@ -87,7 +86,6 @@ function Commitment({ children }: { children: React.ReactNode }) {
 export default function SecurityPage() {
   return (
     <main style={{ backgroundColor: "#FFFFFF", fontFamily: FONT }}>
-      <NavbarV2 basePath="/" />
 
       <div style={{ position: "relative" }}>
         {/* Ruler lines */}

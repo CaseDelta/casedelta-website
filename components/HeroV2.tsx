@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ─── Design tokens ─── */
@@ -45,23 +45,23 @@ const T = { deltaAppear: 200, firstSub: 900, revealAfterFinal: 900 };
 
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-/* ─── Session-level flag: survives client-side nav, resets on full reload ─── */
+/* ─── Module-level flag: survives client-side nav, resets on hard refresh ─── */
 let hasPlayedIntro = false;
+function markIntroPlayed() { hasPlayedIntro = true; }
 export function getHasPlayedIntro() { return hasPlayedIntro; }
 
 /* ─── Component ─── */
 interface HeroV2Props {
   onReveal?: () => void;
   deco?: React.ReactNode;
+  skipIntro?: boolean;
 }
 
-export function HeroV2({ onReveal, deco }: HeroV2Props) {
-  const prefersReducedMotion = useReducedMotion();
-  const skipIntro = hasPlayedIntro || !!prefersReducedMotion;
-  const [showDelta, setShowDelta] = useState(skipIntro);
+export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
+  const [showDelta, setShowDelta] = useState(false);
   const [subtitleIndex, setSubtitleIndex] = useState(-1);
-  const [revealed, setRevealed] = useState(skipIntro);
-  const [introExited, setIntroExited] = useState(skipIntro);
+  const [revealed, setRevealed] = useState(false);
+  const [introExited, setIntroExited] = useState(false);
 
   const onRevealRef = useRef(onReveal);
   onRevealRef.current = onReveal;
@@ -69,6 +69,10 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
   useEffect(() => {
     if (skipIntro) {
+      setShowDelta(true);
+      setRevealed(true);
+      setIntroExited(true);
+      markIntroPlayed();
       onRevealRef.current?.();
       return;
     }
@@ -86,7 +90,7 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
     if (subtitleIndex === SUBTITLES.length - 1) {
       holdTimer.current = setTimeout(() => {
         setRevealed(true);
-        hasPlayedIntro = true;
+        markIntroPlayed();
         onRevealRef.current?.();
       }, T.revealAfterFinal);
     } else {
@@ -426,7 +430,7 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
                     <span style={{ fontSize: 13, fontWeight: 600, color: "#1A1A1A", letterSpacing: "-0.01em" }}>Delta</span>
                     <span style={{ fontSize: 11, color: "#999", marginLeft: 4 }}>Graves Law</span>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, backgroundColor: "#F5F5F5", borderRadius: 6, padding: "6px 14px", flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, backgroundColor: "#F5F5F5", borderRadius: 6, padding: "6px 14px", minWidth: 0, maxWidth: 220 }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#AAA" strokeWidth="1.5" /><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="#AAA" strokeWidth="1.5" strokeLinecap="round" /></svg>
                     <span style={{ fontSize: 11, color: "#AAA" }}>Search</span>
                   </div>
@@ -443,9 +447,9 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
                   {/* Delta morning briefing */}
                   <motion.div
-                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                    initial={skipIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                     animate={revealed ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 1.0, ease: EASE_OUT }}
+                    transition={{ duration: skipIntro ? 0 : 0.6, delay: skipIntro ? 0 : 1.0, ease: EASE_OUT }}
                     style={{ display: "flex", gap: 12, padding: "8px 0" }}
                   >
                     <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: "#1A1A1A", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
@@ -464,9 +468,9 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
                   {/* User asks for chronology + learning */}
                   <motion.div
-                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                    initial={skipIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                     animate={revealed ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 2.4, ease: EASE_OUT }}
+                    transition={{ duration: skipIntro ? 0 : 0.6, delay: skipIntro ? 0 : 2.4, ease: EASE_OUT }}
                     style={{ display: "flex", gap: 12, padding: "8px 0" }}
                   >
                     <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: `${ACCENT}15`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -485,9 +489,9 @@ export function HeroV2({ onReveal, deco }: HeroV2Props) {
 
                   {/* Delta response with artifact */}
                   <motion.div
-                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                    initial={skipIntro ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
                     animate={revealed ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 3.8, ease: EASE_OUT }}
+                    transition={{ duration: skipIntro ? 0 : 0.6, delay: skipIntro ? 0 : 3.8, ease: EASE_OUT }}
                     style={{ display: "flex", gap: 12, padding: "8px 0" }}
                   >
                     <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: "#1A1A1A", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
