@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
-import { PageTransition } from "@/components/transitions/PageTransition";
-import { ConditionalLayout } from "@/components/ConditionalLayout";
-import { RoutePreloader } from "@/components/RoutePreloader";
-import { HERO_CONTENT } from "@/lib/constants/hero";
+import { ClientLayout } from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "CaseDelta | AI Associate for Law Firms",
-  description: HERO_CONTENT.metaDescription,
+  title: "CaseDelta — Your AI Associate Attorney",
+  description:
+    "Delta analyzes thousands of records and builds chronologies, anomaly reports, and case briefs. The only legal AI that remembers your firm.",
   icons: {
     icon: [
       {
@@ -21,6 +19,19 @@ export const metadata: Metadata = {
       },
     ],
   },
+  openGraph: {
+    title: "CaseDelta — Your AI Associate Attorney",
+    description:
+      "Delta analyzes thousands of records and builds chronologies, anomaly reports, and case briefs. The only legal AI that remembers your firm.",
+    siteName: "CaseDelta",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CaseDelta — Your AI Associate Attorney",
+    description:
+      "Delta analyzes thousands of records and builds chronologies, anomaly reports, and case briefs. The only legal AI that remembers your firm.",
+  },
 };
 
 export default function RootLayout({
@@ -29,51 +40,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
-        {/* Blocking script to prevent FOUC (Flash of Unstyled Content) */}
-        {/* This sets the theme BEFORE first paint, eliminating theme flashing */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const pathname = window.location.pathname;
-                  let theme = 'dark'; // Default to dark for consistent experience
-
-                  // Explicit light theme for specific variant paths
-                  if (pathname.startsWith('/light/')) {
-                    theme = 'light';
-                  }
-                  // Explicit dark theme for dark variant paths
-                  else if (pathname.startsWith('/dark/') || pathname === '/') {
-                    theme = 'dark';
-                  }
-                  // All other pages default to dark (consistent with homepage)
-                  // Examples: /about, /ai-policy, /pricing, /terms, /privacy, /sms-opt-in
-                  else {
-                    theme = 'dark';
-                  }
-
-                  // Set theme attribute immediately (before first paint)
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {
-                  // Fallback to dark theme if any error occurs
-                  document.documentElement.setAttribute('data-theme', 'dark');
-                }
-              })();
-            `,
-          }}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
         />
       </head>
       <body>
         <PostHogProvider>
-          <RoutePreloader />
-          <ConditionalLayout>
-            <PageTransition>
-              {children}
-            </PageTransition>
-          </ConditionalLayout>
+          <ClientLayout>{children}</ClientLayout>
         </PostHogProvider>
       </body>
     </html>

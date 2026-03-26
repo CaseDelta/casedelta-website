@@ -1,55 +1,82 @@
 "use client";
 
-import { LegalPageLayout, LegalSection, LegalClosing } from "@/components/LegalPageLayout";
-import { CONTACT_EMAILS } from "@/lib/constants/contact";
+import {
+  LegalPageLayoutV2,
+  LegalSectionV2,
+  LegalClosingV2,
+  LEGAL_LINK_STYLE,
+} from "@/components/LegalPageLayoutV2";
 
 export default function PrivacyPage() {
   return (
-    <LegalPageLayout title="Privacy Policy">
-      <LegalSection title="What We Collect">
+    <LegalPageLayoutV2 title="Privacy Policy">
+      <LegalSectionV2 title="How We Process Your Data">
         <p>
-          We collect your account information (name, email, firm details, and billing information) and the documents you upload for processing. When your clients use the portal, we collect only their name and email. We also collect basic usage data and technical information for security and improving our service. We don&apos;t collect unnecessary information.
+          All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to any third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
         </p>
-      </LegalSection>
-
-      <LegalSection title="How We Use Your Data">
-        <p>
-          We use AI to process your documents with security protections in place. Your data is never used to train AI models. Documents are processed only to provide our service and are automatically deleted based on your retention settings. You can export your data anytime, and you have 30 days after cancellation to retrieve it. We never sell or share your data with third parties except as needed to provide our service (like AWS for hosting and Stripe for payments) or when legally required.
+        <p style={{ marginTop: 12 }}>
+          Documents are encrypted both at rest and in transit. Delta processes your files solely to provide the service you&apos;ve requested &mdash; building chronologies, identifying anomalies, generating case briefs, and learning your firm&apos;s preferences over time.
         </p>
-      </LegalSection>
-
-      <LegalSection title="Security and Storage">
-        <p>
-          Your data is encrypted and stored on secure AWS infrastructure in the United States. We use multi-factor authentication, access controls, and security monitoring to protect your information. While no system is completely secure, we maintain protections appropriate for legal data. See our AI Policy for details on how we handle AI processing.
+        <p style={{ marginTop: 12 }}>
+          Every action Delta takes is logged with a timestamp, the document involved, the query, the response, and the sources cited. This audit trail is exportable for bar compliance and your own records.
         </p>
-      </LegalSection>
+      </LegalSectionV2>
 
-      <LegalSection title="Your Control">
+      <LegalSectionV2 title="What We Never Do">
+        <p>These commitments are architectural, not policy. They are built into how CaseDelta works:</p>
+        <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
+          <li style={{ marginBottom: 8 }}>
+            <strong>We never use your data to train AI models.</strong> Your documents, queries, and Delta&apos;s responses are never fed back into any model&apos;s training pipeline.
+          </li>
+          <li style={{ marginBottom: 8 }}>
+            <strong>We never share client data across firms.</strong> Each firm&apos;s data is completely isolated. What Delta learns about your firm stays with your firm.
+          </li>
+          <li style={{ marginBottom: 8 }}>
+            <strong>We never sell your data to third parties.</strong> Not to advertisers, not to data brokers, not to anyone.
+          </li>
+          <li>
+            <strong>We never access your data without authorization.</strong> CaseDelta engineers cannot view your documents or case data without explicit permission for a specific support request.
+          </li>
+        </ul>
+      </LegalSectionV2>
+
+      <LegalSectionV2 title="Data Retention">
         <p>
-          You own all your data and can export or delete it at any time. You control retention periods and can opt out of marketing communications. We may disclose information only when legally required and will notify you unless prohibited by law.
+          Documents are retained according to your firm&apos;s configured retention settings within CaseDelta. You control how long your data is kept.
         </p>
-      </LegalSection>
+        <p style={{ marginTop: 12 }}>
+          Account data is retained while your account is active. If you cancel your subscription, you have 30 days to export all of your data. After that period, all data &mdash; documents, case information, and Delta&apos;s learned intelligence about your firm &mdash; is permanently deleted.
+        </p>
+      </LegalSectionV2>
 
-      <LegalSection title="Changes and Contact">
-        <p>
-          We may update this Policy with notice to you. For privacy questions, contact{" "}
-          <a
-            href={`mailto:${CONTACT_EMAILS.SUPPORT}`}
-            style={{
-              color: "var(--color-text-high-contrast)",
-              textDecoration: "underline",
-              textUnderlineOffset: "2px",
-            }}
-          >
-            {CONTACT_EMAILS.SUPPORT}
+      <LegalSectionV2 title="Your Rights">
+        <p>You have full control over your data at all times:</p>
+        <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
+          <li style={{ marginBottom: 8 }}>
+            <strong>Export</strong> &mdash; download all your data, including documents, case files, and audit logs, at any time.
+          </li>
+          <li style={{ marginBottom: 8 }}>
+            <strong>Delete</strong> &mdash; request deletion of any or all data at any time.
+          </li>
+          <li style={{ marginBottom: 8 }}>
+            <strong>Opt out</strong> &mdash; opt out of marketing communications at any time.
+          </li>
+          <li>
+            <strong>Inquire</strong> &mdash; request a summary of what data we hold about you and your firm.
+          </li>
+        </ul>
+        <p style={{ marginTop: 12 }}>
+          For any data request, contact{" "}
+          <a href="mailto:support@casedelta.com" style={LEGAL_LINK_STYLE}>
+            support@casedelta.com
           </a>
           .
         </p>
-      </LegalSection>
+      </LegalSectionV2>
 
-      <LegalClosing>
+      <LegalClosingV2>
         By using CaseDelta, you acknowledge understanding and accepting this Privacy Policy.
-      </LegalClosing>
-    </LegalPageLayout>
+      </LegalClosingV2>
+    </LegalPageLayoutV2>
   );
 }

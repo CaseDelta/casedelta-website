@@ -1,386 +1,279 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import PricingHero from "@/components/PricingHero";
-import { CTA_URLS } from "@/lib/constants/cta";
+import { FooterV2 } from "@/components/FooterV2";
+import { BottomCTA } from "@/components/BottomCTA";
+import { ContactModal } from "@/components/ContactModal";
 
-const ease = [0.33, 1, 0.68, 1] as const;
+const ACCENT = "#2563EB";
+const DELTA_BLUE = "#1D4ED8";
+const BORDER = "#EDEDED";
+const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
-const salesLedTiers = [
-  {
-    name: "Practice",
-    price: "$799",
-    target: "5-10 attorneys",
-    included: "~500 analyses + 200 queries/mo",
-  },
-  {
-    name: "Firm",
-    price: "$1,499",
-    target: "10-25 attorneys",
-    included: "~1,200 analyses + 500 queries/mo",
-  },
-  {
-    name: "Enterprise",
-    price: "$2,499",
-    target: "25-50 attorneys",
-    included: "~2,500 analyses + 1,000 queries/mo",
-  },
-];
+const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
+
+function PricingRates() {
+  const [tab, setTab] = useState<"usage" | "flat">("usage");
+  const [contactOpen, setContactOpen] = useState(false);
+
+  return (
+    <section id="rates" style={{ position: "relative" }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+      <div style={{
+        maxWidth: 1320,
+        margin: "0 auto",
+        padding: "clamp(80px, 10vw, 120px) clamp(24px, 4vw, 48px)",
+      }}>
+        <div style={{ maxWidth: 600 }}>
+          <h2 style={{
+            fontFamily: FONT,
+            fontSize: "clamp(24px, 3.2vw, 42px)",
+            fontWeight: 600,
+            color: "#333",
+            letterSpacing: "-0.03em",
+            lineHeight: 1.15,
+            marginBottom: 32,
+          }}>
+            What it costs.
+          </h2>
+
+          {/* Tabs */}
+          <div
+            style={{
+              display: "inline-flex",
+              backgroundColor: "#F5F5F5",
+              borderRadius: 8,
+              padding: 3,
+              marginBottom: 32,
+            }}
+          >
+            {([
+              { key: "usage" as const, label: "Usage-based" },
+              { key: "flat" as const, label: "Flat pricing (10+ attorneys)" },
+            ]).map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
+                style={{
+                  fontFamily: FONT,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  padding: "8px 16px",
+                  borderRadius: 6,
+                  border: "none",
+                  cursor: "pointer",
+                  letterSpacing: "-0.01em",
+                  backgroundColor: tab === t.key ? "#FFFFFF" : "transparent",
+                  color: tab === t.key ? "#0A0A0A" : "#888",
+                  boxShadow: tab === t.key ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {tab === "usage" ? (
+            <>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {[
+                  { action: "Document analysis", price: "$0.03/page" },
+                  { action: "Case brief", price: "$5" },
+                  { action: "Q&A with citations", price: "$0.50" },
+                ].map((item, i, arr) => (
+                  <div
+                    key={item.action}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "baseline",
+                      padding: "16px 0",
+                      borderBottom: i < arr.length - 1 ? `1px solid ${BORDER}` : "none",
+                    }}
+                  >
+                    <span style={{ fontSize: 16, color: "#333", fontWeight: 500 }}>{item.action}</span>
+                    <span style={{ fontSize: 16, color: "#888", fontWeight: 500 }}>{item.price}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{
+                fontFamily: FONT,
+                fontSize: 14,
+                color: "#999",
+                marginTop: 24,
+                lineHeight: 1.5,
+              }}>
+                Start with $25 in free credits. Pay as you go after that.
+              </p>
+            </>
+          ) : (
+            <div style={{ padding: "24px 0" }}>
+              <p style={{
+                fontFamily: FONT,
+                fontSize: "clamp(16px, 1.3vw, 19px)",
+                color: "#333",
+                lineHeight: 1.6,
+                marginBottom: 24,
+              }}>
+                For firms with 10+ attorneys, we offer flat monthly pricing
+                tailored to your practice size and needs.
+              </p>
+              <motion.button
+                onClick={() => setContactOpen(true)}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: FONT,
+                  height: 44,
+                  padding: "0 24px",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  backgroundColor: "#FFFFFF",
+                  color: "#333",
+                  borderRadius: 6,
+                  letterSpacing: "-0.01em",
+                  border: `1px solid ${BORDER}`,
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+                  cursor: "pointer",
+                }}
+                whileHover={{
+                  y: -2,
+                  borderColor: "#CCC",
+                  boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
+                }}
+                whileTap={{ y: 0, scale: 0.97 }}
+                transition={springBounce}
+              >
+                Contact us for pricing
+              </motion.button>
+              <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function PricingPage() {
   return (
-    <main className="min-h-screen">
-      <PricingHero />
+    <main style={{ backgroundColor: "#FFFFFF", fontFamily: FONT }}>
 
-      {/* Self-Serve Track */}
-      <section className="bg-progressive-3 pt-12 pb-16 md:pt-16 md:pb-24">
-        <div className="mx-auto max-w-[900px] px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease }}
-          >
-            <p
-              className="mb-3 font-medium uppercase tracking-wider text-center"
-              style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-tertiary)",
-              }}
-            >
-              Self-Serve
-            </p>
-            <h2
-              className="font-serif mb-4 text-center"
-              style={{
-                fontSize: "var(--font-size-h2)",
-                color: "var(--color-text-high-contrast)",
-                letterSpacing: "var(--letter-spacing-tight)",
-              }}
-            >
-              Start free. Pay as Delta works.
-            </h2>
-            <p
-              className="mb-10 text-center mx-auto max-w-[600px]"
-              style={{
-                fontSize: "var(--font-size-large)",
-                color: "var(--color-text-secondary)",
-                lineHeight: "var(--line-height-relaxed)",
-              }}
-            >
-              Sign up and get $50 in free credits. No credit card required. Delta starts learning your jurisdiction immediately.
-            </p>
-          </motion.div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                name: "Document Analysis",
-                price: "$1-3",
-                unit: "per document",
-                description:
-                  "AI classification, anomaly detection, completeness tracking, and cross-document analysis.",
-              },
-              {
-                name: "Case Query",
-                price: "$0.50",
-                unit: "per query",
-                description: "Ask Delta anything about your cases — with source citations from your documents.",
-              },
-              {
-                name: "Case Briefing",
-                price: "$5",
-                unit: "per briefing",
-                description:
-                  "Full case summary with findings, flags, and recommended next steps.",
-              },
-            ].map((unit, index) => (
-              <motion.div
-                key={unit.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
-                  ease,
-                }}
-                className="flex flex-col rounded-2xl border p-8"
-                style={{
-                  borderColor: "var(--color-border)",
-                  backgroundColor: "var(--color-surface)",
-                }}
-              >
-                <p
-                  className="mb-4 font-medium uppercase tracking-wider"
-                  style={{
-                    fontSize: "var(--font-size-body)",
-                    color: "var(--color-text-tertiary)",
-                  }}
-                >
-                  {unit.name}
-                </p>
-                <div className="mb-4">
-                  <span
-                    className="font-serif leading-none tracking-tight"
-                    style={{
-                      fontSize: "clamp(2.5rem, 4vw, 3rem)",
-                      color: "var(--color-text-high-contrast)",
-                    }}
-                  >
-                    {unit.price}
-                  </span>
-                  <span
-                    className="ml-2"
-                    style={{
-                      fontSize: "var(--font-size-base)",
-                      color: "var(--color-text-secondary)",
-                    }}
-                  >
-                    {unit.unit}
-                  </span>
-                </div>
-                <p
-                  style={{
-                    fontSize: "var(--font-size-body)",
-                    color: "var(--color-text-secondary)",
-                    lineHeight: "var(--line-height-relaxed)",
-                  }}
-                >
-                  {unit.description}
-                </p>
-              </motion.div>
-            ))}
+      <div style={{ position: "relative" }}>
+        {/* Ruler lines */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "100%",
+            maxWidth: 1320,
+            padding: "0 clamp(24px, 4vw, 48px)",
+            pointerEvents: "none",
+            boxSizing: "border-box",
+          }}
+        >
+          <div style={{ position: "relative", width: "100%", height: "100%" }}>
+            <div style={{ position: "absolute", top: 0, bottom: 0, left: -16, width: 1, backgroundColor: BORDER }} />
+            <div style={{ position: "absolute", top: 0, bottom: 0, right: -16, width: 1, backgroundColor: BORDER }} />
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3, ease }}
-            className="mt-12 text-center"
-          >
-            <a
-              href={CTA_URLS.GET_STARTED}
-              className="inline-block rounded-lg px-8 py-3"
-              style={{
-                backgroundColor: "var(--color-button-primary)",
-                color: "var(--color-button-primary-text)",
-                fontSize: "var(--font-size-base)",
-                fontWeight: "var(--font-weight-medium)",
-                textDecoration: "none",
-                transition: "opacity 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = "0.85";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = "1";
-              }}
-            >
-              Start Free — $50 Credit
-            </a>
-          </motion.div>
         </div>
-      </section>
 
-      {/* Sales-Led Tiers */}
-      <section className="bg-progressive-2 pt-16 pb-16 md:pt-20 md:pb-20">
-        <div className="mx-auto max-w-[900px] px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease }}
-          >
-            <p
-              className="mb-3 font-medium uppercase tracking-wider text-center"
+        <div
+          style={{
+            maxWidth: 1320,
+            margin: "0 auto",
+            padding: "clamp(140px, 18vw, 220px) clamp(24px, 4vw, 48px) clamp(120px, 14vw, 200px)",
+          }}
+        >
+          <div style={{ maxWidth: 800 }}>
+            <h1
               style={{
-                fontSize: "var(--font-size-body)",
-                color: "var(--color-text-tertiary)",
+                fontFamily: FONT,
+                fontSize: "clamp(36px, 5vw, 64px)",
+                fontWeight: 700,
+                color: "#0A0A0A",
+                letterSpacing: "-0.035em",
+                lineHeight: 1.2,
+                marginBottom: 32,
               }}
             >
-              For Growing Firms
-            </p>
-            <h2
-              className="font-serif mb-4 text-center"
-              style={{
-                fontSize: "var(--font-size-h2)",
-                color: "var(--color-text-high-contrast)",
-                letterSpacing: "var(--letter-spacing-tight)",
-              }}
-            >
-              Flat firm pricing. Your whole team gets access.
-            </h2>
-            <p
-              className="mb-10 text-center mx-auto max-w-[600px]"
-              style={{
-                fontSize: "var(--font-size-large)",
-                color: "var(--color-text-secondary)",
-                lineHeight: "var(--line-height-relaxed)",
-              }}
-            >
-              Every other legal AI charges per seat. Delta charges per firm. The more your team uses it, the more Delta learns.
-            </p>
-          </motion.div>
+              Free $25 credit.
+              <br />
+              <span style={{ color: "#888" }}>No subscription.</span>
+              <br />
+              <span style={{ color: "#888" }}>No seat fees.</span>
+              <br />
+              <span style={{ color: "#888" }}>Pay for what you use.</span>
+            </h1>
 
-          <div className="flex flex-col gap-4">
-            {salesLedTiers.map((tier, index) => (
-              <motion.div
-                key={tier.name}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.08,
-                  ease,
-                }}
-                className="flex items-center justify-between rounded-2xl border p-6 md:p-8"
+            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+              <motion.a
+                href="https://app.casedelta.com/signup"
                 style={{
-                  borderColor: "var(--color-border)",
-                  backgroundColor: "var(--color-surface)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: FONT,
+                  height: 48,
+                  padding: "0 28px",
+                  fontSize: 15,
+                  fontWeight: 500,
+                  backgroundColor: ACCENT,
+                  color: "#FFFFFF",
+                  borderRadius: 6,
+                  textDecoration: "none",
+                  letterSpacing: "-0.01em",
+                  boxShadow: `0 1px 3px ${ACCENT}20`,
+                }}
+                whileHover={{ y: -2, backgroundColor: DELTA_BLUE, boxShadow: `0 6px 20px ${ACCENT}35` }}
+                whileTap={{ y: 0, scale: 0.97 }}
+                transition={springBounce}
+              >
+                Sign Up — Free $25 Credit
+              </motion.a>
+
+              <a
+                href="#rates"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontFamily: FONT,
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: ACCENT,
+                  textDecoration: "none",
+                  letterSpacing: "-0.01em",
                 }}
               >
-                <div>
-                  <p
-                    className="font-serif"
-                    style={{
-                      fontSize: "var(--font-size-h3)",
-                      color: "var(--color-text-high-contrast)",
-                    }}
-                  >
-                    {tier.name}
-                  </p>
-                  <p
-                    className="mt-1"
-                    style={{
-                      fontSize: "var(--font-size-body)",
-                      color: "var(--color-text-tertiary)",
-                    }}
-                  >
-                    {tier.target} &middot; {tier.included}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p
-                    className="font-serif"
-                    style={{
-                      fontSize: "var(--font-size-h3)",
-                      color: "var(--color-text-high-contrast)",
-                    }}
-                  >
-                    {tier.price}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "var(--font-size-body)",
-                      color: "var(--color-text-tertiary)",
-                    }}
-                  >
-                    /month flat
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-center mt-8"
-            style={{
-              fontSize: "var(--font-size-large)",
-              color: "var(--color-text-secondary)",
-              lineHeight: "var(--line-height-relaxed)",
-            }}
-          >
-            A paralegal costs $50-70K/year fully loaded — and takes everything when they leave. Delta costs a fraction of that, and everything it learns stays permanently.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* What's Included */}
-      <section className="bg-progressive-3 pt-16 pb-16 md:pt-20 md:pb-20">
-        <div className="mx-auto max-w-[900px] px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease }}
-          >
-            <h3
-              className="mb-8 text-center font-serif"
-              style={{
-                fontSize: "var(--font-size-h3)",
-                color: "var(--color-text-high-contrast)",
-                letterSpacing: "var(--letter-spacing-tight)",
-              }}
-            >
-              Included with every account
-            </h3>
-
-            <div style={{ textAlign: "center" }}>
-              <div
-                className="flex flex-col gap-6"
-                style={{ display: "inline-block", textAlign: "left" }}
-              >
-                {[
-                  "Persistent institutional memory — Delta learns and remembers",
-                  "Morning briefings across all active cases",
-                  "Clio, Google Drive, and email integrations",
-                  "Full audit trail — every action logged for bar compliance",
-                  "Jurisdiction intelligence for your courts and practice area",
-                  "Secure client portal for document uploads",
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.4,
-                      delay: index * 0.05,
-                      ease,
-                    }}
-                    className="flex items-start gap-3"
-                  >
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      style={{
-                        color: "var(--color-text-high-contrast)",
-                        flexShrink: 0,
-                        marginTop: "2px",
-                      }}
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    <span
-                      style={{
-                        fontSize: "var(--font-size-large)",
-                        color: "var(--color-text-secondary)",
-                        lineHeight: "1.7",
-                      }}
-                    >
-                      {feature}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
+                See pricing
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 3.5V12.5M4.5 9L8 12.5L11.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </section>
 
+        {/* Rates */}
+        <PricingRates />
+      </div>
+
+      <BottomCTA
+        quote="A paralegal is $50-70K a year and takes everything with them when they leave. Delta costs a fraction of that and everything it learns stays permanently."
+        attribution="Senior Partner"
+        attributionDetail="Insurance defense firm, Overland Park"
+        ctaHeading="Try Delta with $25 in free credits."
+        ctaSubheading="No subscription. No seat fees. Pay for what you use."
+      />
+      <FooterV2 />
     </main>
   );
 }
