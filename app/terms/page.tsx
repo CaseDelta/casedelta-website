@@ -21,27 +21,6 @@ export default function TermsPage() {
         </p>
       </LegalSectionV2>
 
-      <LegalSectionV2 title="Your Account">
-        <p>
-          You are responsible for maintaining the security of your account and all activity under it. Provide accurate registration information and keep your credentials confidential. If you suspect unauthorized access, contact us immediately at{" "}
-          <a href="mailto:support@casedelta.com" style={LEGAL_LINK_STYLE}>
-            support@casedelta.com
-          </a>
-          .
-        </p>
-      </LegalSectionV2>
-
-      <LegalSectionV2 title="Your Data and Intellectual Property">
-        <p>
-          You own all documents and data you upload to CaseDelta. CaseDelta claims no ownership or intellectual property rights over your content. We process your documents solely to provide the service.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          We never use your documents, queries, or Delta&apos;s responses to train AI models. Your firm&apos;s data is completely isolated from every other firm on the platform. You can export all of your data at any time. See our{" "}
-          <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>{" "}
-          for complete details on how we handle your data.
-        </p>
-      </LegalSectionV2>
-
       <LegalSectionV2 title="AI-Generated Output">
         <p>
           Delta generates analyses, chronologies, anomaly reports, case briefs, and other work product based on the documents you provide. These outputs are tools to assist your professional judgment &mdash; not substitutes for it.

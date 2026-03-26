@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import { BottomCTA } from "@/components/BottomCTA";
+import { ContactModal } from "@/components/ContactModal";
 
 const ACCENT = "#2563EB";
 const DELTA_BLUE = "#1D4ED8";
@@ -14,6 +15,7 @@ const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 
 function PricingRates() {
   const [tab, setTab] = useState<"usage" | "flat">("usage");
+  const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <section id="rates" style={{ position: "relative" }}>
@@ -118,8 +120,8 @@ function PricingRates() {
                 For firms with 10+ attorneys, we offer flat monthly pricing
                 tailored to your practice size and needs.
               </p>
-              <motion.a
-                href="mailto:sales@casedelta.com"
+              <motion.button
+                onClick={() => setContactOpen(true)}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -132,10 +134,10 @@ function PricingRates() {
                   backgroundColor: "#FFFFFF",
                   color: "#333",
                   borderRadius: 6,
-                  textDecoration: "none",
                   letterSpacing: "-0.01em",
                   border: `1px solid ${BORDER}`,
                   boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+                  cursor: "pointer",
                 }}
                 whileHover={{
                   y: -2,
@@ -146,7 +148,8 @@ function PricingRates() {
                 transition={springBounce}
               >
                 Contact us for pricing
-              </motion.a>
+              </motion.button>
+              <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
             </div>
           )}
         </div>

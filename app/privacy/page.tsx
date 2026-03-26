@@ -10,32 +10,9 @@ import {
 export default function PrivacyPage() {
   return (
     <LegalPageLayoutV2 title="Privacy Policy">
-      <LegalSectionV2 title="What We Collect">
-        <p>
-          We collect the information necessary to provide CaseDelta&apos;s service:
-        </p>
-        <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
-          <li style={{ marginBottom: 8 }}>
-            <strong>Account information</strong> &mdash; your name, email address, firm name, and billing details.
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            <strong>Documents</strong> &mdash; the files you upload for Delta to analyze, including case documents, medical records, financial documents, and other legal materials.
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            <strong>Usage data</strong> &mdash; how you interact with CaseDelta, including queries, approvals, and corrections, so Delta can learn your firm&apos;s preferences.
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            <strong>Technical data</strong> &mdash; IP address, browser type, and device information for security and service reliability.
-          </li>
-          <li>
-            <strong>Client portal data</strong> &mdash; when your clients use CaseDelta&apos;s secure upload portal, we collect only their name and email address.
-          </li>
-        </ul>
-      </LegalSectionV2>
-
       <LegalSectionV2 title="How We Process Your Data">
         <p>
-          All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to OpenAI, Google, Anthropic, or any other third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
+          All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to any third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
         </p>
         <p style={{ marginTop: 12 }}>
           Documents are encrypted both at rest and in transit. Delta processes your files solely to provide the service you&apos;ve requested &mdash; building chronologies, identifying anomalies, generating case briefs, and learning your firm&apos;s preferences over time.
@@ -61,24 +38,6 @@ export default function PrivacyPage() {
             <strong>We never access your data without authorization.</strong> CaseDelta engineers cannot view your documents or case data without explicit permission for a specific support request.
           </li>
         </ul>
-      </LegalSectionV2>
-
-      <LegalSectionV2 title="Third-Party Services">
-        <p>We use a limited set of third-party services, each with a narrow scope:</p>
-        <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
-          <li style={{ marginBottom: 8 }}>
-            <strong>Amazon Web Services (AWS)</strong> &mdash; infrastructure hosting. Your data is stored on encrypted AWS servers in the United States. AWS does not have access to your document content.
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            <strong>Stripe</strong> &mdash; payment processing. Stripe handles your billing information. We never store your credit card details directly.
-          </li>
-          <li>
-            <strong>Google &amp; Microsoft</strong> &mdash; authentication only (OAuth). When you sign in with Google or Microsoft, we receive only your name and email to verify your identity. These providers do not receive any document or case data.
-          </li>
-        </ul>
-        <p style={{ marginTop: 12 }}>
-          No third-party service has access to your document content, case data, or Delta&apos;s analysis of your files.
-        </p>
       </LegalSectionV2>
 
       <LegalSectionV2 title="Data Retention">
@@ -108,24 +67,8 @@ export default function PrivacyPage() {
         </ul>
         <p style={{ marginTop: 12 }}>
           For any data request, contact{" "}
-          <a href="mailto:privacy@casedelta.com" style={LEGAL_LINK_STYLE}>
-            privacy@casedelta.com
-          </a>
-          .
-        </p>
-      </LegalSectionV2>
-
-      <LegalSectionV2 title="Cookies">
-        <p>
-          CaseDelta uses only essential cookies required for the service to function &mdash; session management and authentication. We use one optional analytics cookie (PostHog) to understand how the service is used. We do not use advertising cookies, tracking pixels, or any third-party marketing trackers.
-        </p>
-      </LegalSectionV2>
-
-      <LegalSectionV2 title="Changes and Contact">
-        <p>
-          We may update this Privacy Policy from time to time. When we do, we&apos;ll notify you via email or through the CaseDelta interface. For privacy questions or concerns, contact{" "}
-          <a href="mailto:privacy@casedelta.com" style={LEGAL_LINK_STYLE}>
-            privacy@casedelta.com
+          <a href="mailto:support@casedelta.com" style={LEGAL_LINK_STYLE}>
+            support@casedelta.com
           </a>
           .
         </p>

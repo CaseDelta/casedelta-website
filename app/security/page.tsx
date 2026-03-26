@@ -241,46 +241,12 @@ export default function SecurityPage() {
           ))}
         </div>
 
-        {/* Questions CTA */}
-        <p
-          style={{
-            fontFamily: FONT,
-            fontSize: "clamp(14px, 1.1vw, 16px)",
-            color: "#999",
-            lineHeight: 1.7,
-            marginTop: 40,
-          }}
-        >
-          Have security questions? Contact{" "}
-          <a
-            href="mailto:security@casedelta.com"
-            style={{
-              color: "#2563EB",
-              textDecoration: "underline",
-              textUnderlineOffset: "3px",
-            }}
-          >
-            security@casedelta.com
-          </a>
-          . For our full data handling practices, see our{" "}
-          <a
-            href="/privacy"
-            style={{
-              color: "#2563EB",
-              textDecoration: "underline",
-              textUnderlineOffset: "3px",
-            }}
-          >
-            Privacy Policy
-          </a>
-          .
-        </p>
       </div>
 
       <BottomCTA
-        quote="I used AI on a small deal and saved 2-3x the time. But I'd never put real client data in it. Delta is the first AI where I actually feel safe using it on the cases that matter."
-        attribution="Attorney at a 13-person firm"
-        attributionDetail="Kansas City, MO"
+        quote="Every few months you'd hear about another lawyer getting sanctioned over AI-generated citations. I wanted the efficiency but not that kind of exposure. Delta gave us a way to use AI across our cases without putting anyone's license on the line."
+        attribution="Managing Partner"
+        attributionDetail="Insurance defense firm, Overland Park"
         ctaHeading="Your data stays inside your firm."
         ctaSubheading="Start with $25 in free credits. No third parties. No exceptions."
       />
