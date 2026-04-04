@@ -25,6 +25,9 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navHovered, setNavHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -363,7 +366,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
 
     </div>
     {/* Mobile menu — portaled to body to escape navbar stacking context */}
-    {typeof document !== "undefined" && createPortal(
+    {mounted && createPortal(
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
