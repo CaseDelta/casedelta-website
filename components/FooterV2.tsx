@@ -41,8 +41,14 @@ export function FooterV2() {
         </div>
 
         {/* Right: Links */}
-        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "8px 24px", alignItems: "center" }}>
           {[
+            { label: "Features", href: "/features" },
+            { label: "Use Cases", href: "/use-cases" },
+            { label: "Security", href: "/security" },
+            { label: "Pricing", href: "/pricing" },
+            { label: "Blog", href: "/blog" },
+            { label: "About", href: "/about" },
             { label: "Privacy", href: "/privacy" },
             { label: "Terms", href: "/terms" },
             { label: "Sign in", href: "https://app.casedelta.com" },
