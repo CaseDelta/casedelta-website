@@ -336,7 +336,9 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               borderRadius: 8,
               opacity: hideLinks ? 0 : 1,
               pointerEvents: hideLinks ? "none" : "auto",
-              transition: "opacity 0.5s ease",
+              width: hideLinks ? 0 : "auto",
+              overflow: "hidden",
+              transition: "opacity 0.5s ease, width 0.3s ease",
             }}
             whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
             whileTap={{ scale: 0.9 }}

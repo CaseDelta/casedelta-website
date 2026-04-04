@@ -224,13 +224,13 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
           width: "100%",
           maxWidth: 1320,
           margin: "0 auto",
-          padding: "0 clamp(24px, 4vw, 48px)",
+          padding: "clamp(100px, 14vw, 140px) clamp(24px, 4vw, 48px) 0",
           zIndex: 1,
           pointerEvents: revealed ? "auto" : "none",
         }}
       >
         <div
-          className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-4 lg:gap-8 items-center"
+          className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-8 lg:gap-8 items-center"
         >
           {/* ── Compact left column ── */}
           <motion.div
@@ -261,7 +261,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 lineHeight: 1.5,
                 letterSpacing: "-0.01em",
                 display: "block",
-                marginTop: 16,
+                marginTop: "clamp(16px, 2vw, 24px)",
                 maxWidth: 440,
               }}
             >
@@ -276,7 +276,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 alignItems: "center",
                 gap: 10,
                 fontFamily: FONT,
-                marginTop: 28,
+                marginTop: "clamp(28px, 3vw, 36px)",
                 height: 44,
                 padding: "0 20px",
                 backgroundColor: "#FFFFFF",
@@ -547,7 +547,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             position: "absolute",
             inset: 0,
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-start",
             zIndex: 2,
             pointerEvents: revealed ? "none" : "auto",
           }}
@@ -557,7 +557,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               width: "100%",
               maxWidth: 1320,
               margin: "0 auto",
-              padding: "0 clamp(24px, 4vw, 48px)",
+              padding: "clamp(140px, 22vh, 280px) clamp(24px, 4vw, 48px) 0",
             }}
           >
             {/* "Delta" */}
