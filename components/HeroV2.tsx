@@ -326,7 +326,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
 
           {/* ── Large video right column ── */}
           <motion.div
-            className="max-h-[60vh] lg:max-h-none overflow-hidden"
+            className="lg:max-h-none"
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={
               revealed

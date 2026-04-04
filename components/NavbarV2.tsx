@@ -359,59 +359,82 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div
+        <motion.div
           className="lg:hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
           style={{
             position: "fixed",
-            inset: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             backgroundColor: "#FFFFFF",
-            zIndex: 9999,
-            padding: "88px 28px 28px",
+            zIndex: 10000,
+            padding: "28px",
             overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <motion.button
-            onClick={() => setMobileMenuOpen(false)}
-            style={{
-              position: "absolute",
-              top: 20,
-              right: 24,
-              background: "none",
-              border: "none",
-              color: "#1A1A1A",
-              cursor: "pointer",
-              padding: 8,
-              borderRadius: 8,
-            }}
-            whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-            whileTap={{ scale: 0.85 }}
-            transition={springSnappy}
-            aria-label="Close menu"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </motion.button>
+          {/* Top bar with logo + close */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32 }}>
+            <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+              <Image
+                src="/assets/branding/casedelta-logo-full.png"
+                alt="CaseDelta"
+                width={140}
+                height={32}
+                style={{ width: "auto", height: 28, display: "block" }}
+                priority
+              />
+            </Link>
+            <motion.button
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#1A1A1A",
+                cursor: "pointer",
+                padding: 12,
+                borderRadius: 8,
+                minWidth: 48,
+                minHeight: 48,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+              whileTap={{ scale: 0.85 }}
+              transition={springSnappy}
+              aria-label="Close menu"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </motion.button>
+          </div>
 
-          <nav style={{ display: "flex", flexDirection: "column" }}>
+          <nav style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             {navLinks.map((item, i) => (
               <motion.div
                 key={item.label}
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.06, ...springSnappy }}
+                transition={{ delay: i * 0.04, ...springSnappy }}
               >
                 <Link
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   style={{
                     fontFamily: FONT,
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: 500,
                     color: "#1A1A1A",
                     textDecoration: "none",
-                    padding: "16px 0",
+                    padding: "18px 0",
                     borderBottom: "1px solid #F0F0F0",
                     letterSpacing: "-0.01em",
                     display: "block",
@@ -471,7 +494,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               </svg>
             </a>
           </motion.div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
