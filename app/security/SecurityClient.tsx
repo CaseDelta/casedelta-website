@@ -179,6 +179,7 @@ export default function SecurityClient() {
             >
               No third parties.
             </span>
+            {" "}
             <span
               style={{
                 fontFamily: FONT,

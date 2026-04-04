@@ -431,8 +431,9 @@ export default function FeaturesClient() {
                 display: "block",
               }}
             >
-              Delta learns your firm
+              Delta learns your firm.
             </span>
+            {" "}
             <span
               style={{
                 fontFamily: FONT,

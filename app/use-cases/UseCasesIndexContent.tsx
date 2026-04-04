@@ -86,6 +86,7 @@ export function UseCasesIndexContent() {
             >
               Delta learns your practice area.
             </span>
+            {" "}
             <span
               style={{
                 fontFamily: FONT,
