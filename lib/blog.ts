@@ -47,6 +47,14 @@ function parsePost(filename: string): PostWithContent | null {
 
   const frontmatter = data as PostFrontmatter;
 
+  // gray-matter auto-parses YAML dates into Date objects — normalize to strings
+  if ((frontmatter.date as unknown) instanceof Date) {
+    frontmatter.date = (frontmatter.date as unknown as Date).toISOString().split("T")[0];
+  }
+  if (frontmatter.updatedAt && (frontmatter.updatedAt as unknown) instanceof Date) {
+    frontmatter.updatedAt = (frontmatter.updatedAt as unknown as Date).toISOString().split("T")[0];
+  }
+
   // Filter out drafts in production
   if (IS_PRODUCTION && frontmatter.draft) return null;
 

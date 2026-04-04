@@ -74,12 +74,17 @@ export async function generateMetadata({
 /* ─── Helpers ─── */
 
 function formatDate(dateStr: string): string {
-  const date = new Date(dateStr + "T00:00:00");
+  const date = new Date(dateStr + "T12:00:00");
   return date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+}
+
+function getReadingTime(content: string): number {
+  const words = content.trim().split(/\s+/).length;
+  return Math.max(1, Math.round(words / 250));
 }
 
 /* ─── Page ─── */
@@ -90,6 +95,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!post) notFound();
 
   const { frontmatter, content } = post;
+  const readingTime = getReadingTime(content);
 
   return (
     <>
@@ -246,6 +252,17 @@ export default async function BlogPostPage({ params }: PageProps) {
             >
               {formatDate(frontmatter.date)}
             </time>
+            <span style={{ color: "#DDD", fontSize: 14 }}>|</span>
+            <span
+              style={{
+                fontFamily: FONT,
+                fontSize: 14,
+                color: "#999",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              {readingTime} min read
+            </span>
             {frontmatter.updatedAt && (
               <>
                 <span style={{ color: "#DDD", fontSize: 14 }}>|</span>
