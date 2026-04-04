@@ -410,8 +410,8 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
 
               {/* App content area — minimal chrome, big chat */}
               <div
+                className="lg:aspect-[4/3]"
                 style={{
-                  aspectRatio: "4 / 3",
                   display: "flex",
                   flexDirection: "column",
                   backgroundColor: "#FFFFFF",
