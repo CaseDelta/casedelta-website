@@ -383,49 +383,59 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               bottom: 0,
               backgroundColor: "#FFFFFF",
               zIndex: 99999,
-              padding: "28px",
               overflowY: "auto",
               display: "flex",
               flexDirection: "column",
             }}
           >
-            {/* Top bar with logo + close */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32 }}>
-              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                <Image
-                  src="/assets/branding/casedelta-logo-full.png"
-                  alt="CaseDelta"
-                  width={140}
-                  height={32}
-                  style={{ width: "auto", height: 28, display: "block" }}
-                  priority
-                />
-              </Link>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "#1A1A1A",
-                  cursor: "pointer",
-                  padding: 12,
-                  borderRadius: 8,
-                  minWidth: 48,
-                  minHeight: 48,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                aria-label="Close menu"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
+            {/* Top bar — matches navbar exactly: same height, padding, logo size, icon size */}
+            <div style={{
+              maxWidth: 1320,
+              width: "100%",
+              margin: "0 auto",
+              padding: "0 clamp(24px, 4vw, 48px)",
+              flexShrink: 0,
+            }}>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                height: 80,
+              }}>
+                <Link href="/" onClick={() => setMobileMenuOpen(false)} style={{ display: "flex", alignItems: "center" }}>
+                  <Image
+                    src="/assets/branding/casedelta-logo-full.png"
+                    alt="CaseDelta"
+                    width={180}
+                    height={42}
+                    style={{ height: 32, width: "auto" }}
+                    priority
+                  />
+                </Link>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#1A1A1A",
+                    cursor: "pointer",
+                    padding: 8,
+                    borderRadius: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  aria-label="Close menu"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <nav style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            <nav style={{ display: "flex", flexDirection: "column", flex: 1, padding: "0 clamp(24px, 4vw, 48px)" }}>
               {navLinks.map((item, i) => (
                 <motion.div
                   key={item.label}
@@ -458,7 +468,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, ...springSnappy }}
-              style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 10 }}
+              style={{ marginTop: 28, padding: "0 clamp(24px, 4vw, 48px)", display: "flex", flexDirection: "column", gap: 10 }}
             >
               <Link
                 href="https://app.casedelta.com"
