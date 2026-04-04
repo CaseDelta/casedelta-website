@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CaseDelta — Your AI Associate Attorney";
+export const alt = "CaseDelta — The AI Associate That Learns Your Firm";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,8 +43,8 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          Your AI associate attorney that analyzes thousands of records and
-          builds chronologies, anomaly reports, and case briefs.
+          The AI associate that learns your cases, your judges, and your
+          opposing counsel — and gets smarter every day.
         </div>
         <div
           style={{
