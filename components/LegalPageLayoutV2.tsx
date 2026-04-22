@@ -9,9 +9,10 @@ const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
 interface LegalPageLayoutV2Props {
   title: string;
   children: React.ReactNode;
+  lastUpdated?: string;
 }
 
-export function LegalPageLayoutV2({ title, children }: LegalPageLayoutV2Props) {
+export function LegalPageLayoutV2({ title, children, lastUpdated = "March 25, 2026" }: LegalPageLayoutV2Props) {
   return (
     <main style={{ backgroundColor: "#FFFFFF", fontFamily: FONT }}>
 

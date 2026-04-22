@@ -9,7 +9,7 @@ import {
 
 export default function PrivacyClient() {
   return (
-    <LegalPageLayoutV2 title="Privacy Policy">
+    <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="April 22, 2026">
       <LegalSectionV2 title="How We Process Your Data">
         <p>
           All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to any third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
@@ -19,6 +19,83 @@ export default function PrivacyClient() {
         </p>
         <p style={{ marginTop: 12 }}>
           Every action Delta takes is logged with a timestamp, the document involved, the query, the response, and the sources cited. This audit trail is exportable for bar compliance and your own records.
+        </p>
+      </LegalSectionV2>
+
+      <LegalSectionV2 title="Google Workspace API Data">
+        <p>
+          CaseDelta integrates with Google Workspace APIs &mdash; Google Drive, Gmail, and Google Calendar &mdash; to act on behalf of attorneys within their own Google accounts. The agent retrieves case documents from Drive, reads and drafts client correspondence in Gmail, and reads and creates case-related events in Calendar.
+        </p>
+        <p style={{ marginTop: 12 }}>
+          <strong>
+            CaseDelta&apos;s use and transfer to any other app of information received from Google APIs will adhere to the{" "}
+            <a
+              href="https://developers.google.com/terms/api-services-user-data-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={LEGAL_LINK_STYLE}
+            >
+              Google API Services User Data Policy
+            </a>
+            , including the Limited Use requirements.
+          </strong>
+        </p>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          Scopes We Request and Why
+        </h3>
+        <ul style={{ paddingLeft: 20, listStyleType: "disc" }}>
+          <li style={{ marginBottom: 10 }}>
+            <strong>Google Drive</strong> &mdash; to read, search, and write case documents (including Google Docs and Sheets files, which reside in Drive) across the firm&apos;s Drive. Attorneys query the CaseDelta agent in natural language (e.g., &ldquo;pull every filing in Smith v. Jones&rdquo;), and the agent must be able to discover and retrieve relevant documents firm-wide. The narrower <em>drive.file</em> scope is incompatible with this use case because it requires users to pre-select files before the agent can reason over them, which defeats the purpose of an AI research assistant.
+          </li>
+          <li style={{ marginBottom: 10 }}>
+            <strong>Gmail</strong> &mdash; to read case-related correspondence for context and draft replies. CaseDelta never sends email without explicit user confirmation; outgoing messages are created as drafts for the attorney to review and send manually from Gmail.
+          </li>
+          <li>
+            <strong>Google Calendar</strong> &mdash; to read case events and create deadline reminders (filing dates, hearings, depositions).
+          </li>
+        </ul>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          How Google User Data Is Used
+        </h3>
+        <p>
+          Data received from Google APIs is used solely to provide the services the attorney has requested: document retrieval, chronology generation, correspondence drafting, and calendaring. It is processed inside CaseDelta&apos;s secure infrastructure, segregated per firm, and returned to the attorney as answers, drafts, or generated documents.
+        </p>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          How Google User Data Is Stored and Secured
+        </h3>
+        <ul style={{ paddingLeft: 20, listStyleType: "disc" }}>
+          <li style={{ marginBottom: 8 }}>All Google user data is encrypted in transit (TLS 1.2+) and at rest (AES-256).</li>
+          <li style={{ marginBottom: 8 }}>Data is isolated per firm; no firm&apos;s data is ever commingled with or accessible to another firm.</li>
+          <li style={{ marginBottom: 8 }}>Access is restricted by OAuth tokens scoped to individual users; CaseDelta engineers cannot view firm data without explicit, time-bound authorization for a specific support request.</li>
+          <li>All access is logged with timestamps, query, response, and source citations; logs are exportable by the firm.</li>
+        </ul>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          How Google User Data Is Shared
+        </h3>
+        <p>
+          CaseDelta does not share, sell, or transfer Google user data to any third party. We do not use Google user data for advertising, and we do not allow humans to read Google user data except (a) with the user&apos;s explicit consent for a specific support issue, (b) for security investigations, or (c) to comply with applicable law.
+        </p>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          AI/ML Model Training
+        </h3>
+        <p>
+          CaseDelta does not use Google Workspace data &mdash; including Gmail messages, Drive documents, or Calendar events &mdash; to train, retrain, or fine-tune any generalized or non-personalized AI/ML model. Firm-specific models that learn a firm&apos;s terminology and preferences are trained only on that firm&apos;s own data, remain isolated to that firm, and are permanently deleted when the firm cancels.
+        </p>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          Data Retention and Deletion of Google Data
+        </h3>
+        <p>
+          Google user data is retained only as long as needed to provide the service. Attorneys and firms can request deletion of any or all Google-derived data at any time by contacting{" "}
+          <a href="mailto:support@casedelta.com" style={LEGAL_LINK_STYLE}>
+            support@casedelta.com
+          </a>
+          . When a subscription is canceled, all Google-derived data is permanently deleted 30 days after cancellation.
         </p>
       </LegalSectionV2>
 
