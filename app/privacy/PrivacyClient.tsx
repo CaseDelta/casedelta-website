@@ -84,7 +84,10 @@ export default function PrivacyClient() {
           AI/ML Model Training
         </h3>
         <p>
-          CaseDelta does not use Google Workspace data &mdash; including Gmail messages, Drive documents, or Calendar events &mdash; to train, retrain, or fine-tune any generalized or non-personalized AI/ML model. Firm-specific models that learn a firm&apos;s terminology and preferences are trained only on that firm&apos;s own data, remain isolated to that firm, and are permanently deleted when the firm cancels.
+          CaseDelta does not use Google Workspace data &mdash; including Gmail messages, Drive documents, or Calendar events &mdash; to train, retrain, or fine-tune any AI model. Your data is never fed back into any model&apos;s training pipeline.
+        </p>
+        <p style={{ marginTop: 12 }}>
+          When Delta answers a question, it reads the specific documents and firm context (such as your firm&apos;s preferred document formats, recurring client names, and prior instructions) needed to respond in that moment. This context stays inside your firm&apos;s private environment, is never visible to any other firm, and is permanently deleted when your subscription ends. The underlying AI models themselves are not modified by your data in any way.
         </p>
 
         <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
