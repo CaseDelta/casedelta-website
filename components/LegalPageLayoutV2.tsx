@@ -61,7 +61,7 @@ export function LegalPageLayoutV2({ title, children, lastUpdated = "March 25, 20
             color: "#999",
             marginBottom: 56,
           }}>
-            Last updated: March 25, 2026
+            Last updated: {lastUpdated}
           </p>
 
           {children}
