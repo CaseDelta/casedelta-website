@@ -9,7 +9,7 @@ import {
 
 export default function PrivacyClient() {
   return (
-    <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="April 22, 2026">
+    <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="May 1, 2026">
       <LegalSectionV2 title="How We Process Your Data">
         <p>
           All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to any third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
@@ -24,7 +24,7 @@ export default function PrivacyClient() {
 
       <LegalSectionV2 title="Google Workspace API Data">
         <p>
-          CaseDelta integrates with Google Workspace APIs &mdash; Google Drive, Gmail, and Google Calendar &mdash; to act on behalf of attorneys within their own Google accounts. The agent retrieves case documents from Drive, reads and drafts client correspondence in Gmail, and reads and creates case-related events in Calendar.
+          CaseDelta integrates with Google Workspace APIs &mdash; Google Drive, Gmail, and Google Calendar &mdash; to act on behalf of attorneys within their own Google accounts. The agent reads case documents from Drive (read-only), reads and drafts client correspondence in Gmail, and reads and creates case-related events in Calendar.
         </p>
         <p style={{ marginTop: 12 }}>
           <strong>
@@ -46,13 +46,13 @@ export default function PrivacyClient() {
         </h3>
         <ul style={{ paddingLeft: 20, listStyleType: "disc" }}>
           <li style={{ marginBottom: 10 }}>
-            <strong>Google Drive</strong> &mdash; to read, search, and write case documents (including Google Docs and Sheets files, which reside in Drive) across the firm&apos;s Drive. Attorneys query the CaseDelta agent in natural language (e.g., &ldquo;pull every filing in Smith v. Jones&rdquo;), and the agent must be able to discover and retrieve relevant documents firm-wide. The narrower <em>drive.file</em> scope is incompatible with this use case because it requires users to pre-select files before the agent can reason over them, which defeats the purpose of an AI research assistant.
+            <strong>Google Drive</strong> (<code>drive.readonly</code>) &mdash; to read and search case documents (including Google Docs and Sheets files, which reside in Drive) across the firm&apos;s Drive. Attorneys query the CaseDelta agent in natural language (e.g., &ldquo;pull every filing in Smith v. Jones&rdquo;), and the agent must be able to discover and retrieve relevant documents firm-wide. The narrower <em>drive.file</em> scope is incompatible with this use case because it requires users to pre-select files before the agent can reason over them, which defeats the purpose of an AI research assistant. Drive access is strictly read-only &mdash; CaseDelta never modifies, deletes, or writes documents to your Drive.
           </li>
           <li style={{ marginBottom: 10 }}>
-            <strong>Gmail</strong> &mdash; to read case-related correspondence for context and draft replies. CaseDelta never sends email without explicit user confirmation; outgoing messages are created as drafts for the attorney to review and send manually from Gmail.
+            <strong>Gmail</strong> (<code>gmail.readonly</code> + <code>gmail.compose</code>) &mdash; to read case-related correspondence for context and draft replies. CaseDelta never sends email without explicit user confirmation; outgoing messages are created as drafts for the attorney to review and send manually from Gmail.
           </li>
           <li>
-            <strong>Google Calendar</strong> &mdash; to read case events and create deadline reminders (filing dates, hearings, depositions).
+            <strong>Google Calendar</strong> (<code>calendar.readonly</code> + <code>calendar.events</code>) &mdash; to read case events and create deadline reminders (filing dates, hearings, depositions).
           </li>
         </ul>
 
