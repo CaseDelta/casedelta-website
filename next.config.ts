@@ -44,8 +44,11 @@ const nextConfig: NextConfig = {
       // Old hero variant pages
       { source: "/heroes/:path*", destination: "/", permanent: true },
 
-      // Old legal page path → current path
+      // Old legal page path → current path. The /legal/* paths are also what
+      // Google's OAuth consent screen links to for Privacy Policy and Terms of
+      // Service, so they must remain valid permanently.
       { source: "/legal/privacy-policy", destination: "/privacy", permanent: true },
+      { source: "/legal/terms-of-service", destination: "/terms", permanent: true },
 
       // Old blog posts that were removed — redirect to blog index
       { source: "/blog/building-brand-loyalty-through-exceptional-customer-support", destination: "/blog", permanent: true },
