@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { AppFrame } from "@/components/video/primitives/AppFrame";
+import { AppFrame, Cursor } from "@/components/video/primitives/AppFrame";
 import {
   SkyGradient,
   DriftAuras,
@@ -30,7 +30,7 @@ import {
   SOFT_EASE,
 } from "@/components/video/primitives/tokens";
 
-export const DEMO_DURATION_MS = 12000;
+export const DEMO_DURATION_MS = 13000;
 export const DEMO_BACKGROUND = "#F4D58D";
 
 /* ATMOSPHERICS — temporary kill-switch (see VSL_HANDOFF.md). */
@@ -61,13 +61,43 @@ const FIRM_INITIAL = "K";
  *   0.7s  – Discovery attachment chip appears (VO: "Hand Delta…")
  *   1.7s  – User query bubble appears (VO: "Tell Delta what to do")
  *   1.9s  – Delta typing indicator appears
- *   2.5s  – Response Section 1: "Medical Chronology" heading + table rows
+ *   2.5s  – Response Section 1: chronology PDF preview card (cover + fanned
+ *           pages) inline in chat, mirroring the actual CaseDelta chronology
  *   4.5s  – Section 2: "Gaps flagged" bullet list
  *   6.5s  – Section 3: "Email drafted" note
- *   8.0s  – Section 4: "Time logged" note
- *   9.0–11.6s – full response visible; viewer reads while VO closes
- *  11.6s  – fade out
+ *   8.0s  – Section 4: "Time logged" note (full response now visible)
+ *   8.5s  – Cursor enters from off-screen-right
+ *   9.3s  – Cursor reaches PDF card, hovers (pulse begins)
+ *   9.5s  – Cursor click on PDF
+ *   9.5–10.2s – Zoom transition: AppFrame fades + blurs, the detailed PDF
+ *           view (cover + landscape table page side-by-side) assembles at
+ *           viewport center
+ *  10.2–12.6s – Detailed PDF view holds; viewer reads cover + table while
+ *           VO closes ("Many tools. Hours of work. Done all in one go.")
+ *  12.6–13.0s – fade out
  */
+
+const CURSOR_ENTER_T    = 8.5;
+const CURSOR_OVER_T     = 9.3;
+const CURSOR_CLICK_T    = 9.5;
+const ZOOM_START_T      = 9.5;
+const ZOOM_END_T        = 10.2;
+const DETAIL_FADE_OUT_S = 12.6;
+const DETAIL_FADE_OUT_E = 13.0;
+
+/* Approximate PDF preview card center in viewport (1920×1080). The PDF card
+ * sits inside the chat conversation area, which is centered horizontally in
+ * the chat content region (sidebar 268px + chat content 1652px). The card
+ * is vertically positioned in the upper half of the conversation, just
+ * below the user query bubble. */
+const PDF_TARGET_X = 1094;
+const PDF_TARGET_Y = 430;
+
+function smoothStep(x: number): number {
+  const k = Math.max(0, Math.min(1, x));
+  return k * k * (3 - 2 * k);
+}
+
 export function DemoScene({ t }: { t: number }) {
   const appVisible        = t > 0.2;
   const attachmentVisible = t > 0.7;
@@ -80,6 +110,36 @@ export function DemoScene({ t }: { t: number }) {
     t > 8.0,  // time logged
   ];
   const focalPulse        = t > 1.0 && t < 2.6;
+
+  /* Cursor entrance + click. Cursor enters off-screen-right at 8.5s, glides
+   * to the PDF card center by 9.3s, hovers, then clicks at 9.5s. Stays in
+   * frame briefly during the zoom for visual continuity, then fades. */
+  const cursorVisible = t > CURSOR_ENTER_T && t < ZOOM_END_T - 0.1;
+  const cursorPulsing = t > CURSOR_OVER_T && t < CURSOR_CLICK_T + 0.4;
+  let cursorX = 2050;
+  let cursorY = PDF_TARGET_Y;
+  if (t >= CURSOR_OVER_T) {
+    cursorX = PDF_TARGET_X;
+    cursorY = PDF_TARGET_Y;
+  } else if (t > CURSOR_ENTER_T) {
+    const k = smoothStep((t - CURSOR_ENTER_T) / (CURSOR_OVER_T - CURSOR_ENTER_T));
+    cursorX = 2050 + (PDF_TARGET_X - 2050) * k;
+    cursorY = PDF_TARGET_Y;
+  }
+
+  /* Zoom progress: 0 = chat normal, 1 = chat fully zoomed-out (blurred + dim),
+   * detailed PDF fully visible. */
+  let zoomK = 0;
+  if (t >= ZOOM_END_T) zoomK = 1;
+  else if (t > ZOOM_START_T) zoomK = smoothStep((t - ZOOM_START_T) / (ZOOM_END_T - ZOOM_START_T));
+
+  /* Detailed-view opacity — fades in slightly behind the zoom, fades out at end. */
+  let detailOpacity = 0;
+  if (t > ZOOM_START_T && t < DETAIL_FADE_OUT_S) {
+    detailOpacity = smoothStep((t - (ZOOM_START_T + 0.2)) / 0.6);
+  } else if (t >= DETAIL_FADE_OUT_S && t < DETAIL_FADE_OUT_E) {
+    detailOpacity = 1 - smoothStep((t - DETAIL_FADE_OUT_S) / (DETAIL_FADE_OUT_E - DETAIL_FADE_OUT_S));
+  }
 
   return (
     <div
@@ -108,10 +168,12 @@ export function DemoScene({ t }: { t: number }) {
       <motion.div
         initial={false}
         animate={{
-          opacity: appVisible ? 1 : 0,
-          scale: appVisible ? 1 : 0.94,
+          opacity: appVisible ? (1 - zoomK * 0.78) : 0,
+          scale: appVisible ? (1 - zoomK * 0.04) : 0.94,
           y: appVisible ? 0 : 18,
-          filter: appVisible ? "blur(0px)" : "blur(10px)",
+          filter: appVisible
+            ? `blur(${zoomK * 14}px)`
+            : "blur(10px)",
         }}
         transition={{ duration: 0.65, ease: SOFT_EASE }}
         style={{ position: "absolute", inset: 0 }}
@@ -134,6 +196,18 @@ export function DemoScene({ t }: { t: number }) {
           />
         </AppFrame>
       </motion.div>
+
+      {/* Cursor — overlays the AppFrame, glides in and clicks the PDF card */}
+      <Cursor
+        x={cursorX}
+        y={cursorY}
+        visible={cursorVisible}
+        pulsing={cursorPulsing}
+        transition={{ duration: 0.85, ease: [0.25, 0.1, 0.25, 1] }}
+      />
+
+      {/* Detailed PDF view — fills the dimmed/blurred chat after the click */}
+      {detailOpacity > 0 && <ChronologyDetailedView opacity={detailOpacity} />}
     </div>
   );
 }
@@ -501,15 +575,13 @@ function DeltaResponse({
     >
       {typingVisible && !anySectionVisible && <TypingIndicator />}
 
-      {/* Section 1: Chronology heading + table */}
+      {/* Section 1: Chronology PDF preview card (cover + fanned pages) */}
       <RevealSection visible={sectionVisible[0]}>
-        <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6 }}>
-          Medical Chronology — Garcia v. Northwest Hospital
+        <div style={{ marginBottom: 10, fontSize: 14, lineHeight: 1.5 }}>
+          Built medical chronology from 1,247 pages of discovery. 23-page PDF
+          with 47 events identified across 18 months.
         </div>
-        <div style={{ color: TEXT_SECONDARY, marginBottom: 12, fontSize: 13 }}>
-          Built from 1,247 pages of discovery. 47 events identified across 18 months.
-        </div>
-        <ChronologyTable />
+        <ChronologyPDFPreview />
       </RevealSection>
 
       {/* Section 2: Gaps flagged */}
@@ -584,48 +656,592 @@ function TypingIndicator() {
   );
 }
 
-/* ───────── Chronology table ─────────
- * Compact table with date / case ID-style code / event / provider columns.
- * Uses muted gray borders; no header row to keep the look clean. */
+/* ───────── Chronology PDF preview ─────────
+ * Hybrid mock of the actual CaseDelta-generated chronology PDF (template at
+ * casedelta-cloud/aws/lambda/platform_api/templates/chronology.html).
+ *
+ * Small in-chat version: a centered cover page (readable: case name, "Generated
+ * by CaseDelta", patient block, case overview) with two fanned pages peeking
+ * from behind — one landscape (chronology table hint), one portrait (gaps
+ * section hint). A "23 pages · PDF" badge sits at the bottom-right.
+ *
+ * The cursor clicks this card around 9.5s, triggering a zoom transition to the
+ * detailed PDF view (ChronologyDetailedView, full-size cover + landscape table). */
 
-const CHRONOLOGY_ROWS = [
-  { date: "Mar 14, 2024", event: "Initial ER visit, complaint of chest pain",   provider: "Northwest ER" },
-  { date: "Mar 14, 2024", event: "EKG performed, results 'non-specific'",       provider: "Dr. Patel" },
-  { date: "Mar 21, 2024", event: "Follow-up, no cardiac referral made",         provider: "Dr. Patel" },
-  { date: "Apr 02, 2024", event: "Cardiac event, ER admission",                 provider: "Northwest ER" },
-  { date: "Apr 04, 2024", event: "Cardiac infarction diagnosed, surgery",       provider: "Dr. Chen" },
+const PDF_BLUE = "#2B4C7E";
+const SAMPLE_CHRONOLOGY_ROWS: { date: string; provider: string; type: string; event: string; tag: "L" | "C" | "D" | "" }[] = [
+  { date: "03/14/2024", provider: "Northwest ER",  type: "ER",       event: "Initial ER visit, c/o chest pain. Tachycardia, BP 158/98.",         tag: "L" },
+  { date: "03/14/2024", provider: "Dr. Patel",     type: "Office",   event: "EKG performed; results documented as 'non-specific'.",              tag: "L" },
+  { date: "03/14/2024", provider: "Dr. Patel",     type: "Note",     event: "Pt advised to f/u in 1 week. No cardiac stress test ordered.",      tag: "L" },
+  { date: "03/21/2024", provider: "Dr. Patel",     type: "Office",   event: "F/u visit, no cardiac referral made despite prior EKG findings.",   tag: "L" },
+  { date: "04/02/2024", provider: "Northwest ER",  type: "ER",       event: "Pt presents with cardiac event. ST-elevation on EKG, troponin 8.2.", tag: "C" },
+  { date: "04/02/2024", provider: "Northwest ER",  type: "Admit",    event: "Admitted for cardiac infarction, NSTEMI. Cath lab activated.",      tag: "C" },
+  { date: "04/04/2024", provider: "Dr. Chen",      type: "Surgery",  event: "CABG x3 performed. Tolerated procedure well, no complications.",    tag: "C" },
+  { date: "04/05/2024", provider: "Northwest ICU", type: "Inpatient",event: "Post-op day 1. Stable, weaning off pressors.",                      tag: "" },
+  { date: "04/08/2024", provider: "Northwest ICU", type: "Inpatient",event: "Post-op day 4. Discharged to step-down with cardiac rehab plan.",   tag: "" },
+  { date: "04/22/2024", provider: "Dr. Chen",      type: "Office",   event: "2-week post-op f/u. Healing well. Pt c/o reduced exercise tol.",    tag: "D" },
 ];
 
-function ChronologyTable() {
+function ChronologyPDFPreview() {
   return (
     <div
       style={{
-        border: "1px solid #E5E7EB",
-        borderRadius: 8,
-        overflow: "hidden",
+        position: "relative",
+        width: 540,
+        height: 380,
+        marginTop: 4,
       }}
     >
-      {CHRONOLOGY_ROWS.map((row, i) => (
+      {/* Fanned page behind right — landscape (chronology table hint) */}
+      <div
+        style={{
+          position: "absolute",
+          right: 6,
+          top: 36,
+          width: 270,
+          height: 209,
+          background: "#FFFFFF",
+          border: "1px solid #E5E7EB",
+          borderRadius: 3,
+          boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
+          transform: "rotate(7deg)",
+          transformOrigin: "left top",
+          padding: "10px 12px",
+          overflow: "hidden",
+        }}
+      >
+        <LandscapeMiniPreview />
+      </div>
+
+      {/* Fanned page behind left — portrait (gaps / missing records hint) */}
+      <div
+        style={{
+          position: "absolute",
+          left: 8,
+          top: 28,
+          width: 200,
+          height: 259,
+          background: "#FFFFFF",
+          border: "1px solid #E5E7EB",
+          borderRadius: 3,
+          boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
+          transform: "rotate(-6deg)",
+          transformOrigin: "right top",
+          padding: "12px 14px",
+          overflow: "hidden",
+        }}
+      >
+        <PortraitMiniPreview />
+      </div>
+
+      {/* Cover page — centered, in front, dominant */}
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: 0,
+          transform: "translateX(-50%)",
+          width: 280,
+          height: 362,
+          background: "#FFFFFF",
+          border: "1px solid #D1D5DB",
+          borderRadius: 4,
+          boxShadow: "0 16px 40px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.08)",
+          padding: "22px 22px 14px 22px",
+          display: "flex",
+          flexDirection: "column",
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        }}
+      >
+        <CoverMiniContent />
+      </div>
+
+      {/* PDF badge */}
+      <div
+        style={{
+          position: "absolute",
+          right: 16,
+          bottom: 12,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          background: PDF_BLUE,
+          color: "#FFFFFF",
+          padding: "6px 12px",
+          borderRadius: 999,
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: 0.3,
+          boxShadow: "0 6px 16px rgba(43, 76, 126, 0.35)",
+        }}
+      >
+        <PdfIcon />
+        23 pages · PDF
+      </div>
+    </div>
+  );
+}
+
+function CoverMiniContent() {
+  return (
+    <>
+      <div
+        style={{
+          fontSize: 14,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          textAlign: "center",
+          marginTop: 22,
+          letterSpacing: 0.6,
+        }}
+      >
+        MEDICAL CHRONOLOGY
+      </div>
+      <div
+        style={{
+          fontSize: 10,
+          fontWeight: 600,
+          color: PDF_BLUE,
+          textAlign: "center",
+          marginTop: 8,
+        }}
+      >
+        Garcia v. Northwest Hospital
+      </div>
+      <div
+        style={{
+          fontSize: 7,
+          color: "#888",
+          fontStyle: "italic",
+          textAlign: "center",
+          marginTop: 4,
+          marginBottom: 18,
+        }}
+      >
+        Generated by CaseDelta · May 2, 2026 · Confidential Work Product
+      </div>
+      <div style={{ fontSize: 8, lineHeight: 1.6, color: "#222" }}>
+        <div>
+          <span style={{ fontWeight: 700, display: "inline-block", width: 70 }}>Patient:</span>
+          Maria Garcia
+        </div>
+        <div>
+          <span style={{ fontWeight: 700, display: "inline-block", width: 70 }}>Date of Birth:</span>
+          06/14/1958
+        </div>
+      </div>
+      <div
+        style={{
+          fontSize: 9,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          borderBottom: `1px solid ${PDF_BLUE}`,
+          paddingBottom: 2,
+          marginTop: 14,
+          marginBottom: 6,
+        }}
+      >
+        Case Overview
+      </div>
+      <div style={{ fontSize: 7.5, lineHeight: 1.5, color: "#333" }}>
+        Pt. presented to Northwest Hospital ER on 03/14/2024 with chest pain.
+        EKG performed by Dr. Patel showed non-specific findings. No cardiac
+        referral or stress test ordered. Pt. returned 04/02/2024 in cardiac
+        distress; surgery performed 04/04/2024 by Dr. Chen.
+      </div>
+      <div style={{ flex: 1 }} />
+      <div
+        style={{
+          fontSize: 6,
+          color: "#999",
+          textAlign: "center",
+          borderTop: "1px solid #EEE",
+          paddingTop: 4,
+        }}
+      >
+        Page 1 of 23 · Confidential Work Product
+      </div>
+    </>
+  );
+}
+
+function LandscapeMiniPreview() {
+  return (
+    <div style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+      <div style={{ fontSize: 6, fontWeight: 700, color: PDF_BLUE, marginBottom: 4 }}>
+        Fact Chronology (47 Entries)
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1.2fr 0.7fr 1.8fr 0.5fr",
+          gap: 1,
+          background: PDF_BLUE,
+          color: "#FFFFFF",
+          fontSize: 4.5,
+          fontWeight: 700,
+          padding: "2px 3px",
+          letterSpacing: 0.2,
+        }}
+      >
+        <div>DATE</div>
+        <div>PROVIDER</div>
+        <div>TYPE</div>
+        <div>EVENTS</div>
+        <div style={{ textAlign: "center" }}>TAG</div>
+      </div>
+      {Array.from({ length: 9 }).map((_, i) => (
         <div
           key={i}
           style={{
             display: "grid",
-            gridTemplateColumns: "120px 1fr 140px",
-            gap: 16,
-            padding: "10px 16px",
-            borderTop: i === 0 ? "none" : "1px solid #EEF0F3",
-            fontSize: 13,
-            color: TEXT_PRIMARY,
-            alignItems: "center",
+            gridTemplateColumns: "1fr 1.2fr 0.7fr 1.8fr 0.5fr",
+            gap: 1,
+            background: i % 2 ? "#FFFFFF" : "#F2F2F2",
+            padding: "3px 3px",
+            borderBottom: "0.5px solid #DDD",
           }}
         >
-          <div style={{ color: TEXT_SECONDARY, fontWeight: 500 }}>{row.date}</div>
-          <div>{row.event}</div>
-          <div style={{ color: TEXT_SECONDARY, fontSize: 12.5 }}>{row.provider}</div>
+          <div style={{ height: 4, background: "#D8DEE5", borderRadius: 1 }} />
+          <div style={{ height: 4, background: "#D8DEE5", borderRadius: 1, width: "85%" }} />
+          <div style={{ height: 4, background: "#D8DEE5", borderRadius: 1, width: "75%" }} />
+          <div>
+            <div style={{ height: 3, background: "#D8DEE5", borderRadius: 1, marginBottom: 1.5 }} />
+            <div style={{ height: 3, background: "#D8DEE5", borderRadius: 1, width: "70%" }} />
+          </div>
+          <div
+            style={{
+              height: 6,
+              width: 6,
+              borderRadius: 999,
+              background: i === 1 ? "#c0392b" : i === 4 ? "#e67e22" : i === 7 ? "#2980b9" : "#D8DEE5",
+              margin: "0 auto",
+            }}
+          />
         </div>
       ))}
     </div>
   );
+}
+
+function PortraitMiniPreview() {
+  return (
+    <div style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+      <div
+        style={{
+          fontSize: 8,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          borderBottom: `1px solid ${PDF_BLUE}`,
+          paddingBottom: 2,
+          marginBottom: 8,
+        }}
+      >
+        Missing Records / Gaps
+      </div>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} style={{ marginBottom: 7, display: "flex", gap: 5 }}>
+          <div style={{ fontSize: 6.5, color: "#666", fontWeight: 600 }}>{i + 1}.</div>
+          <div style={{ flex: 1 }}>
+            <div
+              style={{
+                height: 4,
+                background: "#D8DEE5",
+                borderRadius: 1.5,
+                marginBottom: 2.5,
+              }}
+            />
+            <div
+              style={{
+                height: 4,
+                background: "#D8DEE5",
+                borderRadius: 1.5,
+                width: i % 2 === 0 ? "82%" : "60%",
+              }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PdfIcon() {
+  return (
+    <svg width="11" height="13" viewBox="0 0 16 18" fill="none" aria-hidden>
+      <path
+        d="M3 1 L11 1 L14 4 L14 17 L3 17 Z"
+        stroke="#FFFFFF"
+        strokeWidth="1.4"
+        fill="rgba(255,255,255,0.12)"
+        strokeLinejoin="round"
+      />
+      <path d="M11 1 L11 4 L14 4" stroke="#FFFFFF" strokeWidth="1.4" fill="none" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/* ───────── Detailed PDF view (post-zoom) ─────────
+ *
+ * After the cursor click + zoom transition, the chat dims and blurs and this
+ * detailed view fills viewport-center: a full-size cover page on the left,
+ * a landscape Fact Chronology table page on the right with realistic entries.
+ * The viewer reads BOTH the branding/cover (proof of identity) AND content
+ * depth (proof of substance) at scale.
+ *
+ * Sized to fit comfortably within 1920×1080 with breathing room. */
+
+function ChronologyDetailedView({ opacity }: { opacity: number }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        pointerEvents: "none",
+        opacity,
+        zIndex: 50,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: 24,
+          alignItems: "stretch",
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+        }}
+      >
+        <DetailedCoverPage />
+        <DetailedTablePage />
+      </div>
+    </div>
+  );
+}
+
+function DetailedCoverPage() {
+  return (
+    <div
+      style={{
+        width: 540,
+        height: 700,
+        background: "#FFFFFF",
+        border: "1px solid #D1D5DB",
+        borderRadius: 6,
+        boxShadow: "0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.10)",
+        padding: "44px 44px 28px 44px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 26,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          textAlign: "center",
+          marginTop: 36,
+          letterSpacing: 1.0,
+        }}
+      >
+        MEDICAL CHRONOLOGY
+      </div>
+      <div
+        style={{
+          fontSize: 17,
+          fontWeight: 600,
+          color: PDF_BLUE,
+          textAlign: "center",
+          marginTop: 14,
+        }}
+      >
+        Garcia v. Northwest Hospital
+      </div>
+      <div
+        style={{
+          fontSize: 11,
+          color: "#888",
+          fontStyle: "italic",
+          textAlign: "center",
+          marginTop: 6,
+          marginBottom: 30,
+        }}
+      >
+        Generated by CaseDelta · May 2, 2026 · Confidential Work Product
+      </div>
+
+      <div style={{ fontSize: 13, lineHeight: 1.8, color: "#222" }}>
+        <div>
+          <span style={{ fontWeight: 700, display: "inline-block", width: 130 }}>Patient:</span>
+          Maria Garcia
+        </div>
+        <div>
+          <span style={{ fontWeight: 700, display: "inline-block", width: 130 }}>Date of Birth:</span>
+          06/14/1958
+        </div>
+        <div>
+          <span style={{ fontWeight: 700, display: "inline-block", width: 130 }}>Date of Injury:</span>
+          03/14/2024
+        </div>
+        <div>
+          <span style={{ fontWeight: 700, display: "inline-block", width: 130 }}>Matter:</span>
+          Garcia v. Northwest Hospital, Cir. Ct. 24-CV-1182
+        </div>
+      </div>
+
+      <div
+        style={{
+          fontSize: 14,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          borderBottom: `2px solid ${PDF_BLUE}`,
+          paddingBottom: 4,
+          marginTop: 26,
+          marginBottom: 12,
+        }}
+      >
+        Case Overview
+      </div>
+      <div style={{ fontSize: 12, lineHeight: 1.65, color: "#333" }}>
+        Pt. presented to Northwest Hospital ER on 03/14/2024 with chest pain
+        and tachycardia. EKG performed by Dr. Patel showed non-specific
+        findings; results documented as 'non-specific' without further
+        cardiac workup. No cardiac referral or stress test ordered.
+        Pt. returned to Northwest ER on 04/02/2024 in acute cardiac distress
+        with ST-elevation on EKG. CABG x3 performed by Dr. Chen on 04/04/2024.
+        Recovery without complications. 2-day gap in records 04/02–04/04
+        and missing notes from 03/14 ER visit (Dr. Patel) flagged.
+      </div>
+
+      <div style={{ flex: 1 }} />
+
+      <div
+        style={{
+          fontSize: 10,
+          color: "#999",
+          textAlign: "center",
+          borderTop: "1px solid #EEE",
+          paddingTop: 8,
+        }}
+      >
+        Page 1 of 23 · Confidential Work Product
+      </div>
+    </div>
+  );
+}
+
+function DetailedTablePage() {
+  /* Landscape orientation: wider than tall. Same height as cover (700) so the
+   * pair sits nicely side-by-side. */
+  return (
+    <div
+      style={{
+        width: 760,
+        height: 700,
+        background: "#FFFFFF",
+        border: "1px solid #D1D5DB",
+        borderRadius: 6,
+        boxShadow: "0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.10)",
+        padding: "30px 32px 24px 32px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 16,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          borderBottom: `2px solid ${PDF_BLUE}`,
+          paddingBottom: 4,
+          marginBottom: 14,
+        }}
+      >
+        Fact Chronology (47 Entries)
+      </div>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontSize: 10,
+          lineHeight: 1.4,
+        }}
+      >
+        <thead>
+          <tr>
+            <th style={{ ...thStyle, width: "10%" }}>Date</th>
+            <th style={{ ...thStyle, width: "14%" }}>Provider</th>
+            <th style={{ ...thStyle, width: "9%" }}>Type</th>
+            <th style={{ ...thStyle, width: "55%", textAlign: "left" }}>Medical Events</th>
+            <th style={{ ...thStyle, width: "5%" }}>Tag</th>
+            <th style={{ ...thStyle, width: "7%" }}>Page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {SAMPLE_CHRONOLOGY_ROWS.map((row, i) => (
+            <tr key={i} style={{ background: i % 2 ? "#FFFFFF" : "#F2F2F2" }}>
+              <td style={tdStyle}>{row.date}</td>
+              <td style={tdStyle}>{row.provider}</td>
+              <td style={tdStyle}>{row.type}</td>
+              <td style={{ ...tdStyle, textAlign: "left" }}>{row.event}</td>
+              <td style={{ ...tdStyle, textAlign: "center" }}>
+                <span style={tagStyleFor(row.tag)}>{row.tag || "—"}</span>
+              </td>
+              <td style={tdStyle}>{i + 12}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div style={{ flex: 1 }} />
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 10,
+          color: "#999",
+          borderTop: "1px solid #EEE",
+          paddingTop: 8,
+          marginTop: 12,
+        }}
+      >
+        <span>
+          <span style={{ color: "#c0392b", fontWeight: 700 }}>L</span> Liability ·{" "}
+          <span style={{ color: "#e67e22", fontWeight: 700 }}>C</span> Causation ·{" "}
+          <span style={{ color: "#2980b9", fontWeight: 700 }}>D</span> Damages
+        </span>
+        <span>Page 4 of 23 · Confidential Work Product</span>
+      </div>
+    </div>
+  );
+}
+
+const thStyle: React.CSSProperties = {
+  background: PDF_BLUE,
+  color: "#FFFFFF",
+  fontWeight: 700,
+  textAlign: "center",
+  padding: "6px 6px",
+  border: `0.5px solid ${PDF_BLUE}`,
+  fontSize: 10,
+  letterSpacing: 0.3,
+};
+
+const tdStyle: React.CSSProperties = {
+  padding: "6px 6px",
+  border: "0.5px solid #ccc",
+  verticalAlign: "top",
+  textAlign: "center",
+  color: "#222",
+};
+
+function tagStyleFor(tag: string): React.CSSProperties {
+  if (tag === "L") return { color: "#c0392b", fontWeight: 700 };
+  if (tag === "C") return { color: "#e67e22", fontWeight: 700 };
+  if (tag === "D") return { color: "#2980b9", fontWeight: 700 };
+  return { color: "#999" };
 }
 
 function BulletList({ items }: { items: string[] }) {
