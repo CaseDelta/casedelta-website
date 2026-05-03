@@ -9,9 +9,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [linksHidden, setLinksHidden] = useState(false);
 
-  const isVideoRoute = pathname?.startsWith("/video") ?? false;
-  const isDemoRoute = pathname?.startsWith("/demo") ?? false;
-
   // On mount, check if we should hide links (home page + intro not yet played)
   useEffect(() => {
     if (pathname === "/" && !getHasPlayedIntro()) {
@@ -29,10 +26,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       window.removeEventListener("cd:nav-show", show);
     };
   }, []);
-
-  if (isVideoRoute || isDemoRoute) {
-    return <>{children}</>;
-  }
 
   return (
     <>
