@@ -108,8 +108,8 @@ const CursorSvg = (
   </svg>
 );
 
-const INTRO_SUBTITLE = "brings all your firm's tools together";
-const HERO_SUBTITLE = "connects every tool you use together, and turns hours of legal work into a sentence.";
+const INTRO_SUBTITLE = "connects all your firm's tools together";
+const HERO_SUBTITLE = "The personal assistant that connects all your firm's tools together, so you can manage all of them with a single sentence.";
 
 /* ─── Timing (ms) ───
    Three phases with AnimatePresence (mode="wait") crossfades between them:
@@ -438,8 +438,8 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
           pointerEvents: revealed ? "auto" : "none",
         }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[35fr_65fr] gap-x-12 gap-y-12 items-center">
-          {/* ── Left column: H1 + CTA + social proof ── */}
+        <div className="grid grid-cols-1">
+          {/* ── H1 + CTA + social proof (single column; VSL slot removed until video is ready) ── */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
             {/* ── H1: Delta + tagline ── */}
             <motion.div
@@ -612,83 +612,6 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             </motion.div>
           </div>
 
-          {/* ── Right column: VSL / demo video ── */}
-          <motion.button
-            type="button"
-            aria-label="Play product demo"
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
-            animate={revealed ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 16, scale: 0.98 }}
-            transition={{ duration: 0.8, delay: 0.45, ease: EASE_OUT }}
-            whileHover={{ scale: 1.005 }}
-            style={{
-              width: "100%",
-              aspectRatio: "16 / 9",
-              borderRadius: 14,
-              overflow: "hidden",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
-              position: "relative",
-              background: "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)",
-              boxShadow: "0 8px 28px rgba(15,23,42,0.12), 0 24px 64px rgba(15,23,42,0.10)",
-              fontFamily: FONT,
-            }}
-          >
-            {/* Subtle dotted noise overlay for texture */}
-            <div
-              aria-hidden
-              style={{
-                position: "absolute",
-                inset: 0,
-                opacity: 0.18,
-                background:
-                  "radial-gradient(circle at 20% 30%, rgba(96,165,250,0.20) 0, transparent 40%), radial-gradient(circle at 80% 70%, rgba(37,99,235,0.18) 0, transparent 40%)",
-              }}
-            />
-
-            {/* Play button */}
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: "clamp(64px, 7vw, 88px)",
-                height: "clamp(64px, 7vw, 88px)",
-                borderRadius: "50%",
-                backgroundColor: "rgba(255,255,255,0.10)",
-                border: "1px solid rgba(255,255,255,0.22)",
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 8px 32px rgba(0,0,0,0.30)",
-              }}
-            >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 4 }}>
-                <path d="M8 5v14l11-7L8 5z" />
-              </svg>
-            </div>
-
-            {/* "Watch demo" microcopy */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "clamp(16px, 2.4vw, 28px)",
-                left: "50%",
-                transform: "translateX(-50%)",
-                fontSize: 12,
-                fontWeight: 500,
-                color: "rgba(255,255,255,0.70)",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Watch the 90-second demo
-            </div>
-          </motion.button>
         </div>
       </motion.div>
 

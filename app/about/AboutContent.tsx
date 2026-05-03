@@ -63,10 +63,11 @@ export function AboutContent() {
               lineHeight: 1.08,
               letterSpacing: "-0.04em",
               margin: 0,
-              maxWidth: 900,
+              maxWidth: 980,
             }}
           >
-            Every law firm runs on a stack of tools.
+            The personal assistant that connects all your firm&rsquo;s tools
+            together.
           </motion.h1>
 
           <motion.p
@@ -84,8 +85,7 @@ export function AboutContent() {
               maxWidth: 720,
             }}
           >
-            CaseDelta is the layer across them. The personal assistant your
-            firm manages with a single sentence.
+            So you can manage all of them with a single sentence.
           </motion.p>
 
           <motion.div
