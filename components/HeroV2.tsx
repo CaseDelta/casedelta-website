@@ -108,8 +108,7 @@ const CursorSvg = (
   </svg>
 );
 
-const INTRO_SUBTITLE = "connects all your firm's tools together";
-const HERO_SUBTITLE = "The personal assistant that connects all your firm's tools together, so you can manage all of them with a single sentence.";
+const INTRO_SUBTITLE = "your law firm's personal assistant.";
 
 /* ─── Timing (ms) ───
    Three phases with AnimatePresence (mode="wait") crossfades between them:
