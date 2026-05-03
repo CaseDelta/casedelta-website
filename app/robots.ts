@@ -12,6 +12,7 @@ export default function robots(): MetadataRoute.Robots {
           "/light/",
           "/dark/",
           "/v2/",
+          "/video/",
         ],
       },
     ],
