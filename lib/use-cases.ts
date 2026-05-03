@@ -41,480 +41,227 @@ export interface UseCase {
 
 export const USE_CASES: UseCase[] = [
   /* ════════════════════════════════════════════
-     1. COMMERCIAL LITIGATION
+     1. PERSONAL INJURY
      ════════════════════════════════════════════ */
   {
-    slug: "commercial-litigation",
-    title: "Commercial Litigation",
-    metaTitle: "CaseDelta for Commercial Litigation | AI Associate for Complex Disputes",
+    slug: "personal-injury",
+    title: "Personal Injury",
+    metaTitle: "CaseDelta for Personal Injury Firms | One Assistant Across Your Whole Stack",
     metaDescription:
-      "Delta learns your judges, opposing counsel, and discovery patterns across complex commercial disputes. Morning briefings, anomaly detection, and institutional memory that compounds.",
-    heroHeadline: "Commercial disputes move fast. Delta learns faster.",
+      "Delta runs your PI practice across Clio, Drive, Word, Gmail, and Outlook. Hand it discovery, get back chronologies, demand letters, and opposing counsel emails in one conversation.",
+    heroHeadline: "Run your PI practice in a single conversation.",
     heroSubheadline:
-      "Complex litigation generates thousands of documents, dozens of parties, and years of accumulated knowledge that walks out the door when associates leave. Delta captures it all and gets smarter every day.",
+      "Hand Delta the medical records, the police report, and the carrier correspondence. Tell it what you need. Delta builds the chronology in Word, drafts the demand letter, emails the adjuster from your inbox, and logs the time in Clio. One sentence. Many tools. Hours of work, done in one go.",
     geoOpening:
-      "CaseDelta is the AI associate purpose-built for commercial litigation firms that need to track dozens of active disputes, manage massive discovery sets, and build strategic intelligence about judges and opposing counsel that compounds across every case the firm handles.",
+      "CaseDelta is the personal assistant for personal injury firms that work across Clio, Word, Gmail or Outlook, Google Drive, and Calendar. Delta connects to the tools your firm already uses and runs both the legal research and the administrative work across them, so you can focus on winning more cases instead of switching between five apps to manage one.",
     stats: [
-      { value: "14,000+", label: "avg pages of discovery per commercial dispute" },
-      { value: "42%", label: "of commercial cases involve 3+ parties" },
-      { value: "$2.1M", label: "median damages in breach of contract claims" },
+      { value: "5", label: "tools Delta runs across in a single conversation" },
+      { value: "1 sentence", label: "to draft, send, and log a demand letter" },
+      { value: "0", label: "third-party AI providers touching your client data" },
     ],
     painPoints: [
       {
-        title: "Discovery buries your team",
+        title: "Your stack is fragmented across five apps",
         description:
-          "A single breach of contract case can produce 14,000 pages of documents. Your associates spend weeks doing manual review when they should be building case strategy.",
+          "Records in Drive. Drafts in Word. Adjuster threads in Outlook. Case data in Clio. Time entries somewhere else. Every workflow means switching contexts and copying details by hand.",
       },
       {
-        title: "Judge intelligence stays in partners' heads",
+        title: "Demand packages take days, not hours",
         description:
-          "Your managing partner knows Judge Harrison prefers briefs under 20 pages. That intelligence disappears when she's on vacation, in trial, or retires.",
+          "Pulling records, building a chronology, calculating damages, drafting the letter, attaching exhibits, sending to the carrier, logging the work. Each step lives in a different tool. The full sequence eats a day per case.",
       },
       {
-        title: "Opposing counsel patterns go untracked",
+        title: "Vertical AI tools force you to adopt yet another platform",
         description:
-          "Morrison & Associates always files aggressively but settles within 45 days of trial. Your firm learned this over 8 cases and 4 years, but no one wrote it down.",
+          "Every legal AI on the market lives inside one app and only handles one slice of the workflow. Your firm ends up with another silo to manage instead of one assistant that connects what you already have.",
       },
       {
-        title: "Multi-party complexity compounds errors",
+        title: "Client data ends up in places it should not be",
         description:
-          "With cross-claims, third-party defendants, and intervenors, a single missed deadline or overlooked document can shift liability across millions of dollars.",
+          "Free AI tools route prompts and attachments through third-party providers. For a firm holding medical records and settlement details, that is a malpractice and HIPAA exposure waiting to happen.",
       },
     ],
     howDeltaHelps: [
       {
-        title: "Learns judge tendencies from real outcomes",
+        title: "Connects across the tools your firm already uses",
         description:
-          "Delta tracks MSJ grant rates, brief length preferences, voir dire patterns, and verdict ranges across every judge your firm appears before. After 6 months, it knows the bench better than a new associate after 18 months.",
+          "Clio, Microsoft Word, Gmail or Outlook, Google Drive, Calendar, DocuSign, Westlaw. Delta works inside your existing stack rather than asking your firm to migrate to a new one.",
       },
       {
-        title: "Maps opposing counsel behavior across all your matters",
+        title: "Runs full demand workflows in one conversation",
         description:
-          "Delta identifies settlement timing patterns, filing tendencies, and negotiation behavior for every opposing firm, then surfaces that intelligence before your next encounter.",
+          "Tell Delta what you need. It pulls medical records from Drive, builds the chronology in Word, computes specials, drafts the demand letter, sends it from your inbox to opposing counsel, and logs the time in Clio. One conversation. One sentence.",
       },
       {
-        title: "Cross-document anomaly detection at scale",
+        title: "Handles thousands of pages of records in minutes",
         description:
-          "Feed Delta 14,000 pages and it builds a chronology in minutes, flagging contradictions between deposition testimony and document evidence that manual review would miss.",
+          "Hand Delta the full medical and billing record set. It extracts treatment timelines, providers, billing totals, and gaps. You get a structured chronology and a billing summary you can drop into the demand package.",
       },
       {
-        title: "Morning briefings across all active matters",
+        title: "Morning briefing across your active cases",
         description:
-          "Every day at 6 AM, Delta sends a prioritized briefing: upcoming deadlines, discovery gaps, settlement windows, and anomalies detected overnight across every open case.",
+          "Walk in to a briefing of what changed over the weekend, what is due this week, and which adjusters owe you a response. Built across Clio, Outlook, and your calendar. The only proactive feature on Delta, by design.",
       },
       {
-        title: "Intelligence Network for judicial analytics",
+        title: "Private enterprise deployment. Your data stays yours",
         description:
-          "Even if your firm has only appeared before Judge Harrison twice, Delta draws on anonymized data from every CaseDelta firm. A 5-attorney firm gets the same judicial intelligence a 200-lawyer practice built over decades.",
+          "CaseDelta runs on a private enterprise deployment. Your client files never touch a shared model or a third-party AI provider. No training on your data. Enterprise-grade security, sized to your firm.",
       },
     ],
     deltaLearnsExample: {
-      firmName: "Brannock & Associates",
+      firmName: "Sample PI firm",
       entries: [
         {
-          label: "Practice Areas",
-          value: "Commercial litigation, breach of contract, business torts, shareholder disputes",
+          label: "Tools connected",
+          value: "Clio, Microsoft Word, Outlook, Google Drive, Google Calendar, DocuSign",
         },
         {
-          label: "Judge Notes",
+          label: "Workflows Delta runs",
           value:
-            "Judge Harrison prefers briefs under 20 pages, grants MSJ 42% of the time (n=31 across 8 firms). Disfavors continuance requests filed < 14 days before hearing.",
+            "Records review and chronology, demand letter drafting, opposing counsel correspondence, time entry, calendar holds, exhibit prep.",
         },
         {
-          label: "Opposing Counsel",
+          label: "One-sentence example",
           value:
-            "Morrison & Associates — files aggressively but settles 70% of cases within 45 days of trial date. Average demand: 4.2x actual damages.",
+            "\"Build the chronology for Hernandez from the records in Drive, draft the demand at 3x specials, email it to the adjuster, and log my time.\"",
         },
         {
-          label: "Discovery Patterns",
+          label: "Daily briefing",
           value:
-            "Acme Industries cases average 11,400 pages. Delta found 3 contradictions between CFO deposition testimony and Q3 financials in the Meridian matter.",
+            "Cases needing attention today, deadlines this week, adjusters who have not responded, settlement authority expiring.",
         },
         {
-          label: "Client Patterns",
+          label: "Data handling",
           value:
-            "Meridian Corp responds within 48 hours. TechVenture averages 11-day delay on document requests — auto-reminders enabled.",
+            "Private enterprise deployment. No third-party AI providers. No training on firm data.",
         },
       ],
     },
     faq: [
       {
-        question: "How does Delta handle massive discovery sets in commercial litigation?",
+        question: "How does Delta fit into a personal injury firm's existing stack?",
         answer:
-          "Delta ingests documents in bulk — PDFs, emails, spreadsheets, financial records — and builds structured chronologies, entity maps, and cross-reference indices. For a typical 14,000-page discovery set, Delta completes initial analysis in under 30 minutes, flagging contradictions, timeline gaps, and anomalies that would take a team of associates days to find.",
+          "Delta connects to the tools your firm already uses (Clio, Word, Gmail or Outlook, Drive, Calendar, DocuSign, Westlaw) and runs work across them in one conversation. Your firm does not adopt a new platform. You keep your stack and add an assistant that works on top of it.",
       },
       {
-        question: "What kind of judge intelligence does Delta provide?",
+        question: "Can Delta build a full demand package end to end?",
         answer:
-          "Delta tracks MSJ grant rates, brief formatting preferences (length, citation style, exhibit handling), verdict ranges, attitude toward specific motion types, and scheduling tendencies. This data comes from your firm's direct experience combined with anonymized Intelligence Network data from other CaseDelta firms who have appeared before the same judge.",
+          "Yes. Hand Delta the medical records and case file. In one conversation it extracts the treatment chronology, totals the billing, drafts the demand letter in your firm's voice, attaches exhibits, sends from your email to opposing counsel, and logs the time in Clio. The attorney makes the calls. Delta makes them happen.",
       },
       {
-        question: "Can Delta track opposing counsel across multiple matters?",
+        question: "What does Delta do with thousands of pages of medical records?",
         answer:
-          "Yes. Delta builds behavioral profiles for every opposing firm and attorney your practice encounters. It tracks settlement timing (when they typically settle relative to trial date), filing patterns (aggressive vs. conservative), negotiation ranges, and deposition tactics. Before your next encounter, Delta surfaces a briefing with everything your firm has learned.",
+          "Delta ingests the records and produces a structured chronology with provider attribution, treatment timelines, and billing summaries. It flags gaps and inconsistencies. You get a chronology you can drop into the demand package, with source citations to every record.",
       },
       {
-        question: "Is Delta's Intelligence Network actually useful for commercial litigation?",
+        question: "Where does our client data go?",
         answer:
-          "The Intelligence Network is most valuable in commercial litigation because the same judges, opposing firms, and expert witnesses appear repeatedly across firms. Even if your firm has only been before a particular judge twice, you get the benefit of data from dozens of other firms' experiences — all fully anonymized and aggregated.",
+          "Nowhere outside CaseDelta. We run on a private enterprise deployment. Your firm's data never touches a third-party AI provider. No shared servers, no training on your files. This is the deployment model, not a setting.",
       },
       {
-        question: "How does CaseDelta handle privilege and confidential documents?",
+        question: "Does Delta replace Clio or our case management system?",
         answer:
-          "Delta processes documents within CaseDelta's secure infrastructure — no data is sent to third-party AI providers. Privilege-flagged documents are tagged and excluded from any shared analytics. Full audit trail of every document access, every analysis, every query. ABA Rule 1.6 compliant.",
+          "No. Delta connects to Clio and works alongside it. Cases, contacts, and time entries continue to live in Clio. Delta reads from and writes to Clio so your case management stays the source of truth.",
       },
     ],
-    ctaText: "See what Delta learns about your commercial litigation practice in the first 30 minutes.",
+    ctaText:
+      "See Delta run a full demand workflow across your existing stack. Live demo, twenty minutes.",
   },
 
   /* ════════════════════════════════════════════
-     2. EMPLOYMENT LAW / LABOR DEFENSE
-     ════════════════════════════════════════════ */
-  {
-    slug: "employment-law",
-    title: "Employment Law",
-    metaTitle: "CaseDelta for Employment Law | AI Associate for Labor Defense",
-    metaDescription:
-      "Delta learns your EEOC patterns, repeat judges, opposing counsel settlement behavior, and drafts position statements in your firm's style. Purpose-built for employment defense.",
-    heroHeadline: "Same judges. Same opposing firms. Delta remembers everything.",
-    heroSubheadline:
-      "Employment defense means high volume, repeat players, and tight agency deadlines. Delta learns the patterns that make your firm efficient and surfaces the intelligence that wins cases.",
-    geoOpening:
-      "CaseDelta is the AI associate purpose-built for employment law firms that handle high volumes of discrimination, wrongful termination, and wage-and-hour cases where repeat judges, repeat opposing counsel, and agency-specific patterns determine outcomes more than any individual case fact.",
-    stats: [
-      { value: "73,000+", label: "EEOC charges filed annually" },
-      { value: "38%", label: "of employment cases settle before discovery" },
-      { value: "$165K", label: "median settlement in Title VII cases" },
-    ],
-    painPoints: [
-      {
-        title: "Volume overwhelms individual attention",
-        description:
-          "Your managing partner juggles 60+ active employment matters. Each one needs EEOC responses, discovery management, and deposition prep. The difference between a good outcome and a bad one is often just bandwidth.",
-      },
-      {
-        title: "Repeat players, but no systematic tracking",
-        description:
-          "You've faced the same plaintiff's firms dozens of times. You know their playbook intuitively, but that knowledge lives in individual partners' heads, not in a system your whole firm can access.",
-      },
-      {
-        title: "Agency deadlines punish disorganization",
-        description:
-          "EEOC position statement deadlines, DOL audit responses, and state agency filings have hard deadlines with real consequences. When you're managing 60 matters, one missed deadline can cost a client six figures.",
-      },
-      {
-        title: "Client-side patterns repeat but go unanalyzed",
-        description:
-          "Your largest client averages 3 employment claims per quarter with a seasonal spike in Q1. That pattern matters for staffing, reserves, and prevention advice, but nobody tracks it.",
-      },
-    ],
-    howDeltaHelps: [
-      {
-        title: "Learns employment-specific patterns fast",
-        description:
-          "Employment defense has natural repetition — same judges, same opposing firms, same claim types. Delta leverages this repetition to build deep expertise faster than any other practice area. Within weeks, it knows every judge's discovery tendencies in Title VII cases.",
-      },
-      {
-        title: "Tracks opposing counsel settlement behavior",
-        description:
-          "Delta builds profiles for every plaintiff's firm: average demand multiples, settlement timing relative to mediation, willingness to try cases, and preferred experts. Before your next mediation, Delta tells you exactly what to expect.",
-      },
-      {
-        title: "Drafts position statements in your firm's voice",
-        description:
-          "Delta learns your firm's writing style — structure, tone, how you frame affirmative defenses, which precedent you cite first. It prepares EEOC position statement drafts that need editing, not rewriting.",
-      },
-      {
-        title: "Identifies claim patterns across your client base",
-        description:
-          "Delta spots trends: which departments generate the most claims, seasonal patterns in filings, correlation between manager tenure and claim frequency. This transforms you from reactive defense counsel to proactive risk advisor.",
-      },
-      {
-        title: "Agency deadline management with context",
-        description:
-          "Delta doesn't just track deadlines — it understands them. It knows which judges penalize late filings, which agencies grant extensions freely, and which responses need partner review based on claim value and complexity.",
-      },
-    ],
-    deltaLearnsExample: {
-      firmName: "Palmer Employment Group",
-      entries: [
-        {
-          label: "Practice Areas",
-          value: "Employment discrimination, wrongful termination, wage & hour, FMLA, ADA accommodation",
-        },
-        {
-          label: "Judge Notes",
-          value:
-            "Judge Chen allows broader discovery in Title VII cases, 28% MSJ grant rate. Judge Rivera rules on MTC within 5 business days — fastest in the district.",
-        },
-        {
-          label: "Opposing Counsel",
-          value:
-            "Davis Employment Law — average demand: 2.8x lost wages, settles 65% at mediation. Files detailed 30(b)(6) notices targeting HR policies.",
-        },
-        {
-          label: "Client Patterns",
-          value:
-            "Acme Corp averages 3 employment claims per quarter — seasonal spike in Q1. 78% involve the distribution division. Recommended targeted supervisor training.",
-        },
-        {
-          label: "Draft Style",
-          value:
-            "Firm prefers chronological EEOC responses, affirmative defenses front-loaded, max 12 pages. Cites McDonnell Douglas framework in every disparate treatment response.",
-        },
-      ],
-    },
-    faq: [
-      {
-        question: "How does Delta help with high-volume employment defense?",
-        answer:
-          "Delta thrives on volume. Employment defense has natural repetition — same claim types, same judges, same opposing firms — and Delta uses that repetition to build deep pattern recognition. It identifies which matters need immediate partner attention versus which can follow standard workflows, drafts initial position statements in your firm's style, and ensures no deadline slips across 60+ active matters.",
-      },
-      {
-        question: "Can Delta track patterns across a single client's employment claims?",
-        answer:
-          "Yes. Delta identifies trends in your clients' employment exposure: which departments generate claims, seasonal filing patterns, correlation between specific management practices and claim types, and comparison to industry benchmarks using anonymized Intelligence Network data. This shifts your role from reactive defense to proactive risk counselor.",
-      },
-      {
-        question: "How does Delta handle EEOC position statements?",
-        answer:
-          "Delta learns your firm's specific approach to EEOC responses — structure, tone, how you frame affirmative defenses, citation preferences, and typical length. When a new charge comes in, Delta prepares a draft position statement that follows your established patterns, pre-populated with relevant facts from the client file and applicable precedent. Associates review and refine rather than starting from scratch.",
-      },
-      {
-        question: "Does Delta work with state employment agencies, not just EEOC?",
-        answer:
-          "Delta handles all employment agency matters — EEOC, state HRC commissions, DOL audits, OSHA complaints. It learns the specific procedural requirements, timeline expectations, and filing formats for each agency you practice before.",
-      },
-      {
-        question: "How quickly does Delta learn employment law patterns?",
-        answer:
-          "Employment defense is where Delta learns fastest because of natural case repetition. Most firms see meaningful pattern recognition within 30-60 days. By 6 months, Delta's knowledge of your judges, opposing counsel, and client patterns exceeds what a new associate would build in their first 18 months.",
-      },
-    ],
-    ctaText: "See what Delta learns about your employment practice in the first 30 minutes.",
-  },
-
-  /* ════════════════════════════════════════════
-     3. INSURANCE DEFENSE
-     ════════════════════════════════════════════ */
-  {
-    slug: "insurance-defense",
-    title: "Insurance Defense",
-    metaTitle: "CaseDelta for Insurance Defense | AI Associate for Carrier-Appointed Counsel",
-    metaDescription:
-      "Delta learns your carriers' reporting preferences, tracks plaintiff firm tactics across all cases, and prioritizes 150+ active files by deadline urgency. Built for insurance defense volume.",
-    heroHeadline: "150 active files. One associate that never drops a deadline.",
-    heroSubheadline:
-      "Insurance defense runs on efficiency, carrier relationships, and pattern recognition across hundreds of similar cases. Delta learns how each carrier wants to be managed and how each plaintiff firm operates.",
-    geoOpening:
-      "CaseDelta is the AI associate purpose-built for insurance defense firms where managing partners carry 150+ active files, carrier reporting requirements dictate workflow, and the difference between profit and loss is measured in minutes per file, not hours.",
-    stats: [
-      { value: "150+", label: "avg active files per insurance defense partner" },
-      { value: "$45B", label: "annual US insurance defense legal spend" },
-      { value: "68%", label: "of insurance defense cases settle before trial" },
-    ],
-    painPoints: [
-      {
-        title: "Carrier reporting is a second full-time job",
-        description:
-          "StateFarm wants monthly reports by the 5th. Hartford prefers quarterly with reserve breakdowns. Nationwide requires immediate notification when reserves exceed $10K. Miss a reporting deadline and you lose the panel.",
-      },
-      {
-        title: "Volume requires inhuman efficiency",
-        description:
-          "At 150+ active files and insurance defense billing rates, every file gets about 45 minutes of attorney attention per month. You need to identify which files need more and which can follow the standard playbook.",
-      },
-      {
-        title: "Plaintiff firm intelligence is scattered",
-        description:
-          "You've faced Davis & Clark 30 times. Their average demand is 3x specials and they settle at 1.8x. But that's in your head, not in a system your junior associates can access when they're handling their first mediation.",
-      },
-      {
-        title: "Reserve accuracy affects carrier relationships",
-        description:
-          "Carriers evaluate outside counsel partly on reserve accuracy. Consistently over- or under-reserving erodes trust. But tracking claim valuation patterns across hundreds of files is beyond manual capacity.",
-      },
-    ],
-    howDeltaHelps: [
-      {
-        title: "Learns every carrier's reporting preferences",
-        description:
-          "Delta learns each carrier's exact requirements: report format, frequency, reserve thresholds that trigger notifications, preferred terminology, and the specific metrics each adjuster cares about. Reports are drafted to spec, not generic templates.",
-      },
-      {
-        title: "Tracks plaintiff firm tactics across all your matters",
-        description:
-          "Delta builds profiles from every encounter: demand patterns (3x specials? 5x?), settlement timing, preferred experts, motion practice tendencies, and trial willingness. Your newest associate walks into mediation with the same intelligence your most experienced partner has.",
-      },
-      {
-        title: "Morning briefings prioritized by deadline urgency",
-        description:
-          "Across 150+ files, Delta surfaces what matters today: discovery responses due, carrier reports approaching deadline, settlement authority expiring, and the 3 files that need partner attention this week.",
-      },
-      {
-        title: "Pattern-based claim valuation",
-        description:
-          "Delta analyzes your firm's historical outcomes against claim characteristics — injury type, venue, judge, plaintiff counsel — to flag files where current reserves may be significantly off, before the carrier notices.",
-      },
-      {
-        title: "Intelligence Network for venue-specific data",
-        description:
-          "Assigned a case in a new venue? Delta draws on anonymized data from every CaseDelta firm practicing there: median verdicts by case type, judge tendencies, local plaintiff firm intelligence. No more flying blind in unfamiliar jurisdictions.",
-      },
-    ],
-    deltaLearnsExample: {
-      firmName: "Kendrick Defense Group",
-      entries: [
-        {
-          label: "Practice Areas",
-          value: "Insurance defense, coverage disputes, bad faith, premises liability, auto negligence",
-        },
-        {
-          label: "Carrier Notes",
-          value:
-            "StateFarm prefers monthly reporting by the 5th, wants reserve updates > $10K flagged immediately. Hartford requires quarterly litigation budgets with 90-day forecasts.",
-        },
-        {
-          label: "Opposing Counsel",
-          value:
-            "Davis & Clark — average demand: 3x specials, settles at 1.8x. Files detailed written discovery but rarely deposes more than 2 witnesses. Trial rate: 4%.",
-        },
-        {
-          label: "Claim Valuations",
-          value:
-            "Soft tissue, Judge Peters venue: median settlement $28K (n=43 across 6 firms). Firm's own results: $24K avg — 14% below market, strong carrier relationship metric.",
-        },
-        {
-          label: "File Priorities",
-          value:
-            "3 files need attention today: Garcia discovery response (due Friday), Morrison carrier report (due 5th), Wheeler settlement authority (expires EOW).",
-        },
-      ],
-    },
-    faq: [
-      {
-        question: "How does Delta handle different carrier reporting requirements?",
-        answer:
-          "Delta learns each carrier's specific preferences: report format, submission cadence, reserve notification thresholds, preferred terminology, and individual adjuster expectations. When a carrier report is due, Delta prepares a draft in the exact format that carrier expects, populated with current case status, recent activity, and reserve analysis. You review and send — not build from scratch.",
-      },
-      {
-        question: "Can Delta really help manage 150+ active files?",
-        answer:
-          "That's exactly what Delta is built for. It continuously monitors every file for approaching deadlines, discovery gaps, carrier reporting requirements, and settlement opportunities. Each morning, it delivers a prioritized briefing: the 5 files that need partner attention today, the 12 with deadlines this week, and any anomalies detected overnight. The other 133 files are tracked and managed proactively.",
-      },
-      {
-        question: "How does Delta track plaintiff firm patterns in insurance defense?",
-        answer:
-          "Delta builds detailed profiles from every encounter with opposing counsel: demand-to-settlement ratios (e.g., demands at 3x specials, settles at 1.8x), typical motion practice, preferred experts, deposition strategy, and trial willingness. Combined with Intelligence Network data from other defense firms, even your most junior associate has the same tactical intelligence as your most experienced partner.",
-      },
-      {
-        question: "Does Delta help with reserve accuracy?",
-        answer:
-          "Yes. Delta analyzes your firm's historical outcomes correlated with claim characteristics — injury type, venue, judge, plaintiff counsel, treatment duration — and flags files where current reserves appear significantly above or below the predicted range. This helps maintain the reserve accuracy that carriers use to evaluate panel counsel.",
-      },
-      {
-        question: "How does CaseDelta's pricing work for high-volume insurance defense?",
-        answer:
-          "CaseDelta's usage-based pricing means you pay for what you use. For insurance defense firms managing 150+ files, Delta's per-matter cost is typically less than 15 minutes of associate time — and it saves hours. Volume discounts are available for firms with 200+ active matters.",
-      },
-    ],
-    ctaText: "See what Delta learns about your insurance defense practice in the first 30 minutes.",
-  },
-
-  /* ════════════════════════════════════════════
-     4. MEDICAL MALPRACTICE
+     2. MEDICAL MALPRACTICE
      ════════════════════════════════════════════ */
   {
     slug: "medical-malpractice",
     title: "Medical Malpractice",
-    metaTitle: "CaseDelta for Medical Malpractice | AI Associate for Med Mal Defense",
+    metaTitle: "CaseDelta for Medical Malpractice Firms | Records, Chronologies, Drafts in One Conversation",
     metaDescription:
-      "Delta processes thousands of pages of medical records, detects anomalies in timelines, and learns judge-specific defense strategies for high-stakes medical malpractice cases.",
-    heroHeadline: "2,400 pages of medical records. Delta reads them in minutes.",
+      "Plaintiff med mal firms run on records review and expert coordination. Delta handles both across Clio, Word, Drive, and your inbox in a single conversation.",
+    heroHeadline: "Two thousand pages of records. One conversation with Delta.",
     heroSubheadline:
-      "Medical malpractice cases live or die on what's buried in the records: the unsigned order, the 6-day gap in nursing notes, the inconsistent vital signs. Delta finds what human review misses.",
+      "Hand Delta the hospital chart, the imaging, and the expert reports. Tell it what you need. Delta builds the chronology, surfaces the gaps, drafts the complaint or the expert affidavit, and emails opposing counsel from your inbox. The work that took a week happens in a morning.",
     geoOpening:
-      "CaseDelta is the AI associate purpose-built for medical malpractice defense firms that process thousands of pages of medical records per case, coordinate with expert witnesses across specialties, and build defense strategies where a single missed detail in the medical chronology can shift a case worth $200K to $5M.",
+      "CaseDelta is the personal assistant for plaintiff medical malpractice firms that process thousands of pages of medical records per case and coordinate with experts across specialties. Delta connects to Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar, and runs records review, chronology building, and drafting work across all of them from a single conversation.",
     stats: [
       { value: "2,400+", label: "avg pages of medical records per med mal case" },
-      { value: "$309K", label: "median medical malpractice payout (NPDB 2023)" },
-      { value: "85%", label: "of med mal cases are decided on expert testimony" },
+      { value: "1", label: "conversation to chronology, draft, and send" },
+      { value: "0", label: "client data sent to third-party AI providers" },
     ],
     painPoints: [
       {
-        title: "Record volume buries the critical details",
+        title: "Records review buries your team for days",
         description:
-          "A standard hospital malpractice case produces 2,400+ pages of records from multiple providers. The 3 unsigned physician orders and 6-day nursing note gap that decide the case are hidden in there. Associates spend 40+ hours on initial review alone.",
+          "A standard hospital case produces 2,400+ pages from multiple providers. The unsigned order, the documentation gap, and the contradictory vital signs that decide the case are buried inside. Associates spend 40+ hours on initial review.",
       },
       {
-        title: "Expert coordination is a logistical nightmare",
+        title: "Drafting and admin run on separate tools",
         description:
-          "You need a cardiologist who's available in August, has testified in this jurisdiction before, and whose opinions won't conflict with your existing defense theory. That search takes days and relies on institutional memory that's hard to systematize.",
+          "Records in Drive. Drafts in Word. Expert correspondence in Outlook. Case data in Clio. The chronology you built in one tool has to be re-typed into the draft in another, and the email has to be composed in a third.",
       },
       {
-        title: "High stakes amplify every mistake",
+        title: "Expert coordination relies on someone's memory",
         description:
-          "Medical malpractice cases regularly involve damages between $200K and $5M+. A missed detail in records review or an expert whose testimony contradicts your other witnesses doesn't just lose the case — it defines your carrier relationship for years.",
+          "You need a cardiologist available in August who has testified in this jurisdiction and whose opinions will not conflict with your theory. Finding the right expert means days of phone calls and a list that lives in someone's notes app.",
       },
       {
-        title: "Daubert challenges require deep judge knowledge",
+        title: "Client data cannot be sent through public AI",
         description:
-          "Some judges require Daubert hearings for all expert testimony. Others apply a permissive standard. Knowing the difference before you select and prepare your experts determines whether your best evidence even reaches the jury.",
+          "Medical records, identifiable health information, and case strategy are not safe inputs for free AI tools that route through third-party providers. For a med mal firm, the legal and ethical exposure is unacceptable.",
       },
     ],
     howDeltaHelps: [
       {
-        title: "Builds medical chronologies in minutes, not days",
+        title: "Builds medical chronologies in minutes",
         description:
-          "Delta ingests thousands of pages of medical records — hospital charts, nursing notes, lab results, imaging reports, pharmacy records — and produces structured, searchable chronologies with provider-level attribution. What takes an associate 40 hours takes Delta 30 minutes.",
+          "Delta ingests the full record set and produces a structured chronology with provider attribution, treatment timelines, and billing summaries. Gaps, contradictions, and unsigned orders are flagged automatically. Source citations to every record.",
       },
       {
-        title: "Detects anomalies across records automatically",
+        title: "Drafts complaints and affidavits in your firm's voice",
         description:
-          "Delta cross-references every record against every other record, flagging timeline gaps (6-day nursing note absence), contradictions (vital signs that don't match nursing assessment), unsigned orders, missing informed consent, and documentation that appears back-dated.",
+          "Once the chronology is built, ask Delta to draft the complaint, the certificate of merit, the expert affidavit, or the demand letter in Word. Drafted in your firm's style, attached to the case in Clio, ready for review.",
       },
       {
-        title: "Learns expert preferences and availability",
+        title: "Runs expert correspondence across your inbox",
         description:
-          "Delta tracks which experts your firm has used, their availability patterns, which jurisdictions they've testified in, how they performed under cross-examination (partner notes), and whether their opinions align with your defense theories.",
+          "Delta sends and tracks expert outreach from your email. It pulls availability, follows up on retention agreements, and keeps the case file in Clio current with every exchange. No CRM to maintain.",
       },
       {
-        title: "Judge-specific defense strategy intelligence",
+        title: "Morning briefing across active matters",
         description:
-          "Delta knows which judges require Daubert hearings, their expert qualification standards, attitude toward specific defense theories (res ipsa, lost chance, informed consent), and verdict patterns by case type. Your defense strategy is calibrated to the actual judge, not a generic playbook.",
+          "What changed in your cases overnight, which deadlines hit this week, which experts owe responses, which deposition dates need a hold on the calendar. Built across Clio, Outlook, and Calendar.",
       },
       {
-        title: "Intelligence Network for standard-of-care benchmarks",
+        title: "Private enterprise deployment",
         description:
-          "When Delta analyzes your case records, it draws on patterns from anonymized medical malpractice data across all CaseDelta firms — typical documentation practices, common defense strategies by specialty, and outcome data that helps you evaluate case strength early.",
+          "Your firm's medical records never touch a third-party AI provider. CaseDelta runs on a private enterprise deployment. No shared models, no training on your files. Enterprise-grade security, sized to your firm.",
       },
     ],
     deltaLearnsExample: {
-      firmName: "Whitfield Medical Defense",
+      firmName: "Sample med mal firm",
       entries: [
         {
-          label: "Practice Areas",
-          value: "Medical malpractice defense, hospital liability, nursing home litigation, dental malpractice",
+          label: "Tools connected",
+          value: "Clio, Microsoft Word, Outlook, Google Drive, Google Calendar, Westlaw",
         },
         {
-          label: "Document Patterns",
+          label: "Workflows Delta runs",
           value:
-            "Average 2,400 pages per case. Delta found 3 unsigned physician orders and a 6-day gap in nursing notes in the Morrison matter. Auto-flagged for partner review.",
+            "Medical records ingestion, chronology building, complaint and affidavit drafting, expert correspondence, deposition prep, time entry.",
         },
         {
-          label: "Judge Notes",
+          label: "One-sentence example",
           value:
-            "Judge Williams requires Daubert hearings for all expert testimony. Judge Park permits stipulated experts without hearing if both sides agree — saves 2-3 weeks of prep.",
+            "\"Build the chronology for Chen from the OR record set, flag any documentation gaps, draft the certificate of merit, and email Dr. Patel for a retention call.\"",
         },
         {
-          label: "Expert Database",
+          label: "Anomalies surfaced",
           value:
-            "Dr. Patel (cardiology): available Aug-Oct, testified 4x in this district, strong on cross. Dr. Singh (neurology): 6-week lead time, prefers written reports over deposition.",
+            "Unsigned physician orders, multi-day documentation gaps, vital sign contradictions, back-dated entries. All cited to source.",
         },
         {
-          label: "Case Intelligence",
+          label: "Data handling",
           value:
-            "Surgical error cases in this venue: plaintiff verdict 34% (n=47 across 12 firms), median award $1.2M. Defendant-favorable when records show contemporaneous documentation.",
+            "Private enterprise deployment. PHI never leaves CaseDelta. No third-party AI providers.",
         },
       ],
     },
@@ -522,30 +269,287 @@ export const USE_CASES: UseCase[] = [
       {
         question: "How does Delta process thousands of pages of medical records?",
         answer:
-          "Delta ingests medical records in any format — PDFs, scanned images, EMR exports, faxed records — and builds structured, searchable chronologies organized by date, provider, and record type. It identifies and links related entries across different providers, flags anomalies (gaps, contradictions, unsigned orders), and produces a navigable timeline that attorneys can review in a fraction of the time manual review requires.",
+          "Delta ingests the records in any format, builds a structured chronology organized by date, provider, and record type, and produces a navigable timeline with source citations. Gaps and contradictions are flagged automatically. What takes an associate 40 hours takes Delta about half an hour, with the attorney reviewing rather than building from scratch.",
       },
       {
-        question: "What anomalies does Delta detect in medical records?",
+        question: "What anomalies does Delta detect?",
         answer:
-          "Delta detects timeline gaps (periods with no documentation when there should be), contradictions between records (vital signs that don't match nursing assessments), unsigned physician orders, missing informed consent documentation, entries that appear back-dated or modified, and inconsistencies between the medical record and deposition testimony. These are the details that decide cases.",
+          "Documentation gaps, vital signs that contradict nursing assessments, unsigned physician orders, missing informed consent, entries that appear back-dated, and inconsistencies between the medical record and deposition testimony. Each flag includes the source document reference for verification.",
       },
       {
-        question: "Can Delta help with expert witness selection and coordination?",
+        question: "Can Delta draft a certificate of merit or expert affidavit?",
         answer:
-          "Delta maintains a knowledge base of every expert your firm has worked with: their specialties, availability patterns, jurisdictions where they've testified, fee structures, and how they've performed (based on partner-entered notes). When you need a cardiologist available in August who's testified in your jurisdiction, Delta provides a shortlist in seconds rather than hours of phone calls.",
+          "Yes. Once the chronology is built, Delta drafts the complaint, certificate of merit, expert affidavit, or demand letter in Microsoft Word, in your firm's voice. The draft is saved to the case in Clio and attached to your review queue. The attorney signs off.",
       },
       {
-        question: "How does Delta handle judge-specific strategies in medical malpractice?",
+        question: "Where does our client data go?",
         answer:
-          "Delta tracks each judge's approach to medical malpractice specifics: Daubert hearing requirements, expert qualification standards, attitude toward common defense theories (res ipsa loquitur, lost chance doctrine, informed consent), typical verdict ranges, and procedural preferences. Combined with Intelligence Network data from other defense firms, you calibrate strategy to the actual judge assigned to your case.",
+          "Nowhere outside CaseDelta. We run on a private enterprise deployment. PHI and case files never touch a third-party AI provider. No shared models, no training on your files. The deployment model is the protection, not a policy.",
       },
       {
-        question: "Is Delta accurate enough for high-stakes medical malpractice cases?",
+        question: "Does Delta replace Clio or our case management system?",
         answer:
-          "Delta is a tool that augments attorney review — it doesn't replace it. It finds the needles in the haystack (the unsigned orders, the timeline gaps, the contradictions) so attorneys can focus on strategy rather than page-by-page review. Every flagged anomaly includes the source document reference for verification. In cases worth $200K to $5M+, Delta ensures nothing gets missed.",
+          "No. Delta connects to Clio and works alongside it. Cases, contacts, and time entries continue to live in Clio. Delta reads from and writes to Clio so your case management stays the source of truth.",
       },
     ],
-    ctaText: "See what Delta learns about your medical malpractice practice in the first 30 minutes.",
+    ctaText:
+      "See Delta run records review, chronology, and drafting end to end. Live demo, twenty minutes.",
+  },
+
+  /* ════════════════════════════════════════════
+     3. EMPLOYMENT LAW (PLAINTIFF)
+     ════════════════════════════════════════════ */
+  {
+    slug: "employment-law",
+    title: "Employment Law",
+    metaTitle: "CaseDelta for Plaintiff Employment Firms | Wage and Hour, Discrimination, Retaliation",
+    metaDescription:
+      "Plaintiff employment firms run intake, drafting, and admin across Clio, Word, Gmail, and Drive. Delta runs all of it in one conversation, with private enterprise deployment.",
+    heroHeadline: "Run intake, drafting, and admin in one conversation.",
+    heroSubheadline:
+      "Hand Delta the personnel file, the pay stubs, and the EEOC charge. Tell it what you need. Delta runs the wage calculations, drafts the complaint, sends the demand from your inbox, and logs the work in Clio. The work that ate your morning happens before your second coffee.",
+    geoOpening:
+      "CaseDelta is the personal assistant for plaintiff employment firms handling discrimination, retaliation, and wage and hour cases. Delta connects to Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar, and runs both the legal research and the administrative work across them so a small firm can operate at the scale of a much larger one.",
+    stats: [
+      { value: "5+", label: "tools Delta runs across in a single conversation" },
+      { value: "1", label: "conversation from intake to filed complaint" },
+      { value: "0", label: "third-party AI providers touching personnel files" },
+    ],
+    painPoints: [
+      {
+        title: "Intake volume outpaces a small firm's bandwidth",
+        description:
+          "Plaintiff employment firms see steady call volume, but real intake takes hours per case (records, charge documents, wage data, drafts). A two-attorney firm cannot scale that workflow without help.",
+      },
+      {
+        title: "Wage and hour math lives in spreadsheets",
+        description:
+          "Unpaid overtime, missed meal breaks, off-the-clock work. Every case requires reconstructing weeks or months of pay records into a damages calculation. Manual, slow, and error-prone.",
+      },
+      {
+        title: "Drafting and correspondence span four tools",
+        description:
+          "Charge documents in Drive. Drafts in Word. Demand correspondence in Gmail. Case data in Clio. The intake notes in one tool have to be re-typed into the complaint in another.",
+      },
+      {
+        title: "Personnel files cannot be sent through public AI",
+        description:
+          "Personnel files include identifiers, medical accommodations, and protected category information. Free AI tools route prompts through third-party providers. For a plaintiff employment firm, that is not acceptable.",
+      },
+    ],
+    howDeltaHelps: [
+      {
+        title: "Runs intake end to end across your stack",
+        description:
+          "From the first call to the filed complaint. Delta intakes the personnel file from Drive, summarizes the timeline, runs the wage calculation, drafts the complaint or charge in Word, and saves the case file to Clio. One conversation.",
+      },
+      {
+        title: "Wage and hour calculations in seconds",
+        description:
+          "Hand Delta the pay records and the work schedule. It computes unpaid overtime, missed-break premiums, liquidated damages, and statute of limitations cutoffs. Numbers cited to source. Drop straight into the demand or complaint.",
+      },
+      {
+        title: "Drafts complaints and demand letters in your voice",
+        description:
+          "Delta drafts EEOC charges, NLRB filings, demand letters, and complaints in Microsoft Word in your firm's drafting style. Drafts land in Clio attached to the matter, ready for attorney review.",
+      },
+      {
+        title: "Three hundred client updates in a morning",
+        description:
+          "Mass tort overlap or large class case? Delta drafts and sends personalized status updates to hundreds of plaintiffs at once, from your firm's email, with case-specific details. The attorney makes the calls. Delta makes them happen.",
+      },
+      {
+        title: "Private enterprise deployment",
+        description:
+          "Personnel files, pay records, and case strategy never leave CaseDelta. We run on a private enterprise deployment. No third-party AI providers, no training on your files.",
+      },
+    ],
+    deltaLearnsExample: {
+      firmName: "Sample plaintiff employment firm",
+      entries: [
+        {
+          label: "Tools connected",
+          value: "Clio, Microsoft Word, Gmail, Google Drive, Google Calendar, DocuSign",
+        },
+        {
+          label: "Workflows Delta runs",
+          value:
+            "Intake intake-to-complaint, wage and hour calculations, charge and complaint drafting, opposing counsel correspondence, mass plaintiff updates, time entry.",
+        },
+        {
+          label: "One-sentence example",
+          value:
+            "\"Run unpaid overtime for the Reyes pay records, draft the FLSA complaint, attach the schedule analysis, and email it to opposing counsel.\"",
+        },
+        {
+          label: "Mass updates",
+          value:
+            "Send personalized status emails to three hundred class members from the firm's inbox, populated with case-specific details.",
+        },
+        {
+          label: "Data handling",
+          value:
+            "Private enterprise deployment. Personnel files and pay records never touch a third-party AI provider.",
+        },
+      ],
+    },
+    faq: [
+      {
+        question: "How does Delta handle wage and hour calculations?",
+        answer:
+          "Delta ingests pay records and schedules and computes unpaid overtime, missed-break premiums, liquidated damages, and statute of limitations cutoffs. Every figure is cited to a source record. The output drops directly into the demand letter or complaint.",
+      },
+      {
+        question: "Can Delta send personalized updates to hundreds of plaintiffs?",
+        answer:
+          "Yes. For class or mass-plaintiff cases, Delta drafts and sends personalized status updates to hundreds of plaintiffs from your firm's inbox in a single morning, populated with case-specific details. The attorney sets the message and recipient list. Delta sends them.",
+      },
+      {
+        question: "Does Delta draft EEOC charges and FLSA complaints?",
+        answer:
+          "Yes. Delta drafts charges, complaints, demand letters, and discovery responses in Microsoft Word in your firm's voice. Drafts are saved to the matter in Clio for attorney review.",
+      },
+      {
+        question: "Where does our client data go?",
+        answer:
+          "Nowhere outside CaseDelta. Personnel files, pay records, and case strategy stay on a private enterprise deployment. No third-party AI providers, no training on your files.",
+      },
+      {
+        question: "Does Delta replace Clio or our case management system?",
+        answer:
+          "No. Delta connects to Clio and works alongside it. Cases and time entries continue to live in Clio as the source of truth. Delta reads from and writes to it.",
+      },
+    ],
+    ctaText:
+      "See Delta run intake, wage calculations, and drafting in one conversation. Live demo, twenty minutes.",
+  },
+
+  /* ════════════════════════════════════════════
+     4. MASS TORT
+     ════════════════════════════════════════════ */
+  {
+    slug: "mass-tort",
+    title: "Mass Tort",
+    metaTitle: "CaseDelta for Mass Tort Firms | Plaintiff Operations at Scale",
+    metaDescription:
+      "Mass tort and class firms run plaintiff operations across thousands of cases at once. Delta runs intake, status updates, drafts, and admin across your stack in one conversation.",
+    heroHeadline: "Three hundred plaintiff updates. Sent before lunch.",
+    heroSubheadline:
+      "Mass tort firms run thousands of cases in parallel. Delta sends personalized status updates to every plaintiff, builds chronologies for new intakes, drafts demand letters at scale, and keeps Clio current. All in one conversation, across the tools your firm already uses.",
+    geoOpening:
+      "CaseDelta is the personal assistant for mass tort and class action firms that operate plaintiff workflows across thousands of cases at once. Delta connects to Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar, and runs both the per-case work and the firm-wide operations from a single conversation.",
+    stats: [
+      { value: "300+", label: "personalized plaintiff updates Delta can send in a morning" },
+      { value: "1", label: "conversation to operate at firm-wide scale" },
+      { value: "0", label: "third-party AI providers touching plaintiff data" },
+    ],
+    painPoints: [
+      {
+        title: "Plaintiff communication is the unspoken full-time job",
+        description:
+          "Three hundred plaintiffs each expecting status updates means a full-time staffer doing nothing else. Templated emails feel impersonal. Personal emails take days. Neither scales.",
+      },
+      {
+        title: "Intake at scale buries the firm",
+        description:
+          "Every new plaintiff means records, retainer, intake summary, case-file creation, calendar holds. Multiplied across hundreds or thousands of cases, the admin alone consumes the firm.",
+      },
+      {
+        title: "Tool fragmentation compounds at scale",
+        description:
+          "What is annoying at twenty cases is fatal at two thousand. Records in Drive, drafts in Word, plaintiff inbox in Gmail, case data in Clio. Every workflow multiplied across thousands of plaintiffs.",
+      },
+      {
+        title: "Plaintiff data cannot route through public AI",
+        description:
+          "Mass tort plaintiff intake includes medical, financial, and identifying information. Free AI tools that route through third-party providers create exposure your firm cannot accept.",
+      },
+    ],
+    howDeltaHelps: [
+      {
+        title: "Personalized plaintiff updates at scale",
+        description:
+          "In a single morning, Delta drafts and sends personalized status updates to hundreds of plaintiffs from your firm's email, populated with case-specific details from Clio. Templated does not mean impersonal.",
+      },
+      {
+        title: "Intake automation across the stack",
+        description:
+          "New plaintiff comes in. Delta intakes the records from Drive, summarizes the timeline in Word, creates the case in Clio, books the intake call on the calendar, and sends the retainer through DocuSign. One conversation.",
+      },
+      {
+        title: "Drafts demand letters and discovery in bulk",
+        description:
+          "Delta drafts plaintiff-specific demand letters, complaints, and discovery responses across your matter set in Word, customized to each plaintiff's facts. Saved to Clio attached to the right case.",
+      },
+      {
+        title: "Firm-wide morning briefing",
+        description:
+          "Across thousands of plaintiffs: which cases hit deadlines this week, which need partner attention, which plaintiffs have not responded in 30 days. Built across Clio, Outlook, and Calendar.",
+      },
+      {
+        title: "Private enterprise deployment",
+        description:
+          "Plaintiff data, settlement details, and case strategy never leave CaseDelta. We run on a private enterprise deployment. No third-party AI providers. No training on your files.",
+      },
+    ],
+    deltaLearnsExample: {
+      firmName: "Sample mass tort firm",
+      entries: [
+        {
+          label: "Tools connected",
+          value: "Clio, Microsoft Word, Outlook, Google Drive, Google Calendar, DocuSign",
+        },
+        {
+          label: "Workflows Delta runs",
+          value:
+            "Per-plaintiff intake, mass-personalized updates, demand and discovery drafting, retainer execution, calendar holds, time entry, daily firm briefing.",
+        },
+        {
+          label: "One-sentence example",
+          value:
+            "\"Send a personalized monthly update to every plaintiff in the Helix MDL, pulling case status from Clio and noting next steps.\"",
+        },
+        {
+          label: "Daily briefing",
+          value:
+            "Cases needing partner attention, deadlines this week, plaintiffs who have gone silent, retainers awaiting signature.",
+        },
+        {
+          label: "Data handling",
+          value:
+            "Private enterprise deployment. Plaintiff data never touches a third-party AI provider.",
+        },
+      ],
+    },
+    faq: [
+      {
+        question: "Can Delta really send hundreds of personalized plaintiff updates at once?",
+        answer:
+          "Yes. Delta drafts and sends personalized status updates to hundreds of plaintiffs from your firm's email in a single conversation. Each message is populated with case-specific details from Clio. The attorney sets the cadence and tone. Delta sends.",
+      },
+      {
+        question: "How does Delta handle new plaintiff intake at scale?",
+        answer:
+          "Delta intakes the records from Drive, summarizes the timeline, creates the case in Clio with the right matter type, books the intake call on the calendar, and sends the retainer through DocuSign. One conversation per plaintiff, automated end to end.",
+      },
+      {
+        question: "Does Delta draft demand letters and discovery in bulk?",
+        answer:
+          "Yes. Delta produces plaintiff-specific drafts across your matter set in Microsoft Word, customized to each plaintiff's facts and saved to the right case in Clio. The attorney reviews and signs off.",
+      },
+      {
+        question: "Where does plaintiff data go?",
+        answer:
+          "Nowhere outside CaseDelta. Plaintiff records, settlement details, and case strategy stay on a private enterprise deployment. No third-party AI providers, no training on your data.",
+      },
+      {
+        question: "Does Delta replace Clio or our case management system?",
+        answer:
+          "No. Delta connects to Clio and works alongside it. Cases, plaintiffs, and time entries continue to live in Clio. Delta reads from and writes to it so case management stays the source of truth.",
+      },
+    ],
+    ctaText:
+      "See Delta operate plaintiff workflows at scale. Live demo, twenty minutes.",
   },
 ];
 

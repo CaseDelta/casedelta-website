@@ -31,7 +31,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/assets/branding/casedelta-logo-full.png`,
     description:
-      "CaseDelta is the AI associate that learns how your law firm works — your cases, your judges, your opposing counsel — and gets smarter every day.",
+      "CaseDelta is the personal assistant that runs across the tools your law firm already uses. Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar. Tell Delta what you need in one sentence.",
     founder: {
       "@type": "Person",
       name: "Camren Hall",
@@ -55,7 +55,7 @@ export function WebAppSchema() {
     url: BASE_URL,
     applicationCategory: "BusinessApplication",
     description:
-      "Delta is your firm's AI associate — it connects to your existing tools, learns your practice from the inside, and builds institutional memory that compounds without limit.",
+      "Delta is the personal assistant for plaintiff law firms. It connects across Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar, and runs both legal research and administrative work in a single conversation.",
     browserRequirements: "Requires JavaScript and HTML5 support",
     offers: {
       "@type": "AggregateOffer",

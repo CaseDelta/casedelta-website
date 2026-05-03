@@ -5,12 +5,12 @@ import { BreadcrumbSchema } from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "CaseDelta terms of service. Delta is a productivity tool that learns your firm — not a lawyer. You retain full responsibility for all legal work.",
+    "CaseDelta terms of service. Delta is a productivity tool, not a lawyer. You retain full responsibility for all legal work.",
   alternates: { canonical: "https://casedelta.com/terms" },
   openGraph: {
     title: "Terms of Service",
     description:
-      "CaseDelta terms of service. Delta is a productivity tool that learns your firm — not a lawyer. You retain full responsibility for all legal work.",
+      "CaseDelta terms of service. Delta is a productivity tool, not a lawyer. You retain full responsibility for all legal work.",
     url: "https://casedelta.com/terms",
   },
 };

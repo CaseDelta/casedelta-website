@@ -17,14 +17,14 @@ const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 /* ─── Short descriptions for index cards ─── */
 
 const CARD_DESCRIPTIONS: Record<string, string> = {
-  "commercial-litigation":
-    "Massive discovery sets, dozens of parties, and years of accumulated judge intelligence. Delta learns it all and surfaces what matters.",
-  "employment-law":
-    "High volume, repeat players, tight agency deadlines. Delta learns the patterns that make your employment defense practice efficient.",
-  "insurance-defense":
-    "150+ active files, carrier reporting requirements, and plaintiff firm intelligence. Delta manages the volume so you can practice law.",
+  "personal-injury":
+    "Demand packages, records review, and adjuster correspondence run across Clio, Word, Drive, and Gmail. Delta runs all of it in one conversation.",
   "medical-malpractice":
-    "Thousands of pages of medical records, expert coordination, and high-stakes outcomes. Delta finds what human review misses.",
+    "Thousands of pages of medical records, expert coordination, and complaint drafting. Delta builds the chronology, surfaces the gaps, and drafts in your firm's voice.",
+  "employment-law":
+    "Plaintiff intake, wage and hour math, charge and complaint drafting. Delta runs intake to filed complaint in a single conversation.",
+  "mass-tort":
+    "Three hundred personalized plaintiff updates before lunch. Intake, drafting, and admin at firm-wide scale, across the tools you already use.",
 };
 
 /* ─── Arrow Icon ─── */
@@ -84,7 +84,7 @@ export function UseCasesIndexContent() {
                 display: "block",
               }}
             >
-              Delta learns your practice area.
+              One assistant. Every tool your firm uses.
             </span>
             {" "}
             <span
@@ -99,7 +99,7 @@ export function UseCasesIndexContent() {
                 marginTop: "clamp(12px, 1.5vw, 20px)",
               }}
             >
-              Not generic AI. An associate that understands how you work.
+              Tell Delta what you need. Hours of work, done in one go.
             </span>
           </motion.h1>
           <motion.p
@@ -118,9 +118,9 @@ export function UseCasesIndexContent() {
               marginBottom: 0,
             }}
           >
-            Every practice area has its own rhythms: the judges who matter,
-            the opposing firms you face repeatedly, the document patterns that
-            decide outcomes. Delta learns them all.
+            Plaintiff firms run on a stack of tools: Clio, Word, Gmail or
+            Outlook, Drive, Calendar. Delta connects across them and runs the
+            legal and administrative work in a single conversation.
           </motion.p>
         </div>
       </section>
@@ -264,7 +264,7 @@ export function UseCasesIndexContent() {
               marginBottom: 16,
             }}
           >
-            Don&apos;t see your practice area?
+            See Delta inside your firm&rsquo;s stack.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -284,12 +284,11 @@ export function UseCasesIndexContent() {
               marginBottom: 32,
             }}
           >
-            Delta learns any practice area. These are the verticals where firms
-            see results fastest, but the learning engine works the same way
-            whether you practice family law, IP litigation, or real estate.
+            Twenty-minute live demo. We connect Delta to a sandbox of your
+            stack and run a real workflow end to end.
           </motion.p>
           <motion.a
-            href="https://app.casedelta.com/signup"
+            href="/demo"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
@@ -317,7 +316,7 @@ export function UseCasesIndexContent() {
             }}
             whileTap={{ y: 0, scale: 0.97 }}
           >
-            Try Delta Free
+            Book a demo
           </motion.a>
         </div>
       </section>

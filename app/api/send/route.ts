@@ -7,17 +7,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 interface ContactFormData {
   name: string;
   email: string;
-  firmSize: string;
+  firmSize?: string;
   message?: string;
+  source?: "pricing" | "demo";
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
 
-    if (!body.name || !body.email || !body.firmSize) {
+    if (!body.name || !body.email) {
       return NextResponse.json(
-        { error: 'Name, email, and firm size are required' },
+        { error: 'Name and email are required' },
         { status: 400 }
       );
     }
@@ -30,11 +31,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const source = body.source ?? "pricing";
+    const subjectPrefix = source === "demo" ? "Demo Booking" : "Enterprise Pricing Inquiry";
+    const headerLabel = source === "demo" ? "Demo Booking" : "Enterprise Pricing Inquiry";
+    const submittedFrom = source === "demo" ? "casedelta.com/demo" : "casedelta.com/pricing";
+
+    const firmSizeBlock = body.firmSize
+      ? `<div class="field"><div class="label">Firm Size:</div><div class="value">${body.firmSize}</div></div>`
+      : '';
+    const firmSizeText = body.firmSize ? `\nFirm Size: ${body.firmSize}` : '';
+
     const { data, error } = await resend.emails.send({
       from: 'CaseDelta Leads <casedeltaleads@blueprintsw.com>',
       to: [CONTACT_EMAILS.SUPPORT],
       replyTo: body.email,
-      subject: `Enterprise Pricing Inquiry: ${body.name}`,
+      subject: `${subjectPrefix}: ${body.name}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -49,7 +60,7 @@ export async function POST(request: NextRequest) {
           </head>
           <body>
             <div class="header">
-              <h2 style="margin: 0;">Enterprise Pricing Inquiry</h2>
+              <h2 style="margin: 0;">${headerLabel}</h2>
             </div>
             <div class="field">
               <div class="label">Name:</div>
@@ -59,10 +70,7 @@ export async function POST(request: NextRequest) {
               <div class="label">Email:</div>
               <div class="value">${body.email}</div>
             </div>
-            <div class="field">
-              <div class="label">Firm Size:</div>
-              <div class="value">${body.firmSize}</div>
-            </div>
+            ${firmSizeBlock}
             ${body.message ? `
               <div class="field">
                 <div class="label">Message:</div>
@@ -70,12 +78,12 @@ export async function POST(request: NextRequest) {
               </div>
             ` : ''}
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #999;">
-              Submitted from casedelta.com/pricing
+              Submitted from ${submittedFrom}
             </div>
           </body>
         </html>
       `,
-      text: `Enterprise Pricing Inquiry\n\nName: ${body.name}\nEmail: ${body.email}\nFirm Size: ${body.firmSize}${body.message ? `\nMessage: ${body.message}` : ''}\n\nSubmitted from casedelta.com/pricing`,
+      text: `${headerLabel}\n\nName: ${body.name}\nEmail: ${body.email}${firmSizeText}${body.message ? `\nMessage: ${body.message}` : ''}\n\nSubmitted from ${submittedFrom}`,
     });
 
     if (error) {

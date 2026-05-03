@@ -15,16 +15,16 @@ const BASE_URL = "https://casedelta.com";
 /* ─── Metadata ─── */
 
 export const metadata: Metadata = {
-  title: "Blog — Legal AI Insights for Law Firms",
+  title: "Blog — Legal AI Insights for Plaintiff Firms",
   description:
-    "Insights on legal AI, practice management, and how Delta helps law firms build persistent institutional memory. Written by the CaseDelta team.",
+    "Insights on horizontal AI for law firms, plaintiff workflows, and how CaseDelta runs across the tools your firm already uses. Written by the CaseDelta team.",
   alternates: {
     canonical: `${BASE_URL}/blog`,
   },
   openGraph: {
-    title: "Blog — Legal AI Insights for Law Firms",
+    title: "Blog — Legal AI Insights for Plaintiff Firms",
     description:
-      "Insights on legal AI, practice management, and how Delta helps law firms build persistent institutional memory.",
+      "Insights on horizontal AI for law firms, plaintiff workflows, and how CaseDelta runs across the tools your firm already uses.",
     url: `${BASE_URL}/blog`,
     type: "website",
   },
@@ -100,8 +100,8 @@ export default function BlogIndexPage() {
               letterSpacing: "-0.01em",
             }}
           >
-            Insights on legal AI, institutional memory, and the future of law
-            firm technology.
+            Notes on horizontal AI for law firms, plaintiff workflows, and the
+            tools your firm already uses.
           </p>
         </header>
 

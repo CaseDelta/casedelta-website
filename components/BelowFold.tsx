@@ -390,9 +390,9 @@ export function BelowFold() {
             letterSpacing: "-0.035em",
             maxWidth: 780,
           }}>
-            Delta gets smarter with every case.{" "}
+            Many tools. Hours of work.{" "}
             <span style={{ color: ACCENT }}>
-              Like a great associate, except it never forgets.
+              Done in one go.
             </span>
           </motion.h2>
           <motion.p {...fade(0.1, reduced)} style={{
@@ -405,7 +405,7 @@ export function BelowFold() {
             maxWidth: 520,
             marginTop: 16,
           }}>
-            Your preferences, your judges, your drafting style. Delta remembers and applies them automatically.
+            Tell Delta what you need in one sentence. It pulls records from Drive, drafts in Word, sends from your inbox, and updates Clio. The legal work and the administrative work happen in the same conversation.
           </motion.p>
         </div>
       </section>
@@ -486,12 +486,12 @@ export function BelowFold() {
             maxWidth: 600,
             margin: "0 auto 40px",
           }}>
-            Meet the associate that already knows your judges.
+            See Delta inside your firm&rsquo;s stack.
           </motion.h2>
 
           <motion.div {...fade(0.15, reduced)} style={{ display: "flex", justifyContent: "center" }}>
             <motion.a
-              href="https://app.casedelta.com/signup"
+              href="/demo"
               className={`cd-btn-cta${reduced ? "" : " cd-cta-pulse"}`}
               style={{
                 display: "inline-flex",
@@ -513,7 +513,7 @@ export function BelowFold() {
               whileTap={{ y: 0, scale: 0.97 }}
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
             >
-              Sign Up — Free $25 Credit
+              Book a demo
               <svg className="cd-cta-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none">
                 <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

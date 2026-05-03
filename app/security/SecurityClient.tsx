@@ -23,11 +23,11 @@ const SECURITY_FAQS = [
   },
   {
     question: "What happens to my data if I cancel?",
-    answer: "Your data is yours. You can export everything before canceling. After cancellation, your data is permanently deleted from CaseDelta\u2019s systems within 30 days. Delta\u2019s learned intelligence about your firm is also deleted \u2014 it does not persist or transfer.",
+    answer: "Your data is yours. You can export everything before canceling. After cancellation, your data is permanently deleted from CaseDelta\u2019s systems within 30 days.",
   },
   {
     question: "Who can see my firm\u2019s data?",
-    answer: "Only authorized users at your firm. CaseDelta maintains complete data isolation between firms. No CaseDelta employee can access your case data without explicit authorization. The Intelligence Network uses only anonymized, aggregated patterns \u2014 never identifiable case details.",
+    answer: "Only authorized users at your firm. CaseDelta runs on a private enterprise deployment with complete data isolation between firms. No CaseDelta employee can access your case data without explicit authorization. No third-party AI providers touch your data.",
   },
   {
     question: "Is there an audit trail?",
@@ -376,11 +376,10 @@ export default function SecurityClient() {
       <FAQAccordion faqs={SECURITY_FAQS} />
 
       <BottomCTA
-        quote="Every few months you'd hear about another lawyer getting sanctioned over AI-generated citations. I wanted the efficiency but not that kind of exposure. Delta gave us a way to use AI across our cases without putting anyone's license on the line."
-        attribution="Managing Partner"
-        attributionDetail="Insurance defense firm, Overland Park"
         ctaHeading="Your data stays inside your firm."
-        ctaSubheading="Start with $25 in free credits. No third parties. No exceptions."
+        ctaSubheading="Private enterprise deployment. No third-party AI providers. See it in a twenty-minute demo."
+        ctaLabel="Book a demo"
+        ctaHref="/demo"
       />
       <FooterV2 />
     </main>

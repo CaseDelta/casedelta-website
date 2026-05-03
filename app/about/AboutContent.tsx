@@ -10,29 +10,28 @@ const FONT =
   '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 
-/* ─── Value card data ─── */
+/* ─── Principles cards ─── */
 const VALUES = [
   {
-    heading: "Delta learns inside your firm's walls.",
-    body: "Your data never leaves CaseDelta's infrastructure. No third-party AI providers, no shared model training. Security is architectural, not policy.",
-    label: "Security by architecture",
+    heading: "A horizontal layer, not another silo.",
+    body: "Every other legal AI lives inside a single app and only handles one slice of the workflow. CaseDelta is the personal assistant that runs across the tools your firm already uses, so the firm does not adopt yet another platform.",
+    label: "Horizontal layer",
   },
   {
-    heading: "The attorney decides, not the AI.",
-    body: "Every output Delta produces requires human review and approval before it touches a case. Delta drafts, researches, and recommends. The attorney signs off.",
-    label: "Human-in-the-loop",
+    heading: "The attorney decides. Delta does the work.",
+    body: "Delta drafts, pulls records, calculates, sends, and logs. The attorney sets the direction and signs off on the output. No automation runs without an attorney telling it to.",
+    label: "Attorney in command",
   },
   {
-    heading: "Learning is the product.",
-    body: "Delta doesn't reset between sessions. It remembers your preferences, your judges, your opposing counsel, your style. It gets more valuable every single day.",
-    label: "Persistent memory",
+    heading: "Tangible results, not features.",
+    body: "We measure value in workflows shipped end to end: demand letters out, chronologies built, clients updated, time logged. Not in features added to a dashboard.",
+    label: "Outcome focused",
   },
   {
-    heading: "Network intelligence for everyone.",
-    body: "A five-attorney family law practice gets the same anonymized judicial intelligence that a 200-attorney firm built over 30 years. The Intelligence Network levels the field.",
-    label: "Network effect",
+    heading: "Your data stays yours.",
+    body: "CaseDelta runs on a private enterprise deployment. Client files never touch a shared model or a third-party AI provider. No training on your data. The deployment model is the protection, not a checkbox.",
+    label: "Private deployment",
   },
 ];
 
@@ -67,8 +66,7 @@ export function AboutContent() {
               maxWidth: 900,
             }}
           >
-            The most valuable knowledge in your firm exists only in
-            people&rsquo;s heads.
+            Every law firm runs on a stack of tools.
           </motion.h1>
 
           <motion.p
@@ -83,10 +81,11 @@ export function AboutContent() {
               lineHeight: 1.35,
               letterSpacing: "-0.02em",
               marginTop: "clamp(20px, 2.5vw, 32px)",
-              maxWidth: 680,
+              maxWidth: 720,
             }}
           >
-            When they leave, it leaves with them. Delta changes that.
+            CaseDelta is the layer across them. The personal assistant your
+            firm manages with a single sentence.
           </motion.p>
 
           <motion.div
@@ -95,7 +94,7 @@ export function AboutContent() {
             transition={{ duration: 0.8, delay: 1.0, ease: EASE_OUT }}
             style={{
               marginTop: "clamp(36px, 4vw, 56px)",
-              maxWidth: 620,
+              maxWidth: 640,
               display: "flex",
               flexDirection: "column",
               gap: 20,
@@ -111,10 +110,11 @@ export function AboutContent() {
                 margin: 0,
               }}
             >
-              Every law firm runs on institutional knowledge &mdash; the
-              unwritten rules, the judge who hates late filings, the opposing
-              counsel who always settles in week three. This knowledge takes
-              years to build and seconds to lose when someone walks out the door.
+              Plaintiff firms run on Clio, Microsoft Word, Gmail or Outlook,
+              Google Drive, and Calendar. Every workflow stretches across
+              them. Every other AI tool on the market lives inside one of
+              those apps and only handles one slice of the work, forcing the
+              firm to adopt yet another platform.
             </p>
             <p
               style={{
@@ -126,11 +126,10 @@ export function AboutContent() {
                 margin: 0,
               }}
             >
-              CaseDelta exists to make that knowledge permanent. Delta connects
-              to the tools your firm already uses, learns the patterns that make
-              your practice unique, and builds a living memory that compounds
-              without limit &mdash; so the next associate doesn&rsquo;t start
-              from scratch.
+              CaseDelta is the personal assistant that runs both legal
+              research and administrative work across the tools your firm
+              already uses. Tell Delta what you need. Delta makes it
+              happen. Many tools, hours of work, done in one go.
             </p>
           </motion.div>
         </div>
@@ -176,7 +175,7 @@ export function AboutContent() {
                   marginBottom: 16,
                 }}
               >
-                The Platform
+                The product
               </span>
               <h2
                 style={{
@@ -191,7 +190,7 @@ export function AboutContent() {
               >
                 CaseDelta is the platform.
                 <br />
-                Delta is the AI inside it.
+                Delta is the assistant inside it.
               </h2>
             </motion.div>
 
@@ -217,11 +216,12 @@ export function AboutContent() {
                   margin: 0,
                 }}
               >
-                Delta connects to your existing tools &mdash; starting with
-                Clio &mdash; and learns how your firm actually operates. It
-                studies your cases, your judges, your opposing counsel, and your
-                preferences. Then it handles the cognitive work: drafting,
-                research, document analysis, case chronologies.
+                Delta connects to your existing tools (Clio, Microsoft Word,
+                Gmail or Outlook, Google Drive, Calendar, DocuSign,
+                Westlaw) and runs the work across them. Hand Delta thousands
+                of pages of discovery. Say what you want done. Delta builds
+                the chronology, drafts the demand letter, emails opposing
+                counsel from your inbox, and logs the time in Clio.
               </p>
               <p
                 style={{
@@ -233,15 +233,9 @@ export function AboutContent() {
                   margin: 0,
                 }}
               >
-                What makes it different is the{" "}
-                <strong style={{ color: "#333", fontWeight: 600 }}>
-                  Intelligence Network
-                </strong>
-                . Every firm on CaseDelta contributes anonymized patterns
-                &mdash; judicial tendencies, settlement timelines, filing
-                outcomes &mdash; to a shared intelligence layer. No firm&rsquo;s
-                confidential data is exposed, but every firm benefits. It&rsquo;s
-                the first network effect in legal technology.
+                One conversation. One sentence. The legal work and the
+                administrative work happen in the same place. The attorney
+                stays in command. Delta does the work.
               </p>
             </motion.div>
           </div>
@@ -426,10 +420,12 @@ export function AboutContent() {
                   margin: 0,
                 }}
               >
-                CaseDelta started with a question that wouldn&rsquo;t go
-                away: why does every law firm lose its most valuable asset
-                &mdash; institutional knowledge &mdash; every time someone
-                leaves?
+                CaseDelta started after months of customer discovery with
+                practicing attorneys at plaintiff firms. The same finding
+                kept surfacing: a personal injury, medical malpractice,
+                employment, or mass tort firm runs on a stack of five or six
+                tools, and every workflow means switching between them by
+                hand.
               </p>
               <p
                 style={{
@@ -441,14 +437,10 @@ export function AboutContent() {
                   margin: 0,
                 }}
               >
-                After six months of customer discovery with practicing
-                attorneys across family law, insurance defense, personal
-                injury, and employment litigation, one finding emerged
-                clearly: knowledge loss is the number-one unsolved problem
-                in small-to-midsize law firms. Not billing. Not marketing.
-                The fact that everything a senior attorney knows walks out
-                the door when they retire, and the next associate starts
-                from zero.
+                Every legal AI on the market lived inside one of those
+                tools, and asked the firm to adopt yet another platform.
+                None of them ran across the firm&rsquo;s actual workflow.
+                That gap became CaseDelta.
               </p>
               <p
                 style={{
@@ -461,12 +453,11 @@ export function AboutContent() {
                 }}
               >
                 Before CaseDelta, Camren spent two and a half years at
-                Capital One building the data systems that power real-time
-                financial decisions at scale. That experience &mdash;
-                building systems that learn from data, improve continuously,
-                and serve millions of decisions &mdash; directly informs how
-                Delta works: persistent memory, compounding intelligence,
-                and architecture that scales.
+                Capital One building data systems that power real-time
+                financial decisions at scale. That experience shapes how
+                Delta is built: a single conversation runs work across many
+                systems, with security and reliability as the architecture,
+                not the policy.
               </p>
               <p
                 style={{
@@ -478,10 +469,11 @@ export function AboutContent() {
                   margin: 0,
                 }}
               >
-                CaseDelta is built for the firms that do the work &mdash;
-                the 5-to-50 attorney practices that handle real cases for
-                real people and have never had access to the kind of
-                institutional intelligence that BigLaw takes for granted.
+                CaseDelta is built for plaintiff firms that practice in
+                personal injury, medical malpractice, employment, and mass
+                tort. Practices that move on volume, run on a stack the
+                firm already chose, and need an assistant that works inside
+                that stack rather than replacing it.
               </p>
             </motion.div>
           </div>
@@ -489,7 +481,7 @@ export function AboutContent() {
       </section>
 
       {/* ═══════════════════════════════════════
-          VALUES / PRINCIPLES
+          PRINCIPLES
           ═══════════════════════════════════════ */}
       <section
         style={{
@@ -656,7 +648,7 @@ export function AboutContent() {
               marginBottom: 16,
             }}
           >
-            Ready to see what Delta learns about your firm?
+            See Delta inside your firm&rsquo;s stack.
           </motion.h2>
 
           <motion.p
@@ -672,16 +664,17 @@ export function AboutContent() {
               lineHeight: 1.6,
               letterSpacing: "-0.01em",
               marginBottom: 36,
-              maxWidth: 480,
+              maxWidth: 520,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            Start with $25 in free credits. No credit card required.
+            Twenty-minute live demo. We connect Delta to a sandbox of your
+            stack and run a real workflow end to end.
           </motion.p>
 
           <motion.a
-            href="https://app.casedelta.com/signup"
+            href="/demo"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
@@ -709,7 +702,7 @@ export function AboutContent() {
             }}
             whileTap={{ y: 0, scale: 0.97 }}
           >
-            Sign Up — Free $25 Credit
+            Book a demo
           </motion.a>
 
           <motion.p

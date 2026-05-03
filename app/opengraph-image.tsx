@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CaseDelta — The AI Associate That Learns Your Firm";
+export const alt = "CaseDelta — One Assistant Across Your Firm's Stack";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -39,12 +39,12 @@ export default function OGImage() {
             color: "#0A0A0A",
             letterSpacing: "-0.02em",
             lineHeight: 1.3,
-            maxWidth: 800,
+            maxWidth: 900,
             marginBottom: 32,
           }}
         >
-          The AI associate that learns your cases, your judges, and your
-          opposing counsel — and gets smarter every day.
+          The personal assistant that runs across your firm&apos;s stack. Tell
+          Delta what you need. One sentence. Many tools.
         </div>
         <div
           style={{

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
 import { ClientLayout } from "@/components/ClientLayout";
+import { LinkedInInsightTag } from "@/components/LinkedInInsightTag";
 import { OrganizationSchema, WebAppSchema } from "@/components/JsonLd";
 
 const inter = Inter({
@@ -14,22 +15,22 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://casedelta.com"),
   title: {
-    default: "CaseDelta — The AI Associate That Learns Your Firm",
+    default: "CaseDelta — One Assistant Across Your Firm's Stack",
     template: "%s | CaseDelta",
   },
   description:
-    "Delta learns how your law firm works — your cases, your judges, your opposing counsel — and gets smarter every day. The only legal AI with persistent memory and network intelligence.",
+    "CaseDelta is the personal assistant that runs across your firm's stack. Tell Delta what you need in one sentence. Many tools, hours of work, done in one go. Built for plaintiff firms.",
   keywords: [
     "legal AI",
     "AI for law firms",
-    "AI associate attorney",
-    "legal technology",
-    "institutional knowledge law firm",
-    "AI document analysis legal",
-    "law firm AI assistant",
-    "Clio AI integration",
-    "legal AI that learns",
-    "law firm automation",
+    "AI personal assistant for law firms",
+    "legal AI Clio integration",
+    "plaintiff law firm AI",
+    "personal injury AI",
+    "medical malpractice AI",
+    "mass tort case management AI",
+    "employment law AI",
+    "horizontal AI for law firms",
   ],
   authors: [{ name: "CaseDelta", url: "https://casedelta.com" }],
   creator: "CaseDelta",
@@ -89,6 +90,7 @@ export default function RootLayout({
         <WebAppSchema />
       </head>
       <body>
+        <LinkedInInsightTag />
         <PostHogProvider>
           <ClientLayout>{children}</ClientLayout>
         </PostHogProvider>
