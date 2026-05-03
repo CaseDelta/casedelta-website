@@ -85,13 +85,14 @@ const ZOOM_END_T        = 10.2;
 const DETAIL_FADE_OUT_S = 12.6;
 const DETAIL_FADE_OUT_E = 13.0;
 
-/* Approximate PDF preview card center in viewport (1920×1080). The PDF card
- * sits inside the chat conversation area, which is centered horizontally in
- * the chat content region (sidebar 268px + chat content 1652px). The card
- * is vertically positioned in the upper half of the conversation, just
- * below the user query bubble. */
-const PDF_TARGET_X = 1094;
-const PDF_TARGET_Y = 430;
+/* Approximate center of the PDF card in viewport (1920×1080). The card sits
+ * at the left of the conversation content area (sidebar 268, chat content
+ * starts ~268, conversation content centered with maxWidth 920 → left edge
+ * around x=634). With a 460px-wide card, center sits around x=864. Card top
+ * is below the brief response text, around y=320; with ~110px height the
+ * center is around y=375. */
+const PDF_TARGET_X = 864;
+const PDF_TARGET_Y = 375;
 
 function smoothStep(x: number): number {
   const k = Math.max(0, Math.min(1, x));
@@ -133,10 +134,12 @@ export function DemoScene({ t }: { t: number }) {
   if (t >= ZOOM_END_T) zoomK = 1;
   else if (t > ZOOM_START_T) zoomK = smoothStep((t - ZOOM_START_T) / (ZOOM_END_T - ZOOM_START_T));
 
-  /* Detailed-view opacity — fades in slightly behind the zoom, fades out at end. */
+  /* Detailed-view opacity — fades in alongside the zoom (not after). The
+   * scale + translate animation drives the visual continuity; opacity just
+   * brings the content in smoothly. */
   let detailOpacity = 0;
   if (t > ZOOM_START_T && t < DETAIL_FADE_OUT_S) {
-    detailOpacity = smoothStep((t - (ZOOM_START_T + 0.2)) / 0.6);
+    detailOpacity = smoothStep((t - ZOOM_START_T) / 0.5);
   } else if (t >= DETAIL_FADE_OUT_S && t < DETAIL_FADE_OUT_E) {
     detailOpacity = 1 - smoothStep((t - DETAIL_FADE_OUT_S) / (DETAIL_FADE_OUT_E - DETAIL_FADE_OUT_S));
   }
@@ -206,8 +209,11 @@ export function DemoScene({ t }: { t: number }) {
         transition={{ duration: 0.85, ease: [0.25, 0.1, 0.25, 1] }}
       />
 
-      {/* Detailed PDF view — fills the dimmed/blurred chat after the click */}
-      {detailOpacity > 0 && <ChronologyDetailedView opacity={detailOpacity} />}
+      {/* Detailed PDF view — grows out of the card position into viewport
+       * center as the chat blurs/dims behind. */}
+      {detailOpacity > 0 && (
+        <ChronologyDetailedView opacity={detailOpacity} zoomK={zoomK} />
+      )}
     </div>
   );
 }
@@ -657,18 +663,16 @@ function TypingIndicator() {
 }
 
 /* ───────── Chronology PDF preview ─────────
- * Hybrid mock of the actual CaseDelta-generated chronology PDF (template at
- * casedelta-cloud/aws/lambda/platform_api/templates/chronology.html).
+ * Product-style file card in the chat — modeled after how real chat AI products
+ * (Claude.ai, ChatGPT, etc.) display generated artifacts. A small cover-page
+ * thumbnail on the left + filename + metadata + open affordance on the right.
  *
- * Small in-chat version: a centered cover page (readable: case name, "Generated
- * by CaseDelta", patient block, case overview) with two fanned pages peeking
- * from behind — one landscape (chronology table hint), one portrait (gaps
- * section hint). A "23 pages · PDF" badge sits at the bottom-right.
- *
- * The cursor clicks this card around 9.5s, triggering a zoom transition to the
- * detailed PDF view (ChronologyDetailedView, full-size cover + landscape table). */
+ * The cursor clicks this card around 9.5s, triggering a zoom transition where
+ * the ChronologyDetailedView grows out of the card position into viewport
+ * center. */
 
 const PDF_BLUE = "#2B4C7E";
+const PDF_FILENAME = "Garcia v. Northwest Hospital — Medical Chronology.pdf";
 const SAMPLE_CHRONOLOGY_ROWS: { date: string; provider: string; type: string; event: string; tag: "L" | "C" | "D" | "" }[] = [
   { date: "03/14/2024", provider: "Northwest ER",   type: "ED Visit",  event: "Pt presents to ED at 14:47 c/o substernal chest pain x 3 hrs, rated 7/10, radiating to L arm and jaw, w/ associated diaphoresis. Vitals: BP 158/98, HR 112, RR 22, SpO2 96% RA, T 98.4°F. Triaged ESI Level 2. No prior cardiac hx documented.", tag: "L" },
   { date: "03/14/2024", provider: "Dr. Patel",      type: "EKG",       event: "12-lead EKG performed at 15:22, interpreted by Dr. Patel: 'Sinus tachycardia at 108. Non-specific T-wave abnormalities in inferior leads (II, III, aVF). Cannot exclude ischemia.' Clinical note documents only 'EKG non-specific.'", tag: "L" },
@@ -701,297 +705,188 @@ function ChronologyPDFPreview() {
   return (
     <div
       style={{
-        position: "relative",
-        width: 540,
-        height: 380,
-        marginTop: 4,
+        display: "inline-flex",
+        alignItems: "stretch",
+        gap: 14,
+        width: 460,
+        padding: 12,
+        borderRadius: 12,
+        background: "#FFFFFF",
+        border: "1px solid #E5E7EB",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+        fontFamily: FONT,
       }}
     >
-      {/* Fanned page behind right — landscape (chronology table hint) */}
-      <div
-        style={{
-          position: "absolute",
-          right: 6,
-          top: 36,
-          width: 270,
-          height: 209,
-          background: "#FFFFFF",
-          border: "1px solid #E5E7EB",
-          borderRadius: 3,
-          boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-          transform: "rotate(7deg)",
-          transformOrigin: "left top",
-          padding: "10px 12px",
-          overflow: "hidden",
-        }}
-      >
-        <LandscapeMiniPreview />
-      </div>
+      {/* Cover-page thumbnail (left) */}
+      <CoverThumbnail />
 
-      {/* Fanned page behind left — portrait (gaps / missing records hint) */}
+      {/* Filename + metadata (right) */}
       <div
         style={{
-          position: "absolute",
-          left: 8,
-          top: 28,
-          width: 200,
-          height: 259,
-          background: "#FFFFFF",
-          border: "1px solid #E5E7EB",
-          borderRadius: 3,
-          boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-          transform: "rotate(-6deg)",
-          transformOrigin: "right top",
-          padding: "12px 14px",
-          overflow: "hidden",
-        }}
-      >
-        <PortraitMiniPreview />
-      </div>
-
-      {/* Cover page — centered, in front, dominant */}
-      <div
-        style={{
-          position: "absolute",
-          left: "50%",
-          top: 0,
-          transform: "translateX(-50%)",
-          width: 280,
-          height: 362,
-          background: "#FFFFFF",
-          border: "1px solid #D1D5DB",
-          borderRadius: 4,
-          boxShadow: "0 16px 40px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.08)",
-          padding: "22px 22px 14px 22px",
+          flex: 1,
+          minWidth: 0,
           display: "flex",
           flexDirection: "column",
-          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+          paddingTop: 2,
+          gap: 4,
         }}
       >
-        <CoverMiniContent />
-      </div>
-
-      {/* PDF badge */}
-      <div
-        style={{
-          position: "absolute",
-          right: 16,
-          bottom: 12,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          background: PDF_BLUE,
-          color: "#FFFFFF",
-          padding: "6px 12px",
-          borderRadius: 999,
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: 0.3,
-          boxShadow: "0 6px 16px rgba(43, 76, 126, 0.35)",
-        }}
-      >
-        <PdfIcon />
-        23 pages · PDF
+        <div
+          style={{
+            fontSize: 13.5,
+            fontWeight: 600,
+            color: TEXT_PRIMARY,
+            lineHeight: 1.35,
+            letterSpacing: "-0.005em",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {PDF_FILENAME}
+        </div>
+        <div
+          style={{
+            fontSize: 12,
+            color: TEXT_SECONDARY,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <PdfFileTypeBadge />
+          <span>23 pages · 2.4 MB · just now</span>
+        </div>
+        <div style={{ flex: 1 }} />
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 4,
+            fontSize: 12,
+            fontWeight: 500,
+            color: PDF_BLUE,
+          }}
+        >
+          Open
+          <ArrowOpenIcon />
+        </div>
       </div>
     </div>
   );
 }
 
-function CoverMiniContent() {
+/* Small cover-page thumbnail rendered as a stylized mini-page so the viewer
+ * recognizes "this is the chronology PDF" at a glance. ~80×100 box. */
+function CoverThumbnail() {
   return (
-    <>
+    <div
+      style={{
+        width: 80,
+        height: 100,
+        borderRadius: 4,
+        background: "#FFFFFF",
+        border: "1px solid #E5E7EB",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+        padding: "8px 6px 6px 6px",
+        display: "flex",
+        flexDirection: "column",
+        flexShrink: 0,
+        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+      }}
+    >
       <div
         style={{
-          fontSize: 14,
+          fontSize: 5.5,
           fontWeight: 700,
           color: PDF_BLUE,
           textAlign: "center",
-          marginTop: 22,
-          letterSpacing: 0.6,
+          letterSpacing: 0.3,
+          marginTop: 4,
         }}
       >
-        MEDICAL CHRONOLOGY
+        MEDICAL
       </div>
       <div
         style={{
-          fontSize: 10,
+          fontSize: 5.5,
+          fontWeight: 700,
+          color: PDF_BLUE,
+          textAlign: "center",
+          letterSpacing: 0.3,
+          marginBottom: 4,
+        }}
+      >
+        CHRONOLOGY
+      </div>
+      <div
+        style={{
+          fontSize: 4,
           fontWeight: 600,
           color: PDF_BLUE,
           textAlign: "center",
-          marginTop: 8,
-        }}
-      >
-        Garcia v. Northwest Hospital
-      </div>
-      <div
-        style={{
-          fontSize: 7,
-          color: "#888",
-          fontStyle: "italic",
-          textAlign: "center",
-          marginTop: 4,
-          marginBottom: 18,
-        }}
-      >
-        Generated by CaseDelta · May 2, 2026 · Confidential Work Product
-      </div>
-      <div style={{ fontSize: 8, lineHeight: 1.6, color: "#222" }}>
-        <div>
-          <span style={{ fontWeight: 700, display: "inline-block", width: 70 }}>Patient:</span>
-          Maria Garcia
-        </div>
-        <div>
-          <span style={{ fontWeight: 700, display: "inline-block", width: 70 }}>Date of Birth:</span>
-          06/14/1958
-        </div>
-      </div>
-      <div
-        style={{
-          fontSize: 9,
-          fontWeight: 700,
-          color: PDF_BLUE,
-          borderBottom: `1px solid ${PDF_BLUE}`,
-          paddingBottom: 2,
-          marginTop: 14,
           marginBottom: 6,
         }}
       >
-        Case Overview
+        Garcia v. Northwest
       </div>
-      <div style={{ fontSize: 7.5, lineHeight: 1.5, color: "#333" }}>
-        Pt. presented to Northwest Hospital ER on 03/14/2024 with chest pain.
-        EKG performed by Dr. Patel showed non-specific findings. No cardiac
-        referral or stress test ordered. Pt. returned 04/02/2024 in cardiac
-        distress; surgery performed 04/04/2024 by Dr. Chen.
+      {/* Faint content lines suggesting page body */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+        <div style={{ height: 2, background: "#E5E7EB", borderRadius: 0.5 }} />
+        <div style={{ height: 2, background: "#E5E7EB", borderRadius: 0.5, width: "80%" }} />
+        <div style={{ height: 2, background: "#E5E7EB", borderRadius: 0.5 }} />
+        <div style={{ height: 2, background: "#E5E7EB", borderRadius: 0.5, width: "60%" }} />
       </div>
       <div style={{ flex: 1 }} />
       <div
         style={{
-          fontSize: 6,
-          color: "#999",
+          fontSize: 3.5,
+          color: "#BBB",
           textAlign: "center",
-          borderTop: "1px solid #EEE",
-          paddingTop: 4,
+          borderTop: "0.5px solid #EEE",
+          paddingTop: 2,
         }}
       >
-        Page 1 of 23 · Confidential Work Product
+        Page 1 of 23
       </div>
-    </>
-  );
-}
-
-function LandscapeMiniPreview() {
-  return (
-    <div style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-      <div style={{ fontSize: 6, fontWeight: 700, color: PDF_BLUE, marginBottom: 4 }}>
-        Fact Chronology (47 Entries)
-      </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1.2fr 0.7fr 1.8fr 0.5fr",
-          gap: 1,
-          background: PDF_BLUE,
-          color: "#FFFFFF",
-          fontSize: 4.5,
-          fontWeight: 700,
-          padding: "2px 3px",
-          letterSpacing: 0.2,
-        }}
-      >
-        <div>DATE</div>
-        <div>PROVIDER</div>
-        <div>TYPE</div>
-        <div>EVENTS</div>
-        <div style={{ textAlign: "center" }}>TAG</div>
-      </div>
-      {Array.from({ length: 9 }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.2fr 0.7fr 1.8fr 0.5fr",
-            gap: 1,
-            background: i % 2 ? "#FFFFFF" : "#F2F2F2",
-            padding: "3px 3px",
-            borderBottom: "0.5px solid #DDD",
-          }}
-        >
-          <div style={{ height: 4, background: "#D8DEE5", borderRadius: 1 }} />
-          <div style={{ height: 4, background: "#D8DEE5", borderRadius: 1, width: "85%" }} />
-          <div style={{ height: 4, background: "#D8DEE5", borderRadius: 1, width: "75%" }} />
-          <div>
-            <div style={{ height: 3, background: "#D8DEE5", borderRadius: 1, marginBottom: 1.5 }} />
-            <div style={{ height: 3, background: "#D8DEE5", borderRadius: 1, width: "70%" }} />
-          </div>
-          <div
-            style={{
-              height: 6,
-              width: 6,
-              borderRadius: 999,
-              background: i === 1 ? "#c0392b" : i === 4 ? "#e67e22" : i === 7 ? "#2980b9" : "#D8DEE5",
-              margin: "0 auto",
-            }}
-          />
-        </div>
-      ))}
     </div>
   );
 }
 
-function PortraitMiniPreview() {
+function PdfFileTypeBadge() {
   return (
-    <div style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-      <div
-        style={{
-          fontSize: 8,
-          fontWeight: 700,
-          color: PDF_BLUE,
-          borderBottom: `1px solid ${PDF_BLUE}`,
-          paddingBottom: 2,
-          marginBottom: 8,
-        }}
-      >
-        Missing Records / Gaps
-      </div>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} style={{ marginBottom: 7, display: "flex", gap: 5 }}>
-          <div style={{ fontSize: 6.5, color: "#666", fontWeight: 600 }}>{i + 1}.</div>
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                height: 4,
-                background: "#D8DEE5",
-                borderRadius: 1.5,
-                marginBottom: 2.5,
-              }}
-            />
-            <div
-              style={{
-                height: 4,
-                background: "#D8DEE5",
-                borderRadius: 1.5,
-                width: i % 2 === 0 ? "82%" : "60%",
-              }}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 16,
+        padding: "0 5px",
+        borderRadius: 3,
+        background: PDF_BLUE,
+        color: "#FFFFFF",
+        fontSize: 9,
+        fontWeight: 700,
+        letterSpacing: 0.4,
+      }}
+    >
+      PDF
+    </span>
   );
 }
 
-function PdfIcon() {
+function ArrowOpenIcon() {
   return (
-    <svg width="11" height="13" viewBox="0 0 16 18" fill="none" aria-hidden>
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
       <path
-        d="M3 1 L11 1 L14 4 L14 17 L3 17 Z"
-        stroke="#FFFFFF"
-        strokeWidth="1.4"
-        fill="rgba(255,255,255,0.12)"
+        d="M4 8 L8 4 M5 4 L8 4 L8 7"
+        stroke={PDF_BLUE}
+        strokeWidth="1.5"
+        strokeLinecap="round"
         strokeLinejoin="round"
+        fill="none"
       />
-      <path d="M11 1 L11 4 L14 4" stroke="#FFFFFF" strokeWidth="1.4" fill="none" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -1006,18 +901,29 @@ function PdfIcon() {
  *
  * Sized to fit comfortably within 1920×1080 with breathing room. */
 
-function ChronologyDetailedView({ opacity }: { opacity: number }) {
+function ChronologyDetailedView({ opacity, zoomK }: { opacity: number; zoomK: number }) {
+  /* Smooth growth from the card position (PDF_TARGET_X, PDF_TARGET_Y) into
+   * viewport center (960, 540) as zoomK animates 0 → 1. The view starts at
+   * scale 0.18 anchored on the card, then translates and scales up to fill
+   * its natural size at viewport center. Eliminates the abrupt "popup" feel. */
+  const centerX = 960;
+  const centerY = 540;
+  const x = PDF_TARGET_X + (centerX - PDF_TARGET_X) * zoomK;
+  const y = PDF_TARGET_Y + (centerY - PDF_TARGET_Y) * zoomK;
+  const scale = 0.18 + 0.82 * zoomK;
+
   return (
     <div
       style={{
         position: "absolute",
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        left: x,
+        top: y,
+        transform: `translate(-50%, -50%) scale(${scale})`,
+        transformOrigin: "center center",
         pointerEvents: "none",
         opacity,
         zIndex: 50,
+        willChange: "transform, opacity",
       }}
     >
       <div
