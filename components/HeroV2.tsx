@@ -108,11 +108,13 @@ const CursorSvg = (
   </svg>
 );
 
-const INTRO_SUBTITLE = "your law firm's personal assistant.";
+const INTRO_LEAD = "Delta is your law firm's personal assistant.";
+const INTRO_SUBHEAD = "That connects all your firm's tools together.";
+const HERO_SUBTITLE = "The personal assistant that connects all your firm's tools together, so you can manage all of them with a single sentence.";
 
 /* ─── Timing (ms) ───
    Three phases with AnimatePresence (mode="wait") crossfades between them:
-   1. Intro text  (Delta + INTRO_SUBTITLE)
+   1. Intro text  (INTRO_LEAD + INTRO_SUBHEAD)
    2. Anim 1      (2-col grid of integrations builds up)
    3. Anim 2      (typing → 3 execution cards fade in below + check sequence)
    After the exec sequence completes, the overlay dissolves directly into the hero page.
@@ -450,32 +452,31 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               <span
                 style={{
                   fontFamily: FONT,
-                  fontSize: "clamp(36px, 4.2vw, 60px)",
+                  fontSize: "clamp(56px, 6vw, 84px)",
                   fontWeight: 700,
                   color: DELTA_BLUE,
-                  lineHeight: 1.05,
-                  letterSpacing: "-0.035em",
+                  lineHeight: 0.95,
+                  letterSpacing: "-0.04em",
                   display: "block",
-                  marginLeft: "-0.02em",
-                  maxWidth: 540,
+                  marginLeft: "-0.03em",
                 }}
               >
-                Delta is your law firm&rsquo;s personal assistant.
+                Delta
               </span>
               <span
                 style={{
                   fontFamily: FONT,
-                  fontSize: "clamp(18px, 1.8vw, 24px)",
+                  fontSize: "clamp(16px, 1.3vw, 20px)",
                   fontWeight: 400,
                   color: SUBTITLE_BLUE,
-                  lineHeight: 1.4,
-                  letterSpacing: "-0.015em",
+                  lineHeight: 1.45,
+                  letterSpacing: "-0.01em",
                   display: "block",
-                  marginTop: 20,
-                  maxWidth: 480,
+                  marginTop: 18,
+                  maxWidth: 400,
                 }}
               >
-                That connects all your firm&rsquo;s tools together.
+                {HERO_SUBTITLE}
               </span>
             </motion.div>
 
@@ -862,31 +863,32 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                     transition={{ duration: 1, ease: EASE_OUT }}
                     style={{
                       fontFamily: FONT,
-                      fontSize: "clamp(80px, 13vw, 180px)",
+                      fontSize: "clamp(56px, 8vw, 120px)",
                       fontWeight: 700,
                       color: DELTA_BLUE,
-                      lineHeight: 0.9,
-                      letterSpacing: "-0.05em",
+                      lineHeight: 1.0,
+                      letterSpacing: "-0.045em",
                       display: "block",
-                      marginLeft: "-0.04em",
+                      marginLeft: "-0.03em",
+                      maxWidth: "16ch",
                     }}
                   >
-                    Delta
+                    {INTRO_LEAD}
                   </motion.span>
                   <div
                     style={{
-                      minHeight: "clamp(60px, 9vw, 130px)",
-                      marginTop: "clamp(12px, 1.5vw, 24px)",
+                      minHeight: "clamp(56px, 7vw, 100px)",
+                      marginTop: "clamp(16px, 2vw, 28px)",
                     }}
                   >
                     <span
                       style={{
                         fontFamily: FONT,
-                        fontSize: "clamp(36px, 5.5vw, 74px)",
+                        fontSize: "clamp(28px, 4vw, 56px)",
                         fontWeight: 400,
                         color: SUBTITLE_BLUE,
-                        lineHeight: 1.35,
-                        letterSpacing: "-0.03em",
+                        lineHeight: 1.3,
+                        letterSpacing: "-0.025em",
                         display: "block",
                         whiteSpace: "normal",
                         clipPath: "inset(0 100% 0 0)",
@@ -894,7 +896,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                         animation: "clipReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.6s forwards",
                       }}
                     >
-                      {INTRO_SUBTITLE}
+                      {INTRO_SUBHEAD}
                     </span>
                   </div>
                 </motion.div>
