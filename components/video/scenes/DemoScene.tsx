@@ -670,31 +670,31 @@ function TypingIndicator() {
 
 const PDF_BLUE = "#2B4C7E";
 const SAMPLE_CHRONOLOGY_ROWS: { date: string; provider: string; type: string; event: string; tag: "L" | "C" | "D" | "" }[] = [
-  { date: "03/14/2024", provider: "Northwest ER",   type: "ER",        event: "Initial ER visit, c/o chest pain. Tachycardia, BP 158/98.",                           tag: "L" },
-  { date: "03/14/2024", provider: "Dr. Patel",      type: "Office",    event: "EKG performed; results documented as 'non-specific'.",                                tag: "L" },
-  { date: "03/14/2024", provider: "Northwest ER",   type: "Lab",       event: "Troponin 0.04 (WNL). CBC and CMP unremarkable.",                                       tag: ""  },
-  { date: "03/14/2024", provider: "Dr. Patel",      type: "Note",      event: "No cardiac stress test ordered. F/u in 1 wk advised.",                                 tag: "L" },
-  { date: "03/14/2024", provider: "Northwest ER",   type: "Discharge", event: "Discharged home. Rx Atenolol 50mg PO daily.",                                          tag: ""  },
-  { date: "03/15/2024", provider: "Patient",        type: "Phone",     event: "Pt called Dr. Patel's office reporting continued chest discomfort.",                   tag: ""  },
-  { date: "03/18/2024", provider: "Dr. Patel",      type: "Phone",     event: "Phone consult; Dr. Patel reassured pt. No further workup ordered.",                    tag: "L" },
-  { date: "03/21/2024", provider: "Dr. Patel",      type: "Office",    event: "F/u visit. No cardiac referral made despite prior EKG findings.",                      tag: "L" },
-  { date: "03/21/2024", provider: "Dr. Patel",      type: "Rx",        event: "Atenolol increased to 100mg. No additional workup or imaging.",                        tag: "L" },
-  { date: "03/28/2024", provider: "Patient",        type: "Note",      event: "Family reports pt's chest pain worsening, intermittent SOB.",                          tag: ""  },
-  { date: "04/02/2024", provider: "Northwest ER",   type: "ER",        event: "Pt presents in cardiac distress. ST-elevation EKG, troponin 8.2.",                     tag: "C" },
-  { date: "04/02/2024", provider: "Northwest ER",   type: "Admit",     event: "Admitted for NSTEMI. Cath lab activated.",                                             tag: "C" },
-  { date: "04/02/2024", provider: "Dr. Reyes",      type: "Imaging",   event: "LHC: 3-vessel CAD; 95% LAD, 80% RCA, 75% LCX stenosis.",                               tag: "C" },
-  { date: "04/03/2024", provider: "Dr. Chen",      type: "Consult",    event: "CT surgery consult; urgent CABG x3 recommended.",                                      tag: "C" },
-  { date: "04/04/2024", provider: "Dr. Chen",      type: "Surgery",    event: "CABG x3 performed. Tolerated procedure well, no complications.",                       tag: "C" },
-  { date: "04/04/2024", provider: "Northwest OR",  type: "Pathology",  event: "Grafts: LIMA→LAD, SVG→RCA, SVG→LCX. Bypass times nominal.",                            tag: ""  },
-  { date: "04/05/2024", provider: "Northwest ICU", type: "Inpatient",  event: "Post-op day 1. Stable; weaning off pressors. Extubated.",                              tag: ""  },
-  { date: "04/06/2024", provider: "Northwest ICU", type: "Inpatient",  event: "Post-op day 2. Out of bed to chair. Tolerating PO diet.",                              tag: ""  },
-  { date: "04/08/2024", provider: "Northwest ICU", type: "Discharge",  event: "Discharged to step-down with cardiac rehab plan and Plavix Rx.",                       tag: ""  },
-  { date: "04/15/2024", provider: "Dr. Chen",      type: "Office",     event: "1-wk post-op f/u. Wound healing well. Pt c/o fatigue, mild dyspnea.",                  tag: ""  },
-  { date: "04/22/2024", provider: "Dr. Chen",      type: "Office",     event: "2-wk post-op f/u. Pt reports reduced exercise tolerance.",                             tag: "D" },
-  { date: "05/06/2024", provider: "Cardiac Rehab", type: "Therapy",    event: "Started phase II cardiac rehab, 3x/week.",                                             tag: "D" },
-  { date: "06/12/2024", provider: "Dr. Chen",      type: "Office",     event: "8-wk f/u. Stable. Persistent dyspnea on exertion noted.",                              tag: "D" },
-  { date: "09/04/2024", provider: "Dr. Williams",  type: "Consult",    event: "Cardiology consult for ongoing dyspnea. Echo ordered.",                                tag: "D" },
-  { date: "09/12/2024", provider: "Dr. Williams",  type: "Imaging",    event: "Echo: EF 35% (down from 55% pre-op). Mild mitral regurgitation.",                      tag: "D" },
+  { date: "03/14/2024", provider: "Northwest ER",   type: "ED Visit",  event: "Pt presents to ED at 14:47 c/o substernal chest pain x 3 hrs, rated 7/10, radiating to L arm and jaw, w/ associated diaphoresis. Vitals: BP 158/98, HR 112, RR 22, SpO2 96% RA, T 98.4°F. Triaged ESI Level 2. No prior cardiac hx documented.", tag: "L" },
+  { date: "03/14/2024", provider: "Dr. Patel",      type: "EKG",       event: "12-lead EKG performed at 15:22, interpreted by Dr. Patel: 'Sinus tachycardia at 108. Non-specific T-wave abnormalities in inferior leads (II, III, aVF). Cannot exclude ischemia.' Clinical note documents only 'EKG non-specific.'", tag: "L" },
+  { date: "03/14/2024", provider: "Northwest Lab",  type: "Labs",      event: "Initial troponin I 0.04 ng/mL (ref <0.04). Serial troponins NOT ordered. CBC: WBC 9.2, Hgb 14.1, Plt 234. CMP within normal limits. BNP, D-dimer, lipid panel not drawn at this encounter.",                                tag: ""  },
+  { date: "03/14/2024", provider: "Dr. Patel",      type: "Disposition", event: "Per Dr. Patel's H&P: 'Low risk for ACS given single neg troponin and non-specific EKG. Pt likely musculoskeletal vs anxiety. D/c home, f/u with PCP in 1 week.' No stress test, echo, CTA, or cardiology consult ordered.",   tag: "L" },
+  { date: "03/14/2024", provider: "Northwest ER",   type: "Discharge", event: "Discharged at 19:14. Rx: Atenolol 50mg PO daily. D/c instructions: 'Return to ED for worsening pain or new symptoms.' No specialist referral documented. Pt and spouse signed instructions.",                                  tag: ""  },
+  { date: "03/15/2024", provider: "Patient",        type: "Phone",     event: "Pt's spouse called Dr. Patel's office at 09:22 reporting 'continued chest tightness overnight, brief episode of L-arm numbness ~04:30.' MA documented message; returned by Dr. Patel same day per phone log.",                   tag: ""  },
+  { date: "03/18/2024", provider: "Dr. Patel",      type: "Phone",     event: "Phone consult by Dr. Patel: pt reports intermittent chest pressure, exertional SOB climbing stairs at home. Provider response: 'Continue current beta blocker, return PRN.' No additional workup ordered, no in-person visit.",  tag: "L" },
+  { date: "03/21/2024", provider: "Dr. Patel",      type: "Office",    event: "F/u office visit. Pt c/o continued chest discomfort and dyspnea on exertion (1 flight stairs). Vitals: BP 152/94, HR 88. Dr. Patel attributes symptoms to anxiety; no repeat EKG, no referral. Note: 'Reassurance provided.'",   tag: "L" },
+  { date: "03/21/2024", provider: "Dr. Patel",      type: "Rx",        event: "Atenolol increased to 100mg PO daily. Lorazepam 0.5mg PRN added 'for situational anxiety.' Plan documents: 'No further cardiac workup indicated at this time.' No echocardiogram, stress test, or referral.",                  tag: "L" },
+  { date: "03/28/2024", provider: "Patient",        type: "Note",      event: "Family report (per 04/02 ED intake history): pt c/o progressively worsening chest pain throughout preceding week, decreased appetite, orthopnea (sleeping in recliner x 4 nights), bilateral lower extremity swelling.",         tag: ""  },
+  { date: "04/02/2024", provider: "Northwest ER",   type: "ED Visit",  event: "Pt arrives via EMS at 06:42 in acute distress. C/o crushing chest pain, diaphoresis, severe SOB. Vitals: BP 96/58, HR 138, RR 28, SpO2 89% RA. EKG: ST-elevation >3mm in leads II, III, aVF. Cath lab activated.",            tag: "C" },
+  { date: "04/02/2024", provider: "Northwest Lab",  type: "Labs",      event: "Initial troponin I 8.2 ng/mL (ref <0.04). Peak troponin 14.6 ng/mL at 04hr. CK-MB 124 ng/mL. BNP 982 pg/mL. Lactate 3.8 mmol/L. Hgb 12.2 (down from 14.1 on 03/14). Diagnosis: acute STEMI, inferior wall.",                  tag: "C" },
+  { date: "04/02/2024", provider: "Dr. Reyes",      type: "Cath",      event: "Left heart catheterization performed by Dr. Reyes (interventional cardiology) at 07:18. Findings: 95% occlusive lesion proximal LAD, 80% mid RCA, 75% proximal LCx. SYNTAX score 28. Three-vessel disease. CABG recommended.", tag: "C" },
+  { date: "04/03/2024", provider: "Dr. Chen",       type: "Consult",   event: "CT surgery consult by Dr. Chen at 14:30. Note: 'Pt is candidate for urgent CABG x3 given proximal LAD lesion and 3VD. Risk-benefit reviewed with pt and spouse — including 1.8% perioperative mortality. Surgery 04/04.'",     tag: "C" },
+  { date: "04/04/2024", provider: "Dr. Chen",       type: "Surgery",   event: "CABG x3 performed by Dr. Chen, 07:45–12:18. CPB time 138 min, X-clamp 78 min. Conduits: LIMA→LAD, SVG→PDA (RCA distribution), SVG→OM1. EBL 350cc. Pt extubated POD#1 without perioperative MI.",                                tag: "C" },
+  { date: "04/04/2024", provider: "Northwest Path", type: "Pathology", event: "Surgical specimens (native LAD plaque endarterectomy): atherosclerotic plaque with >90% luminal narrowing, ulcerated cap morphology with overlying organizing thrombus consistent w/ recent rupture event.",                  tag: ""  },
+  { date: "04/05/2024", provider: "Northwest ICU",  type: "Post-Op",   event: "POD#1. Hemodynamics stable, off all pressors. Extubated at 04:15 without complication. Chest tubes draining serous fluid, output 145cc/8hr. Pain controlled with PCA morphine. CXR clear, no pneumothorax.",                  tag: ""  },
+  { date: "04/08/2024", provider: "Northwest CTU",  type: "Discharge", event: "Discharged POD#4 to home w/ visiting nurse + cardiac rehab referral. Discharge meds: ASA 81mg, clopidogrel 75mg, atorvastatin 80mg, metoprolol 25mg BID, lisinopril 5mg, furosemide 20mg PRN.",                                tag: ""  },
+  { date: "04/15/2024", provider: "Dr. Chen",       type: "Office",    event: "1-wk post-op visit. Sternotomy clean and intact, no dehiscence. Pt c/o fatigue, mild dyspnea on exertion. Echo not performed at this visit. NYHA Class II. Continued current discharge regimen.",                              tag: ""  },
+  { date: "04/22/2024", provider: "Dr. Chen",       type: "Office",    event: "2-wk post-op f/u. Pt unable to walk >1 city block w/o stopping due to dyspnea. Subjective fatigue 'much worse than pre-surgery.' Functional status declined to NYHA Class III. Recommended cardiology referral.",              tag: "D" },
+  { date: "05/06/2024", provider: "Cardiac Rehab",  type: "Therapy",   event: "Initiated phase II cardiac rehab, 3x/week. Initial METs assessment: 4.2 (vs expected post-CABG 6–8). Pt requires multiple rest periods within 30-min sessions. Rehab nurse documents 'recovery slower than typical.'",         tag: "D" },
+  { date: "06/12/2024", provider: "Dr. Chen",       type: "Office",    event: "8-wk f/u. Persistent exertional dyspnea. CXR: stable cardiomegaly. Pt unable to return to baseline activity (gardening, golf). Referred to cardiology (Dr. Williams) for evaluation of post-CABG functional decline.",          tag: "D" },
+  { date: "09/04/2024", provider: "Dr. Williams",   type: "Consult",   event: "Cardiology new patient consult by Dr. Williams. C/c: 'persistent SOB and fatigue 5 mo post CABG.' Exam: bibasilar crackles, JVP 8cm, trace pedal edema. TTE ordered for assessment of LV function.",                            tag: "D" },
+  { date: "09/12/2024", provider: "Dr. Williams",   type: "Imaging",   event: "TTE (technical adequacy: good): EF 35% (down from documented 55% on 03/14/2024 pre-event chart record). Moderate global hypokinesis. Mild-to-moderate MR (vena contracta 0.4cm). Findings consistent w/ ischemic cardiomyopathy.", tag: "D" },
+  { date: "10/02/2024", provider: "Dr. Williams",   type: "Office",    event: "F/u with TTE results. Dr. Williams documents: 'Patient has developed ischemic cardiomyopathy as a likely consequence of delayed diagnosis and treatment of underlying coronary disease in March 2024.' Added carvedilol, spironolactone.", tag: "D" },
 ];
 
 function ChronologyPDFPreview() {
@@ -1147,50 +1147,52 @@ function DetailedCoverPage() {
 }
 
 function DetailedTablePage() {
-  /* Landscape orientation: wider than tall. Same height as cover (700) so the
-   * pair sits nicely side-by-side. */
+  /* Landscape orientation: wider than tall. Sized to display dense, realistic
+   * chronology entries with thorough clinical descriptions matching the format
+   * of a real medical records production. */
   return (
     <div
       style={{
-        width: 760,
-        height: 700,
+        width: 880,
+        height: 720,
         background: "#FFFFFF",
         border: "1px solid #D1D5DB",
         borderRadius: 6,
         boxShadow: "0 32px 80px rgba(0,0,0,0.22), 0 8px 24px rgba(0,0,0,0.10)",
-        padding: "30px 32px 24px 32px",
+        padding: "24px 28px 20px 28px",
         display: "flex",
         flexDirection: "column",
       }}
     >
       <div
         style={{
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: 700,
           color: PDF_BLUE,
           borderBottom: `2px solid ${PDF_BLUE}`,
           paddingBottom: 4,
-          marginBottom: 14,
+          marginBottom: 10,
         }}
       >
-        Fact Chronology (47 Entries)
+        Fact Chronology (47 Entries) — Page 4 of 12
       </div>
       <table
         style={{
           width: "100%",
           borderCollapse: "collapse",
-          fontSize: 8.5,
-          lineHeight: 1.3,
+          fontSize: 7.5,
+          lineHeight: 1.32,
+          tableLayout: "fixed",
         }}
       >
         <thead>
           <tr>
-            <th style={{ ...thStyle, width: "10%" }}>Date</th>
-            <th style={{ ...thStyle, width: "13%" }}>Provider</th>
-            <th style={{ ...thStyle, width: "9%" }}>Type</th>
-            <th style={{ ...thStyle, width: "56%", textAlign: "left" }}>Medical Events</th>
-            <th style={{ ...thStyle, width: "5%" }}>Tag</th>
-            <th style={{ ...thStyle, width: "7%" }}>Page</th>
+            <th style={{ ...thStyle, width: "8%" }}>Date</th>
+            <th style={{ ...thStyle, width: "10%" }}>Provider</th>
+            <th style={{ ...thStyle, width: "8%" }}>Type</th>
+            <th style={{ ...thStyle, width: "63%", textAlign: "left" }}>Medical Events</th>
+            <th style={{ ...thStyle, width: "4%" }}>Tag</th>
+            <th style={{ ...thStyle, width: "7%" }}>Page Ref</th>
           </tr>
         </thead>
         <tbody>
@@ -1199,11 +1201,11 @@ function DetailedTablePage() {
               <td style={tdStyle}>{row.date}</td>
               <td style={tdStyle}>{row.provider}</td>
               <td style={tdStyle}>{row.type}</td>
-              <td style={{ ...tdStyle, textAlign: "left" }}>{row.event}</td>
+              <td style={{ ...tdStyle, textAlign: "left", whiteSpace: "normal" }}>{row.event}</td>
               <td style={{ ...tdStyle, textAlign: "center" }}>
                 <span style={tagStyleFor(row.tag)}>{row.tag || "—"}</span>
               </td>
-              <td style={tdStyle}>{i + 4}</td>
+              <td style={tdStyle}>{`p.${(i + 4) * 47 + 12}`}</td>
             </tr>
           ))}
         </tbody>
@@ -1215,11 +1217,11 @@ function DetailedTablePage() {
         style={{
           display: "flex",
           justifyContent: "space-between",
-          fontSize: 10,
+          fontSize: 9,
           color: "#999",
           borderTop: "1px solid #EEE",
-          paddingTop: 8,
-          marginTop: 12,
+          paddingTop: 6,
+          marginTop: 10,
         }}
       >
         <span>
@@ -1238,18 +1240,19 @@ const thStyle: React.CSSProperties = {
   color: "#FFFFFF",
   fontWeight: 700,
   textAlign: "center",
-  padding: "5px 5px",
+  padding: "4px 4px",
   border: `0.5px solid ${PDF_BLUE}`,
-  fontSize: 9,
+  fontSize: 8,
   letterSpacing: 0.3,
 };
 
 const tdStyle: React.CSSProperties = {
-  padding: "3.5px 5px",
+  padding: "3px 5px",
   border: "0.5px solid #ccc",
   verticalAlign: "top",
   textAlign: "center",
   color: "#222",
+  wordBreak: "normal",
 };
 
 function tagStyleFor(tag: string): React.CSSProperties {
