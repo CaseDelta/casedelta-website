@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CaseDelta — One Assistant Across Your Firm's Stack";
+export const alt = "CaseDelta — The Personal Assistant That Connects All Your Firm's Tools";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,8 +43,8 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          The personal assistant that runs across your firm&apos;s stack. Tell
-          Delta what you need. One sentence. Many tools.
+          The personal assistant that connects all your firm&apos;s tools
+          together, so you can manage all of them with a single sentence.
         </div>
         <div
           style={{

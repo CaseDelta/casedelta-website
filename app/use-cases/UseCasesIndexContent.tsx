@@ -84,7 +84,7 @@ export function UseCasesIndexContent() {
                 display: "block",
               }}
             >
-              One assistant. Every tool your firm uses.
+              The personal assistant that connects all your firm&rsquo;s tools.
             </span>
             {" "}
             <span
@@ -99,7 +99,7 @@ export function UseCasesIndexContent() {
                 marginTop: "clamp(12px, 1.5vw, 20px)",
               }}
             >
-              Tell Delta what you need. Hours of work, done in one go.
+              Manage all of them with a single sentence.
             </span>
           </motion.h1>
           <motion.p

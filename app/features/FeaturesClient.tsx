@@ -475,12 +475,14 @@ export default function FeaturesClient() {
               lineHeight: 1.6,
               letterSpacing: "-0.01em",
               marginTop: "clamp(28px, 3vw, 44px)",
-              maxWidth: 580,
+              maxWidth: 620,
             }}
           >
-            Delta connects across Clio, Microsoft Word, Gmail or Outlook,
-            Google Drive, and your calendar. Tell it what you need in one
-            sentence. Many tools, hours of work, done in one go.
+            CaseDelta brings every tool in your firm&rsquo;s workflow into
+            one conversation: practice management in Clio, drafts in Word,
+            email in Gmail or Outlook, files in Drive, scheduling in
+            Calendar. Tell Delta what you need. Many tools, hours of work,
+            done in one go.
           </motion.p>
 
           <motion.div

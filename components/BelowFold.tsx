@@ -191,7 +191,7 @@ export function BelowFold() {
               letterSpacing: "-0.035em",
               margin: 0,
             }}>
-              An associate that analyzes thousands of
+              A personal assistant that analyzes thousands of
             </h2>
 
             <div style={{
@@ -388,11 +388,11 @@ export function BelowFold() {
             color: "#0A0A0A",
             lineHeight: 1.1,
             letterSpacing: "-0.035em",
-            maxWidth: 780,
+            maxWidth: 820,
           }}>
-            Many tools. Hours of work.{" "}
+            From a demand letter to three hundred client updates.{" "}
             <span style={{ color: ACCENT }}>
-              Done in one go.
+              In a single morning.
             </span>
           </motion.h2>
           <motion.p {...fade(0.1, reduced)} style={{
@@ -402,10 +402,10 @@ export function BelowFold() {
             color: "#999",
             lineHeight: 1.5,
             letterSpacing: "-0.01em",
-            maxWidth: 520,
+            maxWidth: 580,
             marginTop: 16,
           }}>
-            Tell Delta what you need in one sentence. It pulls records from Drive, drafts in Word, sends from your inbox, and updates Clio. The legal work and the administrative work happen in the same conversation.
+            Draft a demand letter for a personal injury case. Send status updates to three hundred mass tort plaintiffs. Build a chronology for a medical malpractice claim. Run unpaid overtime calculations for a wage and hour class. You make the calls. Delta makes them happen.
           </motion.p>
         </div>
       </section>
