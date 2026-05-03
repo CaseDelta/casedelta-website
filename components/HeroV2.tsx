@@ -441,13 +441,28 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
         <div className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-8 lg:gap-12 items-center">
           {/* ── Left column: H1 + CTA + social proof ── */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            {/* ── H1: Delta + tagline ── */}
+            {/* ── H1: dream eyebrow + Delta + tagline ── */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
               style={{ textAlign: "left" }}
             >
+              <span
+                style={{
+                  fontFamily: FONT,
+                  fontSize: "clamp(20px, 2vw, 28px)",
+                  fontWeight: 600,
+                  color: "#0A0A0A",
+                  lineHeight: 1.3,
+                  letterSpacing: "-0.02em",
+                  display: "block",
+                  marginBottom: 20,
+                  maxWidth: 460,
+                }}
+              >
+                Win more cases. Spend less time getting there.
+              </span>
               <span
                 style={{
                   fontFamily: FONT,
