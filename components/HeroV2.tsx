@@ -451,31 +451,32 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               <span
                 style={{
                   fontFamily: FONT,
-                  fontSize: "clamp(56px, 6vw, 84px)",
+                  fontSize: "clamp(36px, 4.2vw, 60px)",
                   fontWeight: 700,
                   color: DELTA_BLUE,
-                  lineHeight: 0.95,
-                  letterSpacing: "-0.04em",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.035em",
                   display: "block",
-                  marginLeft: "-0.03em",
+                  marginLeft: "-0.02em",
+                  maxWidth: 540,
                 }}
               >
-                Delta
+                Delta is your law firm&rsquo;s personal assistant.
               </span>
               <span
                 style={{
                   fontFamily: FONT,
-                  fontSize: "clamp(16px, 1.3vw, 20px)",
+                  fontSize: "clamp(18px, 1.8vw, 24px)",
                   fontWeight: 400,
                   color: SUBTITLE_BLUE,
-                  lineHeight: 1.45,
-                  letterSpacing: "-0.01em",
+                  lineHeight: 1.4,
+                  letterSpacing: "-0.015em",
                   display: "block",
-                  marginTop: 18,
-                  maxWidth: 400,
+                  marginTop: 20,
+                  maxWidth: 480,
                 }}
               >
-                {HERO_SUBTITLE}
+                That connects all your firm&rsquo;s tools together.
               </span>
             </motion.div>
 
