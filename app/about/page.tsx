@@ -3,16 +3,16 @@ import { PersonSchema, BreadcrumbSchema } from "@/components/JsonLd";
 import { AboutContent } from "./AboutContent";
 
 export const metadata: Metadata = {
-  title: "About CaseDelta — The AI Associate That Learns Your Firm",
+  title: "About CaseDelta — The Personal Assistant Across Your Firm's Stack",
   description:
-    "CaseDelta was built on one insight: the most valuable knowledge in a law firm exists only in people's heads, and people leave. Delta changes that.",
+    "Plaintiff firms run on Clio, Word, Gmail or Outlook, Drive, and Calendar. CaseDelta is the personal assistant across all of them. The attorney decides. Delta does the work.",
   alternates: {
     canonical: "https://casedelta.com/about",
   },
   openGraph: {
-    title: "About CaseDelta — The AI Associate That Learns Your Firm",
+    title: "About CaseDelta — The Personal Assistant Across Your Firm's Stack",
     description:
-      "CaseDelta was built on one insight: the most valuable knowledge in a law firm exists only in people's heads, and people leave. Delta changes that.",
+      "Plaintiff firms run on Clio, Word, Gmail or Outlook, Drive, and Calendar. CaseDelta is the personal assistant across all of them. The attorney decides. Delta does the work.",
     url: "https://casedelta.com/about",
     type: "website",
   },

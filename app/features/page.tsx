@@ -3,14 +3,14 @@ import FeaturesClient from "./FeaturesClient";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "What Delta Does — AI That Learns Your Law Firm",
+  title: "What CaseDelta Does — One Assistant Across Your Firm's Stack",
   description:
-    "Delta connects to your Clio, learns your cases, your judges, and your opposing counsel — then handles the cognitive work eating your billable time. See what Delta does.",
+    "Delta connects across Clio, Word, Gmail or Outlook, Drive, and Calendar. Tell it what you need in one sentence. Hours of work across many tools, done in one go.",
   alternates: { canonical: "https://casedelta.com/features" },
   openGraph: {
-    title: "What Delta Does — AI That Learns Your Law Firm",
+    title: "What CaseDelta Does — One Assistant Across Your Firm's Stack",
     description:
-      "Delta connects to your Clio, learns your cases, your judges, and your opposing counsel — then handles the cognitive work eating your billable time.",
+      "Delta connects across Clio, Word, Gmail or Outlook, Drive, and Calendar. Tell it what you need in one sentence. Hours of work across many tools, done in one go.",
     url: "https://casedelta.com/features",
   },
 };
@@ -27,24 +27,29 @@ export default function FeaturesPage() {
       <FAQSchema
         faqs={[
           {
-            question: "How does Delta learn my firm?",
-            answer: "Delta connects to your Clio, documents, and email with its own credentials. From day one, it starts learning your cases, clients, document types, and team workflows. After a week, it knows your caseload. After a month, it knows your drafting style and client patterns. After six months, it knows your firm better than a new associate would after 18 months.",
+            question: "Which tools does Delta connect to?",
+            answer:
+              "Clio, Microsoft Word, Gmail, Outlook, Google Drive, Google Calendar, DocuSign, and Westlaw. Delta works inside the stack your firm already uses, rather than asking the firm to migrate to a new platform.",
           },
           {
-            question: "What does Delta do with what it learns?",
-            answer: "Delta works proactively. Morning briefings across all active cases. Drafts prepared in your style. Anomalies flagged before you ask. When a client submits documents, Delta analyzes them against learned patterns, identifies what\u2019s missing, and drafts follow-up \u2014 all before you open the file.",
+            question: "How does Delta run work across multiple tools at once?",
+            answer:
+              "Tell Delta what you need in one sentence. It pulls records from Drive, drafts in Word, sends from your inbox, and updates Clio. The legal work and the administrative work happen in one conversation, instead of being split across five apps.",
           },
           {
-            question: "Does Delta work with my existing tools?",
-            answer: "Delta integrates with Clio, Google Drive, Gmail, and more. It connects with its own credentials \u2014 the same way your bank connects. No data migration needed. Delta learns from your existing systems without disrupting your workflow.",
+            question: "Does Delta replace Clio or our case management system?",
+            answer:
+              "No. Delta connects to Clio and works alongside it. Cases, contacts, and time entries continue to live in Clio. Delta reads from and writes to Clio so your case management stays the source of truth.",
           },
           {
-            question: "What is the Intelligence Network?",
-            answer: "Every firm on CaseDelta contributes anonymized data to a shared intelligence layer. When you draw a judge you\u2019ve never seen, Delta already has data from firms who have \u2014 MSJ grant rates, brief preferences, opposing counsel patterns. Like Waze for law: every firm contributes by practicing, every firm benefits from the aggregate.",
+            question: "Where does our client data go?",
+            answer:
+              "Nowhere outside CaseDelta. We run on a private enterprise deployment. Your firm's data never touches a third-party AI provider. No shared models, no training on your files. Enterprise-grade security, sized to your firm.",
           },
           {
-            question: "Can I see what Delta has learned?",
-            answer: "Yes. The \u2018What Delta Knows\u2019 page shows exactly what Delta has learned about your firm \u2014 practice areas, judge notes, opposing counsel patterns, client behavior, drafting preferences. It\u2019s visible, editable, and updated automatically as Delta learns.",
+            question: "What does the morning briefing actually do?",
+            answer:
+              "Once a day, Delta produces a briefing built across Clio, your inbox, and your calendar: cases needing attention today, deadlines this week, opposing counsel and adjusters who owe responses, and anomalies surfaced overnight. The only proactive feature on Delta, by design.",
           },
         ]}
       />

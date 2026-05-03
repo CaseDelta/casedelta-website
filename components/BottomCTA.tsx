@@ -10,111 +10,121 @@ const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
 const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 
 interface BottomCTAProps {
-  quote: string;
-  attribution: string;
-  attributionDetail: string;
   ctaHeading: string;
   ctaSubheading: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  quote?: string;
+  attribution?: string;
+  attributionDetail?: string;
 }
 
 export function BottomCTA({
+  ctaHeading,
+  ctaSubheading,
+  ctaLabel = "Book a demo",
+  ctaHref = "/demo",
   quote,
   attribution,
   attributionDetail,
-  ctaHeading,
-  ctaSubheading,
 }: BottomCTAProps) {
+  const showQuote = !!quote && !!attribution;
   const initials = attribution
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+    ? attribution
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "";
 
   return (
     <>
-      {/* Social proof */}
-      <section
-        style={{
-          borderTop: `1px solid ${BORDER}`,
-          backgroundColor: "#FFFFFF",
-        }}
-      >
-        <div
+      {showQuote && (
+        <section
           style={{
-            maxWidth: 800,
-            margin: "0 auto",
-            padding: "clamp(64px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-            textAlign: "center",
+            borderTop: `1px solid ${BORDER}`,
+            backgroundColor: "#FFFFFF",
           }}
         >
-          <p
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(18px, 1.8vw, 24px)",
-              fontWeight: 400,
-              color: "#555",
-              lineHeight: 1.6,
-              letterSpacing: "-0.01em",
-              marginBottom: 24,
-            }}
-          >
-            &ldquo;{quote}&rdquo;
-          </p>
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 12,
+              maxWidth: 800,
+              margin: "0 auto",
+              padding: "clamp(64px, 8vw, 100px) clamp(24px, 4vw, 48px)",
+              textAlign: "center",
             }}
           >
+            <p
+              style={{
+                fontFamily: FONT,
+                fontSize: "clamp(18px, 1.8vw, 24px)",
+                fontWeight: 400,
+                color: "#555",
+                lineHeight: 1.6,
+                letterSpacing: "-0.01em",
+                marginBottom: 24,
+              }}
+            >
+              &ldquo;{quote}&rdquo;
+            </p>
             <div
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                backgroundColor: "#E8E8E8",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                gap: 12,
               }}
             >
-              <span
-                style={{
-                  fontFamily: FONT,
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: "#999",
-                }}
-              >
-                {initials}
-              </span>
-            </div>
-            <div style={{ textAlign: "left" }}>
               <div
                 style={{
-                  fontFamily: FONT,
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: "#333",
+                  width: 36,
+                  height: 36,
+                  borderRadius: "50%",
+                  backgroundColor: "#E8E8E8",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {attribution}
+                <span
+                  style={{
+                    fontFamily: FONT,
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: "#999",
+                  }}
+                >
+                  {initials}
+                </span>
               </div>
-              <div
-                style={{
-                  fontFamily: FONT,
-                  fontSize: 12,
-                  color: "#999",
-                }}
-              >
-                {attributionDetail}
+              <div style={{ textAlign: "left" }}>
+                <div
+                  style={{
+                    fontFamily: FONT,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: "#333",
+                  }}
+                >
+                  {attribution}
+                </div>
+                {attributionDetail && (
+                  <div
+                    style={{
+                      fontFamily: FONT,
+                      fontSize: 12,
+                      color: "#999",
+                    }}
+                  >
+                    {attributionDetail}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA */}
       <section
@@ -163,7 +173,7 @@ export function BottomCTA({
           </p>
 
           <motion.a
-            href="https://app.casedelta.com/signup"
+            href={ctaHref}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -188,7 +198,7 @@ export function BottomCTA({
             whileTap={{ y: 0, scale: 0.97 }}
             transition={springBounce}
           >
-            Sign Up — Free $25 Credit
+            {ctaLabel}
           </motion.a>
         </div>
       </section>

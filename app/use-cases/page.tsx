@@ -5,16 +5,16 @@ import { UseCasesIndexContent } from "./UseCasesIndexContent";
 /* ─── Metadata ─── */
 
 export const metadata: Metadata = {
-  title: "Use Cases — How Delta Learns Your Practice Area | CaseDelta",
+  title: "Use Cases — One Assistant Across Your Firm's Stack | CaseDelta",
   description:
-    "See how CaseDelta's AI associate Delta learns the patterns, judges, opposing counsel, and institutional knowledge specific to your practice area. Commercial litigation, employment law, insurance defense, medical malpractice.",
+    "How CaseDelta runs across the tools plaintiff firms already use. Personal injury, medical malpractice, employment, and mass tort workflows in one conversation.",
   alternates: {
     canonical: "https://casedelta.com/use-cases",
   },
   openGraph: {
-    title: "Use Cases — How Delta Learns Your Practice Area | CaseDelta",
+    title: "Use Cases — One Assistant Across Your Firm's Stack | CaseDelta",
     description:
-      "See how CaseDelta's AI associate Delta learns the patterns, judges, opposing counsel, and institutional knowledge specific to your practice area.",
+      "How CaseDelta runs across the tools plaintiff firms already use. Personal injury, medical malpractice, employment, and mass tort workflows in one conversation.",
     url: "https://casedelta.com/use-cases",
     siteName: "CaseDelta",
     type: "website",

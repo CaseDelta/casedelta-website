@@ -14,7 +14,7 @@ export default function TermsClient() {
         <p>
           By using CaseDelta, you agree to these Terms and our{" "}
           <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>.
-          CaseDelta provides Delta, an AI associate that learns how your firm works &mdash; connecting to your existing tools, analyzing your documents, and building institutional knowledge that compounds over time.
+          CaseDelta provides Delta, a personal assistant that connects to the tools your firm already uses (such as Clio, Microsoft Word, Gmail, Outlook, Google Drive, and Calendar) and runs legal and administrative work across them at the firm&rsquo;s direction.
         </p>
         <p style={{ marginTop: 12 }}>
           <strong>Delta is a productivity tool, not a lawyer.</strong> CaseDelta does not provide legal advice and does not create an attorney-client relationship between CaseDelta and you or your clients. Delta generates analyses, chronologies, and reports to assist your professional judgment. You remain fully responsible for all legal work, professional obligations, and the accuracy of any work product you deliver to clients or courts.

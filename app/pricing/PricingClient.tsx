@@ -16,23 +16,23 @@ const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 const PRICING_FAQS = [
   {
     question: "How much does CaseDelta cost?",
-    answer: "CaseDelta offers two tracks. Self-serve starts free with $50 in credits \u2014 pay only for what you use. Sales-led firms get flat monthly pricing: $799/month (5-10 attorneys), $1,499/month (10-25 attorneys), or $2,499/month (25-50 attorneys). No per-seat fees. One price for the whole firm.",
+    answer: "CaseDelta offers two tracks. Self-serve starts with credits and usage-based pricing. Sales-led firms get flat monthly pricing: $799/month (5-10 attorneys), $1,499/month (10-25 attorneys), or $2,499/month (25-50 attorneys). No per-seat fees. One price for the whole firm.",
   },
   {
-    question: "Is there a free trial?",
-    answer: "Yes. Every firm starts with $50 in free credits \u2014 no credit card required. Delta begins learning your jurisdiction immediately. You\u2019ll see what Delta knows about your courts, judges, and local rules before you connect a single document.",
-  },
-  {
-    question: "Why flat pricing instead of per-seat?",
-    answer: "Per-seat pricing punishes firms for giving their team access to AI. We want every attorney and paralegal using Delta \u2014 the more people use it, the faster it learns your firm. Flat pricing means the whole firm benefits without budgeting per head.",
+    question: "Why flat firm pricing instead of per-seat?",
+    answer: "Per-seat pricing creates friction every time the firm adds a paralegal or an associate. We want every person at the firm using Delta. Flat pricing means the whole firm gets the assistant without budgeting per head.",
   },
   {
     question: "How does CaseDelta compare to hiring a paralegal?",
-    answer: "A paralegal costs $50,000-70,000 per year fully loaded \u2014 and when they leave, everything they\u2019ve learned walks out the door. Delta costs $6,000-18,000 per year, handles the cognitive work a paralegal would, and everything it learns stays permanently.",
+    answer: "Delta is not a substitute for headcount. It is the personal assistant that runs work across your firm's stack so the team you have can operate at the scope of a much larger firm. The right comparison is workflow throughput, not hourly cost.",
   },
   {
-    question: "Can I cancel anytime?",
-    answer: "Yes, with no cancellation fees. But keep in mind: when you cancel, you lose everything Delta has learned about your firm \u2014 your judges, your opposing counsel, your preferences, your institutional memory. That knowledge doesn\u2019t transfer.",
+    question: "What about volume discounts?",
+    answer: "Mass tort and class firms with high plaintiff counts have different needs than a five-attorney PI shop. We work out pricing on the engagement, not on a price list. Talk to us.",
+  },
+  {
+    question: "Can we cancel anytime?",
+    answer: "Yes, with no cancellation fees. CaseDelta runs on a private enterprise deployment. Your data stays yours, on or off the platform.",
   },
 ];
 
@@ -233,7 +233,7 @@ function PricingRates() {
                 marginTop: 24,
                 lineHeight: 1.5,
               }}>
-                Start with $25 in free credits. Pay as you go after that.
+                Pay for the work Delta runs across your stack. No per-seat fees.
               </p>
             </>
           ) : (
@@ -332,18 +332,18 @@ export default function PricingClient() {
                 marginBottom: 32,
               }}
             >
-              Free $25 credit.
+              One price. The whole firm.
               <br />
-              <span style={{ color: "#888" }}>No subscription.</span>
+              <span style={{ color: "#888" }}>No per-seat fees.</span>
               <br />
-              <span style={{ color: "#888" }}>No seat fees.</span>
+              <span style={{ color: "#888" }}>No platform migration.</span>
               <br />
-              <span style={{ color: "#888" }}>Pay for what you use.</span>
+              <span style={{ color: "#888" }}>One assistant across your stack.</span>
             </h1>
 
             <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
               <motion.a
-                href="https://app.casedelta.com/signup"
+                href="/demo"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -364,7 +364,7 @@ export default function PricingClient() {
                 whileTap={{ y: 0, scale: 0.97 }}
                 transition={springBounce}
               >
-                Sign Up — Free $25 Credit
+                Book a demo
               </motion.a>
 
               <a
@@ -397,11 +397,10 @@ export default function PricingClient() {
       <FAQAccordion faqs={PRICING_FAQS} />
 
       <BottomCTA
-        quote="A paralegal is $50-70K a year and takes everything with them when they leave. Delta costs a fraction of that and everything it learns stays permanently."
-        attribution="Senior Partner"
-        attributionDetail="Insurance defense firm, Overland Park"
-        ctaHeading="Try Delta with $25 in free credits."
-        ctaSubheading="No subscription. No seat fees. Pay for what you use."
+        ctaHeading="See Delta inside your firm&rsquo;s stack."
+        ctaSubheading="Twenty-minute live demo. We connect Delta to a sandbox of your stack and run a real workflow end to end."
+        ctaLabel="Book a demo"
+        ctaHref="/demo"
       />
       <FooterV2 />
     </main>

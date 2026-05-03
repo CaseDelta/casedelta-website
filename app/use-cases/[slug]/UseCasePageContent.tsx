@@ -62,7 +62,7 @@ function DeltaKnowsMockup({
           />
         </div>
         <span style={{ fontSize: 13, fontWeight: 600, color: "#1A1A1A" }}>
-          What Delta Knows
+          What Delta runs across the firm
         </span>
         <span style={{ fontSize: 11, color: "#999", marginLeft: "auto" }}>
           {firmName}
@@ -445,7 +445,7 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
               marginBottom: 12,
             }}
           >
-            How Delta learns your{" "}
+            How Delta runs your{" "}
             <span style={{ color: DELTA_BLUE }}>
               {useCase.title.toLowerCase()}
             </span>{" "}
@@ -467,8 +467,9 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
               marginBottom: "clamp(48px, 6vw, 80px)",
             }}
           >
-            Delta doesn&apos;t just store information. It learns patterns, builds
-            intelligence, and surfaces insights that compound over time.
+            Delta connects across the tools your firm already uses and runs the
+            legal and administrative work in one conversation. Many tools, hours
+            of work, done in one go.
           </motion.p>
 
           <div
@@ -593,7 +594,7 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
                   marginBottom: 16,
                 }}
               >
-                This is what Delta knows after 6 months
+                This is what Delta runs across the firm
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
@@ -610,10 +611,9 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
                   margin: 0,
                 }}
               >
-                Every case makes Delta smarter. Every judge appearance deepens its
-                knowledge. Every opposing counsel encounter sharpens its intelligence.
-                This is what institutional memory looks like when it compounds without
-                limit.
+                The tools Delta connects to, the workflows it runs, and the
+                guardrails on your firm&rsquo;s data. One assistant across the
+                stack you already use.
               </motion.p>
             </div>
 
@@ -715,7 +715,7 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
               marginBottom: 16,
             }}
           >
-            Ready to see Delta learn?
+            See Delta in your stack.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -738,7 +738,7 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
             {useCase.ctaText}
           </motion.p>
           <motion.a
-            href="https://app.casedelta.com/signup"
+            href="/demo"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -763,7 +763,7 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
             whileTap={{ y: 0, scale: 0.97 }}
             transition={springBounce}
           >
-            Sign Up — Free $25 Credit
+            Book a demo
           </motion.a>
         </div>
       </section>

@@ -44,6 +44,14 @@ const nextConfig: NextConfig = {
       // Old hero variant pages
       { source: "/heroes/:path*", destination: "/", permanent: true },
 
+      // Removed comparison pages (positioning shift away from competitor framing)
+      { source: "/compare", destination: "/", permanent: true },
+      { source: "/compare/:path*", destination: "/", permanent: true },
+
+      // Removed use-case verticals outside current ICP
+      { source: "/use-cases/commercial-litigation", destination: "/use-cases", permanent: true },
+      { source: "/use-cases/insurance-defense", destination: "/use-cases", permanent: true },
+
       // Old legal page path → current path. The /legal/* paths are also what
       // Google's OAuth consent screen links to for Privacy Policy and Terms of
       // Service, so they must remain valid permanently.

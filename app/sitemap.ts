@@ -19,12 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
-  // Use-case pages (practice areas)
+  // Use-case pages (plaintiff practice areas)
   const useCaseSlugs = [
-    "commercial-litigation",
-    "employment-law",
-    "insurance-defense",
+    "personal-injury",
     "medical-malpractice",
+    "employment-law",
+    "mass-tort",
   ];
   const useCasePages: MetadataRoute.Sitemap = useCaseSlugs.map((slug) => ({
     url: `${BASE_URL}/use-cases/${slug}`,
@@ -33,19 +33,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  // Comparison pages
-  const compareSlugs = [
-    "casedelta-vs-harvey",
-    "casedelta-vs-clio",
-    "casedelta-vs-lexisnexis",
-    "casedelta-vs-chatgpt",
+  // Use-cases index
+  const useCasesIndex: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/use-cases`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
-  const comparePages: MetadataRoute.Sitemap = compareSlugs.map((slug) => ({
-    url: `${BASE_URL}/compare/${slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
 
   // Blog posts (dynamic from MDX files)
   const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
@@ -55,5 +46,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...useCasePages, ...comparePages, ...blogPages];
+  return [...staticPages, ...useCasesIndex, ...useCasePages, ...blogPages];
 }

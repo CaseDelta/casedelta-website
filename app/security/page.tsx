@@ -3,14 +3,14 @@ import SecurityClient from "./SecurityClient";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Security — Delta Learns Inside Your Firm's Walls",
+  title: "Security — Private Enterprise Deployment",
   description:
-    "Your client data never touches OpenAI, Google, or any third party. Every AI model runs inside CaseDelta's infrastructure. Full audit trail. ABA Rule 1.6 compliant by architecture.",
+    "Your client data never touches a third-party AI provider. CaseDelta runs on a private enterprise deployment. Full audit trail. ABA Rule 1.6 compliant by architecture.",
   alternates: { canonical: "https://casedelta.com/security" },
   openGraph: {
-    title: "Security — Delta Learns Inside Your Firm's Walls",
+    title: "Security — Private Enterprise Deployment",
     description:
-      "Your client data never touches OpenAI, Google, or any third party. Every AI model runs inside CaseDelta's infrastructure. Full audit trail. ABA Rule 1.6 compliant by architecture.",
+      "Your client data never touches a third-party AI provider. CaseDelta runs on a private enterprise deployment. Full audit trail. ABA Rule 1.6 compliant by architecture.",
     url: "https://casedelta.com/security",
   },
 };
@@ -36,11 +36,11 @@ export default function SecurityPage() {
           },
           {
             question: "What happens to my data if I cancel?",
-            answer: "Your data is yours. You can export everything before canceling. After cancellation, your data is permanently deleted from CaseDelta\u2019s systems within 30 days. Delta\u2019s learned intelligence about your firm is also deleted \u2014 it does not persist or transfer.",
+            answer: "Your data is yours. You can export everything before canceling. After cancellation, your data is permanently deleted from CaseDelta\u2019s systems within 30 days.",
           },
           {
             question: "Who can see my firm\u2019s data?",
-            answer: "Only authorized users at your firm. CaseDelta maintains complete data isolation between firms. No CaseDelta employee can access your case data without explicit authorization. The Intelligence Network uses only anonymized, aggregated patterns \u2014 never identifiable case details.",
+            answer: "Only authorized users at your firm. CaseDelta runs on a private enterprise deployment with complete data isolation between firms. No CaseDelta employee can access your case data without explicit authorization. No third-party AI providers touch your data.",
           },
           {
             question: "Is there an audit trail?",
