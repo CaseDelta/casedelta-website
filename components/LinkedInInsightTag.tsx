@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 
-const PARTNER_ID = process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID;
+const PARTNER_ID = process.env.NEXT_PUBLIC_LINKEDIN_PARTNER_ID?.trim();
 
 export function LinkedInInsightTag() {
   if (!PARTNER_ID) return null;
