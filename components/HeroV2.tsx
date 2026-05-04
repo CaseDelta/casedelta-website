@@ -108,7 +108,7 @@ const CursorSvg = (
   </svg>
 );
 
-const INTRO_SUBTITLE = "your law firm's personal assistant.";
+const INTRO_SUBTITLE = "is your law firm's personal assistant.";
 const HERO_SUBTITLE = "The personal assistant that connects all your firm's tools together, so you can manage all of them with a single sentence.";
 
 /* ─── Timing (ms) ───
@@ -424,10 +424,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
       {/* ══════════════════════════════════════════════
           BASE LAYER — Final hero (fades in on reveal)
           ══════════════════════════════════════════════ */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.7, delay: 0.3, ease: EASE_OUT }}
+      <div
         style={{
           position: "relative",
           width: "100%",
@@ -438,31 +435,50 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
           pointerEvents: revealed ? "auto" : "none",
         }}
       >
+        {/* ── Dream-seller heading — fades in first, above Delta and the mockup ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+          transition={{ duration: 0.6, delay: 0, ease: EASE_OUT }}
+          style={{
+            textAlign: "center",
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginBottom: "clamp(40px, 5vw, 64px)",
+            maxWidth: 760,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: FONT,
+              fontSize: "clamp(20px, 2.2vw, 32px)",
+              fontWeight: 600,
+              color: ACCENT,
+              lineHeight: 1.4,
+              letterSpacing: "-0.02em",
+              display: "block",
+            }}
+          >
+            Less time organizing data. More time winning cases. For your whole firm.
+          </span>
+        </motion.div>
+
+        {/* ── Hero body (grid) — fades in after the dream-seller heading ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={revealed ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.5, ease: EASE_OUT }}
+        >
         <div className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-8 lg:gap-12 items-center">
           {/* ── Left column: H1 + CTA + social proof ── */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            {/* ── H1: dream eyebrow + Delta + tagline ── */}
+            {/* ── H1: Delta + tagline ── */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
               style={{ textAlign: "left" }}
             >
-              <span
-                style={{
-                  fontFamily: FONT,
-                  fontSize: "clamp(20px, 2vw, 28px)",
-                  fontWeight: 600,
-                  color: "#0A0A0A",
-                  lineHeight: 1.3,
-                  letterSpacing: "-0.02em",
-                  display: "block",
-                  marginBottom: 20,
-                  maxWidth: 460,
-                }}
-              >
-                Win more cases. Spend less time getting there.
-              </span>
               <span
                 style={{
                   fontFamily: FONT,
@@ -785,7 +801,8 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
       {/* ══════════════════════════════════════════════════
           INTRO OVERLAY — Three-beat sequence
@@ -946,7 +963,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                       animation: "clipReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards",
                     }}
                   >
-                    Works with what your firm already uses
+                    That connects all your firm&rsquo;s tools together.
                   </span>
                   <div
                     style={{
