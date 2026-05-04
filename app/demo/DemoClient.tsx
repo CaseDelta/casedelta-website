@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { setLinkedInUserData } from "@/lib/linkedin";
 
 const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 const ACCENT = "#2563EB";
@@ -23,11 +24,9 @@ const BOOKING_URL = process.env.NEXT_PUBLIC_DEMO_BOOKING_URL || "";
 const LINKEDIN_DEMO_BOOKED_ID = process.env.NEXT_PUBLIC_LINKEDIN_DEMO_BOOKED_CONVERSION_ID;
 const LINKEDIN_DEMO_STARTED_ID = process.env.NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID;
 
-type LinTrk = (action: string, data: { conversion_id: number }) => void;
 type PostHogLike = { capture: (event: string, props?: Record<string, unknown>) => void };
 declare global {
   interface Window {
-    lintrk?: LinTrk;
     posthog?: PostHogLike;
   }
 }
@@ -94,6 +93,7 @@ function FallbackForm({ onBooked }: { onBooked: () => void }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to send");
+      setLinkedInUserData(form.email);
       onBooked();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
