@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { setLinkedInUserData } from "@/lib/linkedin";
 
 const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 const ACCENT = "#2563EB";
@@ -32,6 +33,7 @@ export function ContactModal({ open, onClose }: ContactModalProps) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to send");
+      setLinkedInUserData(formData.email);
       setIsSubmitted(true);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Something went wrong. Please try again.");
