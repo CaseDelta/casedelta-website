@@ -108,7 +108,7 @@ const CursorSvg = (
   </svg>
 );
 
-const INTRO_SUBTITLE = "is your law firm's personal assistant.";
+const INTRO_SUBTITLE = "is your law firm's personal assistant";
 const HERO_SUBTITLE = "The personal assistant that connects all your firm's tools together, so you can manage all of them with a single sentence.";
 
 /* ─── Timing (ms) ───
@@ -158,8 +158,11 @@ const T = {
   execGap: 620,
   execHold: 420,
   // 4 execs end at 17000 + 3*620 + 420 = 19280
-  // After completionHold (1200) we dissolve directly into the hero page.
-  reveal: 20480,
+  // After completionHold (1200) anim2 hands off to the finale.
+  finaleIn: 20480,
+  // Finale: three lines clip-reveal at delays 0.1 / 1.5 / 2.9 (each 1.2s wipe), so the
+  // last line lands ~4.1s in. Hold ~2.4s after that before dissolving to the hero.
+  reveal: 27000,
 };
 
 /* ─── Module-level flag ─── */
@@ -173,7 +176,7 @@ interface HeroV2Props {
   skipIntro?: boolean;
 }
 
-type Phase = "idle" | "intro" | "anim1" | "anim2";
+type Phase = "idle" | "intro" | "anim1" | "anim2" | "finale";
 
 export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
   const [phase, setPhase] = useState<Phase>("idle");
@@ -341,7 +344,10 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
       });
     });
 
-    // Reveal — overlay dissolves directly into the hero page after the exec sequence
+    // Finale — anim2 dissolves into a big centered closer line
+    at(T.finaleIn, () => setPhase("finale"));
+
+    // Reveal — overlay dissolves into the hero page after the finale holds
     at(T.reveal, () => {
       setRevealed(true);
       markIntroPlayed();
@@ -950,7 +956,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                       animation: "clipReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards",
                     }}
                   >
-                    That connects all your firm&rsquo;s tools together.
+                    That connects all your firm&rsquo;s tools together
                   </span>
                   <div
                     style={{
@@ -1067,7 +1073,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                           animation: "clipReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards",
                         }}
                       >
-                        Ask once. Every tool responds.
+                        Just type or speak to manage your workflow
                       </span>
                       <div
                         style={{
@@ -1473,6 +1479,47 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                   >
                     {CursorSvg}
                   </motion.div>
+                </motion.div>
+              )}
+
+              {/* ── Phase 4: Finale — three subheader lines clip-reveal left-to-right, then hand off ── */}
+              {phase === "finale" && (
+                <motion.div
+                  key="finale"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.55, ease: EASE_OUT }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    textAlign: "left",
+                  }}
+                >
+                  {[
+                    "So you spend less time organizing data",
+                    "More time winning cases",
+                    "For your whole firm.",
+                  ].map((line, i) => (
+                    <span
+                      key={line}
+                      style={{
+                        fontFamily: FONT,
+                        fontSize: "clamp(36px, 5.5vw, 74px)",
+                        fontWeight: 400,
+                        color: SUBTITLE_BLUE,
+                        lineHeight: 1.35,
+                        letterSpacing: "-0.03em",
+                        display: "block",
+                        clipPath: "inset(0 100% 0 0)",
+                        opacity: 0,
+                        animation: `clipReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) ${0.1 + i * 1.4}s forwards`,
+                      }}
+                    >
+                      {line}
+                    </span>
+                  ))}
                 </motion.div>
               )}
 
