@@ -11,11 +11,11 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://snap.licdn.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data:",
-      "connect-src 'self'",
+      "connect-src 'self' https://px.ads.linkedin.com https://snap.licdn.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
