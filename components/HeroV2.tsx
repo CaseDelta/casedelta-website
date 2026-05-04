@@ -436,7 +436,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
           width: "100%",
           maxWidth: 1280,
           margin: "0 auto",
-          padding: "clamp(64px, 8vh, 96px) clamp(24px, 4vw, 48px) clamp(40px, 5vh, 64px)",
+          padding: "clamp(104px, 10vh, 120px) clamp(24px, 4vw, 48px) clamp(40px, 5vh, 64px)",
           zIndex: 1,
           pointerEvents: revealed ? "auto" : "none",
         }}
