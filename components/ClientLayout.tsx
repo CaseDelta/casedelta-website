@@ -9,7 +9,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [linksHidden, setLinksHidden] = useState(false);
 
-  const isDemoRoute = pathname?.startsWith("/demo") ?? false;
+  const isDemoRoute = pathname === "/demo";
 
   // On mount, check if we should hide links (home page + intro not yet played)
   useEffect(() => {
