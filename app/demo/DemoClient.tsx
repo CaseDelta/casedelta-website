@@ -23,6 +23,9 @@ export function DemoClient() {
         style={{
           flex: 1,
           position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
           padding: "clamp(48px, 6vw, 72px) 0 clamp(48px, 6vw, 72px)",
         }}
       >
