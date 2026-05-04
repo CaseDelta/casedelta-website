@@ -445,7 +445,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             marginLeft: "auto",
             marginRight: "auto",
             marginBottom: "clamp(40px, 5vw, 64px)",
-            maxWidth: 760,
+            maxWidth: 880,
           }}
         >
           <span
@@ -459,7 +459,8 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               display: "block",
             }}
           >
-            Less time organizing data. More time winning cases. For your whole firm.
+            Less time organizing data. More time winning cases.{" "}
+            <span className="lg:block">For your whole firm.</span>
           </span>
         </motion.div>
 
@@ -467,7 +468,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.6, delay: 0.5, ease: EASE_OUT }}
+          transition={{ duration: 0.6, delay: 1.4, ease: EASE_OUT }}
         >
         <div className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-8 lg:gap-12 items-center">
           {/* ── Left column: H1 + CTA + social proof ── */}
@@ -476,7 +477,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: EASE_OUT }}
+              transition={{ duration: 0.7, delay: 1.1, ease: EASE_OUT }}
               style={{ textAlign: "left" }}
             >
               <span
@@ -516,7 +517,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               className="cd-btn-cta"
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-              transition={{ duration: 0.6, delay: 0.65, ease: EASE_OUT }}
+              transition={{ duration: 0.6, delay: 1.55, ease: EASE_OUT }}
               whileHover={{ y: -2, boxShadow: `0 10px 28px ${ACCENT}55, 0 4px 8px rgba(0,0,0,0.06)` }}
               whileTap={{ y: 0, scale: 0.97 }}
               style={{
@@ -553,7 +554,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.8, delay: 0.85, ease: EASE_OUT }}
+              transition={{ duration: 0.8, delay: 1.75, ease: EASE_OUT }}
               style={{
                 marginTop: 40,
                 display: "flex",
@@ -591,23 +592,9 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                     letterSpacing: "-0.005em",
                   }}
                 >
-                  · Pilot attorney rating
+                  · Attorney rating
                 </span>
               </div>
-
-              {/* Pilot label */}
-              <span
-                style={{
-                  fontFamily: FONT,
-                  fontSize: 11,
-                  fontWeight: 500,
-                  color: TEXT_TERTIARY,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                }}
-              >
-                In pilot with attorneys at
-              </span>
 
               {/* Firm names — 2x2 grid keeps the columns visually aligned */}
               <div
@@ -652,7 +639,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 ? { opacity: 1, scale: 1, y: 0 }
                 : { opacity: 0, scale: 0.96, y: 12 }
             }
-            transition={{ duration: 0.9, delay: 0.45, ease: EASE_OUT }}
+            transition={{ duration: 0.9, delay: 1.35, ease: EASE_OUT }}
           >
             <div
               style={{
