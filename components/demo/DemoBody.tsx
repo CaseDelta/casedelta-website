@@ -117,15 +117,6 @@ function FallbackForm({ onBooked }: { onBooked: () => void }) {
   return (
     <form onSubmit={handleSubmit} style={{ padding: "32px 28px", display: "flex", flexDirection: "column", gap: 16 }}>
       <div>
-        <h2 style={{ fontSize: 18, fontWeight: 600, color: "#0A0A0A", margin: 0, letterSpacing: "-0.02em" }}>
-          Book a 20-minute demo
-        </h2>
-        <p style={{ fontSize: 13, color: "#888", margin: 0, marginTop: 4 }}>
-          Calendar link in your inbox, same day.
-        </p>
-      </div>
-
-      <div>
         <label style={labelStyle} htmlFor="demo-name">Your name</label>
         <input
           id="demo-name"
@@ -190,10 +181,6 @@ function FallbackForm({ onBooked }: { onBooked: () => void }) {
       >
         {submitting ? "Booking..." : "Book my demo"}
       </button>
-
-      <p style={{ fontSize: 12, color: "#999", textAlign: "center", margin: 0, lineHeight: 1.5 }}>
-        20 minutes. No prep needed. Bring your questions.
-      </p>
     </form>
   );
 }
@@ -223,7 +210,7 @@ export function DemoBody({ conversionSource = "demo_page" }: DemoBodyProps) {
           .cd-demo-grid {
             grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) !important;
             gap: clamp(48px, 6vw, 80px) !important;
-            align-items: start !important;
+            align-items: center !important;
           }
         }
       `}</style>
@@ -237,23 +224,6 @@ export function DemoBody({ conversionSource = "demo_page" }: DemoBodyProps) {
       >
         {/* Left — pitch */}
         <div>
-          <motion.span
-            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            style={{
-              display: "inline-block",
-              fontSize: 12,
-              fontWeight: 600,
-              color: ACCENT,
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-              marginBottom: 24,
-            }}
-          >
-            Book a demo
-          </motion.span>
-
           <motion.h1
             initial={reduced ? { opacity: 1 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -340,42 +310,6 @@ export function DemoBody({ conversionSource = "demo_page" }: DemoBodyProps) {
             </ul>
           </motion.div>
 
-          <motion.div
-            initial={reduced ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 12,
-              padding: "10px 16px 10px 10px",
-              border: `1px solid ${BORDER}`,
-              borderRadius: 999,
-              backgroundColor: "#FAFAFA",
-            }}
-          >
-            <div style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              background: `linear-gradient(135deg, ${ACCENT}1F, ${ACCENT}0A)`,
-              border: `1px solid ${ACCENT}25`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flex: "0 0 auto",
-            }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: ACCENT }}>CH</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.2 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#0A0A0A", letterSpacing: "-0.01em" }}>
-                Your demo is with Camren Hall
-              </span>
-              <span style={{ fontSize: 12, color: "#888", marginTop: 1 }}>
-                Founder of CaseDelta. KCBA member.
-              </span>
-            </div>
-          </motion.div>
         </div>
 
         {/* Right — scheduler card */}
