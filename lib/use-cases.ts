@@ -374,7 +374,7 @@ export const USE_CASES: UseCase[] = [
         {
           label: "Workflows Delta runs",
           value:
-            "Intake intake-to-complaint, wage and hour calculations, charge and complaint drafting, opposing counsel correspondence, mass plaintiff updates, time entry.",
+            "Intake to filed complaint, wage and hour calculations, charge and complaint drafting, opposing counsel correspondence, mass plaintiff updates, time entry.",
         },
         {
           label: "One-sentence example",

@@ -16,7 +16,7 @@ const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
 const PRICING_FAQS = [
   {
     question: "How much does CaseDelta cost?",
-    answer: "CaseDelta offers two tracks. Self-serve starts with credits and usage-based pricing. Sales-led firms get flat monthly pricing: $799/month (5-10 attorneys), $1,499/month (10-25 attorneys), or $2,499/month (25-50 attorneys). No per-seat fees. One price for the whole firm.",
+    answer: "CaseDelta is priced by engagement, not by seat. We are not a budget tool. We compete on fit, scope, and how Delta integrates into the work your firm already runs. Plaintiff firms in the 5 to 50 attorney range typically engage on a flat monthly basis sized to the practice. Talk to us about your stack and your caseload.",
   },
   {
     question: "Why flat firm pricing instead of per-seat?",
@@ -233,7 +233,7 @@ function PricingRates() {
                 marginTop: 24,
                 lineHeight: 1.5,
               }}>
-                Pay for the work Delta runs across your stack. No per-seat fees.
+                For attorneys exploring Delta on individual matters. Active firms engage on flat monthly pricing, sized to the practice.
               </p>
             </>
           ) : (
@@ -332,9 +332,9 @@ export default function PricingClient() {
                 marginBottom: 32,
               }}
             >
-              One price. The whole firm.
+              Priced by firm. Not by seat.
               <br />
-              <span style={{ color: "#888" }}>No per-seat fees.</span>
+              <span style={{ color: "#888" }}>Built for fit, not for budget.</span>
               <br />
               <span style={{ color: "#888" }}>No platform migration.</span>
               <br />

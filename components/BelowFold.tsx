@@ -95,6 +95,7 @@ const ROTATE_PAIRS = [
   { records: "employment files", output: "case briefs" },
   { records: "claims records", output: "coverage analyses" },
   { records: "discovery documents", output: "deposition outlines" },
+  { records: "case opinions", output: "research memos" },
 ];
 const ROTATE_INTERVAL = 3000;
 
@@ -174,6 +175,40 @@ export function BelowFold() {
           <div style={{ position: "absolute", top: 0, bottom: 0, right: -16, width: 1, backgroundColor: BORDER }} />
         </div>
       </div>
+
+      {/* ════════════════════════════════════════
+          0. MONDAY MORNING HOOK — Briefing dream-seller
+          ════════════════════════════════════════ */}
+      <section id="monday-morning" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.div {...fade(0, reduced)} style={{ maxWidth: 820 }}>
+            <h2 style={{
+              fontFamily: FONT,
+              fontSize: "clamp(32px, 4.5vw, 56px)",
+              fontWeight: 700,
+              color: "#0A0A0A",
+              lineHeight: 1.1,
+              letterSpacing: "-0.035em",
+              margin: 0,
+            }}>
+              The Monday morning{" "}
+              <span style={{ color: ACCENT }}>you actually want.</span>
+            </h2>
+          </motion.div>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 620,
+            marginTop: 24,
+          }}>
+            Hours of case prep handled before you walk in. The briefing&rsquo;s waiting: what changed in your cases over the weekend, what&rsquo;s due this week, what owes you a response. From there, stay in one conversation. Tell Delta what you need. Delta runs it across the tools your firm already uses.
+          </motion.p>
+        </div>
+      </section>
 
       {/* ════════════════════════════════════════
           1. VALUE PROP — Big sell, full scale

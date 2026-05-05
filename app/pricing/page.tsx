@@ -3,14 +3,14 @@ import PricingClient from "./PricingClient";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Pricing — Flat Firm Pricing, No Per-Seat Fees",
+  title: "Pricing: Sold by Firm, Not by Seat",
   description:
     "One price for the whole firm. Usage-based for self-serve, flat monthly tiers for sales-led engagements. No per-seat fees.",
   alternates: { canonical: "https://casedelta.com/pricing" },
   openGraph: {
-    title: "Pricing — Flat Firm Pricing, No Per-Seat Fees",
+    title: "Pricing: Sold by Firm, Not by Seat",
     description:
-      "One price for the whole firm. Usage-based for self-serve, flat monthly tiers for sales-led engagements. No per-seat fees.",
+      "Sold by firm, not by seat. Built for fit and scope, not for budget. Plaintiff firms engage on flat monthly pricing sized to the practice and the workflows Delta runs.",
     url: "https://casedelta.com/pricing",
   },
 };
@@ -29,7 +29,7 @@ export default function PricingPage() {
           {
             question: "How much does CaseDelta cost?",
             answer:
-              "CaseDelta offers two tracks. Self-serve starts with credits and usage-based pricing. Sales-led firms get flat monthly pricing: $799/month (5-10 attorneys), $1,499/month (10-25 attorneys), or $2,499/month (25-50 attorneys). No per-seat fees. One price for the whole firm.",
+              "CaseDelta is priced by engagement, not by seat. We are not a budget tool. We compete on fit, scope, and how Delta integrates into the work your firm already runs. Plaintiff firms in the 5 to 50 attorney range typically engage on a flat monthly basis sized to the practice. Talk to us about your stack and your caseload.",
           },
           {
             question: "Why flat firm pricing instead of per-seat?",
