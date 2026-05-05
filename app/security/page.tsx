@@ -3,12 +3,12 @@ import SecurityClient from "./SecurityClient";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Security — Private Enterprise Deployment",
+  title: "Security: Private Enterprise Deployment",
   description:
     "Your client data never touches a third-party AI provider. CaseDelta runs on a private enterprise deployment. Full audit trail. ABA Rule 1.6 compliant by architecture.",
   alternates: { canonical: "https://casedelta.com/security" },
   openGraph: {
-    title: "Security — Private Enterprise Deployment",
+    title: "Security: Private Enterprise Deployment",
     description:
       "Your client data never touches a third-party AI provider. CaseDelta runs on a private enterprise deployment. Full audit trail. ABA Rule 1.6 compliant by architecture.",
     url: "https://casedelta.com/security",
@@ -28,7 +28,7 @@ export default function SecurityPage() {
         faqs={[
           {
             question: "Does my client data go to OpenAI or other AI providers?",
-            answer: "No. Every AI model runs inside CaseDelta\u2019s own infrastructure. Your documents, case notes, and client information never touch OpenAI, Google, Anthropic, or any third-party AI service. This is architectural \u2014 not a policy that can be changed.",
+            answer: "No. Every AI model runs inside CaseDelta\u2019s own infrastructure. Your documents, case notes, and client information never touch OpenAI, Google, Anthropic, or any third-party AI service. This is architectural, not a policy that can be changed.",
           },
           {
             question: "Is CaseDelta ABA Rule 1.6 compliant?",
@@ -44,7 +44,7 @@ export default function SecurityPage() {
           },
           {
             question: "Is there an audit trail?",
-            answer: "Yes. Every action Delta takes is logged: timestamp, document accessed, query made, answer generated, sources cited. The full audit trail is exportable for bar compliance review. This isn\u2019t optional \u2014 it\u2019s core architecture.",
+            answer: "Yes. Every action Delta takes is logged: timestamp, document accessed, query made, answer generated, sources cited. The full audit trail is exportable for bar compliance review. This isn\u2019t optional. It\u2019s core architecture.",
           },
         ]}
       />

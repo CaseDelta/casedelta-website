@@ -15,7 +15,7 @@ const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SECURITY_FAQS = [
   {
     question: "Does my client data go to OpenAI or other AI providers?",
-    answer: "No. Every AI model runs inside CaseDelta\u2019s own infrastructure. Your documents, case notes, and client information never touch OpenAI, Google, Anthropic, or any third-party AI service. This is architectural \u2014 not a policy that can be changed.",
+    answer: "No. Every AI model runs inside CaseDelta\u2019s own infrastructure. Your documents, case notes, and client information never touch OpenAI, Google, Anthropic, or any third-party AI service. This is architectural, not a policy that can be changed.",
   },
   {
     question: "Is CaseDelta ABA Rule 1.6 compliant?",
@@ -31,7 +31,7 @@ const SECURITY_FAQS = [
   },
   {
     question: "Is there an audit trail?",
-    answer: "Yes. Every action Delta takes is logged: timestamp, document accessed, query made, answer generated, sources cited. The full audit trail is exportable for bar compliance review. This isn\u2019t optional \u2014 it\u2019s core architecture.",
+    answer: "Yes. Every action Delta takes is logged: timestamp, document accessed, query made, answer generated, sources cited. The full audit trail is exportable for bar compliance review. This isn\u2019t optional. It\u2019s core architecture.",
   },
 ];
 
@@ -192,7 +192,7 @@ export default function SecurityClient() {
                 marginTop: "clamp(12px, 1.5vw, 24px)",
               }}
             >
-              your documents never leave our servers
+              Your documents never leave our servers.
             </span>
           </motion.h1>
 
@@ -337,7 +337,7 @@ export default function SecurityClient() {
             },
             {
               title: "Built for the cases that actually matter.",
-              body: "Most lawyers only trust AI on low-risk work. CaseDelta's architecture is designed so you can use it on every case — not just the ones you can afford to experiment with.",
+              body: "Most lawyers only trust AI on low-risk work. CaseDelta's architecture is designed so you can use it on every case. Not just the ones you can afford to experiment with.",
             },
           ].map((card, i) => (
             <div key={i} className="security-card">

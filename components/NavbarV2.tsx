@@ -287,7 +287,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
             </Link>
 
             <a
-              href="https://app.casedelta.com/signup"
+              href="/demo"
               className="cd-btn-cta"
               style={{
                 display: "inline-flex",
@@ -318,7 +318,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
                 e.currentTarget.style.boxShadow = `0 1px 3px ${ACCENT}20`;
               }}
             >
-              Get Started
+              Book a demo
               <svg className="cd-cta-arrow" width="13" height="13" viewBox="0 0 16 16" fill="none">
                 <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -490,7 +490,8 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
                 Sign in
               </Link>
               <a
-                href="https://app.casedelta.com/signup"
+                href="/demo"
+                onClick={() => setMobileMenuOpen(false)}
                 style={{
                   fontFamily: FONT,
                   display: "flex",
@@ -507,7 +508,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
                   letterSpacing: "-0.01em",
                 }}
               >
-                Get Started
+                Book a demo
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

@@ -3,12 +3,12 @@ import FeaturesClient from "./FeaturesClient";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "What CaseDelta Does — One Assistant Across Your Firm's Stack",
+  title: "What CaseDelta Does: One Assistant Across Your Firm's Stack",
   description:
     "Delta connects across Clio, Word, Gmail or Outlook, Drive, and Calendar. Tell it what you need in one sentence. Hours of work across many tools, done in one go.",
   alternates: { canonical: "https://casedelta.com/features" },
   openGraph: {
-    title: "What CaseDelta Does — One Assistant Across Your Firm's Stack",
+    title: "What CaseDelta Does: One Assistant Across Your Firm's Stack",
     description:
       "Delta connects across Clio, Word, Gmail or Outlook, Drive, and Calendar. Tell it what you need in one sentence. Hours of work across many tools, done in one go.",
     url: "https://casedelta.com/features",

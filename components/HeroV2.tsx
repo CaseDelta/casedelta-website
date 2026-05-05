@@ -465,7 +465,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               display: "block",
             }}
           >
-            Less time organizing data. More time winning cases.{" "}
+            One assistant. Every tool your firm uses.{" "}
             <span className="lg:block">For your whole firm.</span>
           </span>
         </motion.div>
@@ -519,7 +519,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
 
             {/* ── CTA ── */}
             <motion.a
-              href="https://app.casedelta.com/signup"
+              href="/demo"
               className="cd-btn-cta"
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
@@ -544,7 +544,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 boxShadow: `0 6px 16px ${ACCENT}40, 0 2px 4px rgba(0,0,0,0.05)`,
               }}
             >
-              Start free
+              Book a demo
               <svg className="cd-cta-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path
                   d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5"

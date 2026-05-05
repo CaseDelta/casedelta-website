@@ -33,7 +33,7 @@ export async function generateMetadata({
   const capitalized = displayTag.charAt(0).toUpperCase() + displayTag.slice(1);
 
   return {
-    title: `${capitalized} — Blog`,
+    title: `${capitalized} | Blog`,
     description: `Articles about ${displayTag} from the CaseDelta team. Insights on legal AI, practice management, and building smarter law firms.`,
     alternates: {
       canonical: `${BASE_URL}/blog/tag/${tag}`,
