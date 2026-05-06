@@ -76,6 +76,9 @@ export const metadata: Metadata = {
   verification: {
     // Replace with actual Google Search Console verification code
     // google: "your-verification-code",
+    other: {
+      "facebook-domain-verification": "byly9n4j9lcu98ysjyx7tyqqb4jhg5",
+    },
   },
 };
 

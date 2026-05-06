@@ -15,77 +15,95 @@ type Variant = typeof VARIANTS[number]
 // Cookie names for persistence
 const COOKIE_VARIANT = 'casedelta_variant'
 const COOKIE_DISTINCT_ID = 'casedelta_distinct_id'
+const COOKIE_PIXEL_BLOCKED = 'cd_pixel_blocked'
 
-export async function proxy(request: NextRequest) {
-  // Safety check: Only enable A/B testing if env var is explicitly set to 'true'
+// EU + EEA + UK + Switzerland: jurisdictions where strict consent rules apply
+// to advertising pixels and where we suppress the Meta Pixel by default.
+const PIXEL_BLOCKED_COUNTRIES = new Set([
+  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR',
+  'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK',
+  'SI', 'ES', 'SE',
+  'IS', 'LI', 'NO',
+  'GB',
+  'CH',
+])
+
+function shouldBlockPixel(country: string | null): boolean {
+  if (!country) return false
+  return PIXEL_BLOCKED_COUNTRIES.has(country.toUpperCase())
+}
+
+function applyGeoCookie(request: NextRequest, response: NextResponse): NextResponse {
+  const country = request.headers.get('x-vercel-ip-country')
+  const block = shouldBlockPixel(country)
+
+  if (block) {
+    response.cookies.set(COOKIE_PIXEL_BLOCKED, '1', {
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      path: '/',
+      sameSite: 'lax',
+      httpOnly: false, // Client component must read it to suppress the pixel
+    })
+  } else if (request.cookies.get(COOKIE_PIXEL_BLOCKED)?.value === '1') {
+    // Visitor moved out of a blocked region; clear the stale cookie.
+    response.cookies.delete(COOKIE_PIXEL_BLOCKED)
+  }
+
+  return response
+}
+
+function maybeAbTestRewrite(request: NextRequest): NextResponse | null {
   const abTestingEnabled = process.env.NEXT_PUBLIC_ENABLE_AB_TESTING === 'true'
-
-  if (!abTestingEnabled) {
-    // A/B testing disabled - let all requests through normally
-    return NextResponse.next()
-  }
-
-  const pathname = request.nextUrl.pathname
-
-  // Only run middleware on homepage
-  // All existing variant routes (/light/side, /dark/bottom, etc.) pass through unchanged
-  if (pathname !== '/') {
-    return NextResponse.next()
-  }
+  if (!abTestingEnabled) return null
+  if (request.nextUrl.pathname !== '/') return null
 
   try {
-    // Get or create distinct ID for user tracking
     let distinctId = request.cookies.get(COOKIE_DISTINCT_ID)?.value
     if (!distinctId) {
-      // Generate unique ID for this user
       distinctId = crypto.randomUUID()
     }
 
-    // Check if user already has an assigned variant
     let variant = request.cookies.get(COOKIE_VARIANT)?.value as Variant | undefined
-
-    // Validate that the cookie value is a valid variant
     if (variant && !VARIANTS.includes(variant)) {
-      variant = undefined // Invalid variant, will reassign
+      variant = undefined
     }
-
-    // If no variant or invalid variant, assign a new one
     if (!variant) {
-      // For now: simple random assignment
-      // Later: can integrate PostHog feature flags here
       variant = VARIANTS[Math.floor(Math.random() * VARIANTS.length)]
     }
 
-    // Rewrite to the variant path (URL stays as casedelta.com)
     const url = request.nextUrl.clone()
     url.pathname = `/${variant}`
 
     const response = NextResponse.rewrite(url)
 
-    // Set persistent cookies (30 days for variant, 1 year for distinct ID)
     response.cookies.set(COOKIE_VARIANT, variant, {
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: 60 * 60 * 24 * 30,
       path: '/',
       sameSite: 'lax',
-      httpOnly: false, // Allow client-side access for PostHog
+      httpOnly: false,
     })
 
     response.cookies.set(COOKIE_DISTINCT_ID, distinctId, {
-      maxAge: 60 * 60 * 24 * 365, // 1 year
+      maxAge: 60 * 60 * 24 * 365,
       path: '/',
       sameSite: 'lax',
-      httpOnly: false, // Allow client-side access for PostHog
+      httpOnly: false,
     })
 
     return response
   } catch (error) {
-    // Fail-safe: If anything goes wrong, just pass through to homepage
-    console.error('Middleware error:', error)
-    return NextResponse.next()
+    console.error('AB test middleware error:', error)
+    return null
   }
 }
 
-// Only run middleware on homepage when A/B testing is enabled
+export async function proxy(request: NextRequest) {
+  const response = maybeAbTestRewrite(request) ?? NextResponse.next()
+  return applyGeoCookie(request, response)
+}
+
+// Run on all routes except Next internals, API, and static assets so the
+// pixel-block cookie is set on every page entry.
 export const config = {
-  matcher: '/',
+  matcher: ['/((?!_next/static|_next/image|favicon|api/|.*\\..*).*)'],
 }
