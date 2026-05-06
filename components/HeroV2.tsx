@@ -441,40 +441,11 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
           pointerEvents: revealed ? "auto" : "none",
         }}
       >
-        {/* ── Dream-seller heading — fades in first, above Delta and the mockup ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-          transition={{ duration: 0.6, delay: 0, ease: EASE_OUT }}
-          style={{
-            textAlign: "center",
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginBottom: "clamp(40px, 5vw, 64px)",
-            maxWidth: 880,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(20px, 2.2vw, 32px)",
-              fontWeight: 600,
-              color: ACCENT,
-              lineHeight: 1.4,
-              letterSpacing: "-0.02em",
-              display: "block",
-            }}
-          >
-            One assistant. Every tool your firm uses.{" "}
-            <span className="lg:block">For your whole firm.</span>
-          </span>
-        </motion.div>
-
-        {/* ── Hero body (grid) — fades in after the dream-seller heading ── */}
+        {/* ── Hero body (grid) ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.6, delay: 1.4, ease: EASE_OUT }}
+          transition={{ duration: 0.6, delay: 0, ease: EASE_OUT }}
         >
         <div className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-8 lg:gap-12 items-center">
           {/* ── Left column: H1 + CTA + social proof ── */}
@@ -483,7 +454,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ duration: 0.7, delay: 1.1, ease: EASE_OUT }}
+              transition={{ duration: 0.7, delay: 0, ease: EASE_OUT }}
               style={{ textAlign: "left" }}
             >
               <span
@@ -523,7 +494,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               className="cd-btn-cta"
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-              transition={{ duration: 0.6, delay: 1.55, ease: EASE_OUT }}
+              transition={{ duration: 0.6, delay: 0, ease: EASE_OUT }}
               whileHover={{ y: -2, boxShadow: `0 10px 28px ${ACCENT}55, 0 4px 8px rgba(0,0,0,0.06)` }}
               whileTap={{ y: 0, scale: 0.97 }}
               style={{
@@ -560,7 +531,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.8, delay: 1.75, ease: EASE_OUT }}
+              transition={{ duration: 0.8, delay: 0, ease: EASE_OUT }}
               style={{
                 marginTop: 40,
                 display: "flex",
@@ -645,7 +616,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 ? { opacity: 1, scale: 1, y: 0 }
                 : { opacity: 0, scale: 0.96, y: 12 }
             }
-            transition={{ duration: 0.9, delay: 1.35, ease: EASE_OUT }}
+            transition={{ duration: 0.9, delay: 0, ease: EASE_OUT }}
           >
             <div
               style={{
@@ -1532,7 +1503,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.5, delay: 1.2 }}
+        transition={{ duration: 0.5, delay: 0 }}
         style={{
           position: "absolute",
           bottom: 24,
