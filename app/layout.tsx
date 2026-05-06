@@ -4,6 +4,7 @@ import "./globals.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
 import { ClientLayout } from "@/components/ClientLayout";
 import { LinkedInInsightTag } from "@/components/LinkedInInsightTag";
+import { MetaPixel } from "@/components/MetaPixel";
 import { OrganizationSchema, WebAppSchema } from "@/components/JsonLd";
 
 const inter = Inter({
@@ -91,6 +92,7 @@ export default function RootLayout({
       </head>
       <body>
         <LinkedInInsightTag />
+        <MetaPixel />
         <PostHogProvider>
           <ClientLayout>{children}</ClientLayout>
         </PostHogProvider>
