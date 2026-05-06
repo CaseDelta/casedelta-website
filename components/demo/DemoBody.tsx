@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { setLinkedInUserData } from "@/lib/linkedin";
+import { newEventId, setMetaUserData, trackMetaLead } from "@/lib/meta-pixel";
 
 const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 const ACCENT = "#2563EB";
@@ -34,14 +35,14 @@ function fireConversion(id: string | undefined, eventName: string, props?: Recor
   }
 }
 
-function SchedulerEmbed({ onBooked }: { onBooked: () => void }) {
+function SchedulerEmbed({ onBooked }: { onBooked: (eventId: string) => void }) {
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
       const data = e.data;
       if (!data || typeof data !== "object") return;
       const ev = (data as { event?: unknown }).event;
       if (typeof ev === "string" && ev === "calendly.event_scheduled") {
-        onBooked();
+        onBooked(newEventId());
       }
     };
     window.addEventListener("message", onMessage);
@@ -60,7 +61,7 @@ function SchedulerEmbed({ onBooked }: { onBooked: () => void }) {
   );
 }
 
-function FallbackForm({ onBooked }: { onBooked: () => void }) {
+function FallbackForm({ onBooked }: { onBooked: (eventId: string) => void }) {
   const [form, setForm] = useState({ name: "", email: "" });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,6 +70,7 @@ function FallbackForm({ onBooked }: { onBooked: () => void }) {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+    const eventId = newEventId();
     try {
       const res = await fetch("/api/send", {
         method: "POST",
@@ -82,7 +84,8 @@ function FallbackForm({ onBooked }: { onBooked: () => void }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to send");
       setLinkedInUserData(form.email);
-      onBooked();
+      setMetaUserData({ email: form.email, name: form.name });
+      onBooked(eventId);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -198,9 +201,13 @@ export function DemoBody({ conversionSource = "demo_page" }: DemoBodyProps) {
     fireConversion(LINKEDIN_DEMO_STARTED_ID, "demo_page_viewed", { source: conversionSource });
   }, [conversionSource]);
 
-  const handleBooked = () => {
+  const handleBooked = (eventId: string) => {
     setBookingConfirmed(true);
     fireConversion(LINKEDIN_DEMO_BOOKED_ID, "demo_booked", { source: conversionSource });
+    trackMetaLead(
+      { content_name: "demo_booking", content_category: conversionSource },
+      { eventID: eventId },
+    );
   };
 
   return (
