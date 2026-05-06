@@ -9,7 +9,7 @@ import {
 
 export default function PrivacyClient() {
   return (
-    <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="May 1, 2026">
+    <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="May 6, 2026">
       <LegalSectionV2 title="How We Process Your Data">
         <p>
           All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to any third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
@@ -116,6 +116,74 @@ export default function PrivacyClient() {
           </li>
           <li>
             <strong>We never access your data without authorization.</strong> CaseDelta engineers cannot view your documents or case data without explicit permission for a specific support request.
+          </li>
+        </ul>
+      </LegalSectionV2>
+
+      <LegalSectionV2 title="Cookies, Analytics, and Advertising">
+        <p>
+          The CaseDelta marketing site (the public pages at casedelta.com) uses a small set of third-party tools to measure how people find this site and to attribute the performance of our paid ad campaigns. These tools have no access to client data inside the CaseDelta product. They only see public marketing-site activity such as which pages you visit, when you submit our demo form, and basic device and browser information.
+        </p>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          Tools we use on the marketing site
+        </h3>
+        <ul style={{ paddingLeft: 20, listStyleType: "disc" }}>
+          <li style={{ marginBottom: 10 }}>
+            <strong>PostHog</strong> for product analytics. PostHog records page views, the demo-booking conversion funnel, and a session-replay-style record of how visitors navigate. PostHog stores data in the United States. We do not share PostHog data with advertisers.
+          </li>
+          <li style={{ marginBottom: 10 }}>
+            <strong>LinkedIn Insight Tag</strong> for matching site visitors to LinkedIn ad campaigns. LinkedIn receives your IP address, browser fingerprint, and (where you have submitted it) a hashed copy of your email address.
+          </li>
+          <li>
+            <strong>Meta Pixel (Facebook)</strong> for matching site visitors to Meta ad campaigns. Meta receives your IP address, a first-party cookie identifier, and (where you have submitted them on this site) a hashed copy of your name and email address. We do not transmit any client data, case information, or product activity to Meta.
+          </li>
+        </ul>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          Visitors from the EU, EEA, UK, and Switzerland
+        </h3>
+        <p>
+          For visitors detected as originating from the European Union, the European Economic Area, the United Kingdom, or Switzerland, the Meta Pixel is suppressed at our edge layer and never loads in the browser. This is automated based on the country header provided by our hosting provider; no consent prompt is shown because no advertising pixel runs.
+        </p>
+
+        <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
+          How to opt out
+        </h3>
+        <ul style={{ paddingLeft: 20, listStyleType: "disc" }}>
+          <li style={{ marginBottom: 8 }}>
+            Opt out of Meta ad personalization at your{" "}
+            <a
+              href="https://accountscenter.facebook.com/ads/settings"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={LEGAL_LINK_STYLE}
+            >
+              Meta Accounts Center ad preferences
+            </a>
+            .
+          </li>
+          <li style={{ marginBottom: 8 }}>
+            Opt out of LinkedIn ad personalization at your{" "}
+            <a
+              href="https://www.linkedin.com/psettings/advertising"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={LEGAL_LINK_STYLE}
+            >
+              LinkedIn advertising preferences
+            </a>
+            .
+          </li>
+          <li style={{ marginBottom: 8 }}>
+            Opt out of PostHog tracking by emailing{" "}
+            <a href="mailto:support@casedelta.com" style={LEGAL_LINK_STYLE}>
+              support@casedelta.com
+            </a>
+            {" "}with your request.
+          </li>
+          <li>
+            You can also block all of the above with a tracking-blocker browser extension or your browser&apos;s built-in privacy controls.
           </li>
         </ul>
       </LegalSectionV2>

@@ -1,10 +1,12 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
+import Cookies from "js-cookie";
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim();
+const COOKIE_PIXEL_BLOCKED = "cd_pixel_blocked";
 
 function MetaPixelPageView() {
   const pathname = usePathname();
@@ -20,7 +22,16 @@ function MetaPixelPageView() {
 }
 
 export function MetaPixel() {
-  if (!PIXEL_ID) return null;
+  // Default to disabled so SSR and hydration both produce null. The edge proxy
+  // sets cd_pixel_blocked=1 for EU/EEA/UK/CH visitors; we read it post-mount
+  // and only enable the script when absent.
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    setEnabled(Cookies.get(COOKIE_PIXEL_BLOCKED) !== "1");
+  }, []);
+
+  if (!PIXEL_ID || !enabled) return null;
 
   return (
     <>
@@ -37,16 +48,6 @@ export function MetaPixel() {
           fbq('init', '${PIXEL_ID}');
         `}
       </Script>
-      <noscript>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          alt=""
-          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
-        />
-      </noscript>
       <Suspense fallback={null}>
         <MetaPixelPageView />
       </Suspense>
