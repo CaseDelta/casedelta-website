@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import { trackEvent } from "@/lib/posthog";
 
 const ACCENT = "#2563EB";
 const DELTA_BLUE = "#1D4ED8";
@@ -527,6 +528,7 @@ export function BelowFold() {
           <motion.div {...fade(0.15, reduced)} style={{ display: "flex", justifyContent: "center" }}>
             <motion.a
               href="/demo"
+              onClick={() => trackEvent("cta_click", { location: "finale" })}
               className={`cd-btn-cta${reduced ? "" : " cd-cta-pulse"}`}
               style={{
                 display: "inline-flex",

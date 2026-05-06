@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { trackEvent } from "@/lib/posthog";
 
 const ACCENT = "#2563EB";
 const ACCENT_DEEP = "#1D4ED8";
@@ -288,6 +289,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
 
             <a
               href="/demo"
+              onClick={() => trackEvent("cta_click", { location: "navbar_desktop" })}
               className="cd-btn-cta"
               style={{
                 display: "inline-flex",
@@ -491,7 +493,10 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               </Link>
               <a
                 href="/demo"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  trackEvent("cta_click", { location: "navbar_mobile" });
+                  setMobileMenuOpen(false);
+                }}
                 style={{
                   fontFamily: FONT,
                   display: "flex",

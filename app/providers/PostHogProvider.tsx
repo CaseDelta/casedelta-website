@@ -66,15 +66,32 @@ function PostHogPageView() {
           })
         }
 
-        // Include UTM parameters for attribution
+        // Capture marketing attribution params: UTMs + ad-network click IDs.
+        // Stored on the event AND as first-touch person properties so a
+        // returning visitor's original source survives session boundaries.
         if (searchParams) {
-          const utmSource = searchParams.get('utm_source')
-          const utmMedium = searchParams.get('utm_medium')
-          const utmCampaign = searchParams.get('utm_campaign')
+          const ATTRIBUTION_KEYS = [
+            'utm_source',
+            'utm_medium',
+            'utm_campaign',
+            'utm_content',
+            'utm_term',
+            'fbclid',
+            'gclid',
+          ] as const
 
-          if (utmSource) properties.utm_source = utmSource
-          if (utmMedium) properties.utm_medium = utmMedium
-          if (utmCampaign) properties.utm_campaign = utmCampaign
+          const firstTouch: Record<string, string> = {}
+          for (const key of ATTRIBUTION_KEYS) {
+            const val = searchParams.get(key)
+            if (val) {
+              properties[key] = val
+              firstTouch[`initial_${key}`] = val
+            }
+          }
+          if (Object.keys(firstTouch).length > 0) {
+            // Second arg = $set_once: only writes if not already set.
+            posthog.setPersonProperties(undefined, firstTouch)
+          }
         }
 
         // Track pageview
@@ -116,7 +133,6 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
           // Performance optimizations
           capture_pageview: false, // We manually track with variant data
           capture_pageleave: true, // Important for landing pages
-          advanced_disable_decide: true, // Not using feature flags yet
 
           // Session recording (lazy-loaded automatically by PostHog)
           disable_session_recording: false,

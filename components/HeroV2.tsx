@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { trackEvent } from "@/lib/posthog";
 
 /* ─── Design tokens ─── */
 const DELTA_BLUE = "#1D4ED8";
@@ -491,6 +492,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             {/* ── CTA ── */}
             <motion.a
               href="/demo"
+              onClick={() => trackEvent("cta_click", { location: "hero" })}
               className="cd-btn-cta"
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
