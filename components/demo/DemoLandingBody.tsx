@@ -34,9 +34,21 @@ function fireConversion(id: string | undefined, eventName: string, props?: Recor
       window.lintrk("track", { conversion_id: numericId });
     }
   }
+  capturePosthog(eventName, props);
+}
+
+// PostHog loads via dynamic import + setTimeout chain in PostHogProvider, so
+// window.posthog can be undefined when an on-mount effect fires. Retry briefly
+// instead of dropping the event. ~3s total wait is well within the lazy-load
+// window we observe in production (typically <1s).
+function capturePosthog(eventName: string, props?: Record<string, unknown>, attempt = 0) {
+  if (typeof window === "undefined") return;
   if (window.posthog) {
     window.posthog.capture(eventName, props);
+    return;
   }
+  if (attempt >= 30) return;
+  setTimeout(() => capturePosthog(eventName, props, attempt + 1), 100);
 }
 
 interface DemoLandingBodyProps {
