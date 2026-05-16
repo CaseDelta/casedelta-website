@@ -1,13 +1,9 @@
 "use client";
 
-import { DemoBody } from "@/components/demo/DemoBody";
+import { DemoLandingBody } from "@/components/demo/DemoLandingBody";
 
 const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
-/**
- * /demo: stripped landing page for paid traffic (LinkedIn ads, etc.).
- * No global navbar (see ClientLayout). Single-line copyright. No escape routes.
- */
 export function DemoClient() {
   return (
     <main
@@ -19,20 +15,9 @@ export function DemoClient() {
         flexDirection: "column",
       }}
     >
-      <section
-        style={{
-          flex: 1,
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "clamp(48px, 6vw, 72px) 0 clamp(48px, 6vw, 72px)",
-        }}
-      >
-        <DemoBody conversionSource="lp_demo" />
-      </section>
+      <DemoLandingBody conversionSource="lp_demo" />
 
-      <footer style={{ padding: "16px 0 24px", textAlign: "center" }}>
+      <footer style={{ padding: "32px 0 calc(120px + env(safe-area-inset-bottom))", textAlign: "center" }}>
         <span style={{ fontSize: 12, color: "#BBB", letterSpacing: "-0.005em" }}>
           © {new Date().getFullYear()} CaseDelta
         </span>
