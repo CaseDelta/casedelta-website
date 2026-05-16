@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { setLinkedInUserData } from "@/lib/linkedin";
-import { newEventId, setMetaUserData, trackMetaLead } from "@/lib/meta-pixel";
+import { newEventId, setMetaUserData, trackMetaCompleteRegistration } from "@/lib/meta-pixel";
 
 const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 const ACCENT = "#2563EB";
@@ -204,7 +204,7 @@ export function DemoBody({ conversionSource = "demo_page" }: DemoBodyProps) {
   const handleBooked = (eventId: string) => {
     setBookingConfirmed(true);
     fireConversion(LINKEDIN_DEMO_BOOKED_ID, "demo_booked", { source: conversionSource });
-    trackMetaLead(
+    trackMetaCompleteRegistration(
       { content_name: "demo_booking", content_category: conversionSource },
       { eventID: eventId },
     );

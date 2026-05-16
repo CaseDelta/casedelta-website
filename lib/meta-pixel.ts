@@ -15,13 +15,13 @@ declare global {
 
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim();
 
-export function trackMetaLead(
+export function trackMetaCompleteRegistration(
   params: Record<string, unknown>,
   options?: { eventID?: string }
 ) {
   if (typeof window === "undefined") return;
   if (typeof window.fbq !== "function") return;
-  window.fbq("track", "Lead", params, options);
+  window.fbq("track", "CompleteRegistration", params, options);
 }
 
 export function setMetaUserData(input: { email?: string; name?: string }) {
