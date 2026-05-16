@@ -139,6 +139,12 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
           // Development debugging
           loaded: (ph) => {
+            // Expose to window so non-provider call sites (e.g. demo CTA
+            // handlers, fireConversion helpers) can call posthog.capture()
+            // without each owning their own lazy import.
+            if (typeof window !== 'undefined') {
+              ;(window as unknown as { posthog: typeof ph }).posthog = ph
+            }
             if (process.env.NEXT_PUBLIC_POSTHOG_DEBUG === 'true') {
               ph.debug()
               console.log('✅ PostHog loaded and initialized')
