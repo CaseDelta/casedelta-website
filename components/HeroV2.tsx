@@ -111,6 +111,209 @@ const CursorSvg = (
 
 const INTRO_SUBTITLE = "is your law firm's personal assistant";
 
+/* ─── Placeholder hero graphic — horizontal-layer thesis visualization.
+   Swapped in for the right-column slot until the real product demo video
+   ships. Mirrors the ThesisDiagram in components/demo/DemoLandingBody so the
+   "how Delta works" story is consistent across surfaces. ─── */
+function HeroLayerGraphic({ revealed }: { revealed: boolean }) {
+  const tools: Array<{ name: string; src: string; height: number }> = [
+    { name: "Outlook",   src: "/assets/integrations/outlook.svg",        height: 26 },
+    { name: "Word",      src: "/assets/integrations/microsoft-word.svg", height: 26 },
+    { name: "Gmail",     src: "/assets/integrations/gmail.svg",          height: 24 },
+    { name: "Drive",     src: "/assets/integrations/google-drive.svg",   height: 24 },
+    { name: "Clio",      src: "/assets/integrations/clio.svg",           height: 18 },
+  ];
+  const cells = tools.length + 1;
+  const FONT_LOCAL = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
+  return (
+    <div style={{
+      position: "absolute",
+      inset: 0,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      padding: "clamp(28px, 4vw, 52px) clamp(22px, 3.5vw, 44px)",
+      gap: 0,
+    }}>
+      <style>{`
+        @keyframes cd-hero-rail-pulse {
+          0%, 100% { box-shadow: 0 6px 28px ${ACCENT}38, inset 0 1px 0 rgba(255,255,255,0.18); }
+          50%      { box-shadow: 0 10px 36px ${ACCENT}55, inset 0 1px 0 rgba(255,255,255,0.22); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cd-hero-rail { animation: none !important; }
+        }
+      `}</style>
+
+      {/* Ask Delta pill */}
+      <motion.div
+        initial={{ opacity: 0, y: -6 }}
+        animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }}
+        transition={{ duration: 0.55, delay: 0.45, ease: EASE_OUT }}
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <div style={{
+          backgroundColor: ACCENT,
+          color: "#FFFFFF",
+          borderRadius: 999,
+          padding: "10px 18px",
+          fontFamily: FONT_LOCAL,
+          fontSize: 14,
+          fontWeight: 600,
+          letterSpacing: "-0.01em",
+          boxShadow: `0 6px 24px ${ACCENT}40`,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          whiteSpace: "nowrap",
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+          </svg>
+          Ask Delta
+        </div>
+      </motion.div>
+
+      {/* Vertical drop */}
+      <div aria-hidden style={{
+        width: 1,
+        height: 22,
+        margin: "0 auto",
+        background: `linear-gradient(180deg, ${ACCENT}00, ${ACCENT}80)`,
+      }} />
+
+      {/* Horizontal Delta layer rail */}
+      <motion.div
+        className="cd-hero-rail"
+        initial={{ opacity: 0, scaleX: 0.6 }}
+        animate={revealed ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0.6 }}
+        transition={{ duration: 0.7, delay: 0.55, ease: EASE_OUT }}
+        style={{
+          position: "relative",
+          height: 40,
+          borderRadius: 10,
+          background: `linear-gradient(90deg, ${"#1D4ED8"} 0%, ${ACCENT} 50%, ${"#1D4ED8"} 100%)`,
+          boxShadow: `0 6px 28px ${ACCENT}38, inset 0 1px 0 rgba(255,255,255,0.18)`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          animation: "cd-hero-rail-pulse 3.2s ease-in-out infinite",
+          transformOrigin: "center",
+        }}
+      >
+        <span style={{
+          fontFamily: FONT_LOCAL,
+          fontSize: 11,
+          fontWeight: 700,
+          color: "rgba(255,255,255,0.95)",
+          textTransform: "uppercase",
+          letterSpacing: "0.14em",
+        }}>
+          Delta · Horizontal layer
+        </span>
+      </motion.div>
+
+      {/* Branched connectors */}
+      <div aria-hidden style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${cells}, minmax(0, 1fr))`,
+        height: 20,
+      }}>
+        {Array.from({ length: cells }).map((_, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{
+              width: 1,
+              height: "100%",
+              background: `linear-gradient(180deg, ${ACCENT}80, ${BORDER})`,
+            }} />
+          </div>
+        ))}
+      </div>
+
+      {/* Tool tiles */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${cells}, minmax(0, 1fr))`,
+        gap: "clamp(6px, 0.9vw, 10px)",
+      }}>
+        {tools.map((t, i) => (
+          <motion.div
+            key={t.name}
+            initial={{ opacity: 0, y: 8 }}
+            animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            transition={{ duration: 0.45, delay: 0.75 + i * 0.06, ease: EASE_OUT }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+              padding: "10px 6px 12px",
+              backgroundColor: "#FFFFFF",
+              border: `1px solid ${BORDER}`,
+              borderRadius: 10,
+              boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
+              minHeight: 72,
+            }}
+          >
+            <div style={{ height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <img src={t.src} alt="" aria-hidden style={{ height: t.height, width: "auto", display: "block" }} />
+            </div>
+            <span style={{
+              fontFamily: FONT_LOCAL,
+              fontSize: 11,
+              fontWeight: 500,
+              color: "#333333",
+              letterSpacing: "-0.005em",
+              whiteSpace: "nowrap",
+            }}>
+              {t.name}
+            </span>
+          </motion.div>
+        ))}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+          transition={{ duration: 0.45, delay: 0.75 + tools.length * 0.06, ease: EASE_OUT }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            padding: "10px 6px 12px",
+            backgroundColor: "#FFFFFF",
+            border: `1px dashed ${ACCENT}80`,
+            borderRadius: 10,
+            boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
+            minHeight: 72,
+          }}
+        >
+          <div style={{ height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="3"  y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="14" y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="3"  y="14" width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="14" y="14" width="7" height="7" rx="2" fill={ACCENT} />
+            </svg>
+          </div>
+          <span style={{
+            fontFamily: FONT_LOCAL,
+            fontSize: 11,
+            fontWeight: 500,
+            color: "#333333",
+            letterSpacing: "-0.005em",
+            whiteSpace: "nowrap",
+          }}>
+            + more
+          </span>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Timing (ms) ───
    Three phases with AnimatePresence (mode="wait") crossfades between them:
    1. Intro text  (Delta + INTRO_SUBTITLE)
@@ -545,7 +748,9 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             </motion.a>
           </div>
 
-          {/* ── Right column: demo video (swap to <img> when picture lands) ── */}
+          {/* ── Right column: "Delta in action" placeholder graphic.
+              Replace with <video src="/videos/hero-video.mp4" ... /> once the
+              real product demo lands. ── */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 24 }}
             animate={
@@ -560,24 +765,12 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
               overflow: "hidden",
               boxShadow: "0 24px 60px -20px rgba(15,23,42,0.18), 0 4px 12px -2px rgba(15,23,42,0.08)",
               border: `1px solid ${BORDER}`,
-              backgroundColor: "#F8FAFC",
+              background: "linear-gradient(180deg, #FFFFFF 0%, #F7F8FA 100%)",
               aspectRatio: "16 / 10",
               width: "100%",
             }}
           >
-            <video
-              src="/videos/hero-video.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
+            <HeroLayerGraphic revealed={revealed} />
           </motion.div>
         </div>
         </motion.div>
