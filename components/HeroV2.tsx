@@ -117,11 +117,12 @@ const INTRO_SUBTITLE = "is your law firm's personal assistant";
    "how Delta works" story is consistent across surfaces. ─── */
 function HeroLayerGraphic({ revealed }: { revealed: boolean }) {
   const tools: Array<{ name: string; src: string; height: number }> = [
-    { name: "Outlook",   src: "/assets/integrations/outlook.svg",        height: 26 },
-    { name: "Word",      src: "/assets/integrations/microsoft-word.svg", height: 26 },
-    { name: "Gmail",     src: "/assets/integrations/gmail.svg",          height: 24 },
-    { name: "Drive",     src: "/assets/integrations/google-drive.svg",   height: 24 },
-    { name: "Clio",      src: "/assets/integrations/clio.svg",           height: 18 },
+    { name: "Outlook",    src: "/assets/integrations/outlook.svg",    height: 26 },
+    { name: "Gmail",      src: "/assets/integrations/gmail.svg",      height: 24 },
+    { name: "Salesforce", src: "/assets/integrations/salesforce.svg", height: 24 },
+    { name: "Clio",       src: "/assets/integrations/clio.svg",       height: 18 },
+    { name: "Litify",     src: "/assets/integrations/litify.svg",     height: 28 },
+    { name: "QuickBooks", src: "/assets/integrations/quickbooks.svg", height: 22 },
   ];
   const cells = tools.length + 1;
   const FONT_LOCAL = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';

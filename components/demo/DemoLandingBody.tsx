@@ -258,14 +258,15 @@ function HeroSection({ reduced, onBookClick }: { reduced: boolean; onBookClick: 
 
 function IntegrationLogos() {
   const tools: Array<{ name: string; src: string; height: number }> = [
-    { name: "Outlook",        src: "/assets/integrations/outlook.svg",        height: 26 },
-    { name: "Microsoft Word", src: "/assets/integrations/microsoft-word.svg", height: 26 },
-    { name: "Gmail",          src: "/assets/integrations/gmail.svg",          height: 24 },
-    { name: "Google Drive",   src: "/assets/integrations/google-drive.svg",   height: 24 },
-    { name: "Clio",           src: "/assets/integrations/clio.svg",           height: 18 },
-    { name: "MyCase",         src: "/assets/integrations/mycase.webp",        height: 22 },
-    { name: "DocuSign",       src: "/assets/integrations/docusign.svg",       height: 14 },
-    { name: "Westlaw",        src: "/assets/integrations/westlaw.svg",        height: 24 },
+    { name: "Outlook",    src: "/assets/integrations/outlook.svg",     height: 26 },
+    { name: "Gmail",      src: "/assets/integrations/gmail.svg",       height: 24 },
+    { name: "Salesforce", src: "/assets/integrations/salesforce.svg",  height: 22 },
+    { name: "Clio",       src: "/assets/integrations/clio.svg",        height: 18 },
+    { name: "Litify",     src: "/assets/integrations/litify.svg",      height: 28 },
+    { name: "MyCase",     src: "/assets/integrations/mycase.webp",     height: 22 },
+    { name: "QuickBooks", src: "/assets/integrations/quickbooks.svg",  height: 22 },
+    { name: "DocuSign",   src: "/assets/integrations/docusign.svg",    height: 14 },
+    { name: "Westlaw",    src: "/assets/integrations/westlaw.svg",     height: 24 },
   ];
   return (
     <section style={{
@@ -578,11 +579,12 @@ function ThesisExplainer({ reduced }: { reduced: boolean }) {
 
 function ThesisDiagram() {
   const tools: Array<{ name: string; src: string; height: number }> = [
-    { name: "Outlook",   src: "/assets/integrations/outlook.svg",        height: 24 },
-    { name: "Word",      src: "/assets/integrations/microsoft-word.svg", height: 24 },
-    { name: "Gmail",     src: "/assets/integrations/gmail.svg",          height: 22 },
-    { name: "Drive",     src: "/assets/integrations/google-drive.svg",   height: 22 },
-    { name: "Clio",      src: "/assets/integrations/clio.svg",           height: 16 },
+    { name: "Outlook",    src: "/assets/integrations/outlook.svg",    height: 24 },
+    { name: "Gmail",      src: "/assets/integrations/gmail.svg",      height: 22 },
+    { name: "Salesforce", src: "/assets/integrations/salesforce.svg", height: 22 },
+    { name: "Clio",       src: "/assets/integrations/clio.svg",       height: 16 },
+    { name: "Litify",     src: "/assets/integrations/litify.svg",     height: 26 },
+    { name: "QuickBooks", src: "/assets/integrations/quickbooks.svg", height: 20 },
   ];
   const cells = tools.length + 1; // tools + "many more"
 
