@@ -257,14 +257,20 @@ function HeroSection({ reduced, onBookClick }: { reduced: boolean; onBookClick: 
 }
 
 function IntegrationLogos() {
-  const logos = [
-    "Clio", "MyCase", "PracticePanther", "Microsoft 365",
-    "Google Workspace", "Outlook", "Dropbox", "NetDocuments",
+  const tools: Array<{ name: string; src: string; height: number }> = [
+    { name: "Outlook",        src: "/assets/integrations/outlook.svg",        height: 26 },
+    { name: "Microsoft Word", src: "/assets/integrations/microsoft-word.svg", height: 26 },
+    { name: "Gmail",          src: "/assets/integrations/gmail.svg",          height: 24 },
+    { name: "Google Drive",   src: "/assets/integrations/google-drive.svg",   height: 24 },
+    { name: "Clio",           src: "/assets/integrations/clio.svg",           height: 18 },
+    { name: "MyCase",         src: "/assets/integrations/mycase.webp",        height: 22 },
+    { name: "DocuSign",       src: "/assets/integrations/docusign.svg",       height: 14 },
+    { name: "Westlaw",        src: "/assets/integrations/westlaw.svg",        height: 24 },
   ];
   return (
     <section style={{
       backgroundColor: SURFACE,
-      padding: "clamp(24px, 4vw, 48px) 0 clamp(40px, 6vw, 72px)",
+      padding: "clamp(24px, 4vw, 48px) 0 clamp(48px, 6vw, 80px)",
       borderBottom: `1px solid ${BORDER}`,
     }}>
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
@@ -279,32 +285,99 @@ function IntegrationLogos() {
           margin: 0,
           marginBottom: 24,
         }}>
-          Works with the tools your firm already runs.
+          Plugs into the tools your firm already runs.
         </p>
         <div style={{
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "center",
           alignItems: "center",
-          gap: "clamp(20px, 3vw, 44px)",
-          rowGap: 18,
+          gap: "clamp(10px, 1.4vw, 16px)",
+          rowGap: 12,
         }}>
-          {logos.map((logo) => (
-            <span
-              key={logo}
+          {tools.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: i * 0.04, ease: EASE }}
               style={{
-                fontFamily: FONT,
-                fontSize: "clamp(14px, 1.15vw, 16px)",
-                fontWeight: 500,
-                color: "#8A8A8A",
-                letterSpacing: "-0.005em",
-                whiteSpace: "nowrap",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                backgroundColor: SURFACE,
+                border: `1px solid ${BORDER}`,
+                borderRadius: 10,
+                padding: "10px 16px",
+                boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
+                minHeight: 44,
               }}
             >
-              {logo}
-            </span>
+              <img
+                src={t.src}
+                alt=""
+                aria-hidden
+                style={{ height: t.height, width: "auto", display: "block" }}
+              />
+              <span style={{
+                fontFamily: FONT,
+                fontSize: 13,
+                fontWeight: 500,
+                color: INK_SOFT,
+                letterSpacing: "-0.005em",
+                whiteSpace: "nowrap",
+              }}>
+                {t.name}
+              </span>
+            </motion.div>
           ))}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.45, delay: tools.length * 0.04, ease: EASE }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              backgroundColor: SURFACE,
+              border: `1px solid ${BORDER}`,
+              borderRadius: 10,
+              padding: "10px 16px",
+              boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
+              minHeight: 44,
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="3"  y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="14" y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="3"  y="14" width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="14" y="14" width="7" height="7" rx="2" fill={ACCENT} />
+            </svg>
+            <span style={{
+              fontFamily: FONT,
+              fontSize: 13,
+              fontWeight: 500,
+              color: INK_SOFT,
+              letterSpacing: "-0.005em",
+              whiteSpace: "nowrap",
+            }}>
+              and many more
+            </span>
+          </motion.div>
         </div>
+        <p style={{
+          fontFamily: FONT,
+          fontSize: 12,
+          color: INK_MUTED,
+          textAlign: "center",
+          margin: 0,
+          marginTop: 18,
+          letterSpacing: "-0.005em",
+        }}>
+          Not on the list? Tell us your stack on the call. Delta connects to most things over standard APIs.
+        </p>
       </div>
     </section>
   );
@@ -504,106 +577,206 @@ function ThesisExplainer({ reduced }: { reduced: boolean }) {
 }
 
 function ThesisDiagram() {
-  const tools = [
-    { name: "Clio", angle: -90 },
-    { name: "Word", angle: -50 },
-    { name: "Gmail", angle: -15 },
-    { name: "Drive", angle: 20 },
-    { name: "Outlook", angle: 55 },
-    { name: "Calendar", angle: 90 },
+  const tools: Array<{ name: string; src: string; height: number }> = [
+    { name: "Outlook",   src: "/assets/integrations/outlook.svg",        height: 24 },
+    { name: "Word",      src: "/assets/integrations/microsoft-word.svg", height: 24 },
+    { name: "Gmail",     src: "/assets/integrations/gmail.svg",          height: 22 },
+    { name: "Drive",     src: "/assets/integrations/google-drive.svg",   height: 22 },
+    { name: "Clio",      src: "/assets/integrations/clio.svg",           height: 16 },
   ];
+  const cells = tools.length + 1; // tools + "many more"
+
   return (
     <div style={{
       position: "relative",
       backgroundColor: SURFACE_TINT,
       borderRadius: 16,
       border: `1px solid ${BORDER}`,
-      padding: "clamp(32px, 5vw, 56px) 24px clamp(40px, 6vw, 64px)",
-      minHeight: 360,
+      padding: "clamp(36px, 5vw, 56px) clamp(20px, 3vw, 36px) clamp(28px, 4vw, 40px)",
+      overflow: "hidden",
     }}>
-      <div style={{
-        position: "absolute",
-        top: "clamp(36px, 5vw, 56px)",
-        left: "50%",
-        transform: "translateX(-50%)",
-        backgroundColor: ACCENT,
-        color: "#FFFFFF",
-        borderRadius: 999,
-        padding: "10px 18px",
-        fontFamily: FONT,
-        fontSize: 14,
-        fontWeight: 600,
-        letterSpacing: "-0.01em",
-        boxShadow: `0 6px 24px ${ACCENT}40`,
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 8,
-        whiteSpace: "nowrap",
+      <style>{`
+        @keyframes cd-rail-pulse {
+          0%, 100% { box-shadow: 0 6px 28px ${ACCENT}38, inset 0 1px 0 rgba(255,255,255,0.18); }
+          50%      { box-shadow: 0 10px 36px ${ACCENT}55, inset 0 1px 0 rgba(255,255,255,0.22); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cd-rail { animation: none !important; }
+        }
+      `}</style>
+
+      {/* Chat pill */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.5, ease: EASE }}
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <div style={{
+          backgroundColor: ACCENT,
+          color: "#FFFFFF",
+          borderRadius: 999,
+          padding: "10px 18px",
+          fontFamily: FONT,
+          fontSize: 14,
+          fontWeight: 600,
+          letterSpacing: "-0.01em",
+          boxShadow: `0 6px 24px ${ACCENT}40`,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          whiteSpace: "nowrap",
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+          </svg>
+          Ask Delta
+        </div>
+      </motion.div>
+
+      {/* Vertical drop to rail */}
+      <div aria-hidden style={{
+        width: 1,
+        height: 28,
+        margin: "0 auto",
+        background: `linear-gradient(180deg, ${ACCENT}00, ${ACCENT}80)`,
+      }} />
+
+      {/* Horizontal "Delta layer" rail */}
+      <motion.div
+        className="cd-rail"
+        initial={{ opacity: 0, scaleX: 0.6 }}
+        whileInView={{ opacity: 1, scaleX: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.7, ease: EASE }}
+        style={{
+          position: "relative",
+          height: 40,
+          borderRadius: 10,
+          background: `linear-gradient(90deg, ${ACCENT_DEEP} 0%, ${ACCENT} 50%, ${ACCENT_DEEP} 100%)`,
+          boxShadow: `0 6px 28px ${ACCENT}38, inset 0 1px 0 rgba(255,255,255,0.18)`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          animation: "cd-rail-pulse 3.2s ease-in-out infinite",
+          transformOrigin: "center",
+        }}
+      >
+        <span style={{
+          fontFamily: FONT,
+          fontSize: 11,
+          fontWeight: 700,
+          color: "rgba(255,255,255,0.95)",
+          textTransform: "uppercase",
+          letterSpacing: "0.14em",
+        }}>
+          Delta · Horizontal layer
+        </span>
+      </motion.div>
+
+      {/* Branched connectors from rail down to each tool column */}
+      <div aria-hidden style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${cells}, minmax(0, 1fr))`,
+        height: 24,
       }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        </svg>
-        Ask Delta
+        {Array.from({ length: cells }).map((_, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{
+              width: 1,
+              height: "100%",
+              background: `linear-gradient(180deg, ${ACCENT}80, ${BORDER})`,
+            }} />
+          </div>
+        ))}
       </div>
 
-      <svg
-        viewBox="0 0 600 360"
-        preserveAspectRatio="xMidYMid meet"
-        style={{ width: "100%", height: "auto", display: "block", maxWidth: 560, margin: "0 auto" }}
-        aria-hidden
-      >
-        {tools.map((t) => {
-          const rad = (t.angle * Math.PI) / 180;
-          const cx = 300;
-          const cy = 80;
-          const r = 220;
-          const x2 = cx + r * Math.cos(rad);
-          const y2 = cy + r * Math.sin(rad) + 40;
-          return (
-            <line
-              key={t.name}
-              x1={cx}
-              y1={cy + 10}
-              x2={x2}
-              y2={y2}
-              stroke={BORDER}
-              strokeWidth="1.5"
-              strokeDasharray="3 4"
-            />
-          );
-        })}
-      </svg>
-
+      {/* Tool tiles */}
       <div style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: "clamp(20px, 3vw, 36px)",
-        display: "flex",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        gap: "clamp(8px, 1.5vw, 16px)",
-        padding: "0 16px",
+        display: "grid",
+        gridTemplateColumns: `repeat(${cells}, minmax(0, 1fr))`,
+        gap: "clamp(6px, 1vw, 10px)",
       }}>
-        {tools.map((t) => (
-          <span
+        {tools.map((t, i) => (
+          <motion.div
             key={t.name}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.45, delay: 0.15 + i * 0.06, ease: EASE }}
             style={{
-              fontFamily: FONT,
-              fontSize: 13,
-              fontWeight: 500,
-              color: INK_SOFT,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+              padding: "12px 6px 14px",
               backgroundColor: SURFACE,
               border: `1px solid ${BORDER}`,
-              borderRadius: 8,
-              padding: "8px 14px",
-              letterSpacing: "-0.005em",
+              borderRadius: 10,
               boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
+              minHeight: 78,
             }}
           >
-            {t.name}
-          </span>
+            <div style={{ height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <img
+                src={t.src}
+                alt=""
+                aria-hidden
+                style={{ height: t.height, width: "auto", display: "block" }}
+              />
+            </div>
+            <span style={{
+              fontFamily: FONT,
+              fontSize: 11,
+              fontWeight: 500,
+              color: INK_SOFT,
+              letterSpacing: "-0.005em",
+              whiteSpace: "nowrap",
+            }}>
+              {t.name}
+            </span>
+          </motion.div>
         ))}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.45, delay: 0.15 + tools.length * 0.06, ease: EASE }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            padding: "12px 6px 14px",
+            backgroundColor: SURFACE,
+            border: `1px dashed ${ACCENT}80`,
+            borderRadius: 10,
+            boxShadow: "0 1px 2px rgba(15,23,42,0.04)",
+            minHeight: 78,
+          }}
+        >
+          <div style={{ height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <rect x="3"  y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="14" y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="3"  y="14" width="7" height="7" rx="2" fill="#94A3B8" />
+              <rect x="14" y="14" width="7" height="7" rx="2" fill={ACCENT} />
+            </svg>
+          </div>
+          <span style={{
+            fontFamily: FONT,
+            fontSize: 11,
+            fontWeight: 500,
+            color: INK_SOFT,
+            letterSpacing: "-0.005em",
+            whiteSpace: "nowrap",
+          }}>
+            + more
+          </span>
+        </motion.div>
       </div>
     </div>
   );
@@ -624,7 +797,7 @@ function TrustPricingBlock() {
     {
       eyebrow: "Built for",
       title: "Partners who carry the case.",
-      body: "Designed for partners in personal injury, mass tort, medical malpractice, and employment law.",
+      body: "For the partners who own a matter end-to-end, across whatever stack the firm already runs.",
     },
   ];
   return (

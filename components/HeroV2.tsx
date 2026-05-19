@@ -110,7 +110,6 @@ const CursorSvg = (
 );
 
 const INTRO_SUBTITLE = "is your law firm's personal assistant";
-const HERO_SUBTITLE = "The personal assistant that connects all your firm's tools together, so you can manage all of them with a single sentence.";
 
 /* ─── Timing (ms) ───
    Three phases with AnimatePresence (mode="wait") crossfades between them:
@@ -442,65 +441,81 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
           pointerEvents: revealed ? "auto" : "none",
         }}
       >
-        {/* ── Hero body (grid) ── */}
+        {/* ── Hero body (grid) — simple text + demo asset ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={revealed ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0, ease: EASE_OUT }}
         >
-        <div className="grid grid-cols-1 lg:grid-cols-[42fr_58fr] gap-8 lg:gap-12 items-center">
-          {/* ── Left column: H1 + CTA + social proof ── */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            {/* ── H1: Delta + tagline ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ duration: 0.7, delay: 0, ease: EASE_OUT }}
-              style={{ textAlign: "left" }}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
+          {/* ── Left column: text + CTA ── */}
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <motion.h1
+              initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+              animate={revealed ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 24, filter: "blur(8px)" }}
+              transition={{ duration: 0.9, delay: 0, ease: EASE_OUT }}
+              style={{ margin: 0 }}
             >
               <span
                 style={{
                   fontFamily: FONT,
-                  fontSize: "clamp(56px, 6vw, 84px)",
+                  fontSize: "clamp(48px, 7vw, 96px)",
                   fontWeight: 700,
                   color: DELTA_BLUE,
                   lineHeight: 0.95,
-                  letterSpacing: "-0.04em",
+                  letterSpacing: "-0.045em",
                   display: "block",
-                  marginLeft: "-0.03em",
                 }}
               >
-                Delta
+                Intake to resolution.
               </span>
               <span
                 style={{
                   fontFamily: FONT,
-                  fontSize: "clamp(16px, 1.3vw, 20px)",
+                  fontSize: "clamp(22px, 3vw, 40px)",
                   fontWeight: 400,
                   color: SUBTITLE_BLUE,
-                  lineHeight: 1.45,
-                  letterSpacing: "-0.01em",
+                  lineHeight: 1.22,
+                  letterSpacing: "-0.025em",
                   display: "block",
-                  marginTop: 18,
-                  maxWidth: 400,
+                  marginTop: "clamp(12px, 1.5vw, 20px)",
                 }}
               >
-                {HERO_SUBTITLE}
+                Half the time. Without adding headcount.
               </span>
-            </motion.div>
+            </motion.h1>
 
-            {/* ── CTA ── */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: EASE_OUT }}
+              style={{
+                fontFamily: FONT,
+                fontSize: "clamp(15px, 1.3vw, 18px)",
+                fontWeight: 400,
+                color: "#666",
+                lineHeight: 1.6,
+                letterSpacing: "-0.01em",
+                marginTop: "clamp(24px, 3vw, 36px)",
+                marginBottom: 0,
+                maxWidth: 540,
+              }}
+            >
+              Delta is the personal assistant across your firm&rsquo;s existing tools. Tell Delta what you need. The work runs across your stack, so you stay on the partner-level calls.
+            </motion.p>
+
             <motion.a
               href="/demo"
               onClick={() => trackEvent("cta_click", { location: "hero" })}
               className="cd-btn-cta"
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-              transition={{ duration: 0.6, delay: 0, ease: EASE_OUT }}
+              transition={{ duration: 0.7, delay: 0.4, ease: EASE_OUT }}
               whileHover={{ y: -2, boxShadow: `0 10px 28px ${ACCENT}55, 0 4px 8px rgba(0,0,0,0.06)` }}
               whileTap={{ y: 0, scale: 0.97 }}
               style={{
-                marginTop: 32,
+                marginTop: "clamp(28px, 3vw, 40px)",
+                alignSelf: "flex-start",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 10,
@@ -528,243 +543,41 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 />
               </svg>
             </motion.a>
-
-            {/* ── Credibility: star rating + pilot firm names ── */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.8, delay: 0, ease: EASE_OUT }}
-              style={{
-                marginTop: 40,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: 16,
-              }}
-            >
-              {/* Star rating row */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 2 }} aria-label="Rated 5.0 out of 5 stars">
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <svg key={i} width="17" height="17" viewBox="0 0 24 24" fill="#F59E0B" aria-hidden>
-                      <path d="M12 2l2.93 6.5L22 9.55l-5.36 5L18 22l-6-3.6L6 22l1.36-7.45L2 9.55l7.07-1.05L12 2z" />
-                    </svg>
-                  ))}
-                </div>
-                <span
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: 15,
-                    fontWeight: 700,
-                    color: "#1A1A1A",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  5.0
-                </span>
-                <span
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: TEXT_TERTIARY,
-                    letterSpacing: "-0.005em",
-                  }}
-                >
-                  · Attorney rating
-                </span>
-              </div>
-
-              {/* Firm names — 2x2 grid keeps the columns visually aligned */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "auto auto",
-                  columnGap: 28,
-                  rowGap: 10,
-                  alignItems: "baseline",
-                }}
-              >
-                {[
-                  "Whitfield & Hayes LLP",
-                  "Drake Mercer Sullivan, P.C.",
-                  "The Brennan Firm",
-                  "Carter Lockwood Attorneys",
-                ].map((firm) => (
-                  <span
-                    key={firm}
-                    style={{
-                      fontFamily: FONT,
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: "#475569",
-                      letterSpacing: "-0.005em",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {firm}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
           </div>
 
-          {/* ── Right column: app mockup (chat with Delta, morning briefing → chronology) ── */}
+          {/* ── Right column: demo video (swap to <img> when picture lands) ── */}
           <motion.div
-            className="lg:max-h-none"
-            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            initial={{ opacity: 0, scale: 0.96, y: 24 }}
             animate={
               revealed
                 ? { opacity: 1, scale: 1, y: 0 }
-                : { opacity: 0, scale: 0.96, y: 12 }
+                : { opacity: 0, scale: 0.96, y: 24 }
             }
-            transition={{ duration: 0.9, delay: 0, ease: EASE_OUT }}
+            transition={{ duration: 1, delay: 0.3, ease: EASE_OUT }}
+            style={{
+              position: "relative",
+              borderRadius: 16,
+              overflow: "hidden",
+              boxShadow: "0 24px 60px -20px rgba(15,23,42,0.18), 0 4px 12px -2px rgba(15,23,42,0.08)",
+              border: `1px solid ${BORDER}`,
+              backgroundColor: "#F8FAFC",
+              aspectRatio: "16 / 10",
+              width: "100%",
+            }}
           >
-            <div
+            <video
+              src="/videos/hero-video.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
               style={{
-                position: "relative",
-                borderRadius: 12,
-                overflow: "hidden",
-                backgroundColor: "#FFFFFF",
-                border: `1px solid ${BORDER}`,
-                boxShadow:
-                  "0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06)",
-                userSelect: "none",
-                WebkitUserSelect: "none",
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
               }}
-            >
-              {/* Mock window chrome */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  padding: "10px 14px",
-                  borderBottom: `1px solid ${BORDER}`,
-                  backgroundColor: "#FAFAFA",
-                }}
-              >
-                <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#E5E5E5" }} />
-                <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#E5E5E5" }} />
-                <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: "#E5E5E5" }} />
-                <div
-                  style={{
-                    marginLeft: 8,
-                    flex: 1,
-                    height: 24,
-                    borderRadius: 6,
-                    backgroundColor: "#F0F0F0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ fontFamily: FONT, fontSize: 11, color: "#AAAAAA", fontWeight: 400 }}>
-                    app.casedelta.com
-                  </span>
-                </div>
-              </div>
-
-              {/* App content area */}
-              <div
-                className="lg:aspect-[4/3]"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  backgroundColor: "#FFFFFF",
-                  overflow: "hidden",
-                  fontFamily: FONT,
-                  userSelect: "none",
-                  WebkitUserSelect: "none",
-                }}
-              >
-                {/* Top bar */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 24px", borderBottom: `1px solid ${BORDER}`, flexShrink: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: "#1A1A1A", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                      <img src="/assets/branding/delta-icon-light.svg" alt="Delta" style={{ width: 14, height: 14 }} />
-                    </div>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "#1A1A1A", letterSpacing: "-0.01em" }}>Delta</span>
-                    <span style={{ fontSize: 11, color: "#999", marginLeft: 4 }}>Graves Law</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, backgroundColor: "#F5F5F5", borderRadius: 6, padding: "6px 14px", minWidth: 0, maxWidth: 220 }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#AAA" strokeWidth="1.5" /><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="#AAA" strokeWidth="1.5" strokeLinecap="round" /></svg>
-                    <span style={{ fontSize: 11, color: "#AAA" }}>Search</span>
-                  </div>
-                </div>
-
-                {/* Chat messages */}
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "0 clamp(16px, 4vw, 32px) 12px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
-                    <div style={{ flex: 1, height: 1, backgroundColor: BORDER }} />
-                    <span style={{ fontSize: 10, fontWeight: 500, color: "#888", padding: "2px 10px", border: `1px solid ${BORDER}`, borderRadius: 12 }}>Today</span>
-                    <div style={{ flex: 1, height: 1, backgroundColor: BORDER }} />
-                  </div>
-
-                  {/* Delta morning briefing */}
-                  <div style={{ display: "flex", gap: 12, padding: "8px 0" }}>
-                    <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: "#1A1A1A", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                      <img src="/assets/branding/delta-icon-light.svg" alt="Delta" style={{ width: 20, height: 20 }} />
-                    </div>
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }}>Delta</span>
-                        <span style={{ fontSize: 11, color: "#999" }}>6:12 AM</span>
-                      </div>
-                      <p style={{ fontSize: 13.5, color: "#333", lineHeight: 1.6, margin: 0 }}>
-                        Reviewed Chen v. Mercy overnight. Cross-referenced the OR report in Drive against nursing logs in Clio. Surgeon logged procedure start at 2:14 PM but anesthesia wasn&apos;t administered until 2:47 PM. 33-minute undocumented gap. Dr. Patel&apos;s expert report doesn&apos;t address it.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Attorney request */}
-                  <div style={{ display: "flex", gap: 12, padding: "8px 0" }}>
-                    <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: `${ACCENT}15`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: ACCENT }}>KG</span>
-                    </div>
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }}>Kate Graves</span>
-                        <span style={{ fontSize: 11, color: "#999" }}>8:34 AM</span>
-                      </div>
-                      <p style={{ fontSize: 13.5, color: "#333", lineHeight: 1.6, margin: 0 }}>
-                        Build me a surgical chronology, draft the demand at 3x specials, and email it to opposing counsel.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Delta response with PDF artifact */}
-                  <div style={{ display: "flex", gap: 12, padding: "8px 0" }}>
-                    <div style={{ width: 34, height: 34, borderRadius: 8, backgroundColor: "#1A1A1A", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                      <img src="/assets/branding/delta-icon-light.svg" alt="Delta" style={{ width: 20, height: 20 }} />
-                    </div>
-                    <div style={{ minWidth: 0, flex: 1 }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A" }}>Delta</span>
-                        <span style={{ fontSize: 11, color: "#999" }}>8:35 AM</span>
-                      </div>
-                      <p style={{ fontSize: 13.5, color: "#333", lineHeight: 1.6, margin: "0 0 8px" }}>
-                        Chronology built. Demand drafted in Word. Sent from your inbox to opposing counsel. Time logged in Clio.
-                      </p>
-                      <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "10px 14px", border: `1px solid ${BORDER}`, borderRadius: 8, backgroundColor: "#FAFAFA", maxWidth: "100%", overflow: "hidden" }}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="#E74C3C" strokeWidth="1.5" strokeLinecap="round" /><polyline points="14 2 14 8 20 8" stroke="#E74C3C" strokeWidth="1.5" strokeLinecap="round" /><text x="8" y="17" fontSize="6" fill="#E74C3C" fontWeight="700" fontFamily="sans-serif">PDF</text></svg>
-                        <span style={{ fontSize: 12, fontWeight: 500, color: "#333", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Chen_v_Mercy_Demand_Letter.pdf</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Message input */}
-                <div style={{ padding: "0 clamp(16px, 4vw, 32px) 14px", flexShrink: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", border: `1px solid ${BORDER}`, borderRadius: 8, padding: "10px 12px 10px 16px" }}>
-                    <span style={{ fontSize: 13, color: "#BBB", flex: 1 }}>Message Delta...</span>
-                    <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M5 12l7-7 7 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            />
           </motion.div>
         </div>
         </motion.div>
@@ -1471,9 +1284,9 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                   }}
                 >
                   {[
-                    "So you spend less time organizing data",
-                    "More time winning cases",
-                    "For your whole firm.",
+                    "So you go from intake to resolution",
+                    "In half the time",
+                    "Without adding headcount.",
                   ].map((line, i) => (
                     <span
                       key={line}

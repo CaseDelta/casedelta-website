@@ -33,7 +33,8 @@ const nextConfig: NextConfig = {
       // Old pages that no longer exist — redirect to homepage
       { source: "/download", destination: "/", permanent: true },
       { source: "/contact", destination: "/", permanent: true },
-      { source: "/book-a-demo", destination: "/", permanent: true },
+      { source: "/book-a-demo", destination: "/demo", permanent: true },
+      { source: "/book-demo", destination: "/demo", permanent: true },
 
       // Old A/B testing variant routes
       { source: "/dark", destination: "/", permanent: true },

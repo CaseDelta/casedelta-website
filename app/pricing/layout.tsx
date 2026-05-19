@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Pricing | CaseDelta",
   description:
-    "Sold by firm, not by seat. Built for fit and scope, not for budget. Plaintiff firms engage on flat monthly pricing sized to the practice.",
+    "Flat $349 per user, per month. No tiers, no add-ons, no setup fees. Pays for itself in week one through recovered admin hours.",
 };
 
 export default function PricingLayout({ children }: { children: React.ReactNode }) {

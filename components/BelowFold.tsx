@@ -178,9 +178,9 @@ export function BelowFold() {
       </div>
 
       {/* ════════════════════════════════════════
-          0. MONDAY MORNING HOOK — Briefing dream-seller
+          0. DREAM HEADLINE — intake to resolution
           ════════════════════════════════════════ */}
-      <section id="monday-morning" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
+      <section id="dream" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
           <motion.div {...fade(0, reduced)} style={{ maxWidth: 820 }}>
             <h2 style={{
@@ -192,8 +192,8 @@ export function BelowFold() {
               letterSpacing: "-0.035em",
               margin: 0,
             }}>
-              The Monday morning{" "}
-              <span style={{ color: ACCENT }}>you actually want.</span>
+              Home for dinner,{" "}
+              <span style={{ color: ACCENT }}>not at the desk past nine.</span>
             </h2>
           </motion.div>
           <motion.p {...fade(0.1, reduced)} style={{
@@ -206,7 +206,7 @@ export function BelowFold() {
             maxWidth: 620,
             marginTop: 24,
           }}>
-            Hours of case prep handled before you walk in. The briefing&rsquo;s waiting: what changed in your cases over the weekend, what&rsquo;s due this week, what owes you a response. From there, stay in one conversation. Tell Delta what you need. Delta runs it across the tools your firm already uses.
+            Delta runs across the tools your firm already uses, doing the work on every matter so you stay on the partner-level calls.
           </motion.p>
         </div>
       </section>
@@ -307,7 +307,7 @@ export function BelowFold() {
             maxWidth: 520,
             marginTop: 16,
           }}>
-            Most legal AI sends your client data to outside companies to process it. We don&apos;t. Everything runs inside CaseDelta, and we pay the cost to keep it that way.
+            Most legal AI sends your client data to outside companies to process it. Delta doesn&apos;t. Everything runs inside CaseDelta, with a full audit trail for bar compliance.
           </motion.p>
           <motion.a
             {...fade(0.15, reduced)}
@@ -348,8 +348,8 @@ export function BelowFold() {
             letterSpacing: "-0.03em",
             maxWidth: 640,
           }}>
-            Delta works with what you already use.{" "}
-            <span style={{ color: "#888" }}>No switching. No learning curve.</span>
+            Works with the stack you already have.{" "}
+            <span style={{ color: "#888" }}>No platform migration. No new tool to learn.</span>
           </motion.h2>
 
           {/* Integration logos */}
@@ -426,9 +426,9 @@ export function BelowFold() {
             letterSpacing: "-0.035em",
             maxWidth: 820,
           }}>
-            From a demand letter to three hundred client updates.{" "}
+            The work an associate should handle.{" "}
             <span style={{ color: ACCENT }}>
-              In a single morning.
+              Run by Delta.
             </span>
           </motion.h2>
           <motion.p {...fade(0.1, reduced)} style={{
@@ -441,7 +441,40 @@ export function BelowFold() {
             maxWidth: 580,
             marginTop: 16,
           }}>
-            Draft a demand letter for a personal injury case. Send status updates to three hundred mass tort plaintiffs. Build a chronology for a medical malpractice claim. Run unpaid overtime calculations for a wage and hour class. You make the calls. Delta makes them happen.
+            Draft a demand letter for a personal injury case. Build a chronology across hundreds of medical records. Send three hundred mass tort updates in a single morning. Run the unpaid overtime math for a wage-and-hour class. You make the calls. Delta runs the work.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          4.5 MORNING BRIEFING — Time-to-value answer
+          ════════════════════════════════════════ */}
+      <section id="briefing" style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.h2 {...fade(0, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(24px, 3.2vw, 42px)",
+            fontWeight: 600,
+            color: "#333",
+            lineHeight: 1.15,
+            letterSpacing: "-0.03em",
+            maxWidth: 640,
+          }}>
+            Ready before you walk in Monday.{" "}
+            <span style={{ color: "#888" }}>The week&rsquo;s groundwork, done overnight.</span>
+          </motion.h2>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#999",
+            lineHeight: 1.5,
+            letterSpacing: "-0.01em",
+            maxWidth: 580,
+            marginTop: 16,
+          }}>
+            A briefing waits on every active matter when you open Delta. What changed, what&rsquo;s due, what owes a response, drafted follow-ups ready for sign-off.
           </motion.p>
         </div>
       </section>
@@ -520,10 +553,23 @@ export function BelowFold() {
             lineHeight: 1.1,
             letterSpacing: "-0.035em",
             maxWidth: 600,
-            margin: "0 auto 40px",
+            margin: "0 auto 20px",
           }}>
             See Delta inside your firm&rsquo;s stack.
           </motion.h2>
+
+          <motion.p {...fade(0.08, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.6,
+            letterSpacing: "-0.01em",
+            maxWidth: 540,
+            margin: "0 auto 40px",
+          }}>
+            Twenty-minute live demo. Delta on a sandbox of your firm&rsquo;s stack, running a real workflow end to end.
+          </motion.p>
 
           <motion.div {...fade(0.15, reduced)} style={{ display: "flex", justifyContent: "center" }}>
             <motion.a

@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
-  { label: "Book a demo", href: "/book-demo" },
+  { label: "Book a demo", href: "/demo" },
 ];
 
 const LEGAL_LINKS = [
