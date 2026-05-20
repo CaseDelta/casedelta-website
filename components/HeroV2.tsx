@@ -21,6 +21,9 @@ type Tool = {
   hExec: number;   // height in execution row (px)
 };
 
+// EXEC_TOOLS — used by the Phase 3 execution sequence (anim2). Index-stable
+// because EXECS below references these by toolIdx. The Phase 2 stack list uses
+// STACK_TOOLS instead so the two surfaces can evolve independently.
 const TOOLS: Tool[] = [
   { name: "Outlook",        src: "/assets/integrations/outlook.svg",        hStack: 26, hExec: 54 }, // 0
   { name: "Microsoft Word", src: "/assets/integrations/microsoft-word.svg", hStack: 26, hExec: 54 }, // 1
@@ -31,8 +34,21 @@ const TOOLS: Tool[] = [
   { name: "DocuSign",       src: "/assets/integrations/docusign.svg",       hStack: 14, hExec: 42 }, // 6
 ];
 
-// Stack-only "more" indicator — communicates that integrations extend beyond the 5 named tools.
-const STACK_EXTRA = { name: "And many more" };
+// STACK_TOOLS — Phase 2 "That connects all your firm's tools together" list.
+// Independent of TOOLS so the showcase can be tuned without breaking the
+// Phase 3 demo, which depends on Drive/Word/Gmail/Clio.
+const STACK_TOOLS: Pick<Tool, "name" | "src" | "hStack">[] = [
+  { name: "Outlook",    src: "/assets/integrations/outlook-new.jpg",     hStack: 28 },
+  { name: "Google",     src: "/assets/integrations/google-g.png",        hStack: 26 },
+  { name: "Clio",       src: "/assets/integrations/clio-icon.png",       hStack: 26 },
+  { name: "Westlaw",    src: "/assets/integrations/westlaw-icon.png",    hStack: 28 },
+  { name: "MyCase",     src: "/assets/integrations/mycase-icon.jpg",     hStack: 22 },
+  { name: "EvenUp",     src: "/assets/integrations/evenup-icon.png",     hStack: 26 },
+  { name: "QuickBooks", src: "/assets/integrations/quickbooks-icon.svg", hStack: 28 },
+];
+
+// Stack-only "more" indicator — communicates that integrations extend beyond the named tools.
+const STACK_EXTRA = { name: "Anything else" };
 const MoreIconSvg = (
   <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden>
     <rect x="3"  y="3"  width="7" height="7" rx="2" fill="#94A3B8" />
@@ -492,7 +508,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
 
     // Phase 2 — anim1 (vertical stack builds up)
     at(T.anim1In, () => setPhase("anim1"));
-    const STACK_LENGTH = TOOLS.length + 1; // 7 tools + "and many more"
+    const STACK_LENGTH = STACK_TOOLS.length + 1; // 7 tools + "Anything else"
     for (let i = 0; i < STACK_LENGTH; i++) {
       at(T.stackStart + i * T.stackStep, () => setStackIdx(i));
     }
@@ -946,8 +962,8 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                       width: isMobile ? "100%" : "auto",
                     }}
                   >
-                  {[...TOOLS, STACK_EXTRA].map((item, i) => {
-                    const isExtra = i === TOOLS.length;
+                  {[...STACK_TOOLS, STACK_EXTRA].map((item, i) => {
+                    const isExtra = i === STACK_TOOLS.length;
                     const visible = stackIdx >= i;
                     return (
                       <motion.div
@@ -997,6 +1013,8 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                               style={{
                                 height: (item as Tool).hStack,
                                 width: "auto",
+                                maxWidth: isMobile ? 96 : 100,
+                                objectFit: "contain",
                                 display: "block",
                               }}
                             />
