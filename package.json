@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "meta:insights": "tsx --env-file=.env.local scripts/meta-insights.ts",
+    "meta:refresh-token": "tsx --env-file=.env.local scripts/meta-refresh-token.ts",
+    "meta:creatives": "tsx --env-file=.env.local scripts/meta-creatives.ts",
+    "meta:budget": "tsx --env-file=.env.local scripts/meta-budget.ts",
+    "meta:pause": "tsx --env-file=.env.local scripts/meta-pause.ts",
+    "meta:resume": "tsx --env-file=.env.local scripts/meta-resume.ts",
+    "meta:create-ad": "tsx --env-file=.env.local scripts/meta-create-ad.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
@@ -32,6 +39,7 @@
     "playwright": "^1.57.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }
