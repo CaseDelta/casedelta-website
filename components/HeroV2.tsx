@@ -38,13 +38,13 @@ const TOOLS: Tool[] = [
 // Independent of TOOLS so the showcase can be tuned without breaking the
 // Phase 3 demo, which depends on Drive/Word/Gmail/Clio.
 const STACK_TOOLS: Pick<Tool, "name" | "src" | "hStack">[] = [
-  { name: "Outlook",    src: "/assets/integrations/outlook-new.jpg",     hStack: 28 },
-  { name: "Google",     src: "/assets/integrations/google-g.png",        hStack: 26 },
-  { name: "Clio",       src: "/assets/integrations/clio-icon.png",       hStack: 26 },
-  { name: "Westlaw",    src: "/assets/integrations/westlaw-icon.png",    hStack: 28 },
-  { name: "MyCase",     src: "/assets/integrations/mycase-icon.jpg",     hStack: 22 },
-  { name: "EvenUp",     src: "/assets/integrations/evenup-icon.png",     hStack: 26 },
-  { name: "QuickBooks", src: "/assets/integrations/quickbooks-icon.svg", hStack: 28 },
+  { name: "Filevine",  src: "/assets/integrations/filevine-icon.svg", hStack: 26 },
+  { name: "Clio",      src: "/assets/integrations/clio-icon.png",     hStack: 26 },
+  { name: "Microsoft", src: "/assets/integrations/microsoft.svg",     hStack: 24 },
+  { name: "Google",    src: "/assets/integrations/google-g.png",      hStack: 26 },
+  { name: "Dropbox",   src: "/assets/integrations/dropbox.svg",       hStack: 26 },
+  { name: "EvenUp",    src: "/assets/integrations/evenup-icon.png",   hStack: 26 },
+  { name: "CasePeer",  src: "/assets/integrations/casepeer-icon.png", hStack: 26 },
 ];
 
 // Stack-only "more" indicator — communicates that integrations extend beyond the named tools.

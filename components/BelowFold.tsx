@@ -362,14 +362,14 @@ export function BelowFold() {
           }}>
             {[
               { src: "/assets/integrations/clio.svg", name: "Clio", h: 22 },
+              { src: "/assets/integrations/filevine.svg", name: "Filevine", h: 22 },
               { src: "/assets/integrations/google-drive.svg", name: "Google Drive", h: 28 },
               { src: "/assets/integrations/gmail.svg", name: "Gmail", h: 24 },
-              { src: "/assets/integrations/google-calendar.svg", name: "Google Calendar", h: 26 },
               { src: "/assets/integrations/outlook.svg", name: "Outlook", h: 26 },
               { src: "/assets/integrations/dropbox.svg", name: "Dropbox", h: 26 },
-              { src: "/assets/integrations/quickbooks.svg", name: "QuickBooks", h: 22 },
-              { src: "/assets/integrations/docusign.svg", name: "DocuSign", h: 20 },
-              { src: "/assets/integrations/mycase.webp", name: "MyCase", h: 20 },
+              { src: "/assets/integrations/evenup-icon.png", name: "EvenUp", h: 26 },
+              { src: "/assets/integrations/neos-icon.svg", name: "Neos", h: 26 },
+              { src: "/assets/integrations/casepeer-icon.png", name: "CasePeer", h: 22 },
             ].map((logo, i) => (
               <motion.div
                 key={logo.name}
