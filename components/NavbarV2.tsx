@@ -57,6 +57,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
   const navLinks = [
     { label: "Features", href: "/features" },
     { label: "Use Cases", href: "/use-cases" },
+    { label: "Compare", href: "/compare" },
     { label: "Security", href: "/security" },
     { label: "Pricing", href: "/pricing" },
     { label: "Blog", href: "/blog" },
