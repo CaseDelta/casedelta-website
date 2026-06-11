@@ -294,8 +294,8 @@ export function BelowFold() {
             letterSpacing: "-0.03em",
             maxWidth: 640,
           }}>
-            Your client data stays inside your firm.{" "}
-            <span style={{ color: "#888" }}>Nothing is ever shared.</span>
+            Your clients&rsquo; data never leaves your walls.{" "}
+            <span style={{ color: "#888" }}>It never touches an outside AI model.</span>
           </motion.h2>
           <motion.p {...fade(0.1, reduced)} style={{
             fontFamily: FONT,
@@ -307,7 +307,7 @@ export function BelowFold() {
             maxWidth: 520,
             marginTop: 16,
           }}>
-            Most legal AI sends your client data to outside companies to process it. Delta doesn&apos;t. Everything runs inside CaseDelta, with a full audit trail for bar compliance.
+            Most legal AI ships your client files to OpenAI or Google to process them. Delta never does. Every model call runs inside CaseDelta, with a full audit trail. Bar compliant by architecture, not by policy.
           </motion.p>
           <motion.a
             {...fade(0.15, reduced)}

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CaseDelta: The Personal Assistant That Connects All Your Firm's Tools";
+export const alt = "CaseDelta: AI Associate for Plaintiff Law Firms";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,8 +43,8 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          The personal assistant that connects all your firm&apos;s tools
-          together, so you can manage all of them with a single sentence.
+          An AI associate that knows every case. Delta drives the tools your
+          firm already runs and keeps your client data inside your walls.
         </div>
         <div
           style={{

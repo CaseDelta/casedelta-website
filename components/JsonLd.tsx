@@ -31,7 +31,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/assets/branding/casedelta-logo-full.png`,
     description:
-      "CaseDelta is the personal assistant that runs across the tools your law firm already uses. Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar. Tell Delta what you need in one sentence.",
+      "CaseDelta is an AI associate for plaintiff law firms, covering personal injury, medical malpractice, mass tort, and employment. Delta drives the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and works real cases. No third party AI model touches client data, and client data never leaves the firm.",
     founder: {
       "@type": "Person",
       name: "Camren Hall",
@@ -55,14 +55,13 @@ export function WebAppSchema() {
     url: BASE_URL,
     applicationCategory: "BusinessApplication",
     description:
-      "Delta is the personal assistant for plaintiff law firms. It connects across Clio, Microsoft Word, Gmail or Outlook, Google Drive, and your calendar, and runs both legal research and administrative work in a single conversation.",
+      "Delta is an AI associate for plaintiff law firms. It drives the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and works real cases from one conversation: chronologies, demand letters, discovery, and client follow up. No third party AI model, and client data never leaves the firm.",
     browserRequirements: "Requires JavaScript and HTML5 support",
     offers: {
-      "@type": "AggregateOffer",
+      "@type": "Offer",
+      price: "349",
       priceCurrency: "USD",
-      lowPrice: "0",
-      highPrice: "2499",
-      offerCount: "4",
+      description: "$349 per user per month, flat. No tiers, add-ons, or setup fees.",
     },
     operatingSystem: "Web-based",
   };

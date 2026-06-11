@@ -483,7 +483,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                   display: "block",
                 }}
               >
-                Intake to resolution.
+                An AI associate that knows every case.
               </span>
               <span
                 style={{
@@ -497,7 +497,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                   marginTop: "clamp(12px, 1.5vw, 20px)",
                 }}
               >
-                Half the time. Without adding headcount.
+                Every answer grounded in your real matter, not generic law.
               </span>
             </motion.h1>
 
@@ -517,7 +517,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 maxWidth: 540,
               }}
             >
-              Delta is the personal assistant across your firm&rsquo;s existing tools. Tell Delta what you need. The work runs across your stack, so you stay on the partner-level calls.
+              Delta works inside the tools your firm already runs: case files, email, drive, and billing. It handles real associate work on every matter, and your clients&rsquo; data never leaves your walls.
             </motion.p>
 
             <motion.a
