@@ -12,10 +12,14 @@ const ACCENT = "#2563EB";
 const BORDER = "#EDEDED";
 const BASE_URL = "https://casedelta.com";
 
+/* ─── Rendering: ISR so DB-published posts appear without a rebuild ─── */
+export const revalidate = 600;
+export const dynamicParams = true;
+
 /* ─── Static params ─── */
 
-export function generateStaticParams() {
-  const tags = getAllTags();
+export async function generateStaticParams() {
+  const tags = await getAllTags();
   return tags.map((tag) => ({ tag: tag.toLowerCase() }));
 }
 
@@ -58,8 +62,8 @@ export default async function TagPage({ params }: PageProps) {
   const { tag } = await params;
   const displayTag = decodeURIComponent(tag);
   const capitalized = displayTag.charAt(0).toUpperCase() + displayTag.slice(1);
-  const posts = getPostsByTag(displayTag);
-  const allTags = getAllTags();
+  const posts = await getPostsByTag(displayTag);
+  const allTags = await getAllTags();
 
   return (
     <>
