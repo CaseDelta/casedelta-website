@@ -3,14 +3,14 @@ import SecurityClient from "./SecurityClient";
 import { BreadcrumbSchema, FAQSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Security: Private Enterprise Deployment",
+  title: "Security: Built for Bar Compliance",
   description:
-    "Your client data never touches a third-party AI provider. CaseDelta runs on a private enterprise deployment. Full audit trail. ABA Rule 1.6 compliant by architecture.",
+    "Per-firm data isolation, a full audit trail, and AI that never trains on your data. CaseDelta is built for ABA Rule 1.6 compliance.",
   alternates: { canonical: "https://casedelta.com/security" },
   openGraph: {
-    title: "Security: Private Enterprise Deployment",
+    title: "Security: Built for Bar Compliance",
     description:
-      "Your client data never touches a third-party AI provider. CaseDelta runs on a private enterprise deployment. Full audit trail. ABA Rule 1.6 compliant by architecture.",
+      "Per-firm data isolation, a full audit trail, and AI that never trains on your data. CaseDelta is built for ABA Rule 1.6 compliance.",
     url: "https://casedelta.com/security",
   },
 };
@@ -27,12 +27,12 @@ export default function SecurityPage() {
       <FAQSchema
         faqs={[
           {
-            question: "Does my client data go to OpenAI or other AI providers?",
-            answer: "No. Every AI model runs inside CaseDelta\u2019s own infrastructure. Your documents, case notes, and client information never touch OpenAI, Google, Anthropic, or any third-party AI service. This is architectural, not a policy that can be changed.",
+            question: "Does CaseDelta use third-party AI models like OpenAI or Anthropic?",
+            answer: "Delta runs on enterprise AI models, used under strict agreements: your data is never used to train any model, never retained by the provider, and never sold or shared. Every matter is isolated to your firm with a full, exportable audit trail for bar compliance.",
           },
           {
             question: "Is CaseDelta ABA Rule 1.6 compliant?",
-            answer: "Yes. ABA Rule 1.6 requires lawyers to make reasonable efforts to prevent unauthorized disclosure of client information. CaseDelta is designed for this: encrypted data at rest and in transit, complete data isolation per firm, full audit trail of every action, and no external AI processing.",
+            answer: "Yes. ABA Rule 1.6 requires lawyers to make reasonable efforts to prevent unauthorized disclosure of client information. CaseDelta is built for this: encrypted data at rest and in transit, per-firm data isolation, a full audit trail of every action, and enterprise AI used under strict no-retention and no-training agreements.",
           },
           {
             question: "What happens to my data if I cancel?",
@@ -40,11 +40,11 @@ export default function SecurityPage() {
           },
           {
             question: "Who can see my firm\u2019s data?",
-            answer: "Only authorized users at your firm. CaseDelta runs on a private enterprise deployment with complete data isolation between firms. No CaseDelta employee can access your case data without explicit authorization. No third-party AI providers touch your data.",
+            answer: "Only authorized users at your firm. CaseDelta isolates every firm\u2019s data, and no CaseDelta employee can access your case data without explicit authorization. The enterprise AI Delta uses never retains your data or uses it to train.",
           },
           {
             question: "Is there an audit trail?",
-            answer: "Yes. Every action Delta takes is logged: timestamp, document accessed, query made, answer generated, sources cited. The full audit trail is exportable for bar compliance review. This isn\u2019t optional. It\u2019s core architecture.",
+            answer: "Yes. Every action Delta takes is logged: timestamp, document accessed, query made, answer generated, sources cited. The full audit trail is exportable for bar compliance review. It is built in, not optional.",
           },
         ]}
       />

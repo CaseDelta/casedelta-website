@@ -2,6 +2,7 @@
 title: "Is Your Client Data Safe with Legal AI? An ABA Rule 1.6 Guide"
 description: "ABA Rule 1.6 requires reasonable efforts to protect client data. Here's what that means for legal AI tools, and the security questions every firm should ask."
 date: 2026-04-03
+updatedAt: 2026-06-11
 author: Camren Hall
 authorSlug: camren-hall
 tags: ["security", "ABA compliance", "legal AI"]
@@ -74,23 +75,21 @@ I've sat through dozens of legal tech demos. Here are the questions that separat
 
 **Takeaway:** Print these questions. Bring them to every demo. A vendor that fumbles on questions 1-3 isn't ready for law firm data.
 
-## What "Data Never Leaves" Actually Means
+## What to Look For Beyond a Privacy Promise
 
-This phrase gets used loosely in legal tech marketing. Let's define it precisely because the architecture matters more than the policy.
+"Your data is safe" is easy to say. Here is what actually backs it up, and what to ask any vendor to put in writing.
 
-**Policy-level "data never leaves"** means the vendor promises not to share your data. This is enforced by contract, not technology. If the vendor is breached, or if an employee goes rogue, the policy provides no technical protection. It's a promise. Promises get broken.
+- **No training on your data.** The single most important question. Your client information should never be used to train, fine-tune, or improve any AI model. Get it in writing, and confirm that the vendor's own AI providers are bound by the same no-training and no-retention terms.
+- **Per-matter isolation.** Your firm's data should be walled off from every other firm's, so an associate on the Smith case cannot pull data from the Jones case.
+- **Encryption at rest and in transit.** Standard, but confirm it explicitly.
+- **A real audit trail.** Every access and every action logged at the matter level, exportable for a bar inquiry.
+- **Contractual backing.** A Data Processing Agreement or BAA that names sub-processors and binds them to the same standards.
 
-**Architecture-level "data never leaves"** means the system is built so that your data physically cannot leave your environment. This includes:
+When CaseDelta talks about [keeping your data yours](/security), this is what we mean: each firm's data is isolated and encrypted, never used to train AI, never sold or shared, and every action Delta takes is captured in an audit trail you can export. The enterprise AI Delta runs on is used under strict no-retention and no-training agreements. We built it this way because a privacy promise alone does not survive a bar complaint. Documented, verifiable controls do.
 
-- **Tenant isolation:** Your firm's data is processed in an isolated compute environment. There's no shared database, no shared model weights that could leak information.
-- **Zero-knowledge encryption:** Data is encrypted with keys that only your firm controls. Even the vendor's engineers can't read your data without your key.
-- **On-premises or virtual private cloud deployment:** The AI runs within your firm's infrastructure boundary, not the vendor's.
+The 2025 Verizon Data Breach Investigations Report found that 68% of data breaches in professional services involved third-party vendors, which is exactly why sub-processor terms and no-retention agreements matter as much as the marketing claim.
 
-When CaseDelta says [your data stays inside your firm](/security), we mean architecture, not policy. Your firm's data is processed in an isolated environment, encrypted with firm-controlled keys, and never touches shared infrastructure. We built it this way because we talked to enough managing partners to know that a policy document doesn't survive a bar complaint — architecture does.
-
-The 2025 Verizon Data Breach Investigations Report found that 68% of data breaches in professional services involved third-party vendors. Architecture-level isolation eliminates the largest category of breach risk.
-
-**Takeaway:** When a vendor says "your data never leaves," ask: is that a policy or an architecture? The difference is the difference between a promise and a guarantee.
+**Takeaway:** Do not accept "your data is safe" at face value. Ask which protections are contractual and which are technical, and get both in writing.
 
 ## Audit Trails: Why They Matter for Bar Compliance
 

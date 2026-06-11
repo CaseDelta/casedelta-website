@@ -5,12 +5,12 @@ import { BreadcrumbSchema } from "@/components/JsonLd";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How CaseDelta protects your data. All processing happens inside CaseDelta's infrastructure. Your client data never leaves.",
+    "How CaseDelta protects your data. Each firm's data is isolated, encrypted, and never used to train AI, never sold or shared.",
   alternates: { canonical: "https://casedelta.com/privacy" },
   openGraph: {
     title: "Privacy Policy",
     description:
-      "How CaseDelta protects your data. All processing happens inside CaseDelta's infrastructure. Your client data never leaves.",
+      "How CaseDelta protects your data. Each firm's data is isolated, encrypted, and never used to train AI, never sold or shared.",
     url: "https://casedelta.com/privacy",
   },
 };

@@ -57,7 +57,7 @@ export const USE_CASES: UseCase[] = [
     stats: [
       { value: "5", label: "tools Delta runs across in a single conversation" },
       { value: "1 sentence", label: "to draft, send, and log a demand letter" },
-      { value: "0", label: "third-party AI providers touching your client data" },
+      { value: "0", label: "of your client data used to train AI models" },
     ],
     painPoints: [
       {
@@ -103,9 +103,9 @@ export const USE_CASES: UseCase[] = [
           "Walk in to a briefing of what changed over the weekend, what is due this week, and which adjusters owe you a response. Built across Clio, Outlook, and your calendar. The only proactive feature on Delta, by design.",
       },
       {
-        title: "Private enterprise deployment. Your data stays yours",
+        title: "Per-firm isolation. Your data stays yours",
         description:
-          "CaseDelta runs on a private enterprise deployment. Your client files never touch a shared model or a third-party AI provider. No training on your data. Enterprise-grade security, sized to your firm.",
+          "Each firm's data is isolated, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared. Every action Delta takes is logged for a full audit trail, sized to your firm.",
       },
     ],
     deltaLearnsExample: {
@@ -133,7 +133,7 @@ export const USE_CASES: UseCase[] = [
         {
           label: "Data handling",
           value:
-            "Private enterprise deployment. No third-party AI providers. No training on firm data.",
+            "Per-firm isolation. Encrypted at rest and in transit. Never used to train AI, never sold or shared.",
         },
       ],
     },
@@ -154,9 +154,9 @@ export const USE_CASES: UseCase[] = [
           "Delta ingests the records and produces a structured chronology with provider attribution, treatment timelines, and billing summaries. It flags gaps and inconsistencies. You get a chronology you can drop into the demand package, with source citations to every record.",
       },
       {
-        question: "Where does our client data go?",
+        question: "How does CaseDelta handle our client data?",
         answer:
-          "Nowhere outside CaseDelta. We run on a private enterprise deployment. Your firm's data never touches a third-party AI provider. No shared servers, no training on your files. This is the deployment model, not a setting.",
+          "Each firm's data is isolated and encrypted at rest and in transit. Your files are never used to train AI, and never sold or shared. Every action Delta takes is logged, giving you a full audit trail for bar compliance and reasonable efforts under ABA Rule 1.6.",
       },
       {
         question: "Does Delta replace Clio or our case management system?",
@@ -185,7 +185,7 @@ export const USE_CASES: UseCase[] = [
     stats: [
       { value: "2,400+", label: "avg pages of medical records per med mal case" },
       { value: "1", label: "conversation to chronology, draft, and send" },
-      { value: "0", label: "client data sent to third-party AI providers" },
+      { value: "0", label: "of client medical data used to train AI models" },
     ],
     painPoints: [
       {
@@ -231,9 +231,9 @@ export const USE_CASES: UseCase[] = [
           "What changed in your cases overnight, which deadlines hit this week, which experts owe responses, which deposition dates need a hold on the calendar. Built across Clio, Outlook, and Calendar.",
       },
       {
-        title: "Private enterprise deployment",
+        title: "Per-firm isolation",
         description:
-          "Your firm's medical records never touch a third-party AI provider. CaseDelta runs on a private enterprise deployment. No shared models, no training on your files. Enterprise-grade security, sized to your firm.",
+          "Your firm's medical records are isolated, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared. Every action Delta takes is logged for a full audit trail, sized to your firm.",
       },
     ],
     deltaLearnsExample: {
@@ -261,7 +261,7 @@ export const USE_CASES: UseCase[] = [
         {
           label: "Data handling",
           value:
-            "Private enterprise deployment. PHI never leaves CaseDelta. No third-party AI providers.",
+            "Per-firm isolation. Medical records encrypted at rest and in transit, never used to train AI, never sold or shared.",
         },
       ],
     },
@@ -282,9 +282,9 @@ export const USE_CASES: UseCase[] = [
           "Yes. Once the chronology is built, Delta drafts the complaint, certificate of merit, expert affidavit, or demand letter in Microsoft Word, in your firm's voice. The draft is saved to the case in Clio and attached to your review queue. The attorney signs off.",
       },
       {
-        question: "Where does our client data go?",
+        question: "How does CaseDelta handle our medical records?",
         answer:
-          "Nowhere outside CaseDelta. We run on a private enterprise deployment. PHI and case files never touch a third-party AI provider. No shared models, no training on your files. The deployment model is the protection, not a policy.",
+          "Each firm's medical records and case files are isolated and encrypted at rest and in transit. They are never used to train AI, and never sold or shared. Every action Delta takes is logged, giving you a full audit trail for bar compliance and reasonable efforts under ABA Rule 1.6.",
       },
       {
         question: "Does Delta replace Clio or our case management system?",
@@ -304,7 +304,7 @@ export const USE_CASES: UseCase[] = [
     title: "Employment Law",
     metaTitle: "CaseDelta for Plaintiff Employment Firms | Wage and Hour, Discrimination, Retaliation",
     metaDescription:
-      "Plaintiff employment firms run intake, drafting, and admin across Clio, Word, Gmail, and Drive. Delta runs all of it in one conversation, with private enterprise deployment.",
+      "Plaintiff employment firms run intake, drafting, and admin across Clio, Word, Gmail, and Drive. Delta runs all of it in one conversation, with per-firm data isolation.",
     heroHeadline: "Run intake, drafting, and admin in one conversation.",
     heroSubheadline:
       "Hand Delta the personnel file, the pay stubs, and the EEOC charge. Tell it what you need. Delta runs the wage calculations, drafts the complaint, sends the demand from your inbox, and logs the work in Clio. The work that ate your morning happens before your second coffee.",
@@ -313,7 +313,7 @@ export const USE_CASES: UseCase[] = [
     stats: [
       { value: "5+", label: "tools Delta runs across in a single conversation" },
       { value: "1", label: "conversation from intake to filed complaint" },
-      { value: "0", label: "third-party AI providers touching personnel files" },
+      { value: "0", label: "of personnel files used to train AI models" },
     ],
     painPoints: [
       {
@@ -359,9 +359,9 @@ export const USE_CASES: UseCase[] = [
           "Mass tort overlap or large class case? Delta drafts and sends personalized status updates to hundreds of plaintiffs at once, from your firm's email, with case-specific details. The attorney makes the calls. Delta makes them happen.",
       },
       {
-        title: "Private enterprise deployment",
+        title: "Per-firm isolation",
         description:
-          "Personnel files, pay records, and case strategy never leave CaseDelta. We run on a private enterprise deployment. No third-party AI providers, no training on your files.",
+          "Personnel files, pay records, and case strategy are isolated per firm, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared, with a full audit trail of every action.",
       },
     ],
     deltaLearnsExample: {
@@ -389,7 +389,7 @@ export const USE_CASES: UseCase[] = [
         {
           label: "Data handling",
           value:
-            "Private enterprise deployment. Personnel files and pay records never touch a third-party AI provider.",
+            "Per-firm isolation. Personnel files and pay records encrypted at rest and in transit, never used to train AI, never sold or shared.",
         },
       ],
     },
@@ -410,9 +410,9 @@ export const USE_CASES: UseCase[] = [
           "Yes. Delta drafts charges, complaints, demand letters, and discovery responses in Microsoft Word in your firm's voice. Drafts are saved to the matter in Clio for attorney review.",
       },
       {
-        question: "Where does our client data go?",
+        question: "How does CaseDelta handle our client data?",
         answer:
-          "Nowhere outside CaseDelta. Personnel files, pay records, and case strategy stay on a private enterprise deployment. No third-party AI providers, no training on your files.",
+          "Personnel files, pay records, and case strategy are isolated per firm and encrypted at rest and in transit. They are never used to train AI, and never sold or shared. Every action Delta takes is logged for a full audit trail and reasonable efforts under ABA Rule 1.6.",
       },
       {
         question: "Does Delta replace Clio or our case management system?",
@@ -441,7 +441,7 @@ export const USE_CASES: UseCase[] = [
     stats: [
       { value: "300+", label: "personalized plaintiff updates Delta can send in a morning" },
       { value: "1", label: "conversation to operate at firm-wide scale" },
-      { value: "0", label: "third-party AI providers touching plaintiff data" },
+      { value: "0", label: "of plaintiff data used to train AI models" },
     ],
     painPoints: [
       {
@@ -487,9 +487,9 @@ export const USE_CASES: UseCase[] = [
           "Across thousands of plaintiffs: which cases hit deadlines this week, which need partner attention, which plaintiffs have not responded in 30 days. Built across Clio, Outlook, and Calendar.",
       },
       {
-        title: "Private enterprise deployment",
+        title: "Per-firm isolation",
         description:
-          "Plaintiff data, settlement details, and case strategy never leave CaseDelta. We run on a private enterprise deployment. No third-party AI providers. No training on your files.",
+          "Plaintiff data, settlement details, and case strategy are isolated per firm, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared, with a full audit trail of every action.",
       },
     ],
     deltaLearnsExample: {
@@ -517,7 +517,7 @@ export const USE_CASES: UseCase[] = [
         {
           label: "Data handling",
           value:
-            "Private enterprise deployment. Plaintiff data never touches a third-party AI provider.",
+            "Per-firm isolation. Plaintiff data encrypted at rest and in transit, never used to train AI, never sold or shared.",
         },
       ],
     },
@@ -538,9 +538,9 @@ export const USE_CASES: UseCase[] = [
           "Yes. Delta produces plaintiff-specific drafts across your matter set in Microsoft Word, customized to each plaintiff's facts and saved to the right case in Clio. The attorney reviews and signs off.",
       },
       {
-        question: "Where does plaintiff data go?",
+        question: "How does CaseDelta handle plaintiff data?",
         answer:
-          "Nowhere outside CaseDelta. Plaintiff records, settlement details, and case strategy stay on a private enterprise deployment. No third-party AI providers, no training on your data.",
+          "Plaintiff records, settlement details, and case strategy are isolated per firm and encrypted at rest and in transit. They are never used to train AI, and never sold or shared. Every action Delta takes is logged for a full audit trail and reasonable efforts under ABA Rule 1.6.",
       },
       {
         question: "Does Delta replace Clio or our case management system?",
