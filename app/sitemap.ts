@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
+import { getAllComparisonSlugs } from "@/lib/comparisons";
 
 const BASE_URL = "https://casedelta.com";
 
@@ -38,6 +39,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/use-cases`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
 
+  // Comparison pages (index + per-competitor)
+  const compareIndex: MetadataRoute.Sitemap = [
+    { url: `${BASE_URL}/compare`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+  ];
+  const comparePages: MetadataRoute.Sitemap = getAllComparisonSlugs().map((slug) => ({
+    url: `${BASE_URL}/compare/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   // Blog posts (dynamic from MDX files)
   const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${BASE_URL}/blog/${post.slug}`,
@@ -46,5 +58,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...useCasesIndex, ...useCasePages, ...blogPages];
+  return [...staticPages, ...useCasesIndex, ...useCasePages, ...compareIndex, ...comparePages, ...blogPages];
 }
