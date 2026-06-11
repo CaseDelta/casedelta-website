@@ -1,70 +1,73 @@
 # CaseDelta Landing Page - AI Assistant Guide
 
 ## Project Overview
-CaseDelta is an A/B testing landing page for a legal document collection platform. It features 5 variants testing different visual approaches (light/dark themes with various hero layouts) to optimize conversion for legal professionals.
+CaseDelta's public marketing site (`casedelta.com`) — a single multi-page Next.js app: home, `/features`, `/use-cases`, `/blog` (MDX), `/pricing`, `/demo`, `/about`, `/security`, plus legal pages (`/privacy`, `/terms`). The current focus is the cold paid-Meta-traffic → `/demo` booking funnel.
 
-**Core Value Proposition:** "Get documents from clients without the follow-up headache" - AI-powered document collection and verification for law firms.
+**Core Value Proposition:** Delta is an AI associate that connects to the firm's existing tools (Clio, Filevine, Dropbox, Word, Gmail, etc.) and does the document-heavy cognitive work — chronologies, demand letters, follow-ups — that eats billable time. (The hero copy is the live source of truth for current positioning; see `components/HeroV2.tsx`.)
+
+> **History:** This started as a 5-variant A/B landing-page experiment (light/dark × hero layouts). Those variant routes were removed — `next.config.ts` permanently redirects `/light/*` and `/dark/*` → `/`. The A/B rewrite machinery still exists in `proxy.ts` but is gated off by default (`NEXT_PUBLIC_ENABLE_AB_TESTING`) and its target routes no longer exist, so it is vestigial. Don't re-enable it without rebuilding the variant pages.
 
 ## Tech Stack
-- **Framework:** Next.js 15 (App Router) + React 19 + TypeScript
+- **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
 - **Styling:** Tailwind CSS v3.4 with custom CSS variables
 - **Animation:** Framer Motion v11.15 (scroll-triggered effects)
-- **Analytics:** PostHog v1.311 (A/B testing & product analytics)
+- **Analytics:** PostHog v1.311 (product analytics + conversion attribution)
+- **Email:** Resend (contact / demo-booking notifications via `app/api/send`)
+- **Content:** MDX blog (`next-mdx-remote-client` + `gray-matter`), files in `content/blog/`
+- **Deploy:** Vercel (project `casedelta-website`). `main` is production — pushes/merges auto-deploy. No GitHub Actions CI; `npm run build` is the only gate.
 
 ## Project Structure
 ```
 app/
-├── layout.tsx              # Root layout with PostHog provider
-├── page.tsx                # Variant selector dashboard
-├── light/                  # Light theme variants
-│   ├── side/              # Variant A: Video beside text
-│   ├── bottom/            # Variant B: Video below text
-│   └── fullscreen/        # Variant E: Fullscreen video
-├── dark/                  # Dark theme variants
-│   ├── side/              # Variant C
-│   └── bottom/            # Variant D
-└── providers/
-    └── PostHogProvider.tsx
+├── layout.tsx              # Root layout: PostHog provider, MetaPixel, LinkedIn tag
+├── page.tsx                # Home page
+├── about/ features/ pricing/ demo/ security/ privacy/ terms/
+├── use-cases/              # Index + dynamic [slug] pages
+├── blog/                   # Index + [slug] (MDX) + tag/[tag]
+├── api/send/route.ts       # Resend contact/demo email handler
+├── providers/              # PostHogProvider
+├── sitemap.ts robots.ts opengraph-image.tsx
+└── globals.css
 
-components/                # Reusable React components
-├── Navbar.tsx            # Fixed navigation
-├── Hero.tsx              # Hero section (supports "side" | "bottom" layout)
-├── LandingContent.tsx    # Main landing page wrapper
-├── ValuePropSection.tsx  # Reusable value prop cards
-├── PageWrapper.tsx       # Theme wrapper (sets data-theme)
-└── SectionHeader.tsx     # Section titles
+components/                 # Reusable React components (V2 design system)
+├── HeroV2.tsx             # Animated hero (integration stack + demo video)
+├── NavbarV2.tsx FooterV2.tsx
+├── BelowFold.tsx BottomCTA.tsx SocialProof.tsx
+├── ContactModal.tsx        # Demo / pricing inquiry form
+├── MetaPixel.tsx LinkedInInsightTag.tsx JsonLd.tsx
+└── demo/                   # /demo booking flow components
 
-middleware.ts             # Edge middleware for A/B testing
+lib/                        # blog, use-cases, posthog, meta-pixel, linkedin, meta/* (Marketing API)
+scripts/                    # meta-*.ts (Marketing API CLI), check-*.ts (ad-status probes)
+content/blog/               # MDX blog posts
+proxy.ts                    # Next 16 middleware (renamed from middleware.ts): EU pixel geo-suppression
 ```
 
 ## Key Features
 
-### Zero-Flicker A/B Testing
-- Edge middleware assigns variants server-side before rendering
-- Cookie persistence (30 days) keeps users in same variant
-- URL rewriting: users see `casedelta.com`, backend serves `/light/side` etc.
-- Toggle with `NEXT_PUBLIC_ENABLE_AB_TESTING` env var
-- **Default:** Disabled (safe for development)
+### Edge Proxy & Geo-Suppression (`proxy.ts`)
+In Next.js 16 the `middleware.ts` convention was renamed to `proxy.ts` (exports `proxy()` + `config.matcher`). It runs on every page entry and:
+- **EU/EEA/UK/CH pixel suppression (live, compliance):** reads `x-vercel-ip-country`, sets a `cd_pixel_blocked=1` cookie for those jurisdictions; `MetaPixel.tsx` refuses to render when the cookie is present. **Do not weaken.**
+- **A/B variant rewrite (vestigial):** gated behind `NEXT_PUBLIC_ENABLE_AB_TESTING=true` (default off). The `/light/*` `/dark/*` target routes were removed, so this path no longer renders anything — leave it disabled.
 
 ### Design System
 - **Base Font Size:** 14px (custom CaseDelta standard, not 16px)
 - **Spacing:** 4px grid system
 - **Colors:** Grayscale-first palette, semantic colors only when needed
 - **Typography:** Harvey Serif (headings) + CaseDelta Sans (body)
-- **Themes:** Light and dark variants via CSS custom properties
+- **Theming:** CSS custom properties (defined in `globals.css`)
 - **Animation:** Respects `prefers-reduced-motion`
 
 ### Analytics Integration
 - PostHog lazy-loads after page render (zero Core Web Vitals impact)
-- `useTracking` hook for conversion tracking
-- Automatic variant tracking
+- Conversion tracking + first-touch UTM attribution (the `demo_booked` funnel is the conversion source of truth — see "Paid Meta Ads")
 - Optional: disabled if `NEXT_PUBLIC_POSTHOG_KEY` not set
 
 ## Environment Variables
 ```bash
 NEXT_PUBLIC_POSTHOG_KEY=phc_...                # PostHog API key (optional)
 NEXT_PUBLIC_POSTHOG_HOST=https://...           # PostHog endpoint
-NEXT_PUBLIC_ENABLE_AB_TESTING=false            # Toggle A/B testing
+NEXT_PUBLIC_ENABLE_AB_TESTING=false            # Vestigial A/B rewrite in proxy.ts — leave false (variant routes removed)
 NEXT_PUBLIC_POSTHOG_DEBUG=false                # Console logging
 NEXT_PUBLIC_META_PIXEL_ID=957094783732140      # Active Meta Pixel ID (see "Paid Meta Ads" section)
 NEXT_PUBLIC_LINKEDIN_PARTNER_ID=...            # LinkedIn Insight Tag partner ID
@@ -74,17 +77,16 @@ NEXT_PUBLIC_DEMO_BOOKING_URL=...               # Google appointment scheduler UR
 ```
 
 ## Important Files
-- `BRAND_GUIDELINES.md` - Complete design system specs
-- `AB_TESTING_README.md` - A/B testing architecture details
-- `DESIGN_REFERENCES.md` - Design inspiration sources
 - `design-tokens.json` - Machine-readable design tokens
-- `FONTS.md` - Font system documentation
+- `SEO_STRATEGY_2026.md` - SEO strategy / content plan
+- `components/HeroV2.tsx` - Hero (live positioning + integration stack)
+- `proxy.ts` - Next 16 edge middleware (EU pixel geo-suppression)
 
 ## Development Commands
 ```bash
 npm install          # Install dependencies
-npm run dev          # Start dev server (localhost:3002)
-npm run build        # Production build
+npm run dev          # Start dev server (localhost:3000)
+npm run build        # Production build (the only pre-deploy gate — no CI)
 npm start            # Start production server
 ```
 
@@ -148,7 +150,7 @@ CaseDelta runs paid Meta (Facebook/Instagram) ads to law firm partners across al
 - `components/MetaPixel.tsx`: base pixel loader, mounted in `app/layout.tsx`. Fires `PageView` on every client-side route change (the inline init script does NOT fire its own PageView, so the React effect is the single source of truth).
 - `lib/meta-pixel.ts`: typed helpers (`trackMetaCompleteRegistration`, `setMetaUserData`, `newEventId`). `setMetaUserData` calls `fbq('init', PIXEL_ID, userData)` to update Automatic Advanced Matching with the user's email/name.
 - `next.config.ts`: CSP allowlist for `connect.facebook.net` (script-src) and `www.facebook.com` (connect-src).
-- `middleware.ts`: edge proxy reads `x-vercel-ip-country`, sets `cd_pixel_blocked=1` cookie for EU/EEA/UK/CH visitors. The pixel refuses to render when this cookie is present. Legal compliance, do not weaken.
+- `proxy.ts`: Next 16 edge middleware (formerly `middleware.ts`) reads `x-vercel-ip-country`, sets `cd_pixel_blocked=1` cookie for EU/EEA/UK/CH visitors. The pixel refuses to render when this cookie is present. Legal compliance, do not weaken.
 
 ### Environment Variables (Meta)
 - `NEXT_PUBLIC_META_PIXEL_ID`: currently `957094783732140` in Vercel production. Required. Inlined at build time, so a swap needs a redeploy.
@@ -347,10 +349,20 @@ This means `properties.utm_term` in PostHog = Meta ad set ID, which you can join
 **Daily audit during a test week:**
 ```bash
 npm run meta:insights -- --level=ad --date-preset=yesterday
-# look at CTR + CompleteRegistration column. Then cross-check PostHog via fbclid SQL.
 ```
+The CLI surfaces both `clicks` (Meta's all-engagement counter — text-expand, image-tap, profile click) and `link_clicks` (actual outbound clicks). Use **`link_clicks`/`link_ctr`/`link_cpc` as the source of truth** for site-driving performance. A row with `clicks >> link_clicks` triggers a "phantom-click warning" automatically — the in-feed engagement isn't reaching the site (see GitHub issue #34 for the diagnostic that established this).
 
-**Picking a winner at end of a test week:** Don't pick on CTR alone. The winning ad is the one with the best **CTR × downstream conversion rate** (PostHog CompleteRegistration / clicks). High-CTR hooks that bounce on the landing page are false signals — they win the click but lose the lead.
+Cross-check with the saved PostHog funnel **"Meta Paid → Demo Booked (per ad)"** ([insight sk3TDNy7](https://us.posthog.com/project/275515/insights/sk3TDNy7)) for independent ground-truth conversion attribution per ad — `$pageview where utm_source=fb → demo_booked`, broken down by `utm_content` (Meta ad ID). PostHog is the conversion source of truth because Meta's pixel undercounts on iOS Safari / FBIA / ad-blocked users.
+
+**Sample-size rule (stopping criteria for a test week):**
+Don't pick a winner until BOTH thresholds are met. Volumes below these are statistical noise.
+- **CTR-based winner**: ≥30 link_clicks per ad. Below this, link_ctr swings wildly on N=1-3 effects.
+- **Conversion-based winner**: ≥5 demo_booked events on the leading ad. Below this, a 1-event gap is noise, not signal.
+- **Under-tested ads**: if any ad has <10 link_clicks after 14 days, treat it as undertested (Meta's algorithm never gave it a fair shake) — exclude it from the dimension read rather than declaring it lost.
+- **If after 14 days no ad reaches 30 link_clicks**: the audience size or daily budget is too small to test this many dimensions in parallel. Drop to 3 ads max for the next iteration, or scale daily budget.
+- Current pace at $20/day produces ~3-8 link_clicks per ad per day across 6 ads. Plan a test week to last 10-14 days, not 7.
+
+**Picking a winner at end of a test week:** Don't pick on link_ctr alone. The winning ad is the one with the best **link_ctr × downstream conversion rate** (PostHog demo_booked / link_clicks). High-link-CTR hooks that bounce on the landing page are still false signals — they win the click but lose the lead.
 
 ### Creative Rewrite Workflow (rewrite all ads in an ad set)
 
@@ -509,55 +521,40 @@ When asked to "audit yesterday's ads" or similar:
 - `NEXT_PUBLIC_META_PIXEL_ID` in Vercel env vars (this is the live pixel)
 - `MetaPixel` mount in `app/layout.tsx`
 - CSP allowlist for `connect.facebook.net` / `www.facebook.com` in `next.config.ts`
-- EU geo-suppression in `middleware.ts` + the `cd_pixel_blocked` check in `MetaPixel`
+- EU geo-suppression in `proxy.ts` + the `cd_pixel_blocked` check in `MetaPixel`
 - FB domain verification meta tag in `app/layout.tsx`
 - Live ad set `PBC_Partners_ADSET` (52531549521005) configuration (real spend is attached)
 - The 5 live ad creatives in Processing (Meta may reject re-edits during review)
 
 ## Common Tasks
 
-### Adding a New Variant
-1. Create route in `app/[theme]/[layout]/page.tsx`
-2. Update middleware.ts with new variant
-3. Add to variant selector in `app/page.tsx`
+### Adding a Page
+1. Create `app/<route>/page.tsx` (App Router). Add `metadata` for SEO.
+2. Register it in `app/sitemap.ts` and add any old-URL redirects in `next.config.ts`.
+
+### Adding a Blog Post
+1. Drop a `.mdx` file in `content/blog/` with frontmatter (title, description, date, tags).
+2. It auto-surfaces on `/blog` and `/blog/[slug]` (see `lib/blog.ts`).
 
 ### Modifying Design Tokens
 1. Edit CSS variables in `app/globals.css`
 2. Update `design-tokens.json` for documentation
-3. Both light and dark themes use same variable names
 
 ### Tracking Conversions
-```typescript
-import { useTracking } from '@/hooks/useTracking';
-
-const { trackConversion } = useTracking();
-trackConversion('cta_click', { location: 'hero' });
-```
-
-### Testing A/B Testing Locally
-1. Set `NEXT_PUBLIC_ENABLE_AB_TESTING=true` in `.env.local`
-2. Visit `http://localhost:3002`
-3. Clear `casedelta_variant` cookie to get reassigned
-4. Check Network tab for variant assignment
+- PostHog captures pageviews + UTM first-touch automatically (see `lib/posthog.ts`).
+- The demo-booking conversion fires `trackMetaCompleteRegistration` (`lib/meta-pixel.ts`) from `components/demo/DemoBody.tsx` `handleBooked()`, and a `demo_booked` PostHog event.
 
 ## Design Philosophy
 - **Minimalist & Professional:** Inspired by Harvey, Rogo, Sierra
 - **Grayscale-First:** Color only for semantic meaning
 - **Accessibility:** WCAG 2.1 AA compliant
-- **Performance:** Zero-flicker A/B testing, lazy-loaded analytics
+- **Performance:** Lazy-loaded analytics, zero Core Web Vitals impact
 - **Mobile-First:** Responsive design from smallest screens up
 
 ## Current State
-- A/B testing infrastructure: Complete & ready (disabled by default)
-- 5 variants fully implemented
+- Multi-page marketing site (home, features, use-cases, blog, pricing, demo, security, legal) live in production on Vercel
 - PostHog analytics: Integrated but optional
 - LinkedIn Insight Tag: Live in production
 - Meta Pixel: Live in production (pixel `957094783732140`, see "Paid Meta Ads" section)
 - Paid Meta ad set `PBC_Partners_ADSET` (52531549521005) live, $20/day, 6 ads (PBC-AD-1 through PBC-AD-6) testing 6 cross-dimensional pain hooks per the PBC Week 1 framework (rewrite shipped 2026-05-19)
-- Ready for production deployment
-
-## Next Steps (Typical)
-1. Replace placeholder video with actual product demo (`/public/videos/`)
-2. Add real feature screenshots to value prop sections
-3. Enable A/B testing in production
-4. Monitor PostHog for variant performance
+- A/B variant routing: removed (vestigial machinery only, see "Edge Proxy & Geo-Suppression")
