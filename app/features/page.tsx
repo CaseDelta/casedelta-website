@@ -42,9 +42,9 @@ export default function FeaturesPage() {
               "No. Delta connects to Clio and works alongside it. Cases, contacts, and time entries continue to live in Clio. Delta reads from and writes to Clio so your case management stays the source of truth.",
           },
           {
-            question: "Where does our client data go?",
+            question: "How does CaseDelta handle our client data?",
             answer:
-              "Nowhere outside CaseDelta. We run on a private enterprise deployment. Your firm's data never touches a third-party AI provider. No shared models, no training on your files. Enterprise-grade security, sized to your firm.",
+              "Each firm's data is isolated and encrypted at rest and in transit. Your files are never used to train AI, and never sold or shared. Every action Delta takes is logged for a full audit trail, supporting bar compliance and reasonable efforts under ABA Rule 1.6.",
           },
           {
             question: "What does the morning briefing actually do?",

@@ -12,7 +12,7 @@ export default function PrivacyClient() {
     <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="May 6, 2026">
       <LegalSectionV2 title="How We Process Your Data">
         <p>
-          All document processing happens entirely within CaseDelta&apos;s own infrastructure. Your documents are never sent to any third-party AI provider for processing or training. Every AI model that analyzes your documents runs inside CaseDelta&apos;s secure environment.
+          Each firm&apos;s data is isolated and encrypted both at rest and in transit. Your documents are never used to train AI, and never sold or shared. You control your data: you can export it and request its deletion at any time.
         </p>
         <p style={{ marginTop: 12 }}>
           Documents are encrypted both at rest and in transit. Delta processes your files solely to provide the service you&apos;ve requested &mdash; building chronologies, identifying anomalies, generating case briefs, and learning your firm&apos;s preferences over time.
@@ -60,7 +60,7 @@ export default function PrivacyClient() {
           How Google User Data Is Used
         </h3>
         <p>
-          Data received from Google APIs is used solely to provide the services the attorney has requested: document retrieval, chronology generation, correspondence drafting, and calendaring. It is processed inside CaseDelta&apos;s secure infrastructure, segregated per firm, and returned to the attorney as answers, drafts, or generated documents.
+          Data received from Google APIs is used solely to provide the services the attorney has requested: document retrieval, chronology generation, correspondence drafting, and calendaring. It is processed under per-firm isolation, encrypted in transit and at rest, and returned to the attorney as answers, drafts, or generated documents.
         </p>
 
         <h3 style={{ fontSize: 18, fontWeight: 600, color: "#333", marginTop: 28, marginBottom: 12, letterSpacing: "-0.015em" }}>
@@ -103,7 +103,7 @@ export default function PrivacyClient() {
       </LegalSectionV2>
 
       <LegalSectionV2 title="What We Never Do">
-        <p>These commitments are architectural, not policy. They are built into how CaseDelta works:</p>
+        <p>These commitments are core to how CaseDelta operates:</p>
         <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
           <li style={{ marginBottom: 8 }}>
             <strong>We never use your data to train AI models.</strong> Your documents, queries, and Delta&apos;s responses are never fed back into any model&apos;s training pipeline.

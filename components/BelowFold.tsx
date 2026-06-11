@@ -294,8 +294,8 @@ export function BelowFold() {
             letterSpacing: "-0.03em",
             maxWidth: 640,
           }}>
-            Your client data stays inside your firm.{" "}
-            <span style={{ color: "#888" }}>Nothing is ever shared.</span>
+            Your clients&rsquo; data is yours, and only yours.{" "}
+            <span style={{ color: "#888" }}>Never sold, never shared, never used to train AI.</span>
           </motion.h2>
           <motion.p {...fade(0.1, reduced)} style={{
             fontFamily: FONT,
@@ -307,7 +307,7 @@ export function BelowFold() {
             maxWidth: 520,
             marginTop: 16,
           }}>
-            Most legal AI sends your client data to outside companies to process it. Delta doesn&apos;t. Everything runs inside CaseDelta, with a full audit trail for bar compliance.
+            Delta runs each firm&rsquo;s matters in an isolated environment with a full audit trail for bar compliance. Your clients&rsquo; information is never sold, shared, or used to train AI models, and it is never repurposed beyond the work you ask Delta to do.
           </motion.p>
           <motion.a
             {...fade(0.15, reduced)}

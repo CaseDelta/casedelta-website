@@ -30,8 +30,8 @@ const VALUES = [
   },
   {
     heading: "Your data stays yours.",
-    body: "CaseDelta runs on a private enterprise deployment. Client files never touch a shared model or a third-party AI provider. No training on your data. The deployment model is the protection, not a checkbox.",
-    label: "Private deployment",
+    body: "Each firm's data is isolated, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared, and every action Delta takes is logged. A full audit trail for bar compliance, built in.",
+    label: "Per-firm isolation",
   },
 ];
 
