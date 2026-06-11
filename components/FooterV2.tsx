@@ -9,6 +9,8 @@ const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
 const NAV_LINKS = [
   { label: "Features", href: "/features" },
   { label: "Use Cases", href: "/use-cases" },
+  { label: "Compare", href: "/compare" },
+  { label: "Answers", href: "/answers" },
   { label: "Security", href: "/security" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
