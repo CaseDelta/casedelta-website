@@ -1,9 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import type { UseCase } from "@/lib/use-cases";
+import { getComparisonBySlug } from "@/lib/comparisons";
+
+/* Per-practice-area related comparisons (cross-links into the /compare funnel) */
+const RELATED_COMPARE: Record<string, string[]> = {
+  "personal-injury": ["casedelta-vs-evenup", "casedelta-vs-supio", "casedelta-vs-clio"],
+  "medical-malpractice": ["casedelta-vs-supio", "casedelta-vs-evenup", "casedelta-vs-eve"],
+  "employment-law": ["casedelta-vs-clio", "casedelta-vs-chatgpt", "casedelta-vs-proplaintiff"],
+  "mass-tort": ["casedelta-vs-supio", "casedelta-vs-evenup", "casedelta-vs-proplaintiff"],
+};
 
 /* ─── Design Tokens ─── */
 
@@ -767,6 +777,46 @@ export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
           </motion.a>
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════
+          RELATED COMPARISONS (cross-link to /compare)
+          ═══════════════════════════════════════ */}
+      {(RELATED_COMPARE[useCase.slug] ?? []).length > 0 && (
+        <section style={{ borderTop: `1px solid ${BORDER}` }}>
+          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(56px, 7vw, 88px) clamp(24px, 4vw, 48px)" }}>
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: EASE_OUT }}
+              style={{ fontFamily: FONT, fontSize: "clamp(22px, 2.6vw, 32px)", fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.025em", margin: "0 0 8px" }}
+            >
+              Comparing your options?
+            </motion.h2>
+            <p style={{ fontFamily: FONT, fontSize: "clamp(14px, 1.2vw, 17px)", color: "#666", lineHeight: 1.6, margin: "0 0 clamp(20px, 3vw, 32px)", maxWidth: 560 }}>
+              See how CaseDelta stacks up against the tools firms like yours evaluate.
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              {(RELATED_COMPARE[useCase.slug] ?? []).map((slug) => {
+                const c = getComparisonBySlug(slug);
+                if (!c) return null;
+                return (
+                  <Link
+                    key={slug}
+                    href={`/compare/${slug}`}
+                    style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: FONT, fontSize: 14, fontWeight: 600, color: DELTA_BLUE, textDecoration: "none", border: `1px solid ${BORDER}`, borderRadius: 999, padding: "10px 18px", backgroundColor: "#FAFAFA" }}
+                  >
+                    CaseDelta vs {c.competitor}
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                      <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ═══════════════════════════════════════
           FOOTER
