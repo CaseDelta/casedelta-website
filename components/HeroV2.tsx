@@ -32,6 +32,7 @@ const TOOLS: Tool[] = [
   { name: "Clio",           src: "/assets/integrations/clio.svg",           hStack: 18, hExec: 42 }, // 4
   { name: "Westlaw",        src: "/assets/integrations/westlaw.svg",        hStack: 26, hExec: 52 }, // 5
   { name: "DocuSign",       src: "/assets/integrations/docusign.svg",       hStack: 14, hExec: 42 }, // 6
+  { name: "Dropbox",        src: "/assets/integrations/dropbox.svg",        hStack: 24, hExec: 52 }, // 7
 ];
 
 // STACK_TOOLS — Phase 2 "That connects all your firm's tools together" list.
@@ -59,17 +60,18 @@ const MoreIconSvg = (
 );
 
 // Execution sequence: each tool gets an action verb that fades in with a green check on completion.
-// Order matches the query: analyze discovery (Drive) → draft chronology (Word) → email (Gmail) → update Clio.
+// Order matches the query: draft chronology + demand letter (Word) → sync Dropbox → sync Clio.
+// The records themselves are the attached document stack (the chip), not a separate integration,
+// so there's no "analyze cloud storage" step — and we show only ONE cloud store (Dropbox), not two.
 const EXECS: { toolIdx: number; label: string }[] = [
-  { toolIdx: 3, label: "Analyzed" }, // Google Drive — read the discovery set
-  { toolIdx: 1, label: "Drafted" },  // Microsoft Word — chronology built
-  { toolIdx: 2, label: "Sent" },     // Gmail — sent to opposing counsel
-  { toolIdx: 4, label: "Updated" },  // Clio — case file updated
+  { toolIdx: 1, label: "Drafted" }, // Microsoft Word — chronology + demand letter
+  { toolIdx: 7, label: "Synced" },  // Dropbox — synced both documents
+  { toolIdx: 4, label: "Synced" },  // Clio — synced both documents
 ];
 
 const SUCCESS_GREEN = "#10B981";
 
-const QUERY = "Build a surgical chronology from this discovery, email it to opposing counsel, and update Chen v. Mercy in Clio.";
+const QUERY = "Build a chronology from these records, draft a demand letter, and sync our Dropbox and Clio with both";
 
 /* ─── Document stack icon (simulates a Finder-style folder of papers) ─── */
 function DocumentStack({ glow }: { glow?: boolean }) {
