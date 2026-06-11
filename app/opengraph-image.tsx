@@ -44,7 +44,7 @@ export default function OGImage() {
           }}
         >
           An AI associate that knows every case. Delta drives the tools your
-          firm already runs and keeps your client data inside your walls.
+          firm already runs and never trains AI on your client data.
         </div>
         <div
           style={{

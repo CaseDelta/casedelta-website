@@ -517,7 +517,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 maxWidth: 540,
               }}
             >
-              Delta works inside the tools your firm already runs: case files, email, drive, and billing. It handles real associate work on every matter, and your clients&rsquo; data never leaves your walls.
+              Delta works inside the tools your firm already runs: case files, email, drive, and billing. It handles real associate work on every matter, and your clients&rsquo; data is never sold, shared, or used to train AI.
             </motion.p>
 
             <motion.a
