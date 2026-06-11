@@ -4,9 +4,9 @@ import { getAllComparisonSlugs } from "@/lib/comparisons";
 
 const BASE_URL = "https://casedelta.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
 
   // Static marketing pages
   const staticPages: MetadataRoute.Sitemap = [

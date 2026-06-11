@@ -41,11 +41,14 @@ function formatDate(dateStr: string): string {
   });
 }
 
+/* ─── Rendering: ISR so DB-published posts appear without a rebuild ─── */
+export const revalidate = 600;
+
 /* ─── Page ─── */
 
-export default function BlogIndexPage() {
-  const posts = getAllPosts();
-  const tags = getAllTags();
+export default async function BlogIndexPage() {
+  const posts = await getAllPosts();
+  const tags = await getAllTags();
 
   return (
     <>

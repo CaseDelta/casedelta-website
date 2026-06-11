@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { getDbPool } from "./db";
 
 /* ─── Types ─── */
 
@@ -30,7 +31,7 @@ export interface PostWithContent extends Post {
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
-/* ─── Helpers ─── */
+/* ─── File-based source (legacy posts committed in content/blog) ─── */
 
 function getMdxFiles(): string[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
@@ -47,7 +48,6 @@ function parsePost(filename: string): PostWithContent | null {
 
   const frontmatter = data as PostFrontmatter;
 
-  // gray-matter auto-parses YAML dates into Date objects — normalize to strings
   if ((frontmatter.date as unknown) instanceof Date) {
     frontmatter.date = (frontmatter.date as unknown as Date).toISOString().split("T")[0];
   }
@@ -55,71 +55,115 @@ function parsePost(filename: string): PostWithContent | null {
     frontmatter.updatedAt = (frontmatter.updatedAt as unknown as Date).toISOString().split("T")[0];
   }
 
-  // Filter out drafts in production
   if (IS_PRODUCTION && frontmatter.draft) return null;
 
   return { slug, frontmatter, content };
 }
 
-/* ─── Public API ─── */
+function getFilePosts(): PostWithContent[] {
+  return getMdxFiles()
+    .map(parsePost)
+    .filter((p): p is PostWithContent => p !== null);
+}
 
-/**
- * Returns all published posts sorted by date (newest first).
- */
-export function getAllPosts(): Post[] {
-  const files = getMdxFiles();
-  const posts: Post[] = [];
+/* ─── DB-based source (CMS posts in marketing_blog_posts) ─── */
 
-  for (const file of files) {
-    const post = parsePost(file);
-    if (post) {
-      posts.push({ slug: post.slug, frontmatter: post.frontmatter });
-    }
+interface DbRow {
+  slug: string;
+  title: string;
+  description: string;
+  body_mdx: string;
+  tags: string[] | null;
+  author: string;
+  author_slug: string | null;
+  og_image: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+function toIsoDate(d: string | Date | null): string {
+  if (!d) return new Date().toISOString().split("T")[0];
+  const dt = typeof d === "string" ? new Date(d) : d;
+  return dt.toISOString().split("T")[0];
+}
+
+function rowToPost(row: DbRow): PostWithContent {
+  return {
+    slug: row.slug,
+    frontmatter: {
+      title: row.title,
+      description: row.description,
+      date: toIsoDate(row.published_at ?? row.created_at),
+      updatedAt: toIsoDate(row.updated_at),
+      author: row.author,
+      authorSlug: row.author_slug ?? undefined,
+      tags: row.tags ?? [],
+      image: row.og_image ?? undefined,
+    },
+    content: row.body_mdx,
+  };
+}
+
+/** Fetch published CMS posts. Returns [] (never throws) if the DB is unwired or errors. */
+async function getDbPosts(): Promise<PostWithContent[]> {
+  const db = getDbPool();
+  if (!db) return [];
+  try {
+    const { rows } = await db.query<DbRow>(
+      `select slug, title, description, body_mdx, tags, author, author_slug, og_image,
+              published_at, created_at, updated_at
+       from public.marketing_blog_posts
+       where status = 'published'`
+    );
+    return rows.map(rowToPost);
+  } catch (err) {
+    console.error("[blog] DB fetch failed, falling back to file posts:", (err as Error).message);
+    return [];
   }
+}
 
-  return posts.sort(
-    (a, b) =>
-      new Date(b.frontmatter.date).getTime() -
-      new Date(a.frontmatter.date).getTime()
+/* ─── Merge ─── */
+
+async function getAllPostsWithContent(): Promise<PostWithContent[]> {
+  const [filePosts, dbPosts] = await Promise.all([
+    Promise.resolve(getFilePosts()),
+    getDbPosts(),
+  ]);
+  // DB takes precedence on slug collision.
+  const bySlug = new Map<string, PostWithContent>();
+  for (const p of filePosts) bySlug.set(p.slug, p);
+  for (const p of dbPosts) bySlug.set(p.slug, p);
+  return Array.from(bySlug.values()).sort(
+    (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
   );
 }
 
-/**
- * Returns a single post by slug, including raw MDX content.
- */
-export function getPostBySlug(slug: string): PostWithContent | null {
-  const files = getMdxFiles();
-  const filename = files.find(
-    (f) => f.replace(/\.mdx?$/, "") === slug
-  );
-  if (!filename) return null;
-  return parsePost(filename);
+/* ─── Public API (async) ─── */
+
+export async function getAllPosts(): Promise<Post[]> {
+  const posts = await getAllPostsWithContent();
+  return posts.map(({ slug, frontmatter }) => ({ slug, frontmatter }));
 }
 
-/**
- * Returns all posts matching the given tag (case-insensitive).
- */
-export function getPostsByTag(tag: string): Post[] {
+export async function getPostBySlug(slug: string): Promise<PostWithContent | null> {
+  const posts = await getAllPostsWithContent();
+  return posts.find((p) => p.slug === slug) ?? null;
+}
+
+export async function getPostsByTag(tag: string): Promise<Post[]> {
   const normalizedTag = tag.toLowerCase();
-  return getAllPosts().filter((post) =>
+  const posts = await getAllPosts();
+  return posts.filter((post) =>
     post.frontmatter.tags.some((t) => t.toLowerCase() === normalizedTag)
   );
 }
 
-/**
- * Returns all unique tags across published posts, sorted alphabetically.
- */
-export function getAllTags(): string[] {
-  const posts = getAllPosts();
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getAllPosts();
   const tagSet = new Set<string>();
-
   for (const post of posts) {
-    for (const tag of post.frontmatter.tags) {
-      tagSet.add(tag);
-    }
+    for (const tag of post.frontmatter.tags) tagSet.add(tag);
   }
-
-  return Array.from(tagSet).sort((a, b) =>
-    a.toLowerCase().localeCompare(b.toLowerCase())
-  );
+  return Array.from(tagSet).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }

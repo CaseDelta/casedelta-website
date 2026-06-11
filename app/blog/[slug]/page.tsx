@@ -14,10 +14,14 @@ const ACCENT = "#2563EB";
 const BORDER = "#EDEDED";
 const BASE_URL = "https://casedelta.com";
 
+/* ─── Rendering: ISR so DB-published posts appear without a rebuild ─── */
+export const revalidate = 600;
+export const dynamicParams = true;
+
 /* ─── Static params ─── */
 
-export function generateStaticParams() {
-  const posts = getAllPosts();
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
@@ -31,7 +35,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return {};
 
   const { frontmatter } = post;
@@ -91,7 +95,7 @@ function getReadingTime(content: string): number {
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
   const { frontmatter, content } = post;
