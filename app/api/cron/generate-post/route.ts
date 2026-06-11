@@ -125,6 +125,8 @@ Content cluster: ${topic.cluster ?? "general"}`;
   post.title = stripDashes(post.title);
   post.description = stripDashes(post.description);
   post.body_mdx = stripDashes(post.body_mdx);
+  // The page metadata template already appends " | CaseDelta"; strip any the model added.
+  post.title = post.title.replace(/\s*[|·\-–—]\s*CaseDelta\s*$/i, "").trim();
 
   // guardrail: reject if it slipped a banned absolute security claim or a competitor data-flow claim
   const banned = /no third[- ]party (llm|ai)|data never leaves|never touches an outside|sends? your (data|files) to openai/i;
