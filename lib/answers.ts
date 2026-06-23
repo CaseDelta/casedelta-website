@@ -28,14 +28,14 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
       {
         question: "What is CaseDelta?",
         answer:
-          "CaseDelta is an AI associate for plaintiff law firms. The assistant, Delta, drives the tools a firm already uses, including Clio, Filevine, MyCase, Google, Microsoft, and billing, from one chat. It works real cases end to end: chronologies, demand letters, discovery, intake, and client follow-up.",
+          "CaseDelta is an AI associate for litigation firms. The assistant, Delta, connects across the tools a firm already uses, including Clio, Filevine, MyCase, Google, Microsoft, and billing, and keeps every matter current: deadlines, open tasks, missing records, and client communication. It also does the work end to end: chronologies, demand letters and responses, discovery, intake, and client follow-up.",
         href: "/features",
         hrefLabel: "See what Delta does",
       },
       {
         question: "Who is CaseDelta built for?",
         answer:
-          "CaseDelta is built for plaintiff law firms of 5 to 50 attorneys, with a primary focus on personal injury, medical malpractice, and mass tort. The same product also serves employment and other litigation practices. It is designed for document-heavy, integration-rich, chronology-driven work.",
+          "CaseDelta is built for growing litigation firms, typically 5 to 50 attorneys, across personal injury, medical malpractice, insurance defense, commercial litigation, IP, immigration, and more. It is designed for document-heavy, integration-rich practices where a connected, always-current picture of every matter saves real billable time.",
         href: "/use-cases",
         hrefLabel: "Browse practice areas",
       },

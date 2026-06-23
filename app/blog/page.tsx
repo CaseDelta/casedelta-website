@@ -15,16 +15,16 @@ const BASE_URL = "https://casedelta.com";
 /* ─── Metadata ─── */
 
 export const metadata: Metadata = {
-  title: "Blog: Legal AI Insights for Plaintiff Firms",
+  title: "Blog: Legal AI Insights for Litigation Firms",
   description:
-    "Insights on horizontal AI for law firms, plaintiff workflows, and how CaseDelta runs across the tools your firm already uses. Written by the CaseDelta team.",
+    "Insights on connected AI for law firms, litigation workflows, and how CaseDelta runs across the tools your firm already uses. Written by the CaseDelta team.",
   alternates: {
     canonical: `${BASE_URL}/blog`,
   },
   openGraph: {
-    title: "Blog: Legal AI Insights for Plaintiff Firms",
+    title: "Blog: Legal AI Insights for Litigation Firms",
     description:
-      "Insights on horizontal AI for law firms, plaintiff workflows, and how CaseDelta runs across the tools your firm already uses.",
+      "Insights on connected AI for law firms, litigation workflows, and how CaseDelta runs across the tools your firm already uses.",
     url: `${BASE_URL}/blog`,
     type: "website",
   },

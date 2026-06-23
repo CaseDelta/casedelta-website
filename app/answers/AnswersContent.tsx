@@ -35,7 +35,7 @@ export function AnswersContent() {
             transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
             style={{ fontSize: "clamp(17px, 1.7vw, 22px)", color: SUBTITLE_BLUE, lineHeight: 1.45, letterSpacing: "-0.02em", marginTop: "clamp(20px, 2.5vw, 32px)", maxWidth: 680 }}
           >
-            CaseDelta is an AI associate for plaintiff law firms that drives the tools you already use. Here are direct answers to the questions firms ask most.
+            CaseDelta is an AI associate for litigation firms that connects across the tools you already use. Here are direct answers to the questions firms ask most.
           </motion.p>
 
           {/* on-page nav (internal links + jump links) */}

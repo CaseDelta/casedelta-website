@@ -5,7 +5,7 @@ import { DemoClient } from "./DemoClient";
 export const metadata: Metadata = {
   title: "Book a Demo. See Delta Running on Your Firm's Workflow",
   description:
-    "20 minutes. See Delta connect every tool your firm uses (Clio, Word, Gmail, Drive) and turn hours of legal work into one sentence. Built for plaintiff firms.",
+    "20 minutes. See Delta connect every tool your firm uses (Clio, Word, Gmail, Drive), keep every matter current, and turn hours of legal work into one sentence. Built for litigation firms.",
   alternates: { canonical: "https://casedelta.com/demo" },
   robots: {
     index: false,

@@ -103,9 +103,9 @@ export const USE_CASES: UseCase[] = [
           "Walk in to a briefing of what changed over the weekend, what is due this week, and which adjusters owe you a response. Built across Clio, Outlook, and your calendar. The only proactive feature on Delta, by design.",
       },
       {
-        title: "Per-firm isolation. Your data stays yours",
+        title: "Enterprise security. Your data stays yours",
         description:
-          "Each firm's data is isolated, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared. Every action Delta takes is logged for a full audit trail, sized to your firm.",
+          "Delta runs on enterprise AI under strict agreements: your data is never used to train any model and never retained by the provider. Each firm's data is isolated to the firm, encrypted at rest and in transit, with a signed BAA so client PII and PHI are secure, and a full audit trail of every action.",
       },
     ],
     deltaLearnsExample: {
@@ -156,7 +156,7 @@ export const USE_CASES: UseCase[] = [
       {
         question: "How does CaseDelta handle our client data?",
         answer:
-          "Each firm's data is isolated and encrypted at rest and in transit. Your files are never used to train AI, and never sold or shared. Every action Delta takes is logged, giving you a full audit trail for bar compliance and reasonable efforts under ABA Rule 1.6.",
+          "Delta runs on enterprise AI under strict agreements: your client data is never used to train any model and never retained by the provider. Each firm's data is isolated to the firm and encrypted at rest and in transit, with a signed BAA covering PII and PHI. Every action is logged for a full audit trail supporting reasonable efforts under ABA Rule 1.6.",
       },
       {
         question: "Does Delta replace Clio or our case management system?",
@@ -231,9 +231,9 @@ export const USE_CASES: UseCase[] = [
           "What changed in your cases overnight, which deadlines hit this week, which experts owe responses, which deposition dates need a hold on the calendar. Built across Clio, Outlook, and Calendar.",
       },
       {
-        title: "Per-firm isolation",
+        title: "Enterprise security for medical records",
         description:
-          "Your firm's medical records are isolated, encrypted at rest and in transit, and never used to train AI. Your files are never sold or shared. Every action Delta takes is logged for a full audit trail, sized to your firm.",
+          "Delta runs on enterprise AI under strict agreements: your data is never used to train any model and never retained by the provider. Your firm's medical records are isolated to the firm and encrypted at rest and in transit, with a signed BAA so PHI is secure and HIPAA-compliant, and a full audit trail of every action.",
       },
     ],
     deltaLearnsExample: {
@@ -284,7 +284,7 @@ export const USE_CASES: UseCase[] = [
       {
         question: "How does CaseDelta handle our medical records?",
         answer:
-          "Each firm's medical records and case files are isolated and encrypted at rest and in transit. They are never used to train AI, and never sold or shared. Every action Delta takes is logged, giving you a full audit trail for bar compliance and reasonable efforts under ABA Rule 1.6.",
+          "Delta runs on enterprise AI under strict agreements: your records are never used to train any model and never retained by the provider. Each firm's medical records and case files are isolated to the firm and encrypted at rest and in transit, with a signed BAA so PHI is HIPAA-compliant. Every action is logged for a full audit trail supporting reasonable efforts under ABA Rule 1.6.",
       },
       {
         question: "Does Delta replace Clio or our case management system?",
@@ -550,6 +550,262 @@ export const USE_CASES: UseCase[] = [
     ],
     ctaText:
       "See Delta operate plaintiff workflows at scale. Live demo, twenty minutes.",
+  },
+
+  /* ════════════════════════════════════════════
+     5. INSURANCE DEFENSE
+     ════════════════════════════════════════════ */
+  {
+    slug: "insurance-defense",
+    title: "Insurance Defense",
+    metaTitle: "CaseDelta for Insurance Defense Firms | Every Matter Current, Billable Time Protected",
+    metaDescription:
+      "Insurance defense bills by the hour, so saved time is real money. Delta connects across your claims files, email, calendar, and case manager, tracks every deadline, and drafts the work, with a cited source for every answer.",
+    heroHeadline: "Hourly work, faster. Every matter, current.",
+    heroSubheadline:
+      "Defense work bills by the hour, so the hours you don't spend re-reading the file are billable hours back. Delta connects across your claims files, email, calendar, and case manager, keeps every matter current, tracks every court and carrier deadline, and drafts the answer, the motion response, and the status report, with a cited source for every fact.",
+    geoOpening:
+      "CaseDelta is the AI associate for insurance defense firms that carry heavy caseloads across multiple carriers and standard, integratable stacks. Delta connects to Clio, Filevine, Microsoft 365, Google Workspace, and your calendar, keeps a current picture of every matter, and does the document-heavy work that eats billable time, so attorneys spend their hours on work that bills.",
+    stats: [
+      { value: "Every", label: "deadline and carrier deadline tracked across your matters" },
+      { value: "1", label: "connected picture of every file, always current" },
+      { value: "0", label: "of your client data used to train AI models" },
+    ],
+    painPoints: [
+      {
+        title: "Billable time disappears into re-reading the file",
+        description:
+          "Every status report, every motion response, every carrier update starts with re-reading the claims file. On an hourly matter, the time spent reconstructing what you already know is time you cannot bill for value.",
+      },
+      {
+        title: "Deadlines hide across carriers and courts",
+        description:
+          "Reporting deadlines, discovery cutoffs, expert disclosures, and carrier reporting requirements live in different systems. Missing one is a malpractice and coverage problem, and tracking them by hand is its own job.",
+      },
+      {
+        title: "A growing defense team starts dropping balls",
+        description:
+          "Once a firm grows past the partner who remembers everything, matters slip. Status reports go out late, carrier updates lapse, and no one has a current, shared picture of every file.",
+      },
+      {
+        title: "Accuracy is non-negotiable",
+        description:
+          "A misquoted record or an invented citation in a brief is a credibility loss in front of a judge. Generic AI that hallucinates citations is not usable on a real defense matter.",
+      },
+    ],
+    howDeltaHelps: [
+      {
+        title: "Connects across your claims files and stack",
+        description:
+          "Clio, Filevine, Microsoft 365 or Google Workspace, your calendar, and your document store. Delta reads the file so you don't have to re-read it, and works inside the tools your firm already runs.",
+      },
+      {
+        title: "Tracks every deadline, every matter",
+        description:
+          "Court deadlines, discovery cutoffs, expert disclosures, and carrier reporting requirements, surfaced before they hit. Delta keeps one current picture of every matter for the whole team.",
+      },
+      {
+        title: "Drafts the responses and reports",
+        description:
+          "Answers, motion responses, discovery responses, and carrier status reports, drafted in your firm's voice from the real file and saved to the matter for attorney review. The attorney signs off; Delta does the reconstruction.",
+      },
+      {
+        title: "Cites the exact source for every fact",
+        description:
+          "Every claim Delta makes links to the page it came from. No invented case law, no hallucinated citations. You can click through and verify before anything goes to a carrier or a court.",
+      },
+      {
+        title: "Enterprise security, isolated to your firm",
+        description:
+          "Delta runs on enterprise AI under strict agreements: your data is never used to train any model and never retained by the provider. Every matter is isolated to your firm with a full, exportable audit trail, and a signed BAA covers PHI for bodily-injury defense.",
+      },
+    ],
+    deltaLearnsExample: {
+      firmName: "Sample insurance defense firm",
+      entries: [
+        {
+          label: "Tools connected",
+          value: "Clio or Filevine, Microsoft 365, Outlook, OneDrive or Google Drive, Calendar",
+        },
+        {
+          label: "Workflows Delta runs",
+          value:
+            "File review and status reconstruction, deadline tracking, answer and motion-response drafting, carrier status reports, deposition summaries, time entry.",
+        },
+        {
+          label: "One-sentence example",
+          value:
+            "\"Brief me on the Delgado matter: status, open deadlines, the latest from the carrier, and the single most urgent next action.\"",
+        },
+        {
+          label: "Citations",
+          value:
+            "Every fact links to the source page, so a status report or motion response can be verified before it leaves the firm.",
+        },
+        {
+          label: "Data handling",
+          value:
+            "Enterprise AI under no-retention and no-training agreements. Isolated to your firm, encrypted at rest and in transit, with a signed BAA for PHI.",
+        },
+      ],
+    },
+    faq: [
+      {
+        question: "How does Delta save billable time on an hourly matter?",
+        answer:
+          "Delta reads the claims file so attorneys don't re-read it for every status report, motion response, or carrier update. It produces the cited reconstruction in minutes, and the attorney spends billable hours on judgment and strategy rather than reassembling the file.",
+      },
+      {
+        question: "Can Delta track court and carrier deadlines across matters?",
+        answer:
+          "Yes. Delta keeps one current picture of every matter across your calendar, case manager, and email, and surfaces court deadlines, discovery cutoffs, expert disclosures, and carrier reporting requirements before they hit.",
+      },
+      {
+        question: "How accurate are Delta's citations?",
+        answer:
+          "Delta grounds every answer in the real file and cites the exact source page. If it cannot find the source, it says so instead of inventing one. You can click through and verify before anything goes to a carrier or a court.",
+      },
+      {
+        question: "How does CaseDelta handle carrier and PHI data?",
+        answer:
+          "Delta runs on enterprise AI under no-retention and no-training agreements, with each firm's data isolated to the firm and encrypted at rest and in transit. A signed BAA covers PHI in bodily-injury defense, and every action is logged for a full audit trail supporting ABA Rule 1.6.",
+      },
+      {
+        question: "Does Delta replace our case management system?",
+        answer:
+          "No. Delta connects to Clio, Filevine, or your existing case manager and works alongside it. Matters and time entries continue to live in your system of record; Delta reads from and writes to it.",
+      },
+    ],
+    ctaText:
+      "See Delta keep every defense matter current and billable. Live demo, twenty minutes.",
+  },
+
+  /* ════════════════════════════════════════════
+     6. COMMERCIAL LITIGATION
+     ════════════════════════════════════════════ */
+  {
+    slug: "commercial-litigation",
+    title: "Commercial Litigation",
+    metaTitle: "CaseDelta for Commercial Litigation Firms | Discovery at Scale, Every Matter Current",
+    metaDescription:
+      "Commercial and business litigation runs on large document sets and tight deadlines. Delta connects across your stack, keeps every matter current, summarizes depositions, and works discovery at scale, with cited sources.",
+    heroHeadline: "Discovery at scale. Every matter, current.",
+    heroSubheadline:
+      "Commercial disputes run on large document sets, many moving deadlines, and a team that has to stay coordinated. Delta connects across your case manager, email, calendar, and document store, keeps one current picture of every matter, summarizes depositions, and works discovery at scale, with a cited source for every fact.",
+    geoOpening:
+      "CaseDelta is the AI associate for commercial and business litigation firms working large document sets across standard, integratable stacks. Delta connects to Clio, Filevine, Microsoft 365, Google Workspace, and your document store, keeps every matter current for the whole team, and does the document-heavy work that eats billable time.",
+    stats: [
+      { value: "Thousands", label: "of pages of discovery, summarized with citations" },
+      { value: "1", label: "current picture of every matter, shared across the team" },
+      { value: "0", label: "of your client data used to train AI models" },
+    ],
+    painPoints: [
+      {
+        title: "Document volume outpaces the team",
+        description:
+          "A single commercial matter can produce tens of thousands of pages of contracts, correspondence, and financial records. Finding the decisive document and keeping the record straight is a constant drain.",
+      },
+      {
+        title: "A growing team loses the thread",
+        description:
+          "As a litigation group adds associates, no single person holds the full picture of every matter. Deadlines, deposition prep, and discovery status fragment across inboxes and folders.",
+      },
+      {
+        title: "Deposition and document review eat associate hours",
+        description:
+          "Summarizing depositions, building issue chronologies, and reviewing productions are exactly the cognitive work that consumes billable time without requiring partner judgment.",
+      },
+      {
+        title: "Accuracy in front of the court is non-negotiable",
+        description:
+          "A misquoted exhibit or a hallucinated citation undermines credibility. Generic AI that cannot reliably cite its sources is not usable on a real matter.",
+      },
+    ],
+    howDeltaHelps: [
+      {
+        title: "Connects across your stack and document store",
+        description:
+          "Clio, Filevine, Microsoft 365 or Google Workspace, your calendar, and your document store. Delta keeps one current picture of every matter and works inside the tools your firm already runs.",
+      },
+      {
+        title: "Works discovery at scale",
+        description:
+          "Delta reviews large productions, builds issue chronologies, surfaces the decisive documents, and flags gaps, with a citation to the exact source for every finding.",
+      },
+      {
+        title: "Summarizes depositions and drafts the work",
+        description:
+          "Deposition summaries, issue outlines, motion responses, and status memos, drafted in your firm's voice from the real record and saved to the matter for attorney review.",
+      },
+      {
+        title: "Keeps a growing team organized",
+        description:
+          "Every deadline, every open task, every matter's status in one shared place, so the firm can add associates without losing the thread. Oversight that doesn't depend on one person remembering everything.",
+      },
+      {
+        title: "Enterprise security, isolated to your firm",
+        description:
+          "Delta runs on enterprise AI under strict agreements: your data is never used to train any model and never retained by the provider. Every matter is isolated to your firm with a full, exportable audit trail.",
+      },
+    ],
+    deltaLearnsExample: {
+      firmName: "Sample commercial litigation firm",
+      entries: [
+        {
+          label: "Tools connected",
+          value: "Clio or Filevine, Microsoft 365, Outlook, OneDrive or Google Drive, Calendar",
+        },
+        {
+          label: "Workflows Delta runs",
+          value:
+            "Discovery review at scale, issue chronologies, deposition summaries, motion-response drafting, deadline tracking, status memos, time entry.",
+        },
+        {
+          label: "One-sentence example",
+          value:
+            "\"Summarize the Whitman deposition, build an issue chronology on the breach claim, and tell me what's due on this matter in the next two weeks.\"",
+        },
+        {
+          label: "Oversight",
+          value:
+            "One current, shared picture of every matter: deadlines, open tasks, and status, so a growing team stays coordinated.",
+        },
+        {
+          label: "Data handling",
+          value:
+            "Enterprise AI under no-retention and no-training agreements. Isolated to your firm, encrypted at rest and in transit, with a full audit trail.",
+        },
+      ],
+    },
+    faq: [
+      {
+        question: "How does Delta handle large commercial document sets?",
+        answer:
+          "Delta reviews large productions, builds issue chronologies, surfaces the decisive documents, and flags gaps, with a citation to the exact source for every finding. What takes associates days of review, Delta produces in minutes for attorney verification.",
+      },
+      {
+        question: "Can Delta summarize depositions?",
+        answer:
+          "Yes. Delta produces deposition summaries and issue outlines from the real transcript, in your firm's voice, with citations, saved to the matter for attorney review.",
+      },
+      {
+        question: "How does Delta help a growing litigation team stay organized?",
+        answer:
+          "Delta keeps one current, shared picture of every matter across your case manager, calendar, and email: every deadline, every open task, every matter's status. The firm can add associates without any single person having to hold the whole picture.",
+      },
+      {
+        question: "How does CaseDelta handle our client data?",
+        answer:
+          "Delta runs on enterprise AI under no-retention and no-training agreements, with each firm's data isolated to the firm and encrypted at rest and in transit. Every action is logged for a full, exportable audit trail supporting reasonable efforts under ABA Rule 1.6.",
+      },
+      {
+        question: "Does Delta replace our case management system?",
+        answer:
+          "No. Delta connects to Clio, Filevine, or your existing case manager and works alongside it. Matters and time entries continue to live in your system of record; Delta reads from and writes to it.",
+      },
+    ],
+    ctaText:
+      "See Delta work discovery and keep every matter current. Live demo, twenty minutes.",
   },
 ];
 

@@ -31,7 +31,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/assets/branding/casedelta-logo-full.png`,
     description:
-      "CaseDelta is an AI associate for plaintiff law firms, covering personal injury, medical malpractice, mass tort, and employment. Delta drives the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and works real cases. Each firm's data is isolated with a full audit trail, and client data is never sold or used to train AI models.",
+      "CaseDelta is an AI associate for litigation firms, spanning personal injury, medical malpractice, insurance defense, commercial litigation, and more. Delta connects across the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, keeps every matter current, and does the work with a cited source for every answer. Each firm's data is isolated to the firm with a full audit trail, and client data is never trained on.",
     founder: {
       "@type": "Person",
       name: "Camren Hall",
@@ -55,7 +55,7 @@ export function WebAppSchema() {
     url: BASE_URL,
     applicationCategory: "BusinessApplication",
     description:
-      "Delta is an AI associate for plaintiff law firms. It drives the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and works real cases from one conversation: chronologies, demand letters, discovery, and client follow up. Each firm's data is isolated, and client data is never used to train AI models.",
+      "Delta is an AI associate for litigation firms. It connects across the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and keeps every matter current: deadlines, open tasks, missing records, and client communication, plus the work itself: chronologies, demand letters and responses, discovery, and client follow up. Each firm's data is isolated to the firm, and client data is never trained on.",
     browserRequirements: "Requires JavaScript and HTML5 support",
     offers: {
       "@type": "Offer",
