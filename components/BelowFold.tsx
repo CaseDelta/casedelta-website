@@ -90,15 +90,15 @@ function DecoWide() {
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const ROTATE_PAIRS = [
-  { records: "medical records", output: "chronologies" },
-  { records: "financial documents", output: "damage analyses" },
-  { records: "employment files", output: "case briefs" },
-  { records: "claims records", output: "coverage analyses" },
-  { records: "discovery documents", output: "deposition outlines" },
-  { records: "case opinions", output: "research memos" },
+const ROTATE_WORDS = [
+  "medical records",
+  "discovery documents",
+  "deposition transcripts",
+  "claims files",
+  "financial records",
+  "expert reports",
 ];
-const ROTATE_INTERVAL = 3000;
+const ROTATE_INTERVAL = 2600;
 
 const fade = (delay = 0, reduced = false) => reduced
   ? {
@@ -122,7 +122,7 @@ export function BelowFold() {
   useEffect(() => {
     if (reduced) return;
     const id = setInterval(() => {
-      setPairIndex((i) => (i + 1) % ROTATE_PAIRS.length);
+      setPairIndex((i) => (i + 1) % ROTATE_WORDS.length);
     }, ROTATE_INTERVAL);
     return () => clearInterval(id);
   }, [reduced]);
@@ -130,10 +130,13 @@ export function BelowFold() {
   // Parallax for SVG decorations
   const decoRef1 = useRef(null);
   const decoRef2 = useRef(null);
+  const decoRef3 = useRef(null);
   const { scrollYProgress: sp1 } = useScroll({ target: decoRef1, offset: ["start end", "end start"] });
   const { scrollYProgress: sp2 } = useScroll({ target: decoRef2, offset: ["start end", "end start"] });
+  const { scrollYProgress: sp3 } = useScroll({ target: decoRef3, offset: ["start end", "end start"] });
   const decoY1 = useTransform(sp1, [0, 1], reduced ? [0, 0] : [80, -80]);
   const decoY2 = useTransform(sp2, [0, 1], reduced ? [0, 0] : [60, -60]);
+  const decoY3 = useTransform(sp3, [0, 1], reduced ? [0, 0] : [60, -60]);
 
   return (
     <div
@@ -206,81 +209,357 @@ export function BelowFold() {
             maxWidth: 620,
             marginTop: 24,
           }}>
-            Delta runs across the tools your firm already uses, doing the work on every matter so you stay on the partner-level calls.
+            Delta runs across the tools your firm already uses, keeping every matter current and doing the work, so you stay on the partner-level calls.
           </motion.p>
         </div>
       </section>
 
       {/* ════════════════════════════════════════
-          1. VALUE PROP — Big sell, full scale
+          1. THE WEDGE — One associate that sees the whole firm
           ════════════════════════════════════════ */}
-      <section id="value-prop" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
+      <section id="connected" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
         <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.div {...fade(0, reduced)} style={{ maxWidth: 780 }}>
-            <h2 style={{
-              fontFamily: FONT,
-              fontSize: "clamp(32px, 4.5vw, 56px)",
-              fontWeight: 700,
-              color: "#0A0A0A",
-              lineHeight: 1.1,
-              letterSpacing: "-0.035em",
-              margin: 0,
-            }}>
-              A personal assistant that analyzes thousands of
-            </h2>
+          <motion.h2 {...fade(0, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(32px, 4.5vw, 56px)",
+            fontWeight: 700,
+            color: "#0A0A0A",
+            lineHeight: 1.1,
+            letterSpacing: "-0.035em",
+            margin: 0,
+            maxWidth: 820,
+          }}>
+            One associate that sees{" "}
+            <span style={{ color: ACCENT }}>the whole firm.</span>
+          </motion.h2>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 620,
+            marginTop: 24,
+          }}>
+            Your case lives in five places: email, calendar, the drive, your case manager, your task list. Delta connects all of them and keeps one current picture of every matter, for every lawyer and paralegal on your team. Ask it anything about any case and it already knows.
+          </motion.p>
+        </div>
+      </section>
 
-            <div style={{
-              height: "clamp(40px, 5.5vw, 68px)",
-              overflow: "hidden",
-              position: "relative",
-              marginTop: 4,
-            }}>
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={pairIndex}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -24 }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: "clamp(32px, 4.5vw, 56px)",
-                    fontWeight: 700,
-                    color: ACCENT,
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.035em",
-                    margin: 0,
-                    position: "absolute",
-                    whiteSpace: "nowrap",
-                    maxWidth: "100%",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {ROTATE_PAIRS[pairIndex].records}
-                </motion.p>
-              </AnimatePresence>
-            </div>
+      {/* ════════════════════════════════════════
+          2. COMMUNICATION / BAR-RISK — Never the firm that went quiet
+          ════════════════════════════════════════ */}
+      <section id="communication" ref={decoRef1} style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+        <motion.div style={{ y: decoY1, position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <DecoTopLeft />
+        </motion.div>
+        <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.h2 {...fade(0, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(32px, 4.5vw, 56px)",
+            fontWeight: 700,
+            color: "#0A0A0A",
+            lineHeight: 1.1,
+            letterSpacing: "-0.035em",
+            margin: 0,
+            maxWidth: 820,
+          }}>
+            Never the firm{" "}
+            <span style={{ color: ACCENT }}>that went quiet.</span>
+          </motion.h2>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 620,
+            marginTop: 24,
+          }}>
+            Failing to communicate is the number-one reason lawyers get reported to the bar. Delta tracks the last contact on every matter and tells you who you owe a call, an email, or an update, before it becomes a complaint. You meant to follow up. Now you will.
+          </motion.p>
+        </div>
+      </section>
 
-            <h2 style={{
-              fontFamily: FONT,
-              fontSize: "clamp(32px, 4.5vw, 56px)",
-              fontWeight: 700,
-              color: "#0A0A0A",
-              lineHeight: 1.1,
-              letterSpacing: "-0.035em",
-              margin: 0,
-              marginTop: 4,
-            }}>
-              and builds chronologies, anomaly reports, and case briefs.
-            </h2>
+      {/* ════════════════════════════════════════
+          3. OVERSIGHT FOR A GROWING TEAM — Built for the firm you're becoming
+          ════════════════════════════════════════ */}
+      <section id="oversight" style={{ position: "relative", padding: "clamp(100px, 12vw, 180px) 0" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.h2 {...fade(0, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(28px, 3.6vw, 48px)",
+            fontWeight: 700,
+            color: "#0A0A0A",
+            lineHeight: 1.1,
+            letterSpacing: "-0.035em",
+            margin: 0,
+            maxWidth: 760,
+          }}>
+            Built for the firm{" "}
+            <span style={{ color: ACCENT }}>you&rsquo;re becoming.</span>
+          </motion.h2>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 620,
+            marginTop: 24,
+          }}>
+            Hiring associates is the moment things start slipping through. Delta is the layer that keeps a growing team organized: every deadline, every open task, every matter&rsquo;s status in one place, so you can scale headcount without scaling chaos. Oversight that doesn&rsquo;t depend on you remembering everything.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          4. VS A CHATBOT — Claude is a brain. Delta is a brain plugged into your firm.
+          ════════════════════════════════════════ */}
+      <section id="vs-chatbot" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.h2 {...fade(0, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(32px, 4.5vw, 56px)",
+            fontWeight: 700,
+            color: "#0A0A0A",
+            lineHeight: 1.1,
+            letterSpacing: "-0.035em",
+            margin: 0,
+            maxWidth: 880,
+          }}>
+            A chatbot is a brain.{" "}
+            <span style={{ color: ACCENT }}>Delta is a brain plugged into your firm.</span>
+          </motion.h2>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 660,
+            marginTop: 24,
+          }}>
+            You can paste files into a chatbot. But a chatbot doesn&rsquo;t know what changed in your inbox this morning, doesn&rsquo;t see the deadline on your calendar, doesn&rsquo;t notice the client you haven&rsquo;t called in three weeks, and forgets everything the moment you close the tab. Delta is connected, always current, and shared across your team. It doesn&rsquo;t wait for you to paste, it already has the case, and it does the work.
+          </motion.p>
+
+          {/* 3-column contrast */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-3"
+            style={{ gap: 16, marginTop: "clamp(40px, 5vw, 64px)" }}
+          >
+            {[
+              {
+                label: "Connected",
+                chatbot: "You paste files, one at a time.",
+                delta: "Connected to email, calendar, files, and tasks, always current.",
+              },
+              {
+                label: "Team-wide",
+                chatbot: "One person, one chat, gone when you close it.",
+                delta: "Every lawyer and paralegal, one shared picture, persistent.",
+              },
+              {
+                label: "Does the work",
+                chatbot: "Answers what you ask.",
+                delta: "Catches what you&rsquo;d have missed, and acts on it.",
+              },
+            ].map((col, i) => (
+              <motion.div
+                key={col.label}
+                initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={reduced ? { duration: 0 } : { duration: 0.6, delay: i * 0.1, ease: EASE }}
+                style={{
+                  padding: "clamp(22px, 2.4vw, 30px)",
+                  borderRadius: 14,
+                  border: `1px solid ${BORDER}`,
+                  background: "#FFFFFF",
+                  boxShadow: "0 1px 3px rgba(15,23,42,0.04)",
+                }}
+              >
+                <div style={{
+                  fontFamily: FONT,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: ACCENT,
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                  marginBottom: 18,
+                }}>
+                  {col.label}
+                </div>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }} aria-hidden>
+                    <circle cx="8" cy="8" r="7" stroke="#CBD5E1" strokeWidth="1.4" />
+                    <path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="#94A3B8" strokeWidth="1.4" strokeLinecap="round" />
+                  </svg>
+                  <p style={{ fontFamily: FONT, fontSize: 14, fontWeight: 400, color: "#94A3B8", lineHeight: 1.55, margin: 0, letterSpacing: "-0.005em" }}>
+                    Chatbot: {col.chatbot}
+                  </p>
+                </div>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }} aria-hidden>
+                    <circle cx="8" cy="8" r="7" fill={`${ACCENT}14`} stroke={ACCENT} strokeWidth="1.4" />
+                    <path d="M5 8.2l2 2 4-4.4" stroke={ACCENT} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <p style={{ fontFamily: FONT, fontSize: 14, fontWeight: 500, color: "#0A0A0A", lineHeight: 1.55, margin: 0, letterSpacing: "-0.005em" }}>
+                    Delta: <span dangerouslySetInnerHTML={{ __html: col.delta }} />
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          5. ACCURACY / CITATIONS — Every answer cites its source
+          ════════════════════════════════════════ */}
+      <section id="citations" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.h2 {...fade(0, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(32px, 4.5vw, 56px)",
+            fontWeight: 700,
+            color: "#0A0A0A",
+            lineHeight: 1.1,
+            letterSpacing: "-0.035em",
+            margin: 0,
+            maxWidth: 820,
+          }}>
+            Every answer cites its source.{" "}
+            <span style={{ color: ACCENT }}>Click to verify.</span>
+          </motion.h2>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 660,
+            marginTop: 24,
+          }}>
+            Delta grounds every answer in your real matter and cites the exact source page. No invented case law, no hallucinated citations, the failures that have publicly embarrassed other legal AI. You can click through and check the source yourself, every time.
+          </motion.p>
+
+          {/* Citation chip illustration */}
+          <motion.div {...fade(0.18, reduced)} style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            marginTop: "clamp(28px, 3vw, 36px)",
+            padding: "10px 14px",
+            backgroundColor: "#FFFFFF",
+            border: `1px solid ${ACCENT}33`,
+            borderRadius: 10,
+            boxShadow: "0 1px 2px rgba(15,23,42,0.05), 0 6px 18px rgba(37,99,235,0.08)",
+          }}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path
+                d="M6 2H3.5A1.5 1.5 0 0 0 2 3.5v9A1.5 1.5 0 0 0 3.5 14h7a1.5 1.5 0 0 0 1.5-1.5V8M9 2h5v5M14 2 7.5 8.5"
+                stroke={ACCENT}
+                strokeWidth="1.3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span style={{ fontFamily: FONT, fontSize: 14, fontWeight: 500, color: "#0A0A0A", letterSpacing: "-0.005em" }}>
+              Source: Discharge_Summary.pdf, p.14
+            </span>
           </motion.div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════
-          2. SECURITY — Quieter, confident
+          6. DOES THE WORK — broadened, practice-inclusive (chronologies demoted to one item)
+          ════════════════════════════════════════ */}
+      <section id="value-prop" style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
+        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
+          <motion.div {...fade(0, reduced)} style={{ maxWidth: 820 }}>
+            <h2 style={{
+              fontFamily: FONT,
+              fontSize: "clamp(32px, 4.5vw, 56px)",
+              fontWeight: 700,
+              color: "#0A0A0A",
+              lineHeight: 1.1,
+              letterSpacing: "-0.035em",
+              margin: 0,
+            }}>
+              The work an associate should handle.{" "}
+              <span style={{ color: ACCENT }}>Across any kind of case.</span>
+            </h2>
+          </motion.div>
+          <motion.p {...fade(0.1, reduced)} style={{
+            fontFamily: FONT,
+            fontSize: "clamp(15px, 1.3vw, 18px)",
+            fontWeight: 400,
+            color: "#666",
+            lineHeight: 1.7,
+            letterSpacing: "-0.01em",
+            maxWidth: 620,
+            marginTop: 24,
+          }}>
+            Draft the demand or the response. Build a chronology across thousands of records. Run the damages math. Summarize a deposition. Send the client update. Personal injury or insurance defense, commercial litigation or med-mal, if it&rsquo;s document-heavy litigation, Delta does the cognitive work that eats billable time.
+          </motion.p>
+
+          {/* Subtle "analyzes thousands of [records]" rotation, kept as supporting texture */}
+          <motion.div {...fade(0.18, reduced)} style={{
+            display: "flex",
+            alignItems: "baseline",
+            flexWrap: "wrap",
+            gap: 8,
+            marginTop: "clamp(32px, 4vw, 48px)",
+            fontFamily: FONT,
+            fontSize: "clamp(18px, 2vw, 26px)",
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+            color: "#888",
+          }}>
+            <span>Analyzes thousands of</span>
+            <span style={{
+              position: "relative",
+              display: "inline-block",
+              height: "1.25em",
+              overflow: "hidden",
+              verticalAlign: "bottom",
+            }}>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={pairIndex}
+                  initial={reduced ? false : { opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduced ? undefined : { opacity: 0, y: -18 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  style={{
+                    display: "inline-block",
+                    color: ACCENT,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {ROTATE_WORDS[pairIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+            <span>in minutes.</span>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          7. SECURITY — honest, reconciled to /security
           ════════════════════════════════════════ */}
       <section id="security" style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
@@ -292,22 +571,22 @@ export function BelowFold() {
             color: "#333",
             lineHeight: 1.15,
             letterSpacing: "-0.03em",
-            maxWidth: 640,
+            maxWidth: 680,
           }}>
-            Your clients&rsquo; data is yours, and only yours.{" "}
-            <span style={{ color: "#888" }}>Never sold, never shared, never used to train AI.</span>
+            Trust is the whole job.{" "}
+            <span style={{ color: "#888" }}>So your clients&rsquo; data is never trained on.</span>
           </motion.h2>
           <motion.p {...fade(0.1, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(15px, 1.3vw, 18px)",
             fontWeight: 400,
             color: "#999",
-            lineHeight: 1.5,
+            lineHeight: 1.6,
             letterSpacing: "-0.01em",
-            maxWidth: 520,
+            maxWidth: 560,
             marginTop: 16,
           }}>
-            Delta runs each firm&rsquo;s matters in an isolated environment with a full audit trail for bar compliance. Your clients&rsquo; information is never sold, shared, or used to train AI models, and it is never repurposed beyond the work you ask Delta to do.
+            Delta runs on enterprise AI under strict agreements: your data is never used to train any model and never retained by the provider. Every matter is isolated to your firm, with a full, exportable audit trail, built to support your reasonable-efforts obligations under ABA Rule 1.6, and a signed BAA so your clients&rsquo; PII and PHI are secure, bar- and HIPAA-compliant.
           </motion.p>
           <motion.a
             {...fade(0.15, reduced)}
@@ -334,7 +613,7 @@ export function BelowFold() {
       </section>
 
       {/* ════════════════════════════════════════
-          3. INTEGRATIONS — Quieter, paired with security
+          8. INTEGRATIONS — broadened logo set
           ════════════════════════════════════════ */}
       <section style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
@@ -363,11 +642,13 @@ export function BelowFold() {
             {[
               { src: "/assets/integrations/clio.svg", name: "Clio", h: 22 },
               { src: "/assets/integrations/filevine.svg", name: "Filevine", h: 22 },
+              { src: "/assets/integrations/litify.svg", name: "Litify", h: 24 },
+              { src: "/assets/integrations/mycase.webp", name: "MyCase", h: 22 },
+              { src: "/assets/integrations/microsoft.svg", name: "Microsoft 365", h: 24 },
+              { src: "/assets/integrations/outlook.svg", name: "Outlook", h: 26 },
               { src: "/assets/integrations/google-drive.svg", name: "Google Drive", h: 28 },
               { src: "/assets/integrations/gmail.svg", name: "Gmail", h: 24 },
-              { src: "/assets/integrations/outlook.svg", name: "Outlook", h: 26 },
               { src: "/assets/integrations/dropbox.svg", name: "Dropbox", h: 26 },
-              { src: "/assets/integrations/evenup-icon.png", name: "EvenUp", h: 26 },
               { src: "/assets/integrations/neos-icon.svg", name: "Neos", h: 26 },
               { src: "/assets/integrations/casepeer-icon.png", name: "CasePeer", h: 22 },
             ].map((logo, i) => (
@@ -376,7 +657,7 @@ export function BelowFold() {
                 initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.2 + i * 0.08, ease: EASE }}
+                transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.2 + i * 0.06, ease: EASE }}
               >
                 <img
                   src={logo.src}
@@ -409,49 +690,14 @@ export function BelowFold() {
       </section>
 
       {/* ════════════════════════════════════════
-          4. VALUE PROP 2 — Big sell, full scale
+          9. MORNING BRIEFING — Time-to-value answer
           ════════════════════════════════════════ */}
-      <section ref={decoRef1} style={{ position: "relative", padding: "clamp(120px, 14vw, 200px) 0", overflow: "hidden" }}>
+      <section id="briefing" ref={decoRef2} style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
-        <motion.div style={{ y: decoY1, position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <motion.div style={{ y: decoY2, position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.6 }}>
           <DecoTopLeft />
         </motion.div>
         <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
-          <motion.h2 {...fade(0, reduced)} style={{
-            fontFamily: FONT,
-            fontSize: "clamp(32px, 4.5vw, 56px)",
-            fontWeight: 700,
-            color: "#0A0A0A",
-            lineHeight: 1.1,
-            letterSpacing: "-0.035em",
-            maxWidth: 820,
-          }}>
-            The work an associate should handle.{" "}
-            <span style={{ color: ACCENT }}>
-              Run by Delta.
-            </span>
-          </motion.h2>
-          <motion.p {...fade(0.1, reduced)} style={{
-            fontFamily: FONT,
-            fontSize: "clamp(15px, 1.3vw, 18px)",
-            fontWeight: 400,
-            color: "#999",
-            lineHeight: 1.5,
-            letterSpacing: "-0.01em",
-            maxWidth: 580,
-            marginTop: 16,
-          }}>
-            Draft a demand letter for a personal injury case. Build a chronology across hundreds of medical records. Send three hundred mass tort updates in a single morning. Run the unpaid overtime math for a wage-and-hour class. You make the calls. Delta runs the work.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          4.5 MORNING BRIEFING — Time-to-value answer
-          ════════════════════════════════════════ */}
-      <section id="briefing" style={{ position: "relative", padding: "clamp(80px, 10vw, 140px) 0" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
-        <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
           <motion.h2 {...fade(0, reduced)} style={{
             fontFamily: FONT,
             fontSize: "clamp(24px, 3.2vw, 42px)",
@@ -480,7 +726,7 @@ export function BelowFold() {
       </section>
 
       {/* ════════════════════════════════════════
-          5. SOCIAL PROOF — Distinct treatment
+          10. SOCIAL PROOF — Distinct treatment
           ════════════════════════════════════════ */}
       <section style={{ position: "relative", padding: "clamp(100px, 12vw, 180px) 0" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
@@ -534,14 +780,14 @@ export function BelowFold() {
       {/* ════════════════════════════════════════
           6. CTA — Destination feel, centered
           ════════════════════════════════════════ */}
-      <section ref={decoRef2} id="cta" style={{
+      <section ref={decoRef3} id="cta" style={{
         position: "relative",
         padding: "clamp(120px, 14vw, 200px) 0 clamp(140px, 16vw, 220px)",
         background: "linear-gradient(180deg, #FFFFFF 0%, #F8FAFF 100%)",
         overflow: "hidden",
       }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, backgroundColor: BORDER }} />
-        <motion.div style={{ y: decoY2, position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <motion.div style={{ y: decoY3, position: "absolute", inset: 0, pointerEvents: "none" }}>
           <DecoWide />
         </motion.div>
         <div style={{ position: "relative", maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)", textAlign: "center" }}>

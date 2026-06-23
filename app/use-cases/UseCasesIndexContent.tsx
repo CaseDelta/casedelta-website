@@ -25,6 +25,10 @@ const CARD_DESCRIPTIONS: Record<string, string> = {
     "Plaintiff intake, wage and hour math, charge and complaint drafting. Delta runs intake to filed complaint in a single conversation.",
   "mass-tort":
     "Three hundred personalized plaintiff updates before lunch. Intake, drafting, and admin at firm-wide scale, across the tools you already use.",
+  "insurance-defense":
+    "Hourly work, faster. Delta connects across your claims files, email, and case manager, tracks every deadline and carrier deadline, and drafts the responses, so billable time goes to billable work.",
+  "commercial-litigation":
+    "Discovery at scale, deposition summaries, and a current picture of every matter. Delta keeps a growing litigation team organized across the tools you already run.",
 };
 
 /* ─── Arrow Icon ─── */
@@ -118,9 +122,10 @@ export function UseCasesIndexContent() {
               marginBottom: 0,
             }}
           >
-            Plaintiff firms run on a stack of tools: Clio, Word, Gmail or
-            Outlook, Drive, Calendar. Delta connects across them and runs the
-            legal and administrative work in a single conversation.
+            Litigation firms run on a stack of tools: Clio, Filevine, Word,
+            Gmail or Outlook, Drive, Calendar. Delta connects across them,
+            keeps every matter current, and runs the legal and administrative
+            work in a single conversation, whatever you practice.
           </motion.p>
         </div>
       </section>

@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { trackEvent } from "@/lib/posthog";
+import { ProductMock } from "@/components/ProductMock";
 
 /* ─── Design tokens ─── */
 const DELTA_BLUE = "#1D4ED8";
@@ -485,7 +486,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                   display: "block",
                 }}
               >
-                An AI associate that knows every case.
+                An AI associate that knows your case.
               </span>
               <span
                 style={{
@@ -499,7 +500,7 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                   marginTop: "clamp(12px, 1.5vw, 20px)",
                 }}
               >
-                Every answer grounded in your real matter, not generic law.
+                Connected across your email, calendar, files, and tasks, so nothing about any matter falls through the cracks, for anyone on your team.
               </span>
             </motion.h1>
 
@@ -519,54 +520,90 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
                 maxWidth: 540,
               }}
             >
-              Delta works inside the tools your firm already runs: case files, email, drive, and billing. It handles real associate work on every matter, and your clients&rsquo; data is never sold, shared, or used to train AI.
+              Delta plugs into the tools your firm already runs and keeps every matter current: what&rsquo;s due, what&rsquo;s missing, who hasn&rsquo;t heard from you. It does the work, cites every source, and never loses track, across your whole team.
             </motion.p>
 
-            <motion.a
-              href="/demo"
-              onClick={() => trackEvent("cta_click", { location: "hero" })}
-              className="cd-btn-cta"
+            <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={revealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
               transition={{ duration: 0.7, delay: 0.4, ease: EASE_OUT }}
-              whileHover={{ y: -2, boxShadow: `0 10px 28px ${ACCENT}55, 0 4px 8px rgba(0,0,0,0.06)` }}
-              whileTap={{ y: 0, scale: 0.97 }}
               style={{
                 marginTop: "clamp(28px, 3vw, 40px)",
-                alignSelf: "flex-start",
-                display: "inline-flex",
+                display: "flex",
+                flexWrap: "wrap",
                 alignItems: "center",
-                gap: 10,
-                height: 52,
-                padding: "0 30px",
-                backgroundColor: ACCENT,
-                color: "#FFFFFF",
-                fontFamily: FONT,
-                fontSize: 15,
-                fontWeight: 600,
-                borderRadius: 10,
-                textDecoration: "none",
-                letterSpacing: "-0.01em",
-                boxShadow: `0 6px 16px ${ACCENT}40, 0 2px 4px rgba(0,0,0,0.05)`,
+                gap: 16,
               }}
             >
-              Book a demo
-              <svg className="cd-cta-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.a>
+              <motion.a
+                href="/demo"
+                onClick={() => trackEvent("cta_click", { location: "hero" })}
+                className="cd-btn-cta"
+                whileHover={{ y: -2, boxShadow: `0 10px 28px ${ACCENT}55, 0 4px 8px rgba(0,0,0,0.06)` }}
+                whileTap={{ y: 0, scale: 0.97 }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  height: 52,
+                  padding: "0 30px",
+                  backgroundColor: ACCENT,
+                  color: "#FFFFFF",
+                  fontFamily: FONT,
+                  fontSize: 15,
+                  fontWeight: 600,
+                  borderRadius: 10,
+                  textDecoration: "none",
+                  letterSpacing: "-0.01em",
+                  boxShadow: `0 6px 16px ${ACCENT}40, 0 2px 4px rgba(0,0,0,0.05)`,
+                }}
+              >
+                Book a demo
+                <svg className="cd-cta-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.a>
+
+              <a
+                href="#how-it-works"
+                onClick={() => trackEvent("cta_click", { location: "hero_secondary" })}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  height: 52,
+                  padding: "0 8px",
+                  fontFamily: FONT,
+                  fontSize: 15,
+                  fontWeight: 500,
+                  color: TEXT_TERTIARY,
+                  textDecoration: "none",
+                  letterSpacing: "-0.01em",
+                  transition: "color 0.2s ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = DELTA_BLUE; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = TEXT_TERTIARY; }}
+              >
+                See how it works
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            </motion.div>
           </div>
 
-          {/* ── Right column: product demo video. 63s narrated walkthrough,
-              shipped 2026-05-20. Poster shows the first beat (the Ask Delta
-              query box) so the panel isn't empty before playback. ── */}
+          {/* ── Right column: coded, looping product animation (ProductMock).
+              Replaces the old hero recording. Tells the cross-system morning-brief
+              wedge: connected → catches what you'd miss → cites it → orders your
+              day → team-wide. Self-contained; respects prefers-reduced-motion. ── */}
           <motion.div
+            id="how-it-works"
             initial={{ opacity: 0, scale: 0.96, y: 24 }}
             animate={
               revealed
@@ -576,30 +613,11 @@ export function HeroV2({ onReveal, deco, skipIntro = false }: HeroV2Props) {
             transition={{ duration: 1, delay: 0.3, ease: EASE_OUT }}
             style={{
               position: "relative",
-              borderRadius: 16,
-              overflow: "hidden",
-              boxShadow: "0 24px 60px -20px rgba(15,23,42,0.18), 0 4px 12px -2px rgba(15,23,42,0.08)",
-              border: `1px solid ${BORDER}`,
-              background: "#000000",
-              aspectRatio: "1680 / 1080",
               width: "100%",
+              scrollMarginTop: 100,
             }}
           >
-            <video
-              src="/videos/hero-video.mp4"
-              poster="/videos/hero-video-poster.jpg"
-              controls
-              playsInline
-              preload="metadata"
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
+            <ProductMock />
           </motion.div>
         </div>
         </motion.div>

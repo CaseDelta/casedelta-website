@@ -212,7 +212,7 @@ export default function SecurityClient() {
               maxWidth: 560,
             }}
           >
-            Every matter runs in its own isolated environment with a full audit trail for bar compliance. Your client data is never used to train AI, and never sold or shared.
+            Every matter is isolated to your firm with a full audit trail for bar compliance. Your client data is never used to train AI, and never sold or shared.
           </motion.p>
 
           {/* Founder quote — testimonial style */}

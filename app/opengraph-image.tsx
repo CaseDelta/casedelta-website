@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CaseDelta: AI Associate for Plaintiff Law Firms";
+export const alt = "CaseDelta: The AI Associate That Knows Your Case";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,8 +43,8 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          An AI associate that knows every case. Delta drives the tools your
-          firm already runs and never trains AI on your client data.
+          An AI associate that knows your case. Connected across your email,
+          calendar, files, and tasks, and never trained on your client data.
         </div>
         <div
           style={{

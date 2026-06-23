@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
+import { getAllUseCaseSlugs } from "@/lib/use-cases";
 
 const BASE_URL = "https://casedelta.com";
 
@@ -21,13 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
-  // Use-case pages (plaintiff practice areas)
-  const useCaseSlugs = [
-    "personal-injury",
-    "medical-malpractice",
-    "employment-law",
-    "mass-tort",
-  ];
+  // Use-case pages (litigation practice areas) — derived from the source of truth
+  const useCaseSlugs = getAllUseCaseSlugs();
   const useCasePages: MetadataRoute.Sitemap = useCaseSlugs.map((slug) => ({
     url: `${BASE_URL}/use-cases/${slug}`,
     lastModified: now,

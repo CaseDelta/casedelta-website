@@ -469,11 +469,12 @@ export function AboutContent() {
                   margin: 0,
                 }}
               >
-                CaseDelta is built for plaintiff firms that practice in
-                personal injury, medical malpractice, employment, and mass
-                tort. Practices that move on volume, run on a stack the
-                firm already chose, and need an assistant that works inside
-                that stack rather than replacing it.
+                CaseDelta is built for growing litigation firms, across
+                personal injury, medical malpractice, insurance defense,
+                commercial litigation, and more. Practices that run on
+                document-heavy work and a stack the firm already chose, and
+                need an assistant that works inside that stack rather than
+                replacing it.
               </p>
             </motion.div>
           </div>
