@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const BORDER = "#EDEDED";
-const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+const BORDER = "rgba(20, 23, 31, 0.10)";
+const FONT = "var(--font-hanken), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 const NAV_LINKS = [
   { label: "Features", href: "/features" },

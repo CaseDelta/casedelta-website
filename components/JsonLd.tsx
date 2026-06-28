@@ -31,7 +31,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/assets/branding/casedelta-logo-full.png`,
     description:
-      "CaseDelta is an AI associate for plaintiff law firms, covering personal injury, medical malpractice, mass tort, and employment. Delta drives the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and works real cases. Each firm's data is isolated with a full audit trail, and client data is never sold or used to train AI models.",
+      "CaseDelta is an AI paralegal that works inside the tools small law firms already use, including Clio, MyCase, Filevine, Google, and Microsoft, and does the routine case work: requesting records, drafting, updating files, and tracking deadlines. Your team reviews and approves. Firms run more cases without hiring. Each firm's data is isolated and is never sold or used to train AI models.",
     founder: {
       "@type": "Person",
       name: "Camren Hall",
@@ -55,13 +55,12 @@ export function WebAppSchema() {
     url: BASE_URL,
     applicationCategory: "BusinessApplication",
     description:
-      "Delta is an AI associate for plaintiff law firms. It drives the tools the firm already runs, including Clio, Filevine, Google, and Microsoft, and works real cases from one conversation: chronologies, demand letters, discovery, and client follow up. Each firm's data is isolated, and client data is never used to train AI models.",
+      "CaseDelta is an AI paralegal that works inside the tools your firm already uses and does the routine case work: requesting records, drafting letters, updating files across your case manager, CRM, and billing, and tracking deadlines. You delegate in plain English and your team reviews and approves. Each firm's data is isolated and is never used to train AI models.",
     browserRequirements: "Requires JavaScript and HTML5 support",
     offers: {
       "@type": "Offer",
-      price: "349",
-      priceCurrency: "USD",
-      description: "$349 per user per month, flat. No tiers, add-ons, or setup fees.",
+      description:
+        "Flat whole-firm pricing, anchored to a fraction of the cost of a hire, not priced per seat. Founding-firm pricing available.",
     },
     operatingSystem: "Web-based",
   };
