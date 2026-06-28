@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import type { Theme } from "@/lib/variants";
 
-const BORDER = "rgba(20, 23, 31, 0.10)";
 const FONT = "var(--font-hanken), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 const NAV_LINKS = [
@@ -23,57 +23,58 @@ const LEGAL_LINKS = [
   { label: "Terms", href: "/terms" },
 ];
 
-export function FooterV2() {
+/**
+ * Footer. Defaults to the light styling used across the standard pages. When a
+ * `theme` is passed (the homepage variants), it adopts that theme's tokens so it
+ * reads correctly on the dark variants; on dark it shows the serif wordmark
+ * instead of the dark-on-transparent logo image.
+ */
+export function FooterV2({ theme }: { theme?: Theme }) {
+  const dark = theme?.mode === "dark";
+  const border = theme?.hairline ?? "rgba(20, 23, 31, 0.10)";
+  const linkColor = theme ? theme.faint : "#888";
+  const linkHover = theme ? theme.ink : "#333";
+  const copyColor = theme ? theme.faint : "#BBB";
+  const legalColor = theme ? theme.faint : "#AAA";
+  const legalHover = theme ? theme.ink : "#555";
+
   return (
     <footer
       style={{
         fontFamily: FONT,
-        borderTop: `1px solid ${BORDER}`,
+        borderTop: `1px solid ${border}`,
         padding: "clamp(40px, 6vw, 64px) 0",
         userSelect: "none",
         WebkitUserSelect: "none",
       }}
     >
-      <div
-        style={{
-          maxWidth: 1320,
-          margin: "0 auto",
-          padding: "0 clamp(24px, 4vw, 48px)",
-        }}
-      >
+      <div style={{ maxWidth: 1320, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" }}>
         {/* Top row: Logo + Nav links */}
-        <div
-          className="flex flex-col lg:flex-row lg:items-center lg:justify-between"
-          style={{ gap: 32 }}
-        >
-          {/* Logo */}
-          <Link href="/" style={{ display: "inline-block" }}>
-            <Image
-              src="/assets/branding/casedelta-logo-full.png"
-              alt="CaseDelta"
-              width={120}
-              height={28}
-              style={{ height: 22, width: "auto", opacity: 0.5 }}
-            />
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between" style={{ gap: 32 }}>
+          <Link href="/" style={{ display: "inline-block", textDecoration: "none" }}>
+            {dark ? (
+              <span style={{ fontFamily: theme!.serif, fontSize: 22, fontWeight: 400, letterSpacing: "-0.3px", color: theme!.ink }}>
+                Case<b style={{ color: theme!.accent, fontWeight: 500 }}>Delta</b>
+              </span>
+            ) : (
+              <Image
+                src="/assets/branding/casedelta-logo-full.png"
+                alt="CaseDelta"
+                width={120}
+                height={28}
+                style={{ height: 22, width: "auto", opacity: 0.5 }}
+              />
+            )}
           </Link>
 
-          {/* Nav links — 2-column grid on mobile, inline on desktop */}
-          <div
-            className="grid grid-cols-2 gap-x-12 gap-y-2 lg:flex lg:gap-8"
-          >
+          <div className="grid grid-cols-2 gap-x-12 gap-y-2 lg:flex lg:gap-8">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                style={{
-                  fontSize: 13,
-                  color: "#888",
-                  textDecoration: "none",
-                  transition: "color 0.2s ease",
-                  letterSpacing: "-0.01em",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = "#333"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "#888"; }}
+                style={{ fontSize: 13, color: linkColor, textDecoration: "none", transition: "color 0.2s ease", letterSpacing: "-0.01em" }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = linkHover; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = linkColor; }}
               >
                 {link.label}
               </Link>
@@ -81,14 +82,10 @@ export function FooterV2() {
           </div>
         </div>
 
-        {/* Divider */}
-        <div style={{ height: 1, backgroundColor: BORDER, margin: "clamp(24px, 3vw, 32px) 0" }} />
+        <div style={{ height: 1, backgroundColor: border, margin: "clamp(24px, 3vw, 32px) 0" }} />
 
-        {/* Bottom row: Copyright + Legal */}
-        <div
-          className="flex flex-col-reverse gap-4 lg:flex-row lg:justify-between lg:items-center"
-        >
-          <span style={{ fontSize: 12, color: "#BBB" }}>
+        <div className="flex flex-col-reverse gap-4 lg:flex-row lg:justify-between lg:items-center">
+          <span style={{ fontSize: 12, color: copyColor }}>
             © {new Date().getFullYear()} CaseDelta. All rights reserved.
           </span>
 
@@ -97,28 +94,18 @@ export function FooterV2() {
               <Link
                 key={link.label}
                 href={link.href}
-                style={{
-                  fontSize: 12,
-                  color: "#AAA",
-                  textDecoration: "none",
-                  transition: "color 0.2s ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = "#555"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "#AAA"; }}
+                style={{ fontSize: 12, color: legalColor, textDecoration: "none", transition: "color 0.2s ease" }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = legalHover; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = legalColor; }}
               >
                 {link.label}
               </Link>
             ))}
             <Link
               href="https://app.casedelta.com"
-              style={{
-                fontSize: 12,
-                color: "#AAA",
-                textDecoration: "none",
-                transition: "color 0.2s ease",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "#555"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "#AAA"; }}
+              style={{ fontSize: 12, color: legalColor, textDecoration: "none", transition: "color 0.2s ease" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = legalHover; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = legalColor; }}
             >
               Sign in
             </Link>

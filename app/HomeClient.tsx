@@ -3,14 +3,15 @@
 import { Hero } from "@/components/marketing/Hero";
 import { HomeSections } from "@/components/marketing/HomeSections";
 import { FooterV2 } from "@/components/FooterV2";
-import { CANVAS } from "@/lib/theme";
+import { useTheme } from "@/components/VariantProvider";
 
 export default function HomeClient() {
+  const theme = useTheme();
   return (
-    <main style={{ backgroundColor: CANVAS }}>
+    <main style={{ backgroundColor: theme.canvas, color: theme.ink }}>
       <Hero />
       <HomeSections />
-      <FooterV2 />
+      <FooterV2 theme={theme} />
     </main>
   );
 }
