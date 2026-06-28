@@ -46,6 +46,25 @@ export const LOGOS: Array<{ name: string; style?: LogoStyle }> = [
   { name: "GOHIGHLEVEL", style: "wide" },
 ];
 
+/**
+ * PLACEHOLDER hero social proof, for design exploration only.
+ * The rating, review count, and firm names are FICTIONAL. Replace with real,
+ * verifiable numbers and named customers (or remove) before any launch, per the
+ * honesty guardrails in POSITIONING.md (no fabricated metrics).
+ */
+export const SOCIAL_PROOF = {
+  rating: "4.9",
+  source: "Google",
+  caption: "from 130+ growing law firms",
+  firms: [
+    { name: "Whitman & Vale", style: "serif" as LogoStyle },
+    { name: "Cardoza Injury Law" },
+    { name: "Brennan Trial Group" },
+    { name: "Okafor & Reyes" },
+    { name: "Sterling & Cho", style: "serif" as LogoStyle },
+  ] as Array<{ name: string; style?: LogoStyle }>,
+};
+
 /** Header nav, labels match the mockups, mapped to the real routes that exist. */
 export const HERO_NAV: Array<{ label: string; href: string }> = [
   { label: "Product", href: "/features" },

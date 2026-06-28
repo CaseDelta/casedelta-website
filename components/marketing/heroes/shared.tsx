@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { trackEvent } from "@/lib/posthog";
 import type { Theme } from "@/lib/variants";
-import { LOGOS, LOGO_CAP } from "@/lib/variants";
+import { LOGOS, LOGO_CAP, SOCIAL_PROOF } from "@/lib/variants";
 
 /** The mockup hero wrap (harvey-light), used for header + hero + logo wall. */
 export const HERO_MAXW = 1240;
@@ -173,6 +173,111 @@ export function HeroLogoWall({
                 } as React.CSSProperties}
               >
                 {logo.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Stars({ size = 15 }: { size?: number }) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 3 }} aria-hidden>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#f5b400">
+          <path d="M12 2.2l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.27 6.09 20.36l1.13-6.57L2.45 9.14l6.6-.96L12 2.2z" />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+/**
+ * Hero social proof, the slot the integration logo wall used to occupy.
+ * PLACEHOLDER content (see SOCIAL_PROOF) for design only. A 5-star Google rating
+ * line over a row of (fictional) firm names, themed and laid out exactly like the
+ * old logo wall so the hero rhythm is unchanged.
+ */
+export function HeroSocialProof({
+  theme,
+  variant,
+  capAlign,
+}: {
+  theme: Theme;
+  variant: "pinned" | "strip";
+  capAlign: "center" | "left";
+}) {
+  const isStrip = variant === "strip";
+  const center = capAlign === "center";
+  return (
+    <div
+      style={
+        isStrip
+          ? { borderBottom: `1px solid ${theme.hairline}`, background: theme.canvas }
+          : { position: "relative", zIndex: 10 }
+      }
+    >
+      <div style={{ maxWidth: HERO_MAXW, margin: "0 auto", padding: `0 ${HERO_PAD}px` }}>
+        <div
+          style={
+            isStrip
+              ? { padding: "22px 0 24px" }
+              : { borderTop: `1px solid ${theme.hairline}`, padding: "24px 0 32px" }
+          }
+        >
+          {/* rating line */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              justifyContent: center ? "center" : "flex-start",
+              flexWrap: "wrap",
+              marginBottom: isStrip ? 16 : 20,
+            }}
+          >
+            <Stars />
+            <span style={{ fontFamily: theme.sans, fontSize: 14.5, fontWeight: 600, letterSpacing: "-0.2px", color: theme.ink }}>
+              {SOCIAL_PROOF.rating}
+              <span style={{ color: theme.muted, fontWeight: 500 }}> on {SOCIAL_PROOF.source}</span>
+            </span>
+            <span aria-hidden style={{ color: theme.faint }}>
+              &middot;
+            </span>
+            <span
+              style={{
+                fontFamily: theme.sans,
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: "0.4px",
+                textTransform: "uppercase",
+                color: theme.faint,
+              }}
+            >
+              {SOCIAL_PROOF.caption}
+            </span>
+          </div>
+
+          {/* firm names */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+            {SOCIAL_PROOF.firms.map((firm) => (
+              <span
+                key={firm.name}
+                className="cd-logo"
+                style={{
+                  color: theme.faint,
+                  fontFamily: firm.style === "serif" ? theme.serif : theme.sans,
+                  fontWeight: firm.style === "serif" ? 500 : 600,
+                  fontSize: firm.style === "serif" ? 19 : 16,
+                  letterSpacing: firm.style === "serif" ? "0" : "0.2px",
+                  whiteSpace: "nowrap",
+                  transition: "color 0.25s ease",
+                  "--cd-logo-hover": theme.ink,
+                } as React.CSSProperties}
+              >
+                {firm.name}
               </span>
             ))}
           </div>
