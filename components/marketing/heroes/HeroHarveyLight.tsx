@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_SUBHEAD, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, HeroLogoWall, HeroStyles, Pill } from "./shared";
+import { HERO_MAXW, HERO_PAD, HeroSocialProof, HeroStyles, Pill } from "./shared";
 
 export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const c = theme.canvas;
@@ -125,7 +125,7 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
           </div>
         </div>
 
-        <HeroLogoWall theme={theme} variant="pinned" capAlign="center" />
+        <HeroSocialProof theme={theme} variant="pinned" capAlign="center" />
       </section>
 
       <style>{`

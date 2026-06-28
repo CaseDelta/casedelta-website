@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_TAGLINE, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, HeroLogoWall, HeroStyles, Pill } from "./shared";
+import { HERO_MAXW, HERO_PAD, HeroSocialProof, HeroStyles, Pill } from "./shared";
 
 export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const rgb = theme.canvasRgb; // 15, 14, 13
@@ -92,7 +92,7 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
         </div>
       </section>
 
-      <HeroLogoWall theme={theme} variant="strip" capAlign="center" />
+      <HeroSocialProof theme={theme} variant="strip" capAlign="center" />
 
       <style>{`
         @media (max-width: 1080px) { .cd-lg-hero { height: 88vh; } .cd-lg-h1 { font-size: 50px; } }
