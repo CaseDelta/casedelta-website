@@ -235,7 +235,7 @@ export function HeroSocialProof({
               gap: 10,
               justifyContent: center ? "center" : "flex-start",
               flexWrap: "wrap",
-              marginBottom: isStrip ? 16 : 20,
+              marginBottom: 12,
             }}
           >
             <Stars />
@@ -243,6 +243,22 @@ export function HeroSocialProof({
               {SOCIAL_PROOF.rating}
               <span style={{ color: theme.muted, fontWeight: 500 }}> on {SOCIAL_PROOF.source}</span>
             </span>
+          </div>
+
+          {/* connective label, so the practice areas read as "who it's built for" */}
+          <div
+            style={{
+              fontFamily: theme.sans,
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: "0.4px",
+              textTransform: "uppercase",
+              color: theme.faint,
+              textAlign: capAlign,
+              marginBottom: isStrip ? 14 : 18,
+            }}
+          >
+            {SOCIAL_PROOF.practiceAreasLabel}
           </div>
 
           {/* practice areas, all in the serif display face */}
