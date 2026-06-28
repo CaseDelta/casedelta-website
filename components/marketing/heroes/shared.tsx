@@ -232,7 +232,7 @@ export function HeroSocialProof({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 12,
+              gap: 10,
               justifyContent: center ? "center" : "flex-start",
               flexWrap: "wrap",
               marginBottom: isStrip ? 16 : 20,
@@ -243,41 +243,23 @@ export function HeroSocialProof({
               {SOCIAL_PROOF.rating}
               <span style={{ color: theme.muted, fontWeight: 500 }}> on {SOCIAL_PROOF.source}</span>
             </span>
-            <span aria-hidden style={{ color: theme.faint }}>
-              &middot;
-            </span>
-            <span
-              style={{
-                fontFamily: theme.sans,
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: "0.4px",
-                textTransform: "uppercase",
-                color: theme.faint,
-              }}
-            >
-              {SOCIAL_PROOF.caption}
-            </span>
           </div>
 
-          {/* firm names */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
-            {SOCIAL_PROOF.firms.map((firm) => (
+          {/* trust signals, all in the serif display face */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px 20px", flexWrap: "wrap" }}>
+            {SOCIAL_PROOF.signals.map((signal) => (
               <span
-                key={firm.name}
-                className="cd-logo"
+                key={signal}
                 style={{
                   color: theme.faint,
-                  fontFamily: firm.style === "serif" ? theme.serif : theme.sans,
-                  fontWeight: firm.style === "serif" ? 500 : 600,
-                  fontSize: firm.style === "serif" ? 19 : 16,
-                  letterSpacing: firm.style === "serif" ? "0" : "0.2px",
+                  fontFamily: theme.serif,
+                  fontWeight: 500,
+                  fontSize: 18,
+                  letterSpacing: "0",
                   whiteSpace: "nowrap",
-                  transition: "color 0.25s ease",
-                  "--cd-logo-hover": theme.ink,
-                } as React.CSSProperties}
+                }}
               >
-                {firm.name}
+                {signal}
               </span>
             ))}
           </div>
