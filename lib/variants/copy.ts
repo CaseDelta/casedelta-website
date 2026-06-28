@@ -47,22 +47,17 @@ export const LOGOS: Array<{ name: string; style?: LogoStyle }> = [
 ];
 
 /**
- * Hero social proof: a Google rating over a row of trust signals.
+ * Hero social proof: a Google rating over a row of the practice areas CaseDelta is
+ * built for (signals purpose-built specialization for serious litigation firms).
  *
  * The Google rating is still a PLACEHOLDER (no real Google reviews yet) and must be
- * made real or removed before launch. The trust signals are honest, mirroring the
- * commitments on the Security page (POSITIONING.md: enterprise terms, zero-retention,
- * no-training, BAA path).
+ * made real or removed before launch. The practice areas are honest, they are the
+ * product's target verticals.
  */
 export const SOCIAL_PROOF = {
   rating: "4.9",
   source: "Google",
-  signals: [
-    "Enterprise-grade security",
-    "Zero data retention",
-    "Never trained on your data",
-    "BAA available",
-  ],
+  practiceAreas: ["Personal Injury", "Medical Malpractice", "Mass Tort", "Employment"],
 };
 
 /** Header nav, labels match the mockups, mapped to the real routes that exist. */
