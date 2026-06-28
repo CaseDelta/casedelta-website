@@ -47,22 +47,22 @@ export const LOGOS: Array<{ name: string; style?: LogoStyle }> = [
 ];
 
 /**
- * PLACEHOLDER hero social proof, for design exploration only.
- * The rating, review count, and firm names are FICTIONAL. Replace with real,
- * verifiable numbers and named customers (or remove) before any launch, per the
- * honesty guardrails in POSITIONING.md (no fabricated metrics).
+ * Hero social proof: a Google rating over a row of trust signals.
+ *
+ * The Google rating is still a PLACEHOLDER (no real Google reviews yet) and must be
+ * made real or removed before launch. The trust signals are honest, mirroring the
+ * commitments on the Security page (POSITIONING.md: enterprise terms, zero-retention,
+ * no-training, BAA path).
  */
 export const SOCIAL_PROOF = {
   rating: "4.9",
   source: "Google",
-  caption: "from 130+ growing law firms",
-  firms: [
-    { name: "Whitman & Vale", style: "serif" as LogoStyle },
-    { name: "Cardoza Injury Law" },
-    { name: "Brennan Trial Group" },
-    { name: "Okafor & Reyes" },
-    { name: "Sterling & Cho", style: "serif" as LogoStyle },
-  ] as Array<{ name: string; style?: LogoStyle }>,
+  signals: [
+    "Enterprise-grade security",
+    "Zero data retention",
+    "Never trained on your data",
+    "BAA available",
+  ],
 };
 
 /** Header nav, labels match the mockups, mapped to the real routes that exist. */
