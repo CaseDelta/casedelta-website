@@ -57,6 +57,9 @@ export const LOGOS: Array<{ name: string; style?: LogoStyle }> = [
 export const SOCIAL_PROOF = {
   rating: "4.9",
   source: "Google",
+  // Connective label for the practice-area row. "Built for" (not "used by") keeps it
+  // honest, it is about who the product targets, not a claim of real customers.
+  practiceAreasLabel: "Built for firms in",
   practiceAreas: ["Personal Injury", "Medical Malpractice", "Mass Tort", "Employment"],
 };
 
