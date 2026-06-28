@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { trackEvent } from "@/lib/posthog";
 
-const ACCENT = "#2563EB";
-const ACCENT_DEEP = "#1D4ED8";
-const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+const ACCENT = "#2F6FE0";
+const ACCENT_DEEP = "#1F3A5F";
+const FONT = "var(--font-hanken), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
 /* ─── Spring configs ─── */
 const springSnappy = { type: "spring" as const, stiffness: 500, damping: 30 };
@@ -127,7 +127,7 @@ export function NavbarV2({ hideLinks = false }: NavbarV2Props) {
               bottom: 0,
               left: "clamp(8px, calc(4vw - 16px), 32px)",
               right: "clamp(8px, calc(4vw - 16px), 32px)",
-              backgroundColor: (!hideLinks && (scrolled || navHovered)) ? "rgba(255, 255, 255, 0.95)" : "transparent",
+              backgroundColor: (!hideLinks && (scrolled || navHovered)) ? "rgba(246, 243, 238, 0.92)" : "transparent",
               backdropFilter: (!hideLinks && (scrolled || navHovered)) ? "blur(16px)" : "none",
               WebkitBackdropFilter: (!hideLinks && (scrolled || navHovered)) ? "blur(16px)" : "none",
               borderLeft: (!hideLinks && (scrolled || navHovered)) ? "1px solid #EDEDED" : "1px solid transparent",
