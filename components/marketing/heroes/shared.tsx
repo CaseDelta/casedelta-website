@@ -245,11 +245,11 @@ export function HeroSocialProof({
             </span>
           </div>
 
-          {/* trust signals, all in the serif display face */}
+          {/* practice areas, all in the serif display face */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px 20px", flexWrap: "wrap" }}>
-            {SOCIAL_PROOF.signals.map((signal) => (
+            {SOCIAL_PROOF.practiceAreas.map((area) => (
               <span
-                key={signal}
+                key={area}
                 style={{
                   color: theme.faint,
                   fontFamily: theme.serif,
@@ -259,7 +259,7 @@ export function HeroSocialProof({
                   whiteSpace: "nowrap",
                 }}
               >
-                {signal}
+                {area}
               </span>
             ))}
           </div>
