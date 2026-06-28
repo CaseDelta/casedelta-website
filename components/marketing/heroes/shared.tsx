@@ -194,8 +194,30 @@ function Stars({ size = 15 }: { size?: number }) {
   );
 }
 
+/** Compact Google star-rating trust eyebrow, baked into the hero copy above the headline. */
+export function GoogleRating({ theme, align = "left" }: { theme: Theme; align?: "left" | "center" }) {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 9,
+        alignSelf: align === "center" ? "center" : "flex-start",
+      }}
+    >
+      <Stars size={15} />
+      <span style={{ fontFamily: theme.sans, fontSize: 14.5, fontWeight: 600, letterSpacing: "-0.2px", color: theme.ink }}>
+        {SOCIAL_PROOF.rating}
+        <span style={{ color: theme.muted, fontWeight: 500 }}> on {SOCIAL_PROOF.source}</span>
+      </span>
+    </div>
+  );
+}
+
 /**
  * Hero social proof, the slot the integration logo wall used to occupy.
+ * Currently unused (the Google rating moved into the hero copy via GoogleRating);
+ * kept for when the practice-area / proof band returns.
  * PLACEHOLDER content (see SOCIAL_PROOF) for design only. A 5-star Google rating
  * line over a row of (fictional) firm names, themed and laid out exactly like the
  * old logo wall so the hero rhythm is unchanged.

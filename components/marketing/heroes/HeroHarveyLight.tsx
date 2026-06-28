@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_SUBHEAD, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, HeroSocialProof, HeroStyles, Pill } from "./shared";
+import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill } from "./shared";
 
 export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const c = theme.canvas;
@@ -81,28 +81,31 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
         <div style={{ position: "relative", zIndex: 10, flex: "1 1 auto", display: "flex", alignItems: "center", width: "100%" }}>
           <div style={{ maxWidth: HERO_MAXW, margin: "0 auto", padding: `0 ${HERO_PAD}px`, width: "100%" }}>
             <div className="cd-hl-copy" style={{ display: "flex", flexDirection: "column", gap: 30, maxWidth: 620, padding: "96px 0 64px" }}>
-              <h1
-                className="cd-hl-h1"
-                style={{
-                  fontFamily: theme.serif,
-                  fontWeight: 400,
-                  fontSize: 70,
-                  lineHeight: 1.03,
-                  letterSpacing: "-1.6px",
-                  color: theme.ink,
-                  margin: 0,
-                }}
-              >
-                {HERO_HEADLINES[copy].map((seg, i) =>
-                  seg.em ? (
-                    <em key={i} style={{ fontStyle: "italic", color: theme.accent, fontWeight: 400 }}>
-                      {seg.text}
-                    </em>
-                  ) : (
-                    <span key={i}>{seg.text}</span>
-                  )
-                )}
-              </h1>
+              <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                <GoogleRating theme={theme} />
+                <h1
+                  className="cd-hl-h1"
+                  style={{
+                    fontFamily: theme.serif,
+                    fontWeight: 400,
+                    fontSize: 70,
+                    lineHeight: 1.03,
+                    letterSpacing: "-1.6px",
+                    color: theme.ink,
+                    margin: 0,
+                  }}
+                >
+                  {HERO_HEADLINES[copy].map((seg, i) =>
+                    seg.em ? (
+                      <em key={i} style={{ fontStyle: "italic", color: theme.accent, fontWeight: 400 }}>
+                        {seg.text}
+                      </em>
+                    ) : (
+                      <span key={i}>{seg.text}</span>
+                    )
+                  )}
+                </h1>
+              </div>
               <p
                 className="cd-hl-sub"
                 style={{
@@ -124,8 +127,6 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
             </div>
           </div>
         </div>
-
-        <HeroSocialProof theme={theme} variant="pinned" capAlign="center" />
       </section>
 
       <style>{`
