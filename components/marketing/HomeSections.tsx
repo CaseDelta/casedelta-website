@@ -30,6 +30,20 @@ function useRise() {
         };
 }
 
+// The first section peeks into the hero's fold on load, so it animates on mount
+// rather than on scroll (whileInView would leave the peeking heading invisible).
+function useRiseLoad() {
+  const reduce = useReducedMotion();
+  return (delay = 0) =>
+    reduce
+      ? {}
+      : {
+          initial: { opacity: 0, y: 22 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
+        };
+}
+
 function Container({ children, narrow = false }: { children: React.ReactNode; narrow?: boolean }) {
   return (
     <div style={{ maxWidth: MAXW, margin: "0 auto", padding: `0 ${PAGE_PAD}` }}>
@@ -38,10 +52,23 @@ function Container({ children, narrow = false }: { children: React.ReactNode; na
   );
 }
 
-function Section({ children, bg, id }: { children: React.ReactNode; bg?: string; id?: string }) {
+function Section({
+  children,
+  bg,
+  id,
+  tightTop = false,
+}: {
+  children: React.ReactNode;
+  bg?: string;
+  id?: string;
+  tightTop?: boolean;
+}) {
   const t = useTheme();
+  // The first section sits in the hero's peek, so it gets a tighter top pad to let
+  // its heading show above the fold while the rest keeps full breathing room.
+  const padTop = tightTop ? "clamp(44px, 5vw, 64px)" : "clamp(72px, 9vw, 116px)";
   return (
-    <section id={id} style={{ background: bg ?? t.canvas, padding: "clamp(72px, 9vw, 116px) 0", borderTop: `1px solid ${t.hairline}` }}>
+    <section id={id} style={{ background: bg ?? t.canvas, padding: `${padTop} 0 clamp(72px, 9vw, 116px)`, borderTop: `1px solid ${t.hairline}` }}>
       {children}
     </section>
   );
@@ -130,13 +157,14 @@ const FAQ = [
 export function HomeSections() {
   const t = useTheme();
   const rise = useRise();
+  const riseLoad = useRiseLoad();
 
   return (
     <>
       {/* PROBLEM */}
-      <Section>
+      <Section tightTop>
         <Container narrow>
-          <motion.div {...rise(0)}>
+          <motion.div {...riseLoad(0)}>
             <Q>Why does growing your firm feel like drowning?</Q>
             <Lead>Because growth does not just add cases, it adds the routine work behind every case. Records to request, files to update, clients to chase, deadlines to watch. That work falls on people you cannot hire fast enough, so the more you win, the further behind you fall.</Lead>
             <P>You don&apos;t have a case problem. You have a capacity problem. Your best people spend their days on twenty-dollar work, requesting records, updating files, returning status calls, while the real legal work waits. More cases means more dropped balls, and a dropped ball is a missed deadline, an unhappy client, or a complaint to the bar. You would hire your way out of it, but good paralegals are slow to find, expensive to train, and often gone inside a year.</P>

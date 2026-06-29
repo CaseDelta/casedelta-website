@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_TAGLINE, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill } from "./shared";
+import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill, ScrollCue } from "./shared";
 
 export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const rgb = theme.canvasRgb; // 15, 14, 13
@@ -22,7 +22,7 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
         className="cd-lg-hero"
         style={{
           position: "relative",
-          height: "90vh",
+          height: "calc(100vh - 128px)",
           minHeight: 600,
           marginTop: -HERO_HEADER_HEIGHT,
           overflow: "hidden",
@@ -93,11 +93,14 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
             </div>
           </div>
         </div>
+
+        <ScrollCue theme={theme} />
       </section>
 
       <style>{`
-        @media (max-width: 1080px) { .cd-lg-hero { height: 88vh; } .cd-lg-h1 { font-size: 50px; } }
+        @media (max-width: 1080px) { .cd-lg-hero { height: calc(100vh - 128px); } .cd-lg-h1 { font-size: 50px; } }
         @media (max-width: 480px) {
+          .cd-scroll-cue { display: none; }
           .cd-lg-hero { min-height: 560px; }
           .cd-lg-video { object-position: center; }
           .cd-lg-inner { padding-bottom: 42px; }

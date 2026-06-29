@@ -214,6 +214,39 @@ export function GoogleRating({ theme, align = "left" }: { theme: Theme; align?: 
   );
 }
 
+/** Animated scroll-down cue pinned to the bottom of the hero; teases below-the-fold. */
+export function ScrollCue({ theme }: { theme: Theme }) {
+  return (
+    <button
+      className="cd-scroll-cue"
+      aria-label="Scroll to content"
+      onClick={() => {
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: Math.round(window.innerHeight * 0.8), behavior: "smooth" });
+        }
+      }}
+      style={{
+        position: "absolute",
+        bottom: 26,
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 10,
+        background: "none",
+        border: "none",
+        cursor: "pointer",
+        display: "grid",
+        placeItems: "center",
+        color: theme.faint,
+        padding: 6,
+      }}
+    >
+      <svg className="cd-scroll-chevron" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </button>
+  );
+}
+
 /**
  * Hero social proof, the slot the integration logo wall used to occupy.
  * Currently unused (the Google rating moved into the hero copy via GoogleRating);
@@ -321,6 +354,11 @@ export function HeroStyles({ theme }: { theme: Theme }) {
       .cd-hero-navlink:hover { color: ${theme.ink}; }
       .cd-hero-login:hover { color: ${theme.ink}; }
       .cd-hero-secondary:hover { gap: 11px; }
+      .cd-scroll-cue { transition: color 0.2s ease; }
+      .cd-scroll-cue:hover { color: ${theme.ink}; }
+      .cd-scroll-chevron { animation: cd-bounce 2.2s ease-in-out infinite; }
+      @keyframes cd-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+      @media (prefers-reduced-motion: reduce) { .cd-scroll-chevron { animation: none; } }
       @media (max-width: 960px) {
         .cd-hero-nav, .cd-hero-login, .cd-hero-header-pill { display: none !important; }
         .cd-hero-burger { display: grid !important; }
