@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_TAGLINE, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill, ScrollCue } from "./shared";
+import { HERO_MAXW, HERO_PAD, StarRating, HeroStyles, Pill, ScrollCue } from "./shared";
 
 export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const rgb = theme.canvasRgb; // 15, 14, 13
@@ -22,7 +22,7 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
         className="cd-lg-hero"
         style={{
           position: "relative",
-          height: "calc(100vh - 128px)",
+          height: "100vh",
           minHeight: 600,
           marginTop: -HERO_HEADER_HEIGHT,
           overflow: "hidden",
@@ -64,27 +64,28 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
           }}
         />
 
-        <div className="cd-lg-inner" style={{ position: "relative", zIndex: 10, width: "100%", paddingBottom: 60 }}>
+        <div className="cd-lg-inner" style={{ position: "relative", zIndex: 10, width: "100%", paddingBottom: 104 }}>
           <div style={{ maxWidth: HERO_MAXW, margin: "0 auto", padding: `0 ${HERO_PAD}px` }}>
-            <div className="cd-lg-copy" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 22, maxWidth: 760, margin: "0 auto" }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-                <GoogleRating theme={theme} align="center" />
-                <h1
-                  className="cd-lg-h1"
-                  style={{ fontFamily: theme.serif, fontWeight: 400, fontSize: 56, lineHeight: 1.04, letterSpacing: "-1.2px", color: "#fff", margin: 0 }}
-                >
-                  {HERO_HEADLINES[copy].map((seg, i) =>
-                    seg.em ? (
-                      <em key={i} style={{ fontStyle: "italic", color: theme.accent, fontWeight: 400 }}>
-                        {seg.text}
-                      </em>
-                    ) : (
-                      <span key={i}>{seg.text}</span>
-                    )
-                  )}
-                </h1>
-              </div>
-              <div className="cd-lg-tagline" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18 }}>
+            <div className="cd-lg-copy" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 24, maxWidth: 760, margin: "0 auto" }}>
+              <h1
+                className="cd-lg-h1"
+                style={{ fontFamily: theme.serif, fontWeight: 400, fontSize: 56, lineHeight: 1.04, letterSpacing: "-1.2px", color: "#fff", margin: 0 }}
+              >
+                {HERO_HEADLINES[copy].map((seg, i) =>
+                  seg.em ? (
+                    <em key={i} style={{ fontStyle: "italic", color: theme.accent, fontWeight: 400 }}>
+                      {seg.text}
+                    </em>
+                  ) : (
+                    <span key={i}>{seg.text}</span>
+                  )
+                )}
+              </h1>
+              <div className="cd-lg-tagline" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+                <StarRating theme={theme} align="center" onLight />
+                <span aria-hidden className="cd-lg-dot" style={{ color: "rgba(255, 255, 255, 0.40)" }}>
+                  &middot;
+                </span>
                 <span style={{ fontFamily: theme.sans, fontSize: 16, fontWeight: 400, letterSpacing: "-0.2px", color: "rgba(255, 255, 255, 0.9)" }}>
                   {HERO_TAGLINE}
                 </span>
@@ -98,7 +99,7 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
       </section>
 
       <style>{`
-        @media (max-width: 1080px) { .cd-lg-hero { height: calc(100vh - 128px); } .cd-lg-h1 { font-size: 50px; } }
+        @media (max-width: 1080px) { .cd-lg-hero { height: 100vh; } .cd-lg-h1 { font-size: 50px; } }
         @media (max-width: 480px) {
           .cd-scroll-cue { display: none; }
           .cd-lg-hero { min-height: 560px; }
@@ -107,6 +108,7 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
           .cd-lg-copy { gap: 18px; }
           .cd-lg-h1 { font-size: 38px; letter-spacing: -0.8px; }
           .cd-lg-tagline { flex-direction: column; gap: 14px; }
+          .cd-lg-dot { display: none; }
         }
       `}</style>
     </>

@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_SUBHEAD, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill, ScrollCue } from "./shared";
+import { HERO_MAXW, HERO_PAD, StarRating, HeroStyles, Pill, ScrollCue } from "./shared";
 
 export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const c = theme.canvas;
@@ -26,7 +26,7 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
           isolation: "isolate",
           display: "flex",
           flexDirection: "column",
-          minHeight: "calc(100vh - 128px)",
+          minHeight: "100vh",
           marginTop: -HERO_HEADER_HEIGHT,
           paddingTop: HERO_HEADER_HEIGHT,
           background: c,
@@ -82,7 +82,7 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
           <div style={{ maxWidth: HERO_MAXW, margin: "0 auto", padding: `0 ${HERO_PAD}px`, width: "100%" }}>
             <div className="cd-hl-copy" style={{ display: "flex", flexDirection: "column", gap: 30, maxWidth: 620, padding: "96px 0 64px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-                <GoogleRating theme={theme} />
+                <StarRating theme={theme} />
                 <h1
                   className="cd-hl-h1"
                   style={{

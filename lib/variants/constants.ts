@@ -25,7 +25,7 @@ export const COPY_VARIANTS: readonly CopyVariant[] = [
 // Primary look served when no flag/override is present (i.e. everyone, pre-split-test).
 // "control" === harvey-light, "harvey-dark" === the dark variant. Set to harvey-dark
 // per the current direction; the PostHog flag keeps "control" first for experiments.
-export const DEFAULT_DESIGN: DesignVariant = "harvey-dark";
+export const DEFAULT_DESIGN: DesignVariant = "legora";
 export const DEFAULT_COPY: CopyVariant = "control";
 
 export function isDesignVariant(v: unknown): v is DesignVariant {
