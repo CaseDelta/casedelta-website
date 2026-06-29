@@ -194,53 +194,64 @@ function Stars({ size = 15 }: { size?: number }) {
   );
 }
 
-/** Compact Google star-rating trust eyebrow, baked into the hero copy above the headline. */
-export function GoogleRating({ theme, align = "left" }: { theme: Theme; align?: "left" | "center" }) {
+/** Compact star-rating trust mark: just stars + the number, source left ambiguous. */
+export function StarRating({
+  theme,
+  align = "left",
+  onLight = false,
+}: {
+  theme: Theme;
+  align?: "left" | "center";
+  onLight?: boolean;
+}) {
   return (
     <div
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 9,
+        gap: 8,
         alignSelf: align === "center" ? "center" : "flex-start",
       }}
     >
       <Stars size={15} />
-      <span style={{ fontFamily: theme.sans, fontSize: 14.5, fontWeight: 600, letterSpacing: "-0.2px", color: theme.ink }}>
+      <span style={{ fontFamily: theme.sans, fontSize: 15, fontWeight: 600, letterSpacing: "-0.2px", color: onLight ? "#fff" : theme.ink }}>
         {SOCIAL_PROOF.rating}
-        <span style={{ color: theme.muted, fontWeight: 500 }}> on {SOCIAL_PROOF.source}</span>
       </span>
     </div>
   );
 }
 
-/** Animated scroll-down cue pinned to the bottom of the hero; teases below-the-fold. */
+/** Animated "Scroll" cue pinned to the bottom of the full-height hero. */
 export function ScrollCue({ theme }: { theme: Theme }) {
+  const color = theme.mode === "dark" ? "rgba(255, 255, 255, 0.72)" : theme.muted;
   return (
     <button
       className="cd-scroll-cue"
       aria-label="Scroll to content"
       onClick={() => {
         if (typeof window !== "undefined") {
-          window.scrollTo({ top: Math.round(window.innerHeight * 0.8), behavior: "smooth" });
+          window.scrollTo({ top: Math.round(window.innerHeight * 0.92), behavior: "smooth" });
         }
       }}
       style={{
         position: "absolute",
-        bottom: 26,
+        bottom: 22,
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 10,
         background: "none",
         border: "none",
         cursor: "pointer",
-        display: "grid",
-        placeItems: "center",
-        color: theme.faint,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 7,
+        color,
         padding: 6,
       }}
     >
-      <svg className="cd-scroll-chevron" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <span style={{ fontFamily: theme.sans, fontSize: 11, fontWeight: 600, letterSpacing: "1.6px", textTransform: "uppercase" }}>Scroll</span>
+      <svg className="cd-scroll-chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 9l6 6 6-6" />
       </svg>
     </button>
