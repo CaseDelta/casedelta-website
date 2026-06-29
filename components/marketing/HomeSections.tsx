@@ -65,7 +65,7 @@ function Container({ children, narrow = false }: { children: React.ReactNode; na
 
 function Section({ children, bg, id }: { children: React.ReactNode; bg: string; id?: string }) {
   return (
-    <section id={id} style={{ background: bg, padding: "clamp(80px, 10vw, 128px) 0", borderTop: `1px solid ${BF.hairline}` }}>
+    <section id={id} style={{ background: bg, padding: "clamp(92px, 11.5vw, 152px) 0", borderTop: `1px solid ${BF.hairline}` }}>
       {children}
     </section>
   );
@@ -216,6 +216,21 @@ const SECURITY = [
   "Your firm's data, isolated",
 ];
 
+// PLACEHOLDER testimonial — fictional. Replace with a real, attributable quote (with the
+// person's permission) before launch; a fabricated endorsement is an FTC / honesty risk.
+const TESTIMONIAL = {
+  quote:
+    "Delta runs the records chase and the first draft on every file, then hands it back for us to approve. It is the first thing we have tried that took work off my paralegals instead of giving them one more tab to manage.",
+  initials: "DH",
+  name: "Daniel Hartley",
+  title: "Managing Partner, Hartley Injury Law",
+};
+
+const COMPARE = {
+  tool: ["Opens in one more browser tab", "You re-key its output into your real systems", "Solves a single task, then stops"],
+  delta: ["Works inside the tools you already use", "Does the whole routine job, end to end", "Learns your firm and compounds over time"],
+};
+
 export function HomeSections() {
   const rise = useRise();
 
@@ -257,6 +272,25 @@ export function HomeSections() {
         </Container>
       </Section>
 
+      {/* TESTIMONIAL (PLACEHOLDER — swap for a real one before launch) */}
+      <Section bg={BG.white}>
+        <Container narrow>
+          <motion.figure {...rise(0)} style={{ margin: "0 auto", textAlign: "center", maxWidth: 880 }}>
+            <div aria-hidden style={{ fontFamily: SERIF, fontSize: 64, lineHeight: 0.5, color: BF.accent, opacity: 0.28 }}>&ldquo;</div>
+            <blockquote style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(26px, 3.5vw, 40px)", lineHeight: 1.26, letterSpacing: "-0.6px", color: BF.ink, margin: "16px auto 0", maxWidth: 880 }}>
+              {TESTIMONIAL.quote}
+            </blockquote>
+            <figcaption style={{ marginTop: 38, display: "inline-flex", alignItems: "center", gap: 13 }}>
+              <span style={{ width: 46, height: 46, borderRadius: "50%", background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SANS, fontSize: 15, fontWeight: 600, color: "#fff", flex: "0 0 auto" }}>{TESTIMONIAL.initials}</span>
+              <span style={{ textAlign: "left" }}>
+                <span style={{ display: "block", fontFamily: SANS, fontSize: 15.5, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>{TESTIMONIAL.name}</span>
+                <span style={{ display: "block", fontFamily: SANS, fontSize: 14, color: BF.muted, marginTop: 2 }}>{TESTIMONIAL.title}</span>
+              </span>
+            </figcaption>
+          </motion.figure>
+        </Container>
+      </Section>
+
       {/* IMPACT / STATS (dark band) */}
       <Section bg={BG.statBand}>
         <Container>
@@ -275,15 +309,37 @@ export function HomeSections() {
         </Container>
       </Section>
 
-      {/* WHY DIFFERENT */}
+      {/* WHY DIFFERENT (comparison module) */}
       <Section bg={BG.white}>
         <Container narrow>
           <motion.div {...rise(0)}>
             <H>
               A one-task tool gives you an output. <span style={{ color: BF.accent, fontStyle: "italic" }}>CaseDelta gives you capacity.</span>
             </H>
-            <Sub>Most legal AI does one task in one more browser tab. CaseDelta does the whole routine job inside the tools you already use, and learns how your firm works, so it gets more useful over time.</Sub>
+            <Sub>Most legal AI does one task in one more browser tab. CaseDelta does the whole routine job inside the tools you already use, and learns how your firm works.</Sub>
           </motion.div>
+        </Container>
+        <Container>
+          <div className="cd-two" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 52 }}>
+            <motion.div {...rise(0)} style={{ background: BG.offWhite, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "32px 30px 34px" }}>
+              <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: BF.faint, marginBottom: 20 }}>A one-task tool</div>
+              {COMPARE.tool.map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "13px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2.2" strokeLinecap="round" style={{ flex: "0 0 auto", marginTop: 1 }}><path d="M6 6l12 12M18 6L6 18" /></svg>
+                  <span style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.45, color: BF.muted }}>{t}</span>
+                </div>
+              ))}
+            </motion.div>
+            <motion.div {...rise(0.08)} style={{ background: BF.card, border: `1px solid ${BF.accentBorderHover}`, borderRadius: 16, padding: "32px 30px 34px", boxShadow: "0 32px 64px -36px rgba(47,111,224,0.32)" }}>
+              <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: BF.accent, marginBottom: 20 }}>CaseDelta</div>
+              {COMPARE.delta.map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "13px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto", marginTop: 1 }}><path d="M5 13l4 4L19 7" /></svg>
+                  <span style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.45, color: BF.ink, fontWeight: 500 }}>{t}</span>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </Container>
       </Section>
 
