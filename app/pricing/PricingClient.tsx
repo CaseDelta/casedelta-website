@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import { BottomCTA } from "@/components/BottomCTA";
-import { SocialProof } from "@/components/SocialProof";
 
 const ACCENT = "#2563EB";
 const DELTA_BLUE = "#1D4ED8";
@@ -17,6 +16,69 @@ const INCLUDED = [
   "Admin coordination and legal research, in one assistant.",
   "Delta learns your firm. Not a generic legal AI.",
 ];
+
+/**
+ * Honest value card: the "priced against a hire" anchor. Replaces the old fabricated
+ * social-proof card (fake rating + fictional firm names). The hiring figures are honest
+ * market framing (also used on the homepage stats band), not invented product metrics.
+ */
+function ValueCard() {
+  const anchor = [
+    { label: "A full-time paralegal", value: "$4–5k / mo" },
+    { label: "Plus recruiting and ramp", value: "weeks to hire" },
+  ];
+  return (
+    <aside
+      style={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        padding: "36px 36px 34px 40px",
+        border: `1px solid ${BORDER}`,
+        borderRadius: 14,
+        backgroundColor: "#FAFAFA",
+        width: "100%",
+        maxWidth: 360,
+        overflow: "hidden",
+      }}
+    >
+      <div
+        aria-hidden
+        style={{ position: "absolute", top: 24, bottom: 24, left: 0, width: 3, backgroundColor: ACCENT, borderRadius: "0 2px 2px 0" }}
+      />
+      <p
+        style={{
+          fontFamily: FONT, fontSize: 11, fontWeight: 600, color: "#888",
+          letterSpacing: "0.12em", textTransform: "uppercase", margin: 0, marginBottom: 22,
+        }}
+      >
+        Priced against a hire
+      </p>
+
+      {anchor.map((row) => (
+        <div
+          key={row.label}
+          style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 14 }}
+        >
+          <span style={{ fontFamily: FONT, fontSize: 14, fontWeight: 500, color: "#64748B", letterSpacing: "-0.01em" }}>{row.label}</span>
+          <span style={{ fontFamily: FONT, fontSize: 14, fontWeight: 600, color: "#475569", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>{row.value}</span>
+        </div>
+      ))}
+
+      <div style={{ height: 1, backgroundColor: BORDER, margin: "12px 0 20px" }} />
+
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 16, marginBottom: 6 }}>
+        <span style={{ fontFamily: FONT, fontSize: 15, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em" }}>CaseDelta</span>
+        <span style={{ fontFamily: FONT, fontSize: 22, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.03em", whiteSpace: "nowrap" }}>
+          $349 <span style={{ fontSize: 13, fontWeight: 500, color: "#777" }}>/ user</span>
+        </span>
+      </div>
+      <p style={{ fontFamily: FONT, fontSize: 13.5, fontWeight: 400, color: "#64748B", lineHeight: 1.5, letterSpacing: "-0.005em", margin: "14px 0 0" }}>
+        Live in days, flat monthly fee. The help you can&rsquo;t hire, not another per-seat tool.
+      </p>
+    </aside>
+  );
+}
 
 export default function PricingClient() {
   return (
@@ -219,9 +281,9 @@ export default function PricingClient() {
               </motion.a>
             </div>
 
-            {/* ── RIGHT: Social proof card ── */}
+            {/* ── RIGHT: value card (priced-against-a-hire anchor) ── */}
             <aside style={{ width: 360, flexShrink: 0 }}>
-              <SocialProof variant="card" />
+              <ValueCard />
             </aside>
 
           </div>

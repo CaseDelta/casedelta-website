@@ -46,23 +46,6 @@ export const LOGOS: Array<{ name: string; style?: LogoStyle }> = [
   { name: "GOHIGHLEVEL", style: "wide" },
 ];
 
-/**
- * Hero social proof: a Google rating over a row of the practice areas CaseDelta is
- * built for (signals purpose-built specialization for serious litigation firms).
- *
- * The Google rating is still a PLACEHOLDER (no real Google reviews yet) and must be
- * made real or removed before launch. The practice areas are honest, they are the
- * product's target verticals.
- */
-export const SOCIAL_PROOF = {
-  rating: "4.9",
-  source: "Google",
-  // Connective label for the practice-area row. "Built for" (not "used by") keeps it
-  // honest, it is about who the product targets, not a claim of real customers.
-  practiceAreasLabel: "Built for firms in",
-  practiceAreas: ["Personal Injury", "Medical Malpractice", "Mass Tort", "Employment"],
-};
-
 /** Header nav, labels match the mockups, mapped to the real routes that exist. */
 export const HERO_NAV: Array<{ label: string; href: string }> = [
   { label: "Product", href: "/features" },
