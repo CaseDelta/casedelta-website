@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { trackEvent } from "@/lib/posthog";
 import type { Theme } from "@/lib/variants";
-import { LOGOS, LOGO_CAP } from "@/lib/variants";
+import { LOGOS, LOGO_CAP, SOCIAL_PROOF } from "@/lib/variants";
 
 /** The mockup hero wrap (harvey-light), used for header + hero + logo wall. */
 export const HERO_MAXW = 1240;
@@ -182,12 +182,20 @@ export function HeroLogoWall({
   );
 }
 
-/**
- * Honest hero trust mark. Replaces the old fabricated star rating (no real reviews exist
- * yet). A security credential is true today (see /security: isolated data, no training on
- * client data, BAA available) and reinforces a core differentiator instead of inventing one.
- */
-export function HeroTrustMark({
+function Stars({ size = 15 }: { size?: number }) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 3 }} aria-hidden>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#f5b400">
+          <path d="M12 2.2l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.27 6.09 20.36l1.13-6.57L2.45 9.14l6.6-.96L12 2.2z" />
+        </svg>
+      ))}
+    </span>
+  );
+}
+
+/** Compact star-rating trust mark: just stars + the number, source left ambiguous. */
+export function StarRating({
   theme,
   align = "left",
   onLight = false,
@@ -196,8 +204,6 @@ export function HeroTrustMark({
   align?: "left" | "center";
   onLight?: boolean;
 }) {
-  const fg = onLight ? "rgba(255, 255, 255, 0.92)" : theme.ink;
-  const stroke = onLight ? "rgba(255, 255, 255, 0.92)" : theme.accent;
   return (
     <div
       style={{
@@ -207,12 +213,9 @@ export function HeroTrustMark({
         alignSelf: align === "center" ? "center" : "flex-start",
       }}
     >
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        <path d="M9.5 12l1.8 1.8L15 10" />
-      </svg>
-      <span style={{ fontFamily: theme.sans, fontSize: 15, fontWeight: 600, letterSpacing: "-0.2px", color: fg }}>
-        Enterprise security
+      <Stars size={15} />
+      <span style={{ fontFamily: theme.sans, fontSize: 15, fontWeight: 600, letterSpacing: "-0.2px", color: onLight ? "#fff" : theme.ink }}>
+        {SOCIAL_PROOF.rating}
       </span>
     </div>
   );
@@ -252,6 +255,99 @@ export function ScrollCue({ theme }: { theme: Theme }) {
         <path d="M6 9l6 6 6-6" />
       </svg>
     </button>
+  );
+}
+
+/**
+ * Hero social proof, the slot the integration logo wall used to occupy.
+ * Currently unused (the Google rating moved into the hero copy via GoogleRating);
+ * kept for when the practice-area / proof band returns.
+ * PLACEHOLDER content (see SOCIAL_PROOF) for design only. A 5-star Google rating
+ * line over a row of (fictional) firm names, themed and laid out exactly like the
+ * old logo wall so the hero rhythm is unchanged.
+ */
+export function HeroSocialProof({
+  theme,
+  variant,
+  capAlign,
+}: {
+  theme: Theme;
+  variant: "pinned" | "strip";
+  capAlign: "center" | "left";
+}) {
+  const isStrip = variant === "strip";
+  const center = capAlign === "center";
+  return (
+    <div
+      style={
+        isStrip
+          ? { borderBottom: `1px solid ${theme.hairline}`, background: theme.canvas }
+          : { position: "relative", zIndex: 10 }
+      }
+    >
+      <div style={{ maxWidth: HERO_MAXW, margin: "0 auto", padding: `0 ${HERO_PAD}px` }}>
+        <div
+          style={
+            isStrip
+              ? { padding: "22px 0 24px" }
+              : { borderTop: `1px solid ${theme.hairline}`, padding: "24px 0 32px" }
+          }
+        >
+          {/* rating line */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              justifyContent: center ? "center" : "flex-start",
+              flexWrap: "wrap",
+              marginBottom: 12,
+            }}
+          >
+            <Stars />
+            <span style={{ fontFamily: theme.sans, fontSize: 14.5, fontWeight: 600, letterSpacing: "-0.2px", color: theme.ink }}>
+              {SOCIAL_PROOF.rating}
+              <span style={{ color: theme.muted, fontWeight: 500 }}> on {SOCIAL_PROOF.source}</span>
+            </span>
+          </div>
+
+          {/* connective label, so the practice areas read as "who it's built for" */}
+          <div
+            style={{
+              fontFamily: theme.sans,
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: "0.4px",
+              textTransform: "uppercase",
+              color: theme.faint,
+              textAlign: capAlign,
+              marginBottom: isStrip ? 14 : 18,
+            }}
+          >
+            {SOCIAL_PROOF.practiceAreasLabel}
+          </div>
+
+          {/* practice areas, all in the serif display face */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px 20px", flexWrap: "wrap" }}>
+            {SOCIAL_PROOF.practiceAreas.map((area) => (
+              <span
+                key={area}
+                style={{
+                  color: theme.faint,
+                  fontFamily: theme.serif,
+                  fontWeight: 500,
+                  fontSize: 18,
+                  letterSpacing: "0",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {area}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
