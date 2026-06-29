@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_SUBHEAD, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill } from "./shared";
+import { HERO_MAXW, HERO_PAD, GoogleRating, HeroStyles, Pill, ScrollCue } from "./shared";
 
 export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const c = theme.canvas;
@@ -26,7 +26,7 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
           isolation: "isolate",
           display: "flex",
           flexDirection: "column",
-          minHeight: "100vh",
+          minHeight: "calc(100vh - 128px)",
           marginTop: -HERO_HEADER_HEIGHT,
           paddingTop: HERO_HEADER_HEIGHT,
           background: c,
@@ -127,10 +127,13 @@ export function HeroHarveyLight({ theme, copy }: { theme: Theme; copy: CopyVaria
             </div>
           </div>
         </div>
+
+        <ScrollCue theme={theme} />
       </section>
 
       <style>{`
         @media (max-width: 960px) { .cd-hl-h1 { font-size: 56px; letter-spacing: -1.3px; } }
+        @media (max-width: 720px) { .cd-scroll-cue { display: none; } }
         @media (max-width: 720px) {
           .cd-hl-hero { min-height: auto; }
           .cd-hl-video { object-position: 64% center; opacity: 0.96; }
