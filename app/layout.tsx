@@ -65,12 +65,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  icons: {
-    icon: [
-      { url: "/favicon-light.png", media: "(prefers-color-scheme: light)" },
-      { url: "/favicon-dark.png", media: "(prefers-color-scheme: dark)" },
-    ],
-  },
+  // Favicon: app/icon.png (a solid navy square with the mark) is auto-linked by Next.
+  // It has its own background so it stays visible on light AND dark browser tabs, unlike
+  // the old transparent media-query variants that vanished on a same-colored tab.
   openGraph: {
     type: "website",
     locale: "en_US",
