@@ -8,7 +8,7 @@
 import type { Theme, CopyVariant } from "@/lib/variants";
 import { HERO_HEADLINES, HERO_TAGLINE, PRIMARY_CTA } from "@/lib/variants";
 import { HeroHeader, HERO_HEADER_HEIGHT } from "./HeroHeader";
-import { HERO_MAXW, HERO_PAD, StarRating, HeroStyles, Pill, ScrollCue } from "./shared";
+import { HERO_MAXW, HERO_PAD, HeroTrustMark, HeroStyles, Pill, ScrollCue } from "./shared";
 
 export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant }) {
   const rgb = theme.canvasRgb; // 15, 14, 13
@@ -82,7 +82,7 @@ export function HeroLegora({ theme, copy }: { theme: Theme; copy: CopyVariant })
                 )}
               </h1>
               <div className="cd-lg-tagline" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-                <StarRating theme={theme} align="center" onLight />
+                <HeroTrustMark theme={theme} align="center" onLight />
                 <span aria-hidden className="cd-lg-dot" style={{ color: "rgba(255, 255, 255, 0.40)" }}>
                   &middot;
                 </span>
