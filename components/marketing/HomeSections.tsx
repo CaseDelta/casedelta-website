@@ -216,16 +216,14 @@ const SECURITY = [
   "Your firm's data, isolated",
 ];
 
-// Founder note (honest). A real, attributable statement of the product thesis, not a
-// fabricated customer endorsement. The eyebrow labels it as the founder's words so it is
-// never read as a client testimonial. Swap in real customer quotes here as they exist.
+// PLACEHOLDER testimonial — fictional. Replace with a real, attributable quote (with the
+// person's permission) before launch; a fabricated endorsement is an FTC / honesty risk.
 const TESTIMONIAL = {
-  eyebrow: "From the founder",
   quote:
-    "I built Delta to be the teammate a small firm cannot hire fast enough. It works inside the tools you already use and takes the routine case work off your team, so you take on more cases without adding headcount.",
-  initials: "CH",
-  name: "Camren Hall",
-  title: "Founder, CaseDelta",
+    "Delta runs the records chase and the first draft on every file, then hands it back for us to approve. It is the first thing we have tried that took work off my paralegals instead of giving them one more tab to manage.",
+  initials: "DH",
+  name: "Daniel Hartley",
+  title: "Managing Partner, Hartley Injury Law",
 };
 
 const COMPARE = {
@@ -274,11 +272,10 @@ export function HomeSections() {
         </Container>
       </Section>
 
-      {/* FOUNDER NOTE (honest — real attribution, not a customer testimonial) */}
+      {/* TESTIMONIAL (PLACEHOLDER — swap for a real one before launch) */}
       <Section bg={BG.white}>
         <Container narrow>
           <motion.figure {...rise(0)} style={{ margin: "0 auto", textAlign: "center", maxWidth: 880 }}>
-            <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: BF.faint, marginBottom: 28 }}>{TESTIMONIAL.eyebrow}</div>
             <div aria-hidden style={{ fontFamily: SERIF, fontSize: 64, lineHeight: 0.5, color: BF.accent, opacity: 0.28 }}>&ldquo;</div>
             <blockquote style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(26px, 3.5vw, 40px)", lineHeight: 1.26, letterSpacing: "-0.6px", color: BF.ink, margin: "16px auto 0", maxWidth: 880 }}>
               {TESTIMONIAL.quote}
