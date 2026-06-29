@@ -361,10 +361,8 @@ export function HeroStyles({ theme }: { theme: Theme }) {
       .cd-pill:hover { background: var(--cd-pill-hover); box-shadow: var(--cd-pill-shadow); transform: translateY(-1px); }
       .cd-pill:hover .cd-pill-dot { transform: rotate(45deg); }
       .cd-logo:hover { color: var(--cd-logo-hover); }
-      .cd-hero-navlink { transition: color 0.2s ease; }
-      .cd-hero-navlink:hover { color: ${theme.ink}; }
-      .cd-hero-login:hover { color: ${theme.ink}; }
       .cd-hero-secondary:hover { gap: 11px; }
+      .cd-navcta:hover { transform: translateY(-1px); box-shadow: 0 8px 22px -8px rgba(0,0,0,0.35); }
       .cd-scroll-cue { transition: color 0.2s ease; }
       .cd-scroll-cue:hover { color: ${theme.ink}; }
       .cd-scroll-chevron { animation: cd-bounce 2.2s ease-in-out infinite; }
