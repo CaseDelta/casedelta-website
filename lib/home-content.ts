@@ -29,12 +29,4 @@ export const HOME_FAQ = [
     q: "How long until it is useful?",
     a: "It is useful on day one for routine tasks you delegate directly. Over about a month it learns your firm's standards and preferences, so you move from instructing it step by step to simply handing it the case.",
   },
-  {
-    q: "Does CaseDelta act on its own without me?",
-    a: "Not by default. It works like a new hire: it drafts and prepares, your team reviews and approves, and it earns more autonomy task by task as it proves itself. You decide what goes out.",
-  },
-  {
-    q: "We are a small firm. Is this overkill for us?",
-    a: "It is built for small, growing firms that feel the squeeze of hiring. If you are taking on more work than your team can comfortably carry and your next hire is hard to find, this is squarely for you.",
-  },
 ] as const;

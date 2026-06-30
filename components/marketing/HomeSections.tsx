@@ -26,27 +26,30 @@ const PAGE_PAD = "clamp(24px, 4vw, 48px)";
 const SERIF = "var(--font-newsreader), Georgia, 'Times New Roman', serif";
 const SANS = "var(--font-hanken), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
+// Warm neutral palette (Harvey / Legora / Filevine all use warm bone + warm-black, not
+// cool blue-gray). Brand blue + navy stay for accents and CTAs.
 const BF = {
-  ink: "#14171f",
-  muted: "#54565f",
-  faint: "#8a8c95",
-  hairline: "rgba(20, 23, 31, 0.09)",
-  hairlineStrong: "rgba(20, 23, 31, 0.12)",
+  ink: "#1c1a16",
+  muted: "#5d574e",
+  faint: "#948c7f",
+  hairline: "rgba(28, 24, 18, 0.08)",
+  hairlineStrong: "rgba(28, 24, 18, 0.12)",
   accent: "#2f6fe0",
-  accentSoft: "rgba(47, 111, 224, 0.08)",
-  accentBorderHover: "rgba(47, 111, 224, 0.40)",
+  accentSoft: "rgba(47, 111, 224, 0.07)",
+  accentBorderHover: "rgba(47, 111, 224, 0.38)",
   card: "#ffffff",
   pillBg: "#1f3a5f",
   pillBgHover: "#284b78",
 };
 
-/* Surfaces: white + one off-white for flat light sections, soft tints for airiness, two dark bands. */
+/* Surfaces: white + a warm bone for flat light sections, soft pastel fades for airiness,
+   two dark bands (a warm-black impact band + the brand-navy CTA band). */
 const BG = {
   white: "#ffffff",
-  offWhite: "#f5f7fb",
-  softBlue: "linear-gradient(180deg, #ffffff 0%, #eef3fc 100%)",
-  softCool: "linear-gradient(180deg, #f6f8fc 0%, #ffffff 100%)",
-  statBand: "#0e1420",
+  offWhite: "#f7f4ee",
+  softBlue: "linear-gradient(180deg, #fbfaf7 0%, #eef2fb 100%)",
+  softCool: "linear-gradient(180deg, #faf7f1 0%, #ffffff 100%)",
+  statBand: "#16140f",
   ctaBand: "#1f3a5f",
 };
 
@@ -91,7 +94,7 @@ function Eyebrow({ children, light = false }: { children: React.ReactNode; light
 
 function H({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(33px, 4.6vw, 50px)", lineHeight: 1.06, letterSpacing: "-1.2px", color: light ? "#fff" : BF.ink, margin: 0 }}>
+    <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(36px, 5.2vw, 58px)", lineHeight: 1.03, letterSpacing: "-1.8px", color: light ? "#faf8f4" : BF.ink, margin: 0 }}>
       {children}
     </h2>
   );
@@ -99,7 +102,7 @@ function H({ children, light = false }: { children: React.ReactNode; light?: boo
 
 function Sub({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <p style={{ fontFamily: SANS, fontSize: "clamp(17px, 2vw, 20px)", lineHeight: 1.5, letterSpacing: "-0.2px", color: light ? "rgba(255,255,255,0.7)" : BF.muted, marginTop: 20, maxWidth: 640 }}>
+    <p style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.7vw, 18.5px)", lineHeight: 1.55, letterSpacing: "-0.1px", color: light ? "rgba(255,255,255,0.66)" : BF.muted, marginTop: 22, maxWidth: 600 }}>
       {children}
     </p>
   );
@@ -139,6 +142,30 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
   );
 }
 
+/* Expandable FAQ row. Answer stays in the DOM (collapsed, not display:none) so it remains
+   crawlable and in sync with the FAQPage schema. */
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderTop: `1px solid ${BF.hairline}` }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="cd-faq-btn"
+        style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "26px 4px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}
+      >
+        <span style={{ fontFamily: SANS, fontSize: "clamp(17px, 1.9vw, 19px)", fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, lineHeight: 1.3 }}>{q}</span>
+        <span style={{ flex: "0 0 auto", width: 30, height: 30, borderRadius: "50%", border: `1px solid ${BF.hairlineStrong}`, display: "grid", placeItems: "center", transition: "transform 0.3s ease, background 0.2s ease", transform: open ? "rotate(45deg)" : "none" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={open ? BF.accent : BF.muted} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+        </span>
+      </button>
+      <div style={{ maxHeight: open ? 260 : 0, opacity: open ? 1 : 0, overflow: "hidden", transition: "max-height 0.42s ease, opacity 0.3s ease" }}>
+        <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.62, color: BF.muted, margin: "0 4px 28px", maxWidth: 720 }}>{a}</p>
+      </div>
+    </div>
+  );
+}
+
 /* ---- integration logo strip (honest proof: the tools Delta runs inside) ---- */
 function LogoStrip() {
   return (
@@ -157,7 +184,7 @@ function LogoStrip() {
                 fontWeight: logo.style === "wide" ? 600 : 500,
                 letterSpacing: logo.style === "wide" ? "1.4px" : "-0.2px",
                 textTransform: logo.style === "wide" ? "uppercase" : "none",
-                color: "#9aa0ad",
+                color: "#a59d8e",
                 whiteSpace: "nowrap",
               }}
             >
@@ -259,10 +286,10 @@ const VACCENT = "#2f6fe0";
 function CapVisualPanel({ kind }: { kind: CapVisual }) {
   const cardBase: React.CSSProperties = {
     background: "#fff",
-    border: `1px solid ${BF.hairlineStrong}`,
-    borderRadius: 14,
-    padding: "20px 22px",
-    boxShadow: "0 30px 60px -40px rgba(20,23,31,0.28)",
+    border: `1px solid ${BF.hairline}`,
+    borderRadius: 18,
+    padding: "24px 26px",
+    boxShadow: "0 44px 84px -52px rgba(28,24,18,0.34), 0 2px 6px rgba(28,24,18,0.03)",
   };
   const rowLabel = (t: string) => <span style={{ fontFamily: SANS, fontSize: 13.5, color: VINK }}>{t}</span>;
   const badge = (t: string, tone: "done" | "wait" | "flag") => {
@@ -426,16 +453,16 @@ export function HomeSections() {
         </motion.div>
       </Section>
 
-      {/* PRODUCT DEMO VIDEO */}
+      {/* PRODUCT DEMO VIDEO (centered) */}
       <Section bg={BG.white} id="demo">
-        <Container narrow>
-          <motion.div {...rise(0)}>
+        <Container>
+          <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
             <Eyebrow>See it work</Eyebrow>
             <H>Watch it do a day of your paralegal&apos;s work.</H>
-            <Sub>Hand Delta a real case. It requests the records, drafts the demand, updates the file, and chases the client, right inside the tools you already use.</Sub>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Sub>Hand Delta a real case. It requests the records, drafts the demand, updates the file, and chases the client, right inside the tools you already use.</Sub>
+            </div>
           </motion.div>
-        </Container>
-        <Container>
           <motion.div {...rise(0.08)}>
             <VideoPlaceholder />
           </motion.div>
@@ -572,14 +599,11 @@ export function HomeSections() {
             <Eyebrow>Questions</Eyebrow>
             <H>Frequently asked questions</H>
           </motion.div>
-          <div style={{ marginTop: 40 }}>
-            {HOME_FAQ.map((item, i) => (
-              <motion.div key={i} {...rise(0.03 * i)} style={{ padding: "24px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                <h3 style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, margin: 0 }}>{item.q}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, marginTop: 10 }}>{item.a}</p>
-              </motion.div>
+          <motion.div {...rise(0.05)} style={{ marginTop: 40, borderBottom: `1px solid ${BF.hairline}` }}>
+            {HOME_FAQ.map((item) => (
+              <FaqItem key={item.q} q={item.q} a={item.a} />
             ))}
-          </div>
+          </motion.div>
         </Container>
       </Section>
 
@@ -605,6 +629,8 @@ export function HomeSections() {
         .cd-pill-d:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
         .cd-tlink:hover { gap: 11px; }
         .cd-cap-btn:hover span:last-child { color: ${BF.ink}; }
+        .cd-faq-btn:hover span:first-child { color: ${BF.accent}; }
+        .cd-faq-btn:hover span:last-child { border-color: ${BF.accentBorderHover}; }
         .cd-video { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .cd-video:hover { transform: translateY(-3px); }
         .cd-video:hover .cd-play { transform: scale(1.06); }
