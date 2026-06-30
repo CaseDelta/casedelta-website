@@ -192,53 +192,72 @@ function ChatDemo() {
   }, [idx, reduce]);
 
   const ask = ASKS[idx];
-  const allDone = done >= ask.tasks.length;
+  const total = ask.tasks.length;
+  const allDone = working && done >= total;
+  const pct = working ? Math.round((Math.min(done, total) / total) * 100) : 0;
+
   return (
-    <div style={{ maxWidth: 760, margin: "52px auto 0" }}>
-      {/* simple, polished rounded input box */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, height: 64, padding: "0 12px 0 20px", background: "#fff", border: `1px solid ${BF.hairlineStrong}`, borderRadius: 32, boxShadow: "0 30px 60px -44px rgba(28,24,18,0.32), 0 1px 3px rgba(28,24,18,0.04)" }}>
+    <div style={{ maxWidth: 680, margin: "56px auto 0", position: "relative" }}>
+      {/* input box: elevated, with a soft blue-tinted glow */}
+      <div style={{ display: "flex", alignItems: "center", gap: 13, height: 66, padding: "0 13px 0 22px", background: "linear-gradient(180deg, #ffffff, #fcfbf8)", border: "1px solid rgba(28,24,18,0.10)", borderRadius: 33, position: "relative", zIndex: 2, boxShadow: "0 1px 2px rgba(28,24,18,0.04), 0 16px 30px -18px rgba(28,24,18,0.20), 0 34px 82px -38px rgba(47,111,224,0.42)" }}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2" strokeLinecap="round" style={{ flex: "0 0 auto" }}><path d="M12 5v14M5 12h14" /></svg>
         <div style={{ flex: 1, minWidth: 0, fontFamily: SANS, fontSize: 16.5, letterSpacing: "-0.2px", color: typed ? BF.ink : BF.faint, whiteSpace: "nowrap", overflow: "hidden" }}>
           {typed || "Ask Delta to handle something on a case"}
           {!working && <span className="cd-caret" style={{ display: "inline-block", width: 2, height: 18, background: BF.accent, marginLeft: 1, verticalAlign: "-3px" }} />}
         </div>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: SANS, fontSize: 14, fontWeight: 500, color: BF.muted, flex: "0 0 auto" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: SANS, fontSize: 13.5, fontWeight: 500, color: BF.muted, flex: "0 0 auto" }}>
           Fast
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={BF.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={BF.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
         </span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }}><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
-        <span style={{ width: 42, height: 42, borderRadius: "50%", background: "#16140f", display: "grid", placeItems: "center", flex: "0 0 auto" }}>
+        <span style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(160deg, #284b78, #16140f)", display: "grid", placeItems: "center", flex: "0 0 auto", boxShadow: "0 8px 20px -6px rgba(31,58,95,0.5)" }}>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
         </span>
       </div>
 
-      {/* task list that completes after the query is sent */}
-      <div style={{ minHeight: 236, marginTop: 18 }}>
-        <div style={{ opacity: working ? 1 : 0, transform: working ? "none" : "translateY(8px)", transition: "opacity 0.45s ease, transform 0.45s ease", background: "#fff", border: `1px solid ${BF.hairline}`, borderRadius: 18, padding: "20px 24px", boxShadow: "0 36px 70px -52px rgba(28,24,18,0.32)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-            <DeltaMark size={24} />
-            <span style={{ fontFamily: SANS, fontSize: 13.5, fontWeight: 600, color: BF.ink }}>{allDone ? "Done" : "Delta is on it"}</span>
-            <span style={{ marginLeft: "auto", fontFamily: SANS, fontSize: 12.5, color: BF.faint }}>{Math.min(done, ask.tasks.length)}/{ask.tasks.length}</span>
+      {/* the task list Delta runs for the query (revealed once it sends) */}
+      <div style={{ minHeight: 286, position: "relative" }}>
+        <div style={{ opacity: working ? 1 : 0, transform: working ? "translateY(0)" : "translateY(10px)", transition: "opacity 0.55s ease, transform 0.55s ease" }}>
+          {/* connector */}
+          <div aria-hidden style={{ display: "flex", justifyContent: "center" }}>
+            <span style={{ width: 2, height: 26, background: "linear-gradient(#2f6fe0, rgba(47,111,224,0))" }} />
           </div>
-          {ask.tasks.map((t, k) => {
-            const state = k < done ? "done" : k === done ? "run" : "pending";
-            return (
-              <div key={t} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: k === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                <span style={{ width: 20, height: 20, flex: "0 0 auto", display: "grid", placeItems: "center" }}>
-                  {state === "done" ? (
-                    <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center" }}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-                    </span>
-                  ) : state === "run" ? (
-                    <span className="cd-spin" style={{ width: 16, height: 16, borderRadius: "50%", border: `2px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />
-                  ) : (
-                    <span style={{ width: 14, height: 14, borderRadius: "50%", border: `2px solid ${BF.hairlineStrong}` }} />
-                  )}
+          {/* task card */}
+          <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", background: "#fff", border: "1px solid rgba(28,24,18,0.08)", boxShadow: "0 2px 4px rgba(28,24,18,0.03), 0 26px 50px -34px rgba(28,24,18,0.26), 0 46px 100px -50px rgba(47,111,224,0.30)" }}>
+            {/* progress bar */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "rgba(28,24,18,0.06)" }}>
+              <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg, #3a78e0, #2f6fe0)", transition: "width 0.6s cubic-bezier(0.22,1,0.36,1)" }} />
+            </div>
+            <div style={{ padding: "22px 24px 24px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                <DeltaMark size={24} />
+                <span style={{ fontFamily: SANS, fontSize: 13.5, fontWeight: 600, color: BF.ink }}>{allDone ? "All done" : "Delta is on it"}</span>
+                <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 7 }}>
+                  {working && !allDone && <span className="cd-spin" style={{ width: 13, height: 13, borderRadius: "50%", border: `2px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />}
+                  <span style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, color: allDone ? "#1f8a55" : BF.faint }}>{Math.min(done, total)}/{total}</span>
                 </span>
-                <span style={{ fontFamily: SANS, fontSize: 15.5, letterSpacing: "-0.2px", color: state === "pending" ? BF.faint : BF.ink, transition: "color 0.3s ease" }}>{t}</span>
               </div>
-            );
-          })}
+              {ask.tasks.map((t, k) => {
+                const state = !working ? "pending" : k < done ? "done" : k === done ? "run" : "pending";
+                return (
+                  <div key={t} style={{ display: "flex", alignItems: "center", gap: 13, padding: "11px 12px", margin: "0 -12px", borderRadius: 11, background: state === "run" ? BF.accentSoft : "transparent", transition: "background 0.3s ease" }}>
+                    <span style={{ width: 20, height: 20, flex: "0 0 auto", display: "grid", placeItems: "center" }}>
+                      {state === "done" ? (
+                        <span className="cd-pop" style={{ width: 20, height: 20, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center" }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                        </span>
+                      ) : state === "run" ? (
+                        <span className="cd-spin" style={{ width: 17, height: 17, borderRadius: "50%", border: `2px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />
+                      ) : (
+                        <span style={{ width: 15, height: 15, borderRadius: "50%", border: `2px solid ${BF.hairlineStrong}` }} />
+                      )}
+                    </span>
+                    <span style={{ fontFamily: SANS, fontSize: 15.5, letterSpacing: "-0.2px", fontWeight: state === "run" ? 600 : 400, color: state === "pending" ? BF.faint : BF.ink, transition: "color 0.3s ease, font-weight 0.2s ease" }}>{t}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -284,9 +303,16 @@ export function HomeSections() {
 
   return (
     <>
-      {/* CHAT DEMO (first below the fold) — focused, hero-like: just the line + the demo */}
-      <Section bg={BG.white} id="demo">
-        <Container>
+      {/* CHAT DEMO (first below the fold) — the showpiece, on a glowing stage */}
+      <section id="demo" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #ffffff 0%, #f6f4ef 100%)", padding: "clamp(96px, 12vw, 164px) 0", borderTop: `1px solid ${BF.hairline}` }}>
+        {/* ambient glow */}
+        <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <div style={{ position: "absolute", left: "50%", top: "44%", transform: "translate(-50%, -50%)", width: "min(1120px, 130%)", height: 780, background: "radial-gradient(closest-side, rgba(47,111,224,0.16), rgba(47,111,224,0.05) 46%, rgba(47,111,224,0) 72%)" }} />
+          <div style={{ position: "absolute", left: "50%", top: "62%", transform: "translate(-50%, -50%)", width: 600, height: 440, background: "radial-gradient(closest-side, rgba(245,180,0,0.05), rgba(245,180,0,0) 70%)" }} />
+        </div>
+        {/* faint dotted grid, masked to fade at the edges */}
+        <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "radial-gradient(rgba(28,24,18,0.05) 1px, transparent 1px)", backgroundSize: "24px 24px", WebkitMaskImage: "radial-gradient(ellipse 70% 56% at 50% 42%, #000 18%, transparent 72%)", maskImage: "radial-gradient(ellipse 70% 56% at 50% 42%, #000 18%, transparent 72%)", opacity: 0.55 }} />
+        <div style={{ position: "relative", zIndex: 1, maxWidth: MAXW, margin: "0 auto", padding: `0 ${PAGE_PAD}` }}>
           <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 900, margin: "0 auto" }}>
             <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(40px, 6vw, 68px)", lineHeight: 1.02, letterSpacing: "-2px", color: BF.ink, margin: 0 }}>
               Just ask. Delta does the rest.
@@ -295,8 +321,8 @@ export function HomeSections() {
           <motion.div {...rise(0.08)}>
             <ChatDemo />
           </motion.div>
-        </Container>
-      </Section>
+        </div>
+      </section>
 
       {/* CLARIFICATION (one section) */}
       <Section bg={BG.softBlue}>
@@ -445,6 +471,8 @@ export function HomeSections() {
         @keyframes cd-blink { 50% { opacity: 0; } }
         .cd-spin { animation: cd-rot 0.7s linear infinite; }
         @keyframes cd-rot { to { transform: rotate(360deg); } }
+        .cd-pop { animation: cd-pop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes cd-pop { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @media (max-width: 880px) {
           .cd-clarify { grid-template-columns: 1fr !important; }
           .cd-quote { grid-template-columns: 1fr !important; gap: 28px !important; }
