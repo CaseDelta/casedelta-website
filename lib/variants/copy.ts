@@ -9,27 +9,20 @@
 import type { CopyVariant, HeadlineSegment } from "./types";
 
 export const HERO_HEADLINES: Record<CopyVariant, HeadlineSegment[]> = {
-  control: [{ text: "Run more cases " }, { text: "without hiring", em: true }, { text: "." }],
-  teammate: [
-    { text: "The teammate you " },
-    { text: "can't hire", em: true },
-    { text: " fast enough." },
-  ],
-  problem: [
-    { text: "You don't have a case problem. You have a " },
-    { text: "capacity problem", em: true },
-    { text: "." },
-  ],
+  // v2: dream outcome is peace + control, never "the firm runs without you."
+  control: [{ text: "Your firm, off your shoulders. " }, { text: "Still in your hands.", em: true }],
+  teammate: [{ text: "Get the weight off. " }, { text: "Keep the wheel.", em: true }],
+  problem: [{ text: "More cases. Same team. " }, { text: "Nothing slips.", em: true }],
 };
 
 /** Left-contained heroes (harvey-light / harvey-dark) show this subhead. */
 export const HERO_SUBHEAD =
-  "An AI paralegal that works inside the tools you already use and does the routine case work, so your team takes on more without drowning.";
+  "Delta is an AI teammate that does your firm's case work inside the tools you already use. No migration, nothing new to learn, and your team approves every move.";
 
 /** Full-bleed hero (legora) shows this short inline tagline next to the pill instead of a subhead. */
 export const HERO_TAGLINE = "The AI paralegal for law firms";
 
-export const PRIMARY_CTA = { label: "Book a demo", href: "/demo" } as const;
+export const PRIMARY_CTA = { label: "See it on your case", href: "/demo" } as const;
 export const SECONDARY_CTA = { label: "See how firms use it", href: "/use-cases" } as const;
 export const LOGIN = { label: "Log in", href: "https://app.casedelta.com" } as const;
 
