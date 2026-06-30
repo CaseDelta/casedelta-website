@@ -2,41 +2,56 @@
 
 /**
  * Below-the-fold homepage. FIXED LIGHT design, identical under every hero variant.
- * Structured + styled like Harvey / Legora / Filevine: a product-demo video (with a
- * real product-UI poster), concise use-cases, a dark impact/stats band, the
- * differentiator line, a security grid, a compact FAQ, and a bold CTA band.
- * Consistent surfaces (white / one off-white + two dark bands), generous whitespace,
- * scannability-first. Honest claims only (POSITIONING.md).
+ *
+ * Order (per founder direction): an animated chat demo that immediately shows the range of
+ * end-to-end work Delta handles, then one clarification section (what it is / why different),
+ * then a testimonial, then the impact band, security, FAQ, and CTA.
+ *
+ * Look reproduced from the live references (Harvey / Legora / Filevine), whose real computed
+ * styles were sampled: warm neutral surfaces, large 400-weight display headings with tight
+ * negative tracking, small muted body, soft pastel fades, large-radius product frames.
+ *
+ * SEO/AEO discipline (website_rebuild_2026/seo_research): copy renders into the static HTML
+ * (the example asks + answers are present as real text, not only in the animation); client JS
+ * is limited to the chat ticker and the FAQ accordion; the FAQ mirrors the FAQPage schema.
+ * Honest claims only (POSITIONING.md). No em dashes; Delta is referred to neutrally.
  */
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { trackEvent } from "@/lib/posthog";
 import { HOME_FAQ } from "@/lib/home-content";
+import { LOGOS, LOGO_CAP } from "@/lib/variants";
 
 const MAXW = 1320;
 const PAGE_PAD = "clamp(24px, 4vw, 48px)";
 const SERIF = "var(--font-newsreader), Georgia, 'Times New Roman', serif";
 const SANS = "var(--font-hanken), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
+// Warm neutral palette (Harvey / Legora / Filevine all use warm bone + warm-black, not
+// cool blue-gray). Brand blue + navy stay for accents and CTAs.
 const BF = {
-  ink: "#14171f",
-  muted: "#54565f",
-  faint: "#8a8c95",
-  hairline: "rgba(20, 23, 31, 0.09)",
-  hairlineStrong: "rgba(20, 23, 31, 0.12)",
+  ink: "#1c1a16",
+  muted: "#5d574e",
+  faint: "#948c7f",
+  hairline: "rgba(28, 24, 18, 0.08)",
+  hairlineStrong: "rgba(28, 24, 18, 0.12)",
   accent: "#2f6fe0",
-  accentSoft: "rgba(47, 111, 224, 0.08)",
-  accentBorderHover: "rgba(47, 111, 224, 0.40)",
+  accentSoft: "rgba(47, 111, 224, 0.07)",
+  accentBorderHover: "rgba(47, 111, 224, 0.38)",
   card: "#ffffff",
   pillBg: "#1f3a5f",
   pillBgHover: "#284b78",
 };
 
-/* Consistent surfaces: white + one off-white for light sections, two dark bands. */
+/* Surfaces: white + a warm bone for flat light sections, soft pastel fades for airiness,
+   two dark bands (a warm-black impact band + the brand-navy CTA band). */
 const BG = {
   white: "#ffffff",
-  offWhite: "#f5f7fb",
-  statBand: "#0e1420",
+  offWhite: "#f7f4ee",
+  softBlue: "linear-gradient(180deg, #fbfaf7 0%, #eef2fb 100%)",
+  softCool: "linear-gradient(180deg, #faf7f1 0%, #ffffff 100%)",
+  statBand: "#16140f",
   ctaBand: "#1f3a5f",
 };
 
@@ -63,17 +78,25 @@ function Container({ children, narrow = false }: { children: React.ReactNode; na
   );
 }
 
-function Section({ children, bg, id }: { children: React.ReactNode; bg: string; id?: string }) {
+function Section({ children, bg, id, tight = false }: { children: React.ReactNode; bg: string; id?: string; tight?: boolean }) {
   return (
-    <section id={id} style={{ background: bg, padding: "clamp(92px, 11.5vw, 152px) 0", borderTop: `1px solid ${BF.hairline}` }}>
+    <section id={id} style={{ background: bg, padding: tight ? "clamp(40px, 5vw, 64px) 0" : "clamp(92px, 11.5vw, 152px) 0", borderTop: `1px solid ${BF.hairline}` }}>
       {children}
     </section>
   );
 }
 
+function Eyebrow({ children, light = false, center = false }: { children: React.ReactNode; light?: boolean; center?: boolean }) {
+  return (
+    <div style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: light ? "rgba(255,255,255,0.55)" : BF.accent, marginBottom: 18, textAlign: center ? "center" : "left" }}>
+      {children}
+    </div>
+  );
+}
+
 function H({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(33px, 4.6vw, 50px)", lineHeight: 1.06, letterSpacing: "-1.2px", color: light ? "#fff" : BF.ink, margin: 0 }}>
+    <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(36px, 5.2vw, 58px)", lineHeight: 1.03, letterSpacing: "-1.8px", color: light ? "#faf8f4" : BF.ink, margin: 0 }}>
       {children}
     </h2>
   );
@@ -81,7 +104,7 @@ function H({ children, light = false }: { children: React.ReactNode; light?: boo
 
 function Sub({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <p style={{ fontFamily: SANS, fontSize: "clamp(17px, 2vw, 20px)", lineHeight: 1.5, letterSpacing: "-0.2px", color: light ? "rgba(255,255,255,0.7)" : BF.muted, marginTop: 20, maxWidth: 640 }}>
+    <p style={{ fontFamily: SANS, fontSize: "clamp(16px, 1.7vw, 18.5px)", lineHeight: 1.55, letterSpacing: "-0.1px", color: light ? "rgba(255,255,255,0.66)" : BF.muted, marginTop: 22, maxWidth: 600 }}>
       {children}
     </p>
   );
@@ -121,85 +144,155 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
   );
 }
 
-/* ---- product-demo video: a faux product-UI poster (real video drops into the stage) ---- */
-const POSTER_ROWS = [
-  { s: "done", t: "Requested records from Mercy General" },
-  { s: "run", t: "Drafting the demand letter" },
-  { s: "done", t: "Updated the matter in Clio + billing" },
-  { s: "todo", t: "Flagged: response deadline in 4 days" },
+/* ---- chat demo: type a query into a simple input box, then watch Delta complete the task
+   list for it. The asks also render as a static list below, so the content is in the
+   crawlable HTML and does not depend on the animation. */
+const ASKS = [
+  { q: "Request Ortega's missing records and chase them until they're in.", tasks: ["Find the outstanding providers", "Send the records requests", "Set follow-up reminders", "Log it all in Clio"] },
+  { q: "Draft the demand letter for Martinez from the file.", tasks: ["Read the medical records", "Pull the damages and billing", "Draft the demand letter", "Flag it for your review"] },
+  { q: "What's slipping across my open cases this week?", tasks: ["Scan every open matter", "Find deadlines inside seven days", "Flag the urgent discovery response", "Build your priority list"] },
+  { q: "Update the Clio matter and log my time.", tasks: ["Update the matter in Clio", "Log the time entry", "Post a note to the client portal"] },
+  { q: "Summarize the new intake and flag anything off.", tasks: ["Read the intake packet", "Check the statute of limitations", "Flag a gap in the timeline", "Write the summary"] },
 ];
 
-function VideoPlaceholder() {
+function DeltaMark({ size = 26 }: { size?: number }) {
   return (
-    <a
-      href="/demo"
-      onClick={() => trackEvent("cta_click", { location: "demo_video" })}
-      className="cd-video"
-      style={{ display: "block", maxWidth: 1000, margin: "52px auto 0", borderRadius: 18, overflow: "hidden", border: `1px solid ${BF.hairlineStrong}`, background: "#0e1420", boxShadow: "0 60px 110px -45px rgba(20,23,31,0.5), 0 0 0 1px rgba(47,111,224,0.05)", textDecoration: "none" }}
-    >
-      {/* browser chrome */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, height: 42, padding: "0 16px", background: "linear-gradient(#171c27, #11151e)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ marginLeft: 12, display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.45)" }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6aa6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-          app.casedelta.com / Ortega v. Memorial
-        </span>
-      </div>
-
-      {/* stage: faux product UI poster + dimmed overlay + play */}
-      <div className="cd-video-stage" style={{ position: "relative", aspectRatio: "16 / 9", background: "#0c1119", overflow: "hidden" }}>
-        <div className="cd-poster" style={{ position: "absolute", inset: 0, display: "flex" }}>
-          {/* sidebar */}
-          <div style={{ width: "23%", minWidth: 150, background: "#10151f", borderRight: "1px solid rgba(255,255,255,0.06)", padding: "18px 16px", display: "flex", flexDirection: "column", gap: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <span style={{ width: 24, height: 24, borderRadius: 7, background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SERIF, color: "#fff", fontSize: 14, lineHeight: 1 }}>D</span>
-              <span style={{ fontFamily: SERIF, color: "rgba(255,255,255,0.86)", fontSize: 15 }}>Delta</span>
-            </div>
-            {["Cases", "Inbox", "Tasks", "Documents", "Billing"].map((n, i) => (
-              <span key={n} style={{ fontFamily: SANS, fontSize: 12.5, color: i === 0 ? "rgba(255,255,255,0.82)" : "rgba(255,255,255,0.38)", padding: "3px 0" }}>{n}</span>
-            ))}
-          </div>
-          {/* main */}
-          <div style={{ flex: 1, padding: "20px 22px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-              <span style={{ fontFamily: SERIF, color: "#fff", fontSize: 17, letterSpacing: "-0.3px" }}>Ortega v. Memorial</span>
-              <span style={{ fontFamily: SANS, fontSize: 10.5, fontWeight: 600, letterSpacing: "0.4px", textTransform: "uppercase", color: "#6aa6ff", background: "rgba(58,120,224,0.16)", border: "1px solid rgba(106,166,255,0.25)", borderRadius: 6, padding: "4px 8px" }}>Delta working</span>
-            </div>
-            {POSTER_ROWS.map((r, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 12px", borderRadius: 9, marginBottom: 7, background: r.s === "todo" ? "rgba(58,120,224,0.12)" : "rgba(255,255,255,0.02)", border: r.s === "todo" ? "1px solid rgba(106,166,255,0.22)" : "1px solid transparent" }}>
-                <span style={{ width: 17, height: 17, borderRadius: 5, flex: "0 0 auto", display: "grid", placeItems: "center", background: r.s === "done" ? "#3a78e0" : "transparent", border: r.s === "done" ? "none" : r.s === "run" ? "2px solid #6aa6ff" : "1.5px solid rgba(255,255,255,0.25)" }}>
-                  {r.s === "done" && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>}
-                </span>
-                <span style={{ fontFamily: SANS, fontSize: 13, color: r.s === "todo" ? "#fff" : "rgba(255,255,255,0.7)" }}>{r.t}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* dim overlay + play */}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 70% at 50% 45%, rgba(8,12,20,0.35) 0%, rgba(8,12,20,0.72) 100%)", display: "grid", placeItems: "center" }}>
-          <span className="cd-play" style={{ width: 76, height: 76, borderRadius: "50%", background: "#ffffff", display: "grid", placeItems: "center", boxShadow: "0 18px 44px -10px rgba(0,0,0,0.55)", transition: "transform 0.2s ease" }}>
-            <svg width="27" height="27" viewBox="0 0 24 24" fill="#1f3a5f"><path d="M8 5.5v13l11-6.5z" /></svg>
-          </span>
-        </div>
-        <span style={{ position: "absolute", bottom: 18, left: 0, right: 0, textAlign: "center", fontFamily: SANS, fontSize: 13, fontWeight: 500, letterSpacing: "0.2px", color: "rgba(255,255,255,0.72)" }}>
-          Watch Delta work a real case · 2 min
-        </span>
-      </div>
-    </a>
+    <span style={{ width: size, height: size, borderRadius: 8, flex: "0 0 auto", background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SERIF, color: "#fff", fontSize: size * 0.56, lineHeight: 1 }}>D</span>
   );
 }
 
-/* ---- content ---- */
-const TASKS = [
-  { t: "Requests records and chases them.", d: "Sends the request, tracks what's outstanding, follows up until it arrives." },
-  { t: "Drafts the routine writing.", d: "Letters, status updates, intake follow-ups. You approve before it sends." },
-  { t: "Keeps the file current everywhere.", d: "Updates the matter across your case manager, CRM, and billing." },
-  { t: "Watches what's slipping.", d: "Tracks deadlines and open items across every active file." },
+function ChatDemo() {
+  const reduce = useReducedMotion();
+  const [idx, setIdx] = useState(0);
+  const [typed, setTyped] = useState("");
+  const [mode, setMode] = useState<"ask" | "work" | "done">("ask");
+  const [step, setStep] = useState(0);
+  const [stepDone, setStepDone] = useState(false);
+
+  useEffect(() => {
+    const ask = ASKS[idx];
+    setTyped("");
+    setMode("ask");
+    setStep(0);
+    setStepDone(false);
+    if (reduce) { setTyped(ask.q); setMode("done"); return; }
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+    // 1) type the query
+    const typeStart = 480;
+    const charMs = 30;
+    for (let i = 1; i <= ask.q.length; i += 1) {
+      const n = i;
+      at(typeStart + i * charMs, () => setTyped(ask.q.slice(0, n)));
+    }
+    let cursor = typeStart + ask.q.length * charMs + 850;
+    // 2) run each step, one at a time, each replacing the last
+    at(cursor, () => setMode("work"));
+    const STEP_MS = 1550;
+    const CHECK_AT = 820;
+    for (let k = 0; k < ask.tasks.length; k += 1) {
+      const kk = k;
+      at(cursor, () => { setStep(kk); setStepDone(false); });
+      at(cursor + CHECK_AT, () => setStepDone(true));
+      cursor += STEP_MS;
+    }
+    // 3) done, hold, then the next query
+    at(cursor, () => setMode("done"));
+    at(cursor + 2000, () => setIdx((p) => (p + 1) % ASKS.length));
+    return () => timers.forEach(clearTimeout);
+  }, [idx, reduce]);
+
+  const ask = ASKS[idx];
+
+  const pill: React.CSSProperties = {
+    display: "flex", alignItems: "center", gap: 20, width: "100%", minHeight: 100,
+    padding: "24px 24px 24px 32px", background: "linear-gradient(180deg, #ffffff, #fcfbf8)",
+    border: "1px solid rgba(28,24,18,0.10)", borderRadius: 30,
+    boxShadow: "0 1px 2px rgba(28,24,18,0.04), 0 24px 48px -22px rgba(28,24,18,0.22), 0 48px 104px -44px rgba(47,111,224,0.46)",
+  };
+  const big: React.CSSProperties = { fontFamily: SANS, fontSize: "clamp(20px, 2.6vw, 27px)", letterSpacing: "-0.5px", lineHeight: 1.28 };
+  const enter = {
+    initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -10 },
+    transition: { duration: 0.34, ease: [0.22, 1, 0.36, 1] as const },
+  };
+
+  return (
+    <div style={{ maxWidth: 760, margin: "44px auto 0", position: "relative" }}>
+      {/* explicit narration: one short label for the current phase */}
+      <div style={{ height: 18, marginBottom: 22, textAlign: "center" }}>
+        <AnimatePresence mode="wait">
+          <motion.div key={mode} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+            style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, letterSpacing: "1.6px", textTransform: "uppercase", color: mode === "done" ? "#1f8a55" : BF.accent }}>
+            {mode === "ask" ? "You ask" : mode === "work" ? "Delta does it" : "Done"}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* the single focal element: only ever one thing on screen at a time */}
+      <div style={{ minHeight: 152, display: "flex", alignItems: "center" }}>
+        <AnimatePresence mode="wait">
+          {mode === "ask" && (
+            <motion.div key="ask" {...enter} style={pill}>
+              <span style={{ ...big, flex: 1, minWidth: 0, color: typed ? BF.ink : BF.faint }}>
+                {typed || "Ask Delta to handle something on a case"}
+                <span className="cd-caret" style={{ display: "inline-block", width: 2, height: "1em", background: BF.accent, marginLeft: 2, verticalAlign: "-0.15em" }} />
+              </span>
+              <span style={{ width: 52, height: 52, borderRadius: "50%", background: "linear-gradient(160deg, #284b78, #16140f)", display: "grid", placeItems: "center", flex: "0 0 auto", boxShadow: "0 10px 24px -8px rgba(31,58,95,0.55)" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+              </span>
+            </motion.div>
+          )}
+          {mode === "work" && (
+            <motion.div key={`work-${step}`} {...enter} style={pill}>
+              <DeltaMark size={46} />
+              <span style={{ ...big, flex: 1, minWidth: 0, color: BF.ink, fontWeight: 500 }}>{ask.tasks[step]}</span>
+              <span style={{ width: 40, height: 40, flex: "0 0 auto", display: "grid", placeItems: "center" }}>
+                {stepDone ? (
+                  <span className="cd-pop" style={{ width: 38, height: 38, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center", boxShadow: "0 8px 18px -6px rgba(31,138,85,0.5)" }}>
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                  </span>
+                ) : (
+                  <span className="cd-spin" style={{ width: 30, height: 30, borderRadius: "50%", border: `3px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />
+                )}
+              </span>
+            </motion.div>
+          )}
+          {mode === "done" && (
+            <motion.div key="done" {...enter} style={{ ...pill, justifyContent: "center", gap: 16 }}>
+              <span className="cd-pop" style={{ width: 42, height: 42, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center" }}>
+                <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+              </span>
+              <span style={{ ...big, color: BF.ink, fontWeight: 500 }}>All done</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* progress dots, so the count is clear without showing every step at once */}
+      <div style={{ height: 10, marginTop: 30, display: "flex", justifyContent: "center", gap: 10 }}>
+        {mode !== "ask" &&
+          ask.tasks.map((_, k) => {
+            const filled = mode === "done" || k < step || (k === step && stepDone);
+            return <span key={k} style={{ width: 9, height: 9, borderRadius: "50%", background: filled ? BF.accent : "rgba(28,24,18,0.16)", transition: "background 0.35s ease" }} />;
+          })}
+      </div>
+
+      {/* visually hidden, for crawlers + screen readers: what the demo shows */}
+      <p style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clipPath: "inset(50%)", whiteSpace: "nowrap", border: 0 }}>
+        Ask Delta to handle case work in plain English and it completes each step end to end. For example: {ASKS.map((a) => a.q).join(" ")}
+      </p>
+    </div>
+  );
+}
+
+/* ---- clarification: what it is / why different (one section) ---- */
+const CLARIFY = [
+  { t: "Runs inside your stack", d: "Delta drives the tools you already pay for, your case manager, email, drive, and billing. Nothing to rip out, nothing to migrate." },
+  { t: "Does the whole job", d: "Not one task in another tab. Delta takes routine work from the first request to ready-to-send, across every system the matter touches." },
+  { t: "You stay in control", d: "Delta drafts and prepares, your team approves before anything goes out, and it learns your firm's standards as it goes." },
 ];
 
+/* ---- content ---- */
 const STATS = [
   { n: "$4–5k", l: "What one paralegal costs a month, if you can find and keep one." },
   { n: "0", l: "Migrations, rip-outs, or new logins. It runs on your stack." },
@@ -216,19 +309,14 @@ const SECURITY = [
   "Your firm's data, isolated",
 ];
 
-// PLACEHOLDER testimonial — fictional. Replace with a real, attributable quote (with the
-// person's permission) before launch; a fabricated endorsement is an FTC / honesty risk.
+// Real quote from Heidi Nowotny (provided by the founder, 2026-06-10), excerpted from her
+// reply about hours saved. The 4.9 rating beside it is the real attorney rating.
 const TESTIMONIAL = {
   quote:
-    "Delta runs the records chase and the first draft on every file, then hands it back for us to approve. It is the first thing we have tried that took work off my paralegals instead of giving them one more tab to manage.",
-  initials: "DH",
-  name: "Daniel Hartley",
-  title: "Managing Partner, Hartley Injury Law",
-};
-
-const COMPARE = {
-  tool: ["Opens in one more browser tab", "You re-key its output into your real systems", "Solves a single task, then stops"],
-  delta: ["Works inside the tools you already use", "Does the whole routine job, end to end", "Learns your firm and compounds over time"],
+    "Maybe five hours a week. And I think it will be more once I stop double-checking it so much.",
+  initials: "HN",
+  name: "Heidi Nowotny",
+  title: "Attorney, Kirschbaum & Nowotny, LLC",
 };
 
 export function HomeSections() {
@@ -236,58 +324,88 @@ export function HomeSections() {
 
   return (
     <>
-      {/* PRODUCT DEMO VIDEO */}
-      <Section bg={BG.white} id="demo">
-        <Container narrow>
-          <motion.div {...rise(0)}>
-            <H>Watch it do a day of your paralegal&apos;s work.</H>
-            <Sub>Hand Delta a real case. It requests the records, drafts the demand, updates the file, and chases the client, right inside the tools you already use.</Sub>
+      {/* CHAT DEMO (first below the fold) — the showpiece, on a glowing stage */}
+      <section id="demo" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #ffffff 0%, #f6f4ef 100%)", padding: "clamp(96px, 12vw, 164px) 0", borderTop: `1px solid ${BF.hairline}` }}>
+        {/* ambient glow */}
+        <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <div style={{ position: "absolute", left: "50%", top: "44%", transform: "translate(-50%, -50%)", width: "min(1120px, 130%)", height: 780, background: "radial-gradient(closest-side, rgba(47,111,224,0.16), rgba(47,111,224,0.05) 46%, rgba(47,111,224,0) 72%)" }} />
+          <div style={{ position: "absolute", left: "50%", top: "62%", transform: "translate(-50%, -50%)", width: 600, height: 440, background: "radial-gradient(closest-side, rgba(245,180,0,0.05), rgba(245,180,0,0) 70%)" }} />
+        </div>
+        {/* faint dotted grid, masked to fade at the edges */}
+        <div aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "radial-gradient(rgba(28,24,18,0.05) 1px, transparent 1px)", backgroundSize: "24px 24px", WebkitMaskImage: "radial-gradient(ellipse 70% 56% at 50% 42%, #000 18%, transparent 72%)", maskImage: "radial-gradient(ellipse 70% 56% at 50% 42%, #000 18%, transparent 72%)", opacity: 0.55 }} />
+        <div style={{ position: "relative", zIndex: 1, maxWidth: MAXW, margin: "0 auto", padding: `0 ${PAGE_PAD}` }}>
+          <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 900, margin: "0 auto" }}>
+            <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(40px, 6vw, 68px)", lineHeight: 1.02, letterSpacing: "-2px", color: BF.ink, margin: 0 }}>
+              Just ask. Delta does the rest.
+            </h2>
           </motion.div>
-        </Container>
-        <Container>
           <motion.div {...rise(0.08)}>
-            <VideoPlaceholder />
+            <ChatDemo />
           </motion.div>
-        </Container>
-      </Section>
+        </div>
+      </section>
 
-      {/* WHAT IT DOES */}
-      <Section bg={BG.offWhite}>
+      {/* CLARIFICATION (one section) */}
+      <Section bg={BG.softBlue}>
         <Container>
-          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <H>It does the routine case work, end to end.</H>
-            <Sub>The repetitive work that eats your team&apos;s hours. Your team reviews and approves before anything goes out.</Sub>
+          <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
+            <Eyebrow>What it is</Eyebrow>
+            <H>A teammate that runs inside the tools you already use.</H>
+            <Sub>CaseDelta is an AI paralegal, not another app to log into. It works where your firm already works, and it works the way a good associate would.</Sub>
           </motion.div>
-          <div className="cd-task-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginTop: 48 }}>
-            {TASKS.map((task, i) => (
-              <motion.article key={i} {...rise(0.05 * i)} className="cd-card" style={{ background: BF.card, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "28px 26px 30px" }}>
-                <span style={{ display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: 10, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, marginBottom: 16 }}>
-                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+          <div className="cd-clarify" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 56 }}>
+            {CLARIFY.map((c, i) => (
+              <motion.div key={c.t} {...rise(0.05 * i)} style={{ background: "#fff", border: `1px solid ${BF.hairline}`, borderRadius: 18, padding: "30px 28px 32px", boxShadow: "0 30px 60px -48px rgba(28,24,18,0.26)" }}>
+                <span style={{ display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: 11, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, marginBottom: 18 }}>
+                  <span style={{ fontFamily: SERIF, fontSize: 18, color: BF.accent }}>{i + 1}</span>
                 </span>
-                <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 22, lineHeight: 1.16, letterSpacing: "-0.4px", color: BF.ink, margin: 0 }}>{task.t}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 15, lineHeight: 1.5, color: BF.muted, marginTop: 10 }}>{task.d}</p>
-              </motion.article>
+                <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 23, letterSpacing: "-0.5px", lineHeight: 1.16, color: BF.ink, margin: 0 }}>{c.t}</h3>
+                <p style={{ fontFamily: SANS, fontSize: 15.5, lineHeight: 1.55, color: BF.muted, marginTop: 12 }}>{c.d}</p>
+              </motion.div>
             ))}
           </div>
+          {/* integration logos: the tools Delta runs inside */}
+          <motion.div {...rise(0.12)} style={{ marginTop: 56, textAlign: "center" }}>
+            <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "0.6px", textTransform: "uppercase", color: BF.faint, marginBottom: 22 }}>{LOGO_CAP}</div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px 40px", flexWrap: "wrap" }}>
+              {LOGOS.map((logo) => (
+                <span key={logo.name} style={{ fontFamily: logo.style === "serif" ? SERIF : SANS, fontSize: logo.style === "wide" ? 13.5 : 17, fontWeight: logo.style === "wide" ? 600 : 500, letterSpacing: logo.style === "wide" ? "1.4px" : "-0.2px", textTransform: logo.style === "wide" ? "uppercase" : "none", color: "#a59d8e", whiteSpace: "nowrap" }}>{logo.name}</span>
+              ))}
+            </div>
+          </motion.div>
         </Container>
       </Section>
 
-      {/* TESTIMONIAL (PLACEHOLDER — swap for a real one before launch) */}
-      <Section bg={BG.white}>
-        <Container narrow>
-          <motion.figure {...rise(0)} style={{ margin: "0 auto", textAlign: "center", maxWidth: 880 }}>
-            <div aria-hidden style={{ fontFamily: SERIF, fontSize: 64, lineHeight: 0.5, color: BF.accent, opacity: 0.28 }}>&ldquo;</div>
-            <blockquote style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(26px, 3.5vw, 40px)", lineHeight: 1.26, letterSpacing: "-0.6px", color: BF.ink, margin: "16px auto 0", maxWidth: 880 }}>
-              {TESTIMONIAL.quote}
-            </blockquote>
-            <figcaption style={{ marginTop: 38, display: "inline-flex", alignItems: "center", gap: 13 }}>
-              <span style={{ width: 46, height: 46, borderRadius: "50%", background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SANS, fontSize: 15, fontWeight: 600, color: "#fff", flex: "0 0 auto" }}>{TESTIMONIAL.initials}</span>
-              <span style={{ textAlign: "left" }}>
-                <span style={{ display: "block", fontFamily: SANS, fontSize: 15.5, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>{TESTIMONIAL.name}</span>
-                <span style={{ display: "block", fontFamily: SANS, fontSize: 14, color: BF.muted, marginTop: 2 }}>{TESTIMONIAL.title}</span>
-              </span>
-            </figcaption>
-          </motion.figure>
+      {/* TESTIMONIAL (Heidi Nowotny) */}
+      <Section bg={BG.softCool}>
+        <Container>
+          <div className="cd-quote" style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 48, alignItems: "stretch" }}>
+            {/* left: branded card carrying the real 4.9 rating */}
+            <motion.div {...rise(0)} className="cd-quote-card" style={{ borderRadius: 20, padding: "40px 36px", background: "linear-gradient(160deg, #1f3a5f 0%, #16140f 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: 280, boxShadow: "0 40px 80px -44px rgba(28,24,18,0.55)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <svg key={i} width="22" height="22" viewBox="0 0 24 24" fill="#f5b400" aria-hidden><path d="M12 2.2l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.27 6.09 20.36l1.13-6.57L2.45 9.14l6.6-.96L12 2.2z" /></svg>
+                ))}
+              </div>
+              <div>
+                <div style={{ fontFamily: SERIF, fontSize: 52, lineHeight: 1, color: "#fff", letterSpacing: "-1.5px" }}>4.9</div>
+                <div style={{ fontFamily: SANS, fontSize: 15, color: "rgba(255,255,255,0.66)", marginTop: 10, maxWidth: 240 }}>Average rating from the attorneys who use it.</div>
+              </div>
+            </motion.div>
+            {/* right: the quote */}
+            <motion.figure {...rise(0.08)} style={{ margin: 0, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <blockquote style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(24px, 3vw, 36px)", lineHeight: 1.28, letterSpacing: "-0.6px", color: BF.ink, margin: 0 }}>
+                &ldquo;{TESTIMONIAL.quote}&rdquo;
+              </blockquote>
+              <figcaption style={{ marginTop: 30, display: "flex", alignItems: "center", gap: 14 }}>
+                <span style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SANS, fontSize: 16, fontWeight: 600, color: "#fff", flex: "0 0 auto" }}>{TESTIMONIAL.initials}</span>
+                <span>
+                  <span style={{ display: "block", fontFamily: SANS, fontSize: 16, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>{TESTIMONIAL.name}</span>
+                  <span style={{ display: "block", fontFamily: SANS, fontSize: 14.5, color: BF.muted, marginTop: 2 }}>{TESTIMONIAL.title}</span>
+                </span>
+              </figcaption>
+            </motion.figure>
+          </div>
         </Container>
       </Section>
 
@@ -295,6 +413,7 @@ export function HomeSections() {
       <Section bg={BG.statBand}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
+            <Eyebrow light>The math</Eyebrow>
             <H light>One teammate. Your whole firm.</H>
             <Sub light>Priced against the help you can&apos;t hire, not a per-seat app. The math is simple.</Sub>
           </motion.div>
@@ -309,50 +428,17 @@ export function HomeSections() {
         </Container>
       </Section>
 
-      {/* WHY DIFFERENT (comparison module) */}
-      <Section bg={BG.white}>
-        <Container narrow>
-          <motion.div {...rise(0)}>
-            <H>
-              A one-task tool gives you an output. <span style={{ color: BF.accent, fontStyle: "italic" }}>CaseDelta gives you capacity.</span>
-            </H>
-            <Sub>Most legal AI does one task in one more browser tab. CaseDelta does the whole routine job inside the tools you already use, and learns how your firm works.</Sub>
-          </motion.div>
-        </Container>
-        <Container>
-          <div className="cd-two" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 52 }}>
-            <motion.div {...rise(0)} style={{ background: BG.offWhite, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "32px 30px 34px" }}>
-              <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: BF.faint, marginBottom: 20 }}>A one-task tool</div>
-              {COMPARE.tool.map((t, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "13px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2.2" strokeLinecap="round" style={{ flex: "0 0 auto", marginTop: 1 }}><path d="M6 6l12 12M18 6L6 18" /></svg>
-                  <span style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.45, color: BF.muted }}>{t}</span>
-                </div>
-              ))}
-            </motion.div>
-            <motion.div {...rise(0.08)} style={{ background: BF.card, border: `1px solid ${BF.accentBorderHover}`, borderRadius: 16, padding: "32px 30px 34px", boxShadow: "0 32px 64px -36px rgba(47,111,224,0.32)" }}>
-              <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: BF.accent, marginBottom: 20 }}>CaseDelta</div>
-              {COMPARE.delta.map((t, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "13px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto", marginTop: 1 }}><path d="M5 13l4 4L19 7" /></svg>
-                  <span style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.45, color: BF.ink, fontWeight: 500 }}>{t}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </Container>
-      </Section>
-
       {/* SECURITY / TRUST */}
-      <Section bg={BG.offWhite}>
+      <Section bg={BG.white}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
+            <Eyebrow>Built for legal</Eyebrow>
             <H>Built for the sensitivity of legal work.</H>
             <Sub>Your client matters are handled under enterprise terms, and a human on your team signs off before anything leaves the firm.</Sub>
           </motion.div>
           <div className="cd-sec-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, marginTop: 48, background: BF.hairline, border: `1px solid ${BF.hairline}`, borderRadius: 14, overflow: "hidden" }}>
             {SECURITY.map((s, i) => (
-              <motion.div key={i} {...rise(0.04 * i)} style={{ background: BG.offWhite, padding: "28px 26px", display: "flex", alignItems: "center", gap: 12 }}>
+              <motion.div key={i} {...rise(0.04 * i)} style={{ background: "#fff", padding: "28px 26px", display: "flex", alignItems: "center", gap: 12 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }}><path d="M5 13l4 4L19 7" /></svg>
                 <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 500, letterSpacing: "-0.2px", color: BF.ink }}>{s}</span>
               </motion.div>
@@ -365,19 +451,17 @@ export function HomeSections() {
       </Section>
 
       {/* FAQ */}
-      <Section bg={BG.white}>
+      <Section bg={BG.offWhite}>
         <Container narrow>
           <motion.div {...rise(0)}>
+            <Eyebrow>Questions</Eyebrow>
             <H>Frequently asked questions</H>
           </motion.div>
-          <div style={{ marginTop: 40 }}>
-            {HOME_FAQ.map((item, i) => (
-              <motion.div key={i} {...rise(0.03 * i)} style={{ padding: "24px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                <h3 style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, margin: 0 }}>{item.q}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, marginTop: 10 }}>{item.a}</p>
-              </motion.div>
+          <motion.div {...rise(0.05)} style={{ marginTop: 40, borderBottom: `1px solid ${BF.hairline}` }}>
+            {HOME_FAQ.map((item) => (
+              <FaqItem key={item.q} q={item.q} a={item.a} />
             ))}
-          </div>
+          </motion.div>
         </Container>
       </Section>
 
@@ -402,19 +486,20 @@ export function HomeSections() {
         .cd-pill2:hover { background: ${BF.pillBgHover}; box-shadow: 0 10px 26px rgba(31,58,95,0.22); transform: translateY(-1px); }
         .cd-pill-d:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
         .cd-tlink:hover { gap: 11px; }
-        .cd-card { transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
-        .cd-card:hover { border-color: ${BF.accentBorderHover}; transform: translateY(-4px); box-shadow: 0 24px 50px -28px rgba(20,23,31,0.16); }
-        .cd-video { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .cd-video:hover { transform: translateY(-3px); }
-        .cd-video:hover .cd-play { transform: scale(1.06); }
+        .cd-faq-btn:hover span:first-child { color: ${BF.accent}; }
+        .cd-faq-btn:hover span:last-child { border-color: ${BF.accentBorderHover}; }
+        .cd-caret { animation: cd-blink 1s step-end infinite; }
+        @keyframes cd-blink { 50% { opacity: 0; } }
+        .cd-spin { animation: cd-rot 0.7s linear infinite; }
+        @keyframes cd-rot { to { transform: rotate(360deg); } }
+        .cd-pop { animation: cd-pop 0.36s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes cd-pop { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @media (max-width: 880px) {
-          .cd-task-grid { grid-template-columns: 1fr !important; }
+          .cd-clarify { grid-template-columns: 1fr !important; }
+          .cd-quote { grid-template-columns: 1fr !important; gap: 28px !important; }
           .cd-sec-grid { grid-template-columns: 1fr !important; }
           .cd-stat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 40px 0 !important; }
           .cd-stat-grid > div:nth-child(odd) { border-left: none !important; padding-left: 0 !important; }
-        }
-        @media (max-width: 600px) {
-          .cd-poster { display: none !important; }
         }
         @media (max-width: 520px) {
           .cd-stat-grid { grid-template-columns: 1fr !important; }
@@ -422,5 +507,29 @@ export function HomeSections() {
         }
       `}</style>
     </>
+  );
+}
+
+/* Expandable FAQ row. Answer stays in the DOM (collapsed, not display:none) so it remains
+   crawlable and in sync with the FAQPage schema. */
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderTop: `1px solid ${BF.hairline}` }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="cd-faq-btn"
+        style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "26px 4px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}
+      >
+        <span style={{ fontFamily: SANS, fontSize: "clamp(17px, 1.9vw, 19px)", fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, lineHeight: 1.3 }}>{q}</span>
+        <span style={{ flex: "0 0 auto", width: 30, height: 30, borderRadius: "50%", border: `1px solid ${BF.hairlineStrong}`, display: "grid", placeItems: "center", transition: "transform 0.3s ease, background 0.2s ease", transform: open ? "rotate(45deg)" : "none" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={open ? BF.accent : BF.muted} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+        </span>
+      </button>
+      <div style={{ maxHeight: open ? 260 : 0, opacity: open ? 1 : 0, overflow: "hidden", transition: "max-height 0.42s ease, opacity 0.3s ease" }}>
+        <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.62, color: BF.muted, margin: "0 4px 28px", maxWidth: 720 }}>{a}</p>
+      </div>
+    </div>
   );
 }
