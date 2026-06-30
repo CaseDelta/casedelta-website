@@ -284,27 +284,17 @@ export function HomeSections() {
 
   return (
     <>
-      {/* CHAT DEMO (first below the fold) */}
+      {/* CHAT DEMO (first below the fold) — focused, hero-like: just the line + the demo */}
       <Section bg={BG.white} id="demo">
         <Container>
-          <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 780, margin: "0 auto" }}>
-            <Eyebrow center>What Delta can do</Eyebrow>
-            <H>Just ask. Delta does the rest.</H>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Sub>Hand Delta a case in plain English. It requests the records, drafts the writing, updates your tools, and tracks every deadline, end to end.</Sub>
-            </div>
+          <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 900, margin: "0 auto" }}>
+            <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(40px, 6vw, 68px)", lineHeight: 1.02, letterSpacing: "-2px", color: BF.ink, margin: 0 }}>
+              Just ask. Delta does the rest.
+            </h2>
           </motion.div>
           <motion.div {...rise(0.08)}>
             <ChatDemo />
           </motion.div>
-          {/* static example asks (in the HTML for SEO + range at a glance) */}
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 30 }}>
-            {ASKS.map((x) => (
-              <span key={x.q} style={{ fontFamily: SANS, fontSize: 13.5, color: BF.muted, background: BG.offWhite, border: `1px solid ${BF.hairline}`, borderRadius: 40, padding: "8px 16px" }}>
-                {x.q}
-              </span>
-            ))}
-          </div>
         </Container>
       </Section>
 
