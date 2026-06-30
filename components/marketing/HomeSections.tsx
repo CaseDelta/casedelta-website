@@ -18,7 +18,7 @@
  */
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { trackEvent } from "@/lib/posthog";
 import { HOME_FAQ } from "@/lib/home-content";
 import { LOGOS, LOGO_CAP } from "@/lib/variants";
@@ -165,95 +165,122 @@ function ChatDemo() {
   const reduce = useReducedMotion();
   const [idx, setIdx] = useState(0);
   const [typed, setTyped] = useState("");
-  const [working, setWorking] = useState(false);
-  const [done, setDone] = useState(0);
+  const [mode, setMode] = useState<"ask" | "work" | "done">("ask");
+  const [step, setStep] = useState(0);
+  const [stepDone, setStepDone] = useState(false);
 
   useEffect(() => {
     const ask = ASKS[idx];
-    if (reduce) { setTyped(ask.q); setWorking(true); setDone(ask.tasks.length); return; }
-    const timers: ReturnType<typeof setTimeout>[] = [];
     setTyped("");
-    setWorking(false);
-    setDone(0);
-    let i = 0;
-    const type = () => {
-      i += 1;
-      setTyped(ask.q.slice(0, i));
-      if (i < ask.q.length) { timers.push(setTimeout(type, 26)); return; }
-      // query sent -> run the task list
-      timers.push(setTimeout(() => {
-        setWorking(true);
-        for (let k = 1; k <= ask.tasks.length; k += 1) timers.push(setTimeout(() => setDone(k), 720 * k));
-        timers.push(setTimeout(() => setIdx((p) => (p + 1) % ASKS.length), 720 * ask.tasks.length + 2400));
-      }, 480));
-    };
-    timers.push(setTimeout(type, 360));
+    setMode("ask");
+    setStep(0);
+    setStepDone(false);
+    if (reduce) { setTyped(ask.q); setMode("done"); return; }
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+    // 1) type the query
+    const typeStart = 480;
+    const charMs = 30;
+    for (let i = 1; i <= ask.q.length; i += 1) {
+      const n = i;
+      at(typeStart + i * charMs, () => setTyped(ask.q.slice(0, n)));
+    }
+    let cursor = typeStart + ask.q.length * charMs + 850;
+    // 2) run each step, one at a time, each replacing the last
+    at(cursor, () => setMode("work"));
+    const STEP_MS = 1550;
+    const CHECK_AT = 820;
+    for (let k = 0; k < ask.tasks.length; k += 1) {
+      const kk = k;
+      at(cursor, () => { setStep(kk); setStepDone(false); });
+      at(cursor + CHECK_AT, () => setStepDone(true));
+      cursor += STEP_MS;
+    }
+    // 3) done, hold, then the next query
+    at(cursor, () => setMode("done"));
+    at(cursor + 2000, () => setIdx((p) => (p + 1) % ASKS.length));
     return () => timers.forEach(clearTimeout);
   }, [idx, reduce]);
 
   const ask = ASKS[idx];
-  const total = ask.tasks.length;
-  const allDone = working && done >= total;
-  const pct = working ? Math.round((Math.min(done, total) / total) * 100) : 0;
+
+  const pill: React.CSSProperties = {
+    display: "flex", alignItems: "center", gap: 20, width: "100%", minHeight: 100,
+    padding: "24px 24px 24px 32px", background: "linear-gradient(180deg, #ffffff, #fcfbf8)",
+    border: "1px solid rgba(28,24,18,0.10)", borderRadius: 30,
+    boxShadow: "0 1px 2px rgba(28,24,18,0.04), 0 24px 48px -22px rgba(28,24,18,0.22), 0 48px 104px -44px rgba(47,111,224,0.46)",
+  };
+  const big: React.CSSProperties = { fontFamily: SANS, fontSize: "clamp(20px, 2.6vw, 27px)", letterSpacing: "-0.5px", lineHeight: 1.28 };
+  const enter = {
+    initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 }, exit: { opacity: 0, y: -10 },
+    transition: { duration: 0.34, ease: [0.22, 1, 0.36, 1] as const },
+  };
 
   return (
-    <div style={{ maxWidth: 680, margin: "56px auto 0", position: "relative" }}>
-      {/* input box: elevated, with a soft blue-tinted glow */}
-      <div style={{ display: "flex", alignItems: "center", gap: 13, height: 66, padding: "0 13px 0 26px", background: "linear-gradient(180deg, #ffffff, #fcfbf8)", border: "1px solid rgba(28,24,18,0.10)", borderRadius: 33, position: "relative", zIndex: 2, boxShadow: "0 1px 2px rgba(28,24,18,0.04), 0 16px 30px -18px rgba(28,24,18,0.20), 0 34px 82px -38px rgba(47,111,224,0.42)" }}>
-        <div style={{ flex: 1, minWidth: 0, fontFamily: SANS, fontSize: 16.5, letterSpacing: "-0.2px", color: typed ? BF.ink : BF.faint, whiteSpace: "nowrap", overflow: "hidden" }}>
-          {typed || "Ask Delta to handle something on a case"}
-          {!working && <span className="cd-caret" style={{ display: "inline-block", width: 2, height: 18, background: BF.accent, marginLeft: 1, verticalAlign: "-3px" }} />}
-        </div>
-        <span style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(160deg, #284b78, #16140f)", display: "grid", placeItems: "center", flex: "0 0 auto", boxShadow: "0 8px 20px -6px rgba(31,58,95,0.5)" }}>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
-        </span>
+    <div style={{ maxWidth: 760, margin: "44px auto 0", position: "relative" }}>
+      {/* explicit narration: one short label for the current phase */}
+      <div style={{ height: 18, marginBottom: 22, textAlign: "center" }}>
+        <AnimatePresence mode="wait">
+          <motion.div key={mode} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+            style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, letterSpacing: "1.6px", textTransform: "uppercase", color: mode === "done" ? "#1f8a55" : BF.accent }}>
+            {mode === "ask" ? "You ask" : mode === "work" ? "Delta does it" : "Done"}
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* the task list Delta runs for the query (revealed once it sends) */}
-      <div style={{ minHeight: 286, position: "relative" }}>
-        <div style={{ opacity: working ? 1 : 0, transform: working ? "translateY(0)" : "translateY(10px)", transition: "opacity 0.55s ease, transform 0.55s ease" }}>
-          {/* connector */}
-          <div aria-hidden style={{ display: "flex", justifyContent: "center" }}>
-            <span style={{ width: 2, height: 26, background: "linear-gradient(#2f6fe0, rgba(47,111,224,0))" }} />
-          </div>
-          {/* task card */}
-          <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", background: "#fff", border: "1px solid rgba(28,24,18,0.08)", boxShadow: "0 2px 4px rgba(28,24,18,0.03), 0 26px 50px -34px rgba(28,24,18,0.26), 0 46px 100px -50px rgba(47,111,224,0.30)" }}>
-            {/* progress bar */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "rgba(28,24,18,0.06)" }}>
-              <div style={{ height: "100%", width: `${pct}%`, background: "linear-gradient(90deg, #3a78e0, #2f6fe0)", transition: "width 0.6s cubic-bezier(0.22,1,0.36,1)" }} />
-            </div>
-            <div style={{ padding: "22px 24px 24px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <DeltaMark size={24} />
-                <span style={{ fontFamily: SANS, fontSize: 13.5, fontWeight: 600, color: BF.ink }}>{allDone ? "All done" : "Delta is on it"}</span>
-                <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 7 }}>
-                  {working && !allDone && <span className="cd-spin" style={{ width: 13, height: 13, borderRadius: "50%", border: `2px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />}
-                  <span style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, color: allDone ? "#1f8a55" : BF.faint }}>{Math.min(done, total)}/{total}</span>
-                </span>
-              </div>
-              {ask.tasks.map((t, k) => {
-                const state = !working ? "pending" : k < done ? "done" : k === done ? "run" : "pending";
-                return (
-                  <div key={t} style={{ display: "flex", alignItems: "center", gap: 13, padding: "11px 12px", margin: "0 -12px", borderRadius: 11, background: state === "run" ? BF.accentSoft : "transparent", transition: "background 0.3s ease" }}>
-                    <span style={{ width: 20, height: 20, flex: "0 0 auto", display: "grid", placeItems: "center" }}>
-                      {state === "done" ? (
-                        <span className="cd-pop" style={{ width: 20, height: 20, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center" }}>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-                        </span>
-                      ) : state === "run" ? (
-                        <span className="cd-spin" style={{ width: 17, height: 17, borderRadius: "50%", border: `2px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />
-                      ) : (
-                        <span style={{ width: 15, height: 15, borderRadius: "50%", border: `2px solid ${BF.hairlineStrong}` }} />
-                      )}
-                    </span>
-                    <span style={{ fontFamily: SANS, fontSize: 15.5, letterSpacing: "-0.2px", fontWeight: state === "run" ? 600 : 400, color: state === "pending" ? BF.faint : BF.ink, transition: "color 0.3s ease, font-weight 0.2s ease" }}>{t}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+      {/* the single focal element: only ever one thing on screen at a time */}
+      <div style={{ minHeight: 152, display: "flex", alignItems: "center" }}>
+        <AnimatePresence mode="wait">
+          {mode === "ask" && (
+            <motion.div key="ask" {...enter} style={pill}>
+              <span style={{ ...big, flex: 1, minWidth: 0, color: typed ? BF.ink : BF.faint }}>
+                {typed || "Ask Delta to handle something on a case"}
+                <span className="cd-caret" style={{ display: "inline-block", width: 2, height: "1em", background: BF.accent, marginLeft: 2, verticalAlign: "-0.15em" }} />
+              </span>
+              <span style={{ width: 52, height: 52, borderRadius: "50%", background: "linear-gradient(160deg, #284b78, #16140f)", display: "grid", placeItems: "center", flex: "0 0 auto", boxShadow: "0 10px 24px -8px rgba(31,58,95,0.55)" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+              </span>
+            </motion.div>
+          )}
+          {mode === "work" && (
+            <motion.div key={`work-${step}`} {...enter} style={pill}>
+              <DeltaMark size={46} />
+              <span style={{ ...big, flex: 1, minWidth: 0, color: BF.ink, fontWeight: 500 }}>{ask.tasks[step]}</span>
+              <span style={{ width: 40, height: 40, flex: "0 0 auto", display: "grid", placeItems: "center" }}>
+                {stepDone ? (
+                  <span className="cd-pop" style={{ width: 38, height: 38, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center", boxShadow: "0 8px 18px -6px rgba(31,138,85,0.5)" }}>
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                  </span>
+                ) : (
+                  <span className="cd-spin" style={{ width: 30, height: 30, borderRadius: "50%", border: `3px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />
+                )}
+              </span>
+            </motion.div>
+          )}
+          {mode === "done" && (
+            <motion.div key="done" {...enter} style={{ ...pill, justifyContent: "center", gap: 16 }}>
+              <span className="cd-pop" style={{ width: 42, height: 42, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center" }}>
+                <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+              </span>
+              <span style={{ ...big, color: BF.ink, fontWeight: 500 }}>All done</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
+
+      {/* progress dots, so the count is clear without showing every step at once */}
+      <div style={{ height: 10, marginTop: 30, display: "flex", justifyContent: "center", gap: 10 }}>
+        {mode !== "ask" &&
+          ask.tasks.map((_, k) => {
+            const filled = mode === "done" || k < step || (k === step && stepDone);
+            return <span key={k} style={{ width: 9, height: 9, borderRadius: "50%", background: filled ? BF.accent : "rgba(28,24,18,0.16)", transition: "background 0.35s ease" }} />;
+          })}
+      </div>
+
+      {/* visually hidden, for crawlers + screen readers: what the demo shows */}
+      <p style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clipPath: "inset(50%)", whiteSpace: "nowrap", border: 0 }}>
+        Ask Delta to handle case work in plain English and it completes each step end to end. For example: {ASKS.map((a) => a.q).join(" ")}
+      </p>
     </div>
   );
 }
