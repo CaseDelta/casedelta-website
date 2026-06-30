@@ -199,17 +199,11 @@ function ChatDemo() {
   return (
     <div style={{ maxWidth: 680, margin: "56px auto 0", position: "relative" }}>
       {/* input box: elevated, with a soft blue-tinted glow */}
-      <div style={{ display: "flex", alignItems: "center", gap: 13, height: 66, padding: "0 13px 0 22px", background: "linear-gradient(180deg, #ffffff, #fcfbf8)", border: "1px solid rgba(28,24,18,0.10)", borderRadius: 33, position: "relative", zIndex: 2, boxShadow: "0 1px 2px rgba(28,24,18,0.04), 0 16px 30px -18px rgba(28,24,18,0.20), 0 34px 82px -38px rgba(47,111,224,0.42)" }}>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2" strokeLinecap="round" style={{ flex: "0 0 auto" }}><path d="M12 5v14M5 12h14" /></svg>
+      <div style={{ display: "flex", alignItems: "center", gap: 13, height: 66, padding: "0 13px 0 26px", background: "linear-gradient(180deg, #ffffff, #fcfbf8)", border: "1px solid rgba(28,24,18,0.10)", borderRadius: 33, position: "relative", zIndex: 2, boxShadow: "0 1px 2px rgba(28,24,18,0.04), 0 16px 30px -18px rgba(28,24,18,0.20), 0 34px 82px -38px rgba(47,111,224,0.42)" }}>
         <div style={{ flex: 1, minWidth: 0, fontFamily: SANS, fontSize: 16.5, letterSpacing: "-0.2px", color: typed ? BF.ink : BF.faint, whiteSpace: "nowrap", overflow: "hidden" }}>
           {typed || "Ask Delta to handle something on a case"}
           {!working && <span className="cd-caret" style={{ display: "inline-block", width: 2, height: 18, background: BF.accent, marginLeft: 1, verticalAlign: "-3px" }} />}
         </div>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: SANS, fontSize: 13.5, fontWeight: 500, color: BF.muted, flex: "0 0 auto" }}>
-          Fast
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={BF.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
-        </span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }}><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
         <span style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(160deg, #284b78, #16140f)", display: "grid", placeItems: "center", flex: "0 0 auto", boxShadow: "0 8px 20px -6px rgba(31,58,95,0.5)" }}>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
         </span>
