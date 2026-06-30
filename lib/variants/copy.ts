@@ -20,7 +20,7 @@ export const HERO_SUBHEAD =
   "Delta is an AI teammate that does your firm's case work inside the tools you already use. No migration, nothing new to learn, and your team approves every move.";
 
 /** Full-bleed hero (legora) shows this short inline tagline next to the pill instead of a subhead. */
-export const HERO_TAGLINE = "The AI paralegal for law firms";
+export const HERO_TAGLINE = "An AI teammate inside the tools you already use";
 
 export const PRIMARY_CTA = { label: "See it on your case", href: "/demo" } as const;
 export const SECONDARY_CTA = { label: "See how firms use it", href: "/use-cases" } as const;
