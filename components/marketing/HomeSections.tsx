@@ -3,19 +3,21 @@
 /**
  * Below-the-fold homepage. FIXED LIGHT design, identical under every hero variant.
  *
- * A synthesis of the three references the team studied live (Harvey / Legora / Filevine):
- *  - Filevine: soft tinted-gradient surfaces, big product visuals in rounded frames, airy.
- *  - Legora: a MODULAR capability explorer (a selectable list paired with an evolving
- *    product visual) instead of plain "headers + text" cards.
- *  - Harvey: premium editorial whitespace, a dark impact band, a serif testimonial.
+ * Order (per founder direction): an animated chat demo that immediately shows the range of
+ * end-to-end work Delta handles, then one clarification section (what it is / why different),
+ * then a testimonial, then the impact band, security, FAQ, and CTA.
  *
- * SEO/AEO discipline (per website_rebuild_2026/seo_research): all copy is rendered into
- * the static HTML (no content gated behind browser-only state), client JS is kept to the
- * single small accordion interaction, and the FAQ mirrors the FAQPage schema. Honest
- * claims only (POSITIONING.md). No em dashes; Delta is referred to neutrally.
+ * Look reproduced from the live references (Harvey / Legora / Filevine), whose real computed
+ * styles were sampled: warm neutral surfaces, large 400-weight display headings with tight
+ * negative tracking, small muted body, soft pastel fades, large-radius product frames.
+ *
+ * SEO/AEO discipline (website_rebuild_2026/seo_research): copy renders into the static HTML
+ * (the example asks + answers are present as real text, not only in the animation); client JS
+ * is limited to the chat ticker and the FAQ accordion; the FAQ mirrors the FAQPage schema.
+ * Honest claims only (POSITIONING.md). No em dashes; Delta is referred to neutrally.
  */
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { trackEvent } from "@/lib/posthog";
 import { HOME_FAQ } from "@/lib/home-content";
@@ -84,9 +86,9 @@ function Section({ children, bg, id, tight = false }: { children: React.ReactNod
   );
 }
 
-function Eyebrow({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
+function Eyebrow({ children, light = false, center = false }: { children: React.ReactNode; light?: boolean; center?: boolean }) {
   return (
-    <div style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: light ? "rgba(255,255,255,0.55)" : BF.accent, marginBottom: 18 }}>
+    <div style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: light ? "rgba(255,255,255,0.55)" : BF.accent, marginBottom: 18, textAlign: center ? "center" : "left" }}>
       {children}
     </div>
   );
@@ -142,272 +144,115 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
   );
 }
 
-/* Expandable FAQ row. Answer stays in the DOM (collapsed, not display:none) so it remains
-   crawlable and in sync with the FAQPage schema. */
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderTop: `1px solid ${BF.hairline}` }}>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="cd-faq-btn"
-        style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "26px 4px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}
-      >
-        <span style={{ fontFamily: SANS, fontSize: "clamp(17px, 1.9vw, 19px)", fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, lineHeight: 1.3 }}>{q}</span>
-        <span style={{ flex: "0 0 auto", width: 30, height: 30, borderRadius: "50%", border: `1px solid ${BF.hairlineStrong}`, display: "grid", placeItems: "center", transition: "transform 0.3s ease, background 0.2s ease", transform: open ? "rotate(45deg)" : "none" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={open ? BF.accent : BF.muted} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-        </span>
-      </button>
-      <div style={{ maxHeight: open ? 260 : 0, opacity: open ? 1 : 0, overflow: "hidden", transition: "max-height 0.42s ease, opacity 0.3s ease" }}>
-        <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.62, color: BF.muted, margin: "0 4px 28px", maxWidth: 720 }}>{a}</p>
-      </div>
-    </div>
-  );
-}
-
-/* ---- integration logo strip (honest proof: the tools Delta runs inside) ---- */
-function LogoStrip() {
-  return (
-    <Container>
-      <div style={{ textAlign: "center" }}>
-        <div style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, letterSpacing: "0.6px", textTransform: "uppercase", color: BF.faint, marginBottom: 26 }}>
-          {LOGO_CAP}
-        </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "26px 44px", flexWrap: "wrap" }}>
-          {LOGOS.map((logo) => (
-            <span
-              key={logo.name}
-              style={{
-                fontFamily: logo.style === "serif" ? SERIF : SANS,
-                fontSize: logo.style === "wide" ? 14 : 18,
-                fontWeight: logo.style === "wide" ? 600 : 500,
-                letterSpacing: logo.style === "wide" ? "1.4px" : "-0.2px",
-                textTransform: logo.style === "wide" ? "uppercase" : "none",
-                color: "#a59d8e",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {logo.name}
-            </span>
-          ))}
-        </div>
-      </div>
-    </Container>
-  );
-}
-
-/* ---- product-demo video: a faux product-UI poster (real video drops into the stage) ---- */
-const POSTER_ROWS = [
-  { s: "done", t: "Requested records from Mercy General" },
-  { s: "run", t: "Drafting the demand letter" },
-  { s: "done", t: "Updated the matter in Clio + billing" },
-  { s: "todo", t: "Flagged: response deadline in 4 days" },
+/* ---- chat demo: Delta handling a range of end-to-end asks, typed and answered in a loop ----
+   The asks + answers also render as a static list below the frame, so the content is in the
+   crawlable HTML and does not depend on the animation. */
+const ASKS = [
+  { q: "Request Ortega's missing records and chase them until they're in.", a: "Requested records from 3 providers. Two are still outstanding, I'll follow up Friday.", tags: ["3 requests sent", "Follow-up set"] },
+  { q: "Draft the demand letter for Martinez from the file.", a: "Draft is ready for your review. I pulled the damages from the medical records and billing.", tags: ["Demand drafted", "Cited to the file"] },
+  { q: "What's slipping across my open cases this week?", a: "Three deadlines in the next seven days. The discovery response on Ortega is the urgent one.", tags: ["3 deadlines", "1 urgent"] },
+  { q: "Update the Clio matter and log my time.", a: "Matter updated in Clio, time entry logged, and a note posted to the client portal.", tags: ["Clio updated", "Time logged"] },
+  { q: "Summarize the new intake and flag anything off.", a: "Summarized. Statute runs in 18 months, no prior counsel, and I flagged one gap in the timeline.", tags: ["Intake summarized", "1 flag"] },
 ];
 
-function VideoPlaceholder() {
+function DeltaMark({ size = 26 }: { size?: number }) {
   return (
-    <a
-      href="/demo"
-      onClick={() => trackEvent("cta_click", { location: "demo_video" })}
-      className="cd-video"
-      style={{ display: "block", maxWidth: 1000, margin: "52px auto 0", borderRadius: 18, overflow: "hidden", border: `1px solid ${BF.hairlineStrong}`, background: "#0e1420", boxShadow: "0 60px 110px -45px rgba(20,23,31,0.5), 0 0 0 1px rgba(47,111,224,0.05)", textDecoration: "none" }}
-    >
-      {/* browser chrome */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, height: 42, padding: "0 16px", background: "linear-gradient(#171c27, #11151e)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ marginLeft: 12, display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.45)" }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6aa6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-          app.casedelta.com / Ortega v. Memorial
-        </span>
-      </div>
-
-      {/* stage: faux product UI poster + dimmed overlay + play */}
-      <div className="cd-video-stage" style={{ position: "relative", aspectRatio: "16 / 9", background: "#0c1119", overflow: "hidden" }}>
-        <div className="cd-poster" style={{ position: "absolute", inset: 0, display: "flex" }}>
-          {/* sidebar */}
-          <div style={{ width: "23%", minWidth: 150, background: "#10151f", borderRight: "1px solid rgba(255,255,255,0.06)", padding: "18px 16px", display: "flex", flexDirection: "column", gap: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <span style={{ width: 24, height: 24, borderRadius: 7, background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SERIF, color: "#fff", fontSize: 14, lineHeight: 1 }}>D</span>
-              <span style={{ fontFamily: SERIF, color: "rgba(255,255,255,0.86)", fontSize: 15 }}>Delta</span>
-            </div>
-            {["Cases", "Inbox", "Tasks", "Documents", "Billing"].map((n, i) => (
-              <span key={n} style={{ fontFamily: SANS, fontSize: 12.5, color: i === 0 ? "rgba(255,255,255,0.82)" : "rgba(255,255,255,0.38)", padding: "3px 0" }}>{n}</span>
-            ))}
-          </div>
-          {/* main */}
-          <div style={{ flex: 1, padding: "20px 22px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-              <span style={{ fontFamily: SERIF, color: "#fff", fontSize: 17, letterSpacing: "-0.3px" }}>Ortega v. Memorial</span>
-              <span style={{ fontFamily: SANS, fontSize: 10.5, fontWeight: 600, letterSpacing: "0.4px", textTransform: "uppercase", color: "#6aa6ff", background: "rgba(58,120,224,0.16)", border: "1px solid rgba(106,166,255,0.25)", borderRadius: 6, padding: "4px 8px" }}>Delta working</span>
-            </div>
-            {POSTER_ROWS.map((r, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 12px", borderRadius: 9, marginBottom: 7, background: r.s === "todo" ? "rgba(58,120,224,0.12)" : "rgba(255,255,255,0.02)", border: r.s === "todo" ? "1px solid rgba(106,166,255,0.22)" : "1px solid transparent" }}>
-                <span style={{ width: 17, height: 17, borderRadius: 5, flex: "0 0 auto", display: "grid", placeItems: "center", background: r.s === "done" ? "#3a78e0" : "transparent", border: r.s === "done" ? "none" : r.s === "run" ? "2px solid #6aa6ff" : "1.5px solid rgba(255,255,255,0.25)" }}>
-                  {r.s === "done" && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>}
-                </span>
-                <span style={{ fontFamily: SANS, fontSize: 13, color: r.s === "todo" ? "#fff" : "rgba(255,255,255,0.7)" }}>{r.t}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* dim overlay + play */}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 70% at 50% 45%, rgba(8,12,20,0.35) 0%, rgba(8,12,20,0.72) 100%)", display: "grid", placeItems: "center" }}>
-          <span className="cd-play" style={{ width: 76, height: 76, borderRadius: "50%", background: "#ffffff", display: "grid", placeItems: "center", boxShadow: "0 18px 44px -10px rgba(0,0,0,0.55)", transition: "transform 0.2s ease" }}>
-            <svg width="27" height="27" viewBox="0 0 24 24" fill="#1f3a5f"><path d="M8 5.5v13l11-6.5z" /></svg>
-          </span>
-        </div>
-        <span style={{ position: "absolute", bottom: 18, left: 0, right: 0, textAlign: "center", fontFamily: SANS, fontSize: 13, fontWeight: 500, letterSpacing: "0.2px", color: "rgba(255,255,255,0.72)" }}>
-          Watch Delta work a real case · 2 min
-        </span>
-      </div>
-    </a>
+    <span style={{ width: size, height: size, borderRadius: 8, flex: "0 0 auto", background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SERIF, color: "#fff", fontSize: size * 0.56, lineHeight: 1 }}>D</span>
   );
 }
 
-/* ---- modular capability explorer (Legora-style: a selectable list + an evolving visual) ----
-   All four descriptions render into the HTML (the inactive ones stay in the DOM, collapsed),
-   so the content is fully crawlable; only the small open/close state is client-side. */
-type CapVisual = "records" | "drafting" | "sync" | "deadlines";
-const CAPS: { key: CapVisual; t: string; d: string }[] = [
-  { key: "records", t: "Requests records and chases them", d: "Delta sends the request, tracks what is still outstanding, and follows up on its own until every record is in the file." },
-  { key: "drafting", t: "Drafts the routine writing", d: "Demand letters, status updates, intake follow-ups. Delta writes the first draft from the file, and a person on your team approves before anything sends." },
-  { key: "sync", t: "Keeps the file current everywhere", d: "When something changes, Delta updates the matter across your case manager, CRM, and billing, so every system tells the same story." },
-  { key: "deadlines", t: "Watches what is slipping", d: "Delta tracks deadlines and open items across every active file and surfaces the ones that need attention before they become a problem." },
+function ChatDemo() {
+  const reduce = useReducedMotion();
+  const [idx, setIdx] = useState(0);
+  const [typed, setTyped] = useState("");
+  const [answered, setAnswered] = useState(false);
+
+  useEffect(() => {
+    const ask = ASKS[idx];
+    if (reduce) { setTyped(ask.q); setAnswered(true); return; }
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    setTyped("");
+    setAnswered(false);
+    let i = 0;
+    const step = () => {
+      i += 1;
+      setTyped(ask.q.slice(0, i));
+      if (i < ask.q.length) timers.push(setTimeout(step, 26));
+      else {
+        timers.push(setTimeout(() => setAnswered(true), 480));
+        timers.push(setTimeout(() => setIdx((p) => (p + 1) % ASKS.length), 3800));
+      }
+    };
+    timers.push(setTimeout(step, 360));
+    return () => timers.forEach(clearTimeout);
+  }, [idx, reduce]);
+
+  const ask = ASKS[idx];
+  return (
+    <div className="cd-chat" style={{ maxWidth: 880, margin: "56px auto 0", borderRadius: 20, overflow: "hidden", background: "#fff", border: `1px solid ${BF.hairlineStrong}`, boxShadow: "0 60px 110px -50px rgba(28,24,18,0.42), 0 2px 8px rgba(28,24,18,0.04)" }}>
+      {/* header */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 18px", borderBottom: `1px solid ${BF.hairline}`, background: "#fcfbf9" }}>
+        <DeltaMark size={26} />
+        <span style={{ fontFamily: SERIF, fontSize: 16, color: BF.ink }}>Delta</span>
+        <span style={{ fontFamily: SANS, fontSize: 12.5, color: BF.faint, marginLeft: 2 }}>· Ortega v. Memorial</span>
+        <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 12, fontWeight: 600, color: "#1f8a55" }}>
+          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#1f8a55" }} /> Online
+        </span>
+      </div>
+
+      {/* thread */}
+      <div style={{ padding: "30px 26px", minHeight: 280, display: "flex", flexDirection: "column", gap: 18, background: "#fff" }}>
+        {/* user ask (typed) */}
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div style={{ maxWidth: "82%", background: BF.pillBg, color: "#fff", borderRadius: "16px 16px 4px 16px", padding: "13px 17px", fontFamily: SANS, fontSize: 15.5, lineHeight: 1.45, letterSpacing: "-0.2px", minHeight: 22 }}>
+            {typed}
+            {!answered && <span className="cd-caret" style={{ display: "inline-block", width: 2, height: 17, background: "rgba(255,255,255,0.8)", marginLeft: 2, verticalAlign: "-3px" }} />}
+          </div>
+        </div>
+        {/* delta response */}
+        <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+          <DeltaMark size={30} />
+          <div style={{ maxWidth: "82%" }}>
+            <div style={{ background: "#f5f3ef", borderRadius: "16px 16px 16px 4px", padding: "13px 17px", fontFamily: SANS, fontSize: 15.5, lineHeight: 1.5, letterSpacing: "-0.2px", color: BF.ink, minHeight: 22 }}>
+              {answered ? (
+                ask.a
+              ) : (
+                <span className="cd-dots" style={{ display: "inline-flex", gap: 4, padding: "3px 0" }}>
+                  <span /><span /><span />
+                </span>
+              )}
+            </div>
+            {answered && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
+                {ask.tags.map((t) => (
+                  <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SANS, fontSize: 12.5, fontWeight: 600, color: BF.accent, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, borderRadius: 7, padding: "5px 10px" }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* input bar (decorative) */}
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderTop: `1px solid ${BF.hairline}`, background: "#fcfbf9" }}>
+        <span style={{ flex: 1, fontFamily: SANS, fontSize: 14.5, color: BF.faint }}>Ask Delta to handle something on a case...</span>
+        <span style={{ width: 34, height: 34, borderRadius: "50%", background: BF.pillBg, display: "grid", placeItems: "center" }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ---- clarification: what it is / why different (one section) ---- */
+const CLARIFY = [
+  { t: "Runs inside your stack", d: "Delta drives the tools you already pay for, your case manager, email, drive, and billing. Nothing to rip out, nothing to migrate." },
+  { t: "Does the whole job", d: "Not one task in another tab. Delta takes routine work from the first request to ready-to-send, across every system the matter touches." },
+  { t: "You stay in control", d: "Delta drafts and prepares, your team approves before anything goes out, and it learns your firm's standards as it goes." },
 ];
-
-const VINK = "#14171f";
-const VMUTED = "#54565f";
-const VACCENT = "#2f6fe0";
-
-function CapVisualPanel({ kind }: { kind: CapVisual }) {
-  const cardBase: React.CSSProperties = {
-    background: "#fff",
-    border: `1px solid ${BF.hairline}`,
-    borderRadius: 18,
-    padding: "24px 26px",
-    boxShadow: "0 44px 84px -52px rgba(28,24,18,0.34), 0 2px 6px rgba(28,24,18,0.03)",
-  };
-  const rowLabel = (t: string) => <span style={{ fontFamily: SANS, fontSize: 13.5, color: VINK }}>{t}</span>;
-  const badge = (t: string, tone: "done" | "wait" | "flag") => {
-    const tones = {
-      done: { bg: "rgba(34,142,90,0.10)", fg: "#1f8a55", b: "rgba(34,142,90,0.28)" },
-      wait: { bg: "rgba(180,130,20,0.10)", fg: "#9a7416", b: "rgba(180,130,20,0.28)" },
-      flag: { bg: BF.accentSoft, fg: VACCENT, b: BF.accentBorderHover },
-    }[tone];
-    return <span style={{ fontFamily: SANS, fontSize: 11, fontWeight: 600, letterSpacing: "0.2px", color: tones.fg, background: tones.bg, border: `1px solid ${tones.b}`, borderRadius: 6, padding: "3px 9px", whiteSpace: "nowrap" }}>{t}</span>;
-  };
-  const hairRow: React.CSSProperties = { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "12px 0", borderTop: `1px solid ${BF.hairline}` };
-
-  if (kind === "records") {
-    const rows: [string, "done" | "wait"][] = [["Mercy General Hospital", "done"], ["Dr. Huang, orthopedics", "wait"], ["Riverside Imaging", "wait"], ["EMS run report", "done"]];
-    return (
-      <div style={cardBase}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-          <span style={{ fontFamily: SERIF, fontSize: 16, color: VINK }}>Records requested</span>
-          <span style={{ fontFamily: SANS, fontSize: 12, color: VMUTED }}>4 providers</span>
-        </div>
-        {rows.map(([name, st], i) => (
-          <div key={i} style={{ ...hairRow, borderTop: i === 0 ? "none" : hairRow.borderTop }}>
-            {rowLabel(name)}
-            {badge(st === "done" ? "Received" : "Chasing", st === "done" ? "done" : "wait")}
-          </div>
-        ))}
-      </div>
-    );
-  }
-  if (kind === "drafting") {
-    return (
-      <div style={cardBase}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-          <span style={{ fontFamily: SERIF, fontSize: 16, color: VINK }}>Demand letter, draft</span>
-          {badge("Ready for review", "flag")}
-        </div>
-        <div style={{ fontFamily: SERIF, fontSize: 14.5, color: VINK, marginBottom: 12 }}>Re: Ortega v. Memorial Hospital</div>
-        {[92, 100, 78, 96, 64].map((w, i) => (
-          <div key={i} style={{ height: 8, width: `${w}%`, borderRadius: 4, background: i === 0 ? "rgba(47,111,224,0.18)" : BF.hairline, marginBottom: 10 }} />
-        ))}
-      </div>
-    );
-  }
-  if (kind === "sync") {
-    const sys: [string, string][] = [["Clio", "Matter + tasks updated"], ["GoHighLevel", "Contact + pipeline synced"], ["Billing", "Time entry logged"]];
-    return (
-      <div style={cardBase}>
-        <div style={{ fontFamily: SERIF, fontSize: 16, color: VINK, marginBottom: 4 }}>One update, every system</div>
-        {sys.map(([name, what], i) => (
-          <div key={i} style={{ ...hairRow, borderTop: i === 0 ? "none" : hairRow.borderTop }}>
-            <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <span style={{ fontFamily: SANS, fontSize: 13.5, fontWeight: 600, color: VINK }}>{name}</span>
-              <span style={{ fontFamily: SANS, fontSize: 12.5, color: VMUTED }}>{what}</span>
-            </span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1f8a55" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-          </div>
-        ))}
-      </div>
-    );
-  }
-  // deadlines
-  const dl: [string, string, "flag" | "wait"][] = [["Response to discovery", "in 4 days", "flag"], ["Records due, Dr. Huang", "in 9 days", "wait"], ["Mediation brief", "in 21 days", "wait"]];
-  return (
-    <div style={cardBase}>
-      <div style={{ fontFamily: SERIF, fontSize: 16, color: VINK, marginBottom: 4 }}>Coming due</div>
-      {dl.map(([name, when, tone], i) => (
-        <div key={i} style={{ ...hairRow, borderTop: i === 0 ? "none" : hairRow.borderTop }}>
-          {rowLabel(name)}
-          {badge(when, tone)}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function CapabilityExplorer() {
-  const [active, setActive] = useState(0);
-  return (
-    <div className="cd-cap" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, marginTop: 56, alignItems: "center" }}>
-      {/* left: selectable accordion list (all descriptions in the DOM) */}
-      <div className="cd-cap-list">
-        {CAPS.map((cap, i) => {
-          const open = i === active;
-          return (
-            <div key={cap.key} style={{ borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-              <button
-                onClick={() => setActive(i)}
-                aria-expanded={open}
-                className="cd-cap-btn"
-                style={{
-                  width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer",
-                  padding: "22px 0", display: "flex", alignItems: "center", gap: 14,
-                }}
-              >
-                <span style={{ width: 8, height: 8, borderRadius: "50%", flex: "0 0 auto", background: open ? BF.accent : BF.hairlineStrong, transition: "background 0.25s ease" }} />
-                <span style={{ fontFamily: SERIF, fontSize: "clamp(20px, 2.4vw, 25px)", fontWeight: 400, letterSpacing: "-0.5px", lineHeight: 1.15, color: open ? BF.ink : BF.faint, transition: "color 0.25s ease" }}>
-                  {cap.t}
-                </span>
-              </button>
-              {/* description stays in the DOM; collapsed when inactive (crawlable, not display:none) */}
-              <div style={{ maxHeight: open ? 160 : 0, opacity: open ? 1 : 0, overflow: "hidden", transition: "max-height 0.4s ease, opacity 0.3s ease" }}>
-                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.55, color: BF.muted, margin: "0 0 22px 22px", maxWidth: 460 }}>
-                  {cap.d}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {/* right: the visual for the active capability */}
-      <div className="cd-cap-visual" style={{ position: "relative" }}>
-        <motion.div key={CAPS[active].key} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}>
-          <CapVisualPanel kind={CAPS[active].key} />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
 
 /* ---- content ---- */
 const STATS = [
@@ -426,19 +271,15 @@ const SECURITY = [
   "Your firm's data, isolated",
 ];
 
-// Placeholder quote, kept from the prior design. The 4.9 rating shown here is the real
-// attorney review. Swap the quote for a real, attributable one when available.
+// PLACEHOLDER quote pending Heidi's real words + confirmed title/firm and her sign-off to be
+// featured. The 4.9 rating beside it is the real attorney rating. Do not ship to prod until
+// the quote and attribution are real.
 const TESTIMONIAL = {
   quote:
-    "Delta runs the records chase and the first draft on every file, then hands it back for us to approve. It is the first thing we have tried that took work off my paralegals instead of giving them one more tab to manage.",
-  initials: "DH",
-  name: "Daniel Hartley",
-  title: "Managing Partner, Hartley Injury Law",
-};
-
-const COMPARE = {
-  tool: ["Opens in one more browser tab", "You re-key its output into your real systems", "Solves a single task, then stops"],
-  delta: ["Works inside the tools you already use", "Does the whole routine job, end to end", "Learns your firm and compounds over time"],
+    "Delta took the records chase and the first drafts off our plate, and it does it inside the tools we already use. It is the closest thing to adding a paralegal without the hire.",
+  initials: "HN",
+  name: "Heidi Nowotny",
+  title: "Personal Injury Attorney",
 };
 
 export function HomeSections() {
@@ -446,103 +287,67 @@ export function HomeSections() {
 
   return (
     <>
-      {/* INTEGRATION LOGO STRIP */}
-      <Section bg={BG.white} tight>
-        <motion.div {...rise(0)}>
-          <LogoStrip />
-        </motion.div>
-      </Section>
-
-      {/* PRODUCT DEMO VIDEO (centered) */}
+      {/* CHAT DEMO (first below the fold) */}
       <Section bg={BG.white} id="demo">
         <Container>
-          <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
-            <Eyebrow>See it work</Eyebrow>
-            <H>Watch it do a day of your paralegal&apos;s work.</H>
+          <motion.div {...rise(0)} style={{ textAlign: "center", maxWidth: 780, margin: "0 auto" }}>
+            <Eyebrow center>What Delta can do</Eyebrow>
+            <H>Just ask. Delta does the rest.</H>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <Sub>Hand Delta a real case. It requests the records, drafts the demand, updates the file, and chases the client, right inside the tools you already use.</Sub>
+              <Sub>Hand Delta a case in plain English. It requests the records, drafts the writing, updates your tools, and tracks every deadline, end to end.</Sub>
             </div>
           </motion.div>
           <motion.div {...rise(0.08)}>
-            <VideoPlaceholder />
+            <ChatDemo />
           </motion.div>
-        </Container>
-      </Section>
-
-      {/* CAPABILITY EXPLORER (modular) */}
-      <Section bg={BG.softBlue}>
-        <Container>
-          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>What Delta does</Eyebrow>
-            <H>The routine case work, handled end to end.</H>
-            <Sub>The repetitive work that eats your team&apos;s hours. Pick one and see how it runs. Your team reviews and approves before anything goes out.</Sub>
-          </motion.div>
-          <motion.div {...rise(0.06)}>
-            <CapabilityExplorer />
-          </motion.div>
-        </Container>
-      </Section>
-
-      {/* WHY DIFFERENT (comparison module) */}
-      <Section bg={BG.white}>
-        <Container narrow>
-          <motion.div {...rise(0)}>
-            <Eyebrow>Why it is different</Eyebrow>
-            <H>
-              A one-task tool gives you an output. <span style={{ color: BF.accent, fontStyle: "italic" }}>CaseDelta gives you capacity.</span>
-            </H>
-            <Sub>Most legal AI does one task in one more browser tab. CaseDelta does the whole routine job inside the tools you already use, and learns how your firm works.</Sub>
-          </motion.div>
-        </Container>
-        <Container>
-          <div className="cd-two" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 52 }}>
-            <motion.div {...rise(0)} style={{ background: BG.offWhite, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "32px 30px 34px" }}>
-              <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: BF.faint, marginBottom: 20 }}>A one-task tool</div>
-              {COMPARE.tool.map((t, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "13px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2.2" strokeLinecap="round" style={{ flex: "0 0 auto", marginTop: 1 }}><path d="M6 6l12 12M18 6L6 18" /></svg>
-                  <span style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.45, color: BF.muted }}>{t}</span>
-                </div>
-              ))}
-            </motion.div>
-            <motion.div {...rise(0.08)} style={{ background: BF.card, border: `1px solid ${BF.accentBorderHover}`, borderRadius: 16, padding: "32px 30px 34px", boxShadow: "0 32px 64px -36px rgba(47,111,224,0.32)" }}>
-              <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "1.2px", textTransform: "uppercase", color: BF.accent, marginBottom: 20 }}>CaseDelta</div>
-              {COMPARE.delta.map((t, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "13px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto", marginTop: 1 }}><path d="M5 13l4 4L19 7" /></svg>
-                  <span style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.45, color: BF.ink, fontWeight: 500 }}>{t}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </Container>
-      </Section>
-
-      {/* IMPACT / STATS (dark band) */}
-      <Section bg={BG.statBand}>
-        <Container>
-          <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
-            <Eyebrow light>The math</Eyebrow>
-            <H light>One teammate. Your whole firm.</H>
-            <Sub light>Priced against the help you can&apos;t hire, not a per-seat app. The math is simple.</Sub>
-          </motion.div>
-          <div className="cd-stat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0, marginTop: 60 }}>
-            {STATS.map((s, i) => (
-              <motion.div key={i} {...rise(0.05 * i)} style={{ padding: "0 30px", borderLeft: i === 0 ? "none" : "1px solid rgba(255,255,255,0.12)" }}>
-                <div style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(42px, 5vw, 62px)", lineHeight: 1, letterSpacing: "-1.6px", color: "#fff" }}>{s.n}</div>
-                <div style={{ fontFamily: SANS, fontSize: 14.5, lineHeight: 1.45, color: "rgba(255,255,255,0.6)", marginTop: 16 }}>{s.l}</div>
-              </motion.div>
+          {/* static example asks (in the HTML for SEO + range at a glance) */}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 30 }}>
+            {ASKS.map((x) => (
+              <span key={x.q} style={{ fontFamily: SANS, fontSize: 13.5, color: BF.muted, background: BG.offWhite, border: `1px solid ${BF.hairline}`, borderRadius: 40, padding: "8px 16px" }}>
+                {x.q}
+              </span>
             ))}
           </div>
         </Container>
       </Section>
 
-      {/* TESTIMONIAL (premium, with the real rating) */}
+      {/* CLARIFICATION (one section) */}
+      <Section bg={BG.softBlue}>
+        <Container>
+          <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
+            <Eyebrow>What it is</Eyebrow>
+            <H>A teammate that runs inside the tools you already use.</H>
+            <Sub>CaseDelta is an AI paralegal, not another app to log into. It works where your firm already works, and it works the way a good associate would.</Sub>
+          </motion.div>
+          <div className="cd-clarify" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 56 }}>
+            {CLARIFY.map((c, i) => (
+              <motion.div key={c.t} {...rise(0.05 * i)} style={{ background: "#fff", border: `1px solid ${BF.hairline}`, borderRadius: 18, padding: "30px 28px 32px", boxShadow: "0 30px 60px -48px rgba(28,24,18,0.26)" }}>
+                <span style={{ display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: 11, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, marginBottom: 18 }}>
+                  <span style={{ fontFamily: SERIF, fontSize: 18, color: BF.accent }}>{i + 1}</span>
+                </span>
+                <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 23, letterSpacing: "-0.5px", lineHeight: 1.16, color: BF.ink, margin: 0 }}>{c.t}</h3>
+                <p style={{ fontFamily: SANS, fontSize: 15.5, lineHeight: 1.55, color: BF.muted, marginTop: 12 }}>{c.d}</p>
+              </motion.div>
+            ))}
+          </div>
+          {/* integration logos: the tools Delta runs inside */}
+          <motion.div {...rise(0.12)} style={{ marginTop: 56, textAlign: "center" }}>
+            <div style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "0.6px", textTransform: "uppercase", color: BF.faint, marginBottom: 22 }}>{LOGO_CAP}</div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px 40px", flexWrap: "wrap" }}>
+              {LOGOS.map((logo) => (
+                <span key={logo.name} style={{ fontFamily: logo.style === "serif" ? SERIF : SANS, fontSize: logo.style === "wide" ? 13.5 : 17, fontWeight: logo.style === "wide" ? 600 : 500, letterSpacing: logo.style === "wide" ? "1.4px" : "-0.2px", textTransform: logo.style === "wide" ? "uppercase" : "none", color: "#a59d8e", whiteSpace: "nowrap" }}>{logo.name}</span>
+              ))}
+            </div>
+          </motion.div>
+        </Container>
+      </Section>
+
+      {/* TESTIMONIAL (Heidi Nowotny) */}
       <Section bg={BG.softCool}>
         <Container>
           <div className="cd-quote" style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 48, alignItems: "stretch" }}>
-            {/* left: a premium branded card carrying the real 4.9 rating */}
-            <motion.div {...rise(0)} className="cd-quote-card" style={{ borderRadius: 20, padding: "40px 36px", background: "linear-gradient(160deg, #1f3a5f 0%, #0e1420 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: 280, boxShadow: "0 40px 80px -44px rgba(20,23,31,0.55)" }}>
+            {/* left: branded card carrying the real 4.9 rating */}
+            <motion.div {...rise(0)} className="cd-quote-card" style={{ borderRadius: 20, padding: "40px 36px", background: "linear-gradient(160deg, #1f3a5f 0%, #16140f 100%)", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: 280, boxShadow: "0 40px 80px -44px rgba(28,24,18,0.55)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 {[0, 1, 2, 3, 4].map((i) => (
                   <svg key={i} width="22" height="22" viewBox="0 0 24 24" fill="#f5b400" aria-hidden><path d="M12 2.2l2.95 5.98 6.6.96-4.77 4.65 1.13 6.57L12 17.27 6.09 20.36l1.13-6.57L2.45 9.14l6.6-.96L12 2.2z" /></svg>
@@ -566,6 +371,25 @@ export function HomeSections() {
                 </span>
               </figcaption>
             </motion.figure>
+          </div>
+        </Container>
+      </Section>
+
+      {/* IMPACT / STATS (dark band) */}
+      <Section bg={BG.statBand}>
+        <Container>
+          <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
+            <Eyebrow light>The math</Eyebrow>
+            <H light>One teammate. Your whole firm.</H>
+            <Sub light>Priced against the help you can&apos;t hire, not a per-seat app. The math is simple.</Sub>
+          </motion.div>
+          <div className="cd-stat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 0, marginTop: 60 }}>
+            {STATS.map((s, i) => (
+              <motion.div key={i} {...rise(0.05 * i)} style={{ padding: "0 30px", borderLeft: i === 0 ? "none" : "1px solid rgba(255,255,255,0.12)" }}>
+                <div style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(42px, 5vw, 62px)", lineHeight: 1, letterSpacing: "-1.6px", color: "#fff" }}>{s.n}</div>
+                <div style={{ fontFamily: SANS, fontSize: 14.5, lineHeight: 1.45, color: "rgba(255,255,255,0.6)", marginTop: 16 }}>{s.l}</div>
+              </motion.div>
+            ))}
           </div>
         </Container>
       </Section>
@@ -628,24 +452,20 @@ export function HomeSections() {
         .cd-pill2:hover { background: ${BF.pillBgHover}; box-shadow: 0 10px 26px rgba(31,58,95,0.22); transform: translateY(-1px); }
         .cd-pill-d:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0,0,0,0.22); }
         .cd-tlink:hover { gap: 11px; }
-        .cd-cap-btn:hover span:last-child { color: ${BF.ink}; }
         .cd-faq-btn:hover span:first-child { color: ${BF.accent}; }
         .cd-faq-btn:hover span:last-child { border-color: ${BF.accentBorderHover}; }
-        .cd-video { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .cd-video:hover { transform: translateY(-3px); }
-        .cd-video:hover .cd-play { transform: scale(1.06); }
-        @media (max-width: 900px) {
-          .cd-cap { grid-template-columns: 1fr !important; gap: 28px !important; }
-          .cd-quote { grid-template-columns: 1fr !important; gap: 28px !important; }
-        }
+        .cd-caret { animation: cd-blink 1s step-end infinite; }
+        @keyframes cd-blink { 50% { opacity: 0; } }
+        .cd-dots span { width: 6px; height: 6px; border-radius: 50%; background: ${BF.faint}; display: inline-block; animation: cd-bounce 1.2s ease-in-out infinite; }
+        .cd-dots span:nth-child(2) { animation-delay: 0.15s; }
+        .cd-dots span:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes cd-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
         @media (max-width: 880px) {
-          .cd-two { grid-template-columns: 1fr !important; }
+          .cd-clarify { grid-template-columns: 1fr !important; }
+          .cd-quote { grid-template-columns: 1fr !important; gap: 28px !important; }
           .cd-sec-grid { grid-template-columns: 1fr !important; }
           .cd-stat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 40px 0 !important; }
           .cd-stat-grid > div:nth-child(odd) { border-left: none !important; padding-left: 0 !important; }
-        }
-        @media (max-width: 600px) {
-          .cd-poster { display: none !important; }
         }
         @media (max-width: 520px) {
           .cd-stat-grid { grid-template-columns: 1fr !important; }
@@ -653,5 +473,29 @@ export function HomeSections() {
         }
       `}</style>
     </>
+  );
+}
+
+/* Expandable FAQ row. Answer stays in the DOM (collapsed, not display:none) so it remains
+   crawlable and in sync with the FAQPage schema. */
+function FaqItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderTop: `1px solid ${BF.hairline}` }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="cd-faq-btn"
+        style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", padding: "26px 4px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24 }}
+      >
+        <span style={{ fontFamily: SANS, fontSize: "clamp(17px, 1.9vw, 19px)", fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, lineHeight: 1.3 }}>{q}</span>
+        <span style={{ flex: "0 0 auto", width: 30, height: 30, borderRadius: "50%", border: `1px solid ${BF.hairlineStrong}`, display: "grid", placeItems: "center", transition: "transform 0.3s ease, background 0.2s ease", transform: open ? "rotate(45deg)" : "none" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={open ? BF.accent : BF.muted} strokeWidth="2.2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+        </span>
+      </button>
+      <div style={{ maxHeight: open ? 260 : 0, opacity: open ? 1 : 0, overflow: "hidden", transition: "max-height 0.42s ease, opacity 0.3s ease" }}>
+        <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.62, color: BF.muted, margin: "0 4px 28px", maxWidth: 720 }}>{a}</p>
+      </div>
+    </div>
   );
 }
