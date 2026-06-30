@@ -144,15 +144,15 @@ function TextLink({ href, children }: { href: string; children: React.ReactNode 
   );
 }
 
-/* ---- chat demo: Delta handling a range of end-to-end asks, typed and answered in a loop ----
-   The asks + answers also render as a static list below the frame, so the content is in the
+/* ---- chat demo: type a query into a simple input box, then watch Delta complete the task
+   list for it. The asks also render as a static list below, so the content is in the
    crawlable HTML and does not depend on the animation. */
 const ASKS = [
-  { q: "Request Ortega's missing records and chase them until they're in.", a: "Requested records from 3 providers. Two are still outstanding, I'll follow up Friday.", tags: ["3 requests sent", "Follow-up set"] },
-  { q: "Draft the demand letter for Martinez from the file.", a: "Draft is ready for your review. I pulled the damages from the medical records and billing.", tags: ["Demand drafted", "Cited to the file"] },
-  { q: "What's slipping across my open cases this week?", a: "Three deadlines in the next seven days. The discovery response on Ortega is the urgent one.", tags: ["3 deadlines", "1 urgent"] },
-  { q: "Update the Clio matter and log my time.", a: "Matter updated in Clio, time entry logged, and a note posted to the client portal.", tags: ["Clio updated", "Time logged"] },
-  { q: "Summarize the new intake and flag anything off.", a: "Summarized. Statute runs in 18 months, no prior counsel, and I flagged one gap in the timeline.", tags: ["Intake summarized", "1 flag"] },
+  { q: "Request Ortega's missing records and chase them until they're in.", tasks: ["Find the outstanding providers", "Send the records requests", "Set follow-up reminders", "Log it all in Clio"] },
+  { q: "Draft the demand letter for Martinez from the file.", tasks: ["Read the medical records", "Pull the damages and billing", "Draft the demand letter", "Flag it for your review"] },
+  { q: "What's slipping across my open cases this week?", tasks: ["Scan every open matter", "Find deadlines inside seven days", "Flag the urgent discovery response", "Build your priority list"] },
+  { q: "Update the Clio matter and log my time.", tasks: ["Update the matter in Clio", "Log the time entry", "Post a note to the client portal"] },
+  { q: "Summarize the new intake and flag anything off.", tasks: ["Read the intake packet", "Check the statute of limitations", "Flag a gap in the timeline", "Write the summary"] },
 ];
 
 function DeltaMark({ size = 26 }: { size?: number }) {
@@ -165,83 +165,81 @@ function ChatDemo() {
   const reduce = useReducedMotion();
   const [idx, setIdx] = useState(0);
   const [typed, setTyped] = useState("");
-  const [answered, setAnswered] = useState(false);
+  const [working, setWorking] = useState(false);
+  const [done, setDone] = useState(0);
 
   useEffect(() => {
     const ask = ASKS[idx];
-    if (reduce) { setTyped(ask.q); setAnswered(true); return; }
+    if (reduce) { setTyped(ask.q); setWorking(true); setDone(ask.tasks.length); return; }
     const timers: ReturnType<typeof setTimeout>[] = [];
     setTyped("");
-    setAnswered(false);
+    setWorking(false);
+    setDone(0);
     let i = 0;
-    const step = () => {
+    const type = () => {
       i += 1;
       setTyped(ask.q.slice(0, i));
-      if (i < ask.q.length) timers.push(setTimeout(step, 26));
-      else {
-        timers.push(setTimeout(() => setAnswered(true), 480));
-        timers.push(setTimeout(() => setIdx((p) => (p + 1) % ASKS.length), 3800));
-      }
+      if (i < ask.q.length) { timers.push(setTimeout(type, 26)); return; }
+      // query sent -> run the task list
+      timers.push(setTimeout(() => {
+        setWorking(true);
+        for (let k = 1; k <= ask.tasks.length; k += 1) timers.push(setTimeout(() => setDone(k), 720 * k));
+        timers.push(setTimeout(() => setIdx((p) => (p + 1) % ASKS.length), 720 * ask.tasks.length + 2400));
+      }, 480));
     };
-    timers.push(setTimeout(step, 360));
+    timers.push(setTimeout(type, 360));
     return () => timers.forEach(clearTimeout);
   }, [idx, reduce]);
 
   const ask = ASKS[idx];
+  const allDone = done >= ask.tasks.length;
   return (
-    <div className="cd-chat" style={{ maxWidth: 880, margin: "56px auto 0", borderRadius: 20, overflow: "hidden", background: "#fff", border: `1px solid ${BF.hairlineStrong}`, boxShadow: "0 60px 110px -50px rgba(28,24,18,0.42), 0 2px 8px rgba(28,24,18,0.04)" }}>
-      {/* header */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 18px", borderBottom: `1px solid ${BF.hairline}`, background: "#fcfbf9" }}>
-        <DeltaMark size={26} />
-        <span style={{ fontFamily: SERIF, fontSize: 16, color: BF.ink }}>Delta</span>
-        <span style={{ fontFamily: SANS, fontSize: 12.5, color: BF.faint, marginLeft: 2 }}>· Ortega v. Memorial</span>
-        <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 12, fontWeight: 600, color: "#1f8a55" }}>
-          <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#1f8a55" }} /> Online
+    <div style={{ maxWidth: 760, margin: "52px auto 0" }}>
+      {/* simple, polished rounded input box */}
+      <div style={{ display: "flex", alignItems: "center", gap: 14, height: 64, padding: "0 12px 0 20px", background: "#fff", border: `1px solid ${BF.hairlineStrong}`, borderRadius: 32, boxShadow: "0 30px 60px -44px rgba(28,24,18,0.32), 0 1px 3px rgba(28,24,18,0.04)" }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2" strokeLinecap="round" style={{ flex: "0 0 auto" }}><path d="M12 5v14M5 12h14" /></svg>
+        <div style={{ flex: 1, minWidth: 0, fontFamily: SANS, fontSize: 16.5, letterSpacing: "-0.2px", color: typed ? BF.ink : BF.faint, whiteSpace: "nowrap", overflow: "hidden" }}>
+          {typed || "Ask Delta to handle something on a case"}
+          {!working && <span className="cd-caret" style={{ display: "inline-block", width: 2, height: 18, background: BF.accent, marginLeft: 1, verticalAlign: "-3px" }} />}
+        </div>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: SANS, fontSize: 14, fontWeight: 500, color: BF.muted, flex: "0 0 auto" }}>
+          Fast
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={BF.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }}><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5 11a7 7 0 0 0 14 0M12 18v3" /></svg>
+        <span style={{ width: 42, height: 42, borderRadius: "50%", background: "#16140f", display: "grid", placeItems: "center", flex: "0 0 auto" }}>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
         </span>
       </div>
 
-      {/* thread */}
-      <div style={{ padding: "30px 26px", minHeight: 280, display: "flex", flexDirection: "column", gap: 18, background: "#fff" }}>
-        {/* user ask (typed) */}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <div style={{ maxWidth: "82%", background: BF.pillBg, color: "#fff", borderRadius: "16px 16px 4px 16px", padding: "13px 17px", fontFamily: SANS, fontSize: 15.5, lineHeight: 1.45, letterSpacing: "-0.2px", minHeight: 22 }}>
-            {typed}
-            {!answered && <span className="cd-caret" style={{ display: "inline-block", width: 2, height: 17, background: "rgba(255,255,255,0.8)", marginLeft: 2, verticalAlign: "-3px" }} />}
+      {/* task list that completes after the query is sent */}
+      <div style={{ minHeight: 236, marginTop: 18 }}>
+        <div style={{ opacity: working ? 1 : 0, transform: working ? "none" : "translateY(8px)", transition: "opacity 0.45s ease, transform 0.45s ease", background: "#fff", border: `1px solid ${BF.hairline}`, borderRadius: 18, padding: "20px 24px", boxShadow: "0 36px 70px -52px rgba(28,24,18,0.32)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+            <DeltaMark size={24} />
+            <span style={{ fontFamily: SANS, fontSize: 13.5, fontWeight: 600, color: BF.ink }}>{allDone ? "Done" : "Delta is on it"}</span>
+            <span style={{ marginLeft: "auto", fontFamily: SANS, fontSize: 12.5, color: BF.faint }}>{Math.min(done, ask.tasks.length)}/{ask.tasks.length}</span>
           </div>
-        </div>
-        {/* delta response */}
-        <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-          <DeltaMark size={30} />
-          <div style={{ maxWidth: "82%" }}>
-            <div style={{ background: "#f5f3ef", borderRadius: "16px 16px 16px 4px", padding: "13px 17px", fontFamily: SANS, fontSize: 15.5, lineHeight: 1.5, letterSpacing: "-0.2px", color: BF.ink, minHeight: 22 }}>
-              {answered ? (
-                ask.a
-              ) : (
-                <span className="cd-dots" style={{ display: "inline-flex", gap: 4, padding: "3px 0" }}>
-                  <span /><span /><span />
+          {ask.tasks.map((t, k) => {
+            const state = k < done ? "done" : k === done ? "run" : "pending";
+            return (
+              <div key={t} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: k === 0 ? "none" : `1px solid ${BF.hairline}` }}>
+                <span style={{ width: 20, height: 20, flex: "0 0 auto", display: "grid", placeItems: "center" }}>
+                  {state === "done" ? (
+                    <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#1f8a55", display: "grid", placeItems: "center" }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                    </span>
+                  ) : state === "run" ? (
+                    <span className="cd-spin" style={{ width: 16, height: 16, borderRadius: "50%", border: `2px solid ${BF.accentBorderHover}`, borderTopColor: BF.accent }} />
+                  ) : (
+                    <span style={{ width: 14, height: 14, borderRadius: "50%", border: `2px solid ${BF.hairlineStrong}` }} />
+                  )}
                 </span>
-              )}
-            </div>
-            {answered && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
-                {ask.tags.map((t) => (
-                  <span key={t} style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SANS, fontSize: 12.5, fontWeight: 600, color: BF.accent, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, borderRadius: 7, padding: "5px 10px" }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-                    {t}
-                  </span>
-                ))}
+                <span style={{ fontFamily: SANS, fontSize: 15.5, letterSpacing: "-0.2px", color: state === "pending" ? BF.faint : BF.ink, transition: "color 0.3s ease" }}>{t}</span>
               </div>
-            )}
-          </div>
+            );
+          })}
         </div>
-      </div>
-
-      {/* input bar (decorative) */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderTop: `1px solid ${BF.hairline}`, background: "#fcfbf9" }}>
-        <span style={{ flex: 1, fontFamily: SANS, fontSize: 14.5, color: BF.faint }}>Ask Delta to handle something on a case...</span>
-        <span style={{ width: 34, height: 34, borderRadius: "50%", background: BF.pillBg, display: "grid", placeItems: "center" }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
-        </span>
       </div>
     </div>
   );
@@ -271,15 +269,14 @@ const SECURITY = [
   "Your firm's data, isolated",
 ];
 
-// PLACEHOLDER quote pending Heidi's real words + confirmed title/firm and her sign-off to be
-// featured. The 4.9 rating beside it is the real attorney rating. Do not ship to prod until
-// the quote and attribution are real.
+// Real quote from Heidi Nowotny (provided by the founder, 2026-06-10), excerpted from her
+// reply about hours saved. The 4.9 rating beside it is the real attorney rating.
 const TESTIMONIAL = {
   quote:
-    "Delta took the records chase and the first drafts off our plate, and it does it inside the tools we already use. It is the closest thing to adding a paralegal without the hire.",
+    "Maybe five hours a week. And I think it will be more once I stop double-checking it so much.",
   initials: "HN",
   name: "Heidi Nowotny",
-  title: "Personal Injury Attorney",
+  title: "Attorney, Kirschbaum & Nowotny, LLC",
 };
 
 export function HomeSections() {
@@ -456,10 +453,8 @@ export function HomeSections() {
         .cd-faq-btn:hover span:last-child { border-color: ${BF.accentBorderHover}; }
         .cd-caret { animation: cd-blink 1s step-end infinite; }
         @keyframes cd-blink { 50% { opacity: 0; } }
-        .cd-dots span { width: 6px; height: 6px; border-radius: 50%; background: ${BF.faint}; display: inline-block; animation: cd-bounce 1.2s ease-in-out infinite; }
-        .cd-dots span:nth-child(2) { animation-delay: 0.15s; }
-        .cd-dots span:nth-child(3) { animation-delay: 0.3s; }
-        @keyframes cd-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
+        .cd-spin { animation: cd-rot 0.7s linear infinite; }
+        @keyframes cd-rot { to { transform: rotate(360deg); } }
         @media (max-width: 880px) {
           .cd-clarify { grid-template-columns: 1fr !important; }
           .cd-quote { grid-template-columns: 1fr !important; gap: 28px !important; }
