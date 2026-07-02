@@ -62,10 +62,11 @@ export function useRise() {
 }
 
 /* ---- layout primitives ---- */
-export function Container({ children, narrow = false }: { children: React.ReactNode; narrow?: boolean }) {
+export function Container({ children, narrow = false, center = false }: { children: React.ReactNode; narrow?: boolean; center?: boolean }) {
   return (
     <div style={{ maxWidth: MAXW, margin: "0 auto", padding: `0 ${PAGE_PAD}` }}>
-      <div style={{ maxWidth: narrow ? 820 : "100%" }}>{children}</div>
+      {/* center: horizontally center the (usually narrow) column, for testimonial + CTA sections */}
+      <div style={{ maxWidth: narrow ? 820 : "100%", margin: center ? "0 auto" : undefined }}>{children}</div>
     </div>
   );
 }

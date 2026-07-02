@@ -135,7 +135,7 @@ export function UseCasesIndexContent() {
 
       {/* FINAL CTA */}
       <Section bg={BG.ctaBand}>
-        <Container narrow>
+        <Container narrow center>
           <motion.div {...rise(0)} style={{ textAlign: "center" }}>
             <h2
               style={{

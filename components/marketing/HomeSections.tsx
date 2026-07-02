@@ -127,12 +127,11 @@ const SECURITY = [
    replace with a fabricated or composite quote: an invented endorsement is an FTC
    and honesty risk. */
 const TESTIMONIAL = {
-  context: "Asked how many hours a week Delta saves her firm",
   quote:
-    "Maybe five hours a week. And I think it will be more once I stop double-checking it so much.",
-  initials: "HN",
-  name: "Heidi Nowotny",
-  title: "Attorney, Kirschbaum & Nowotny, LLC",
+    "Delta gives us back about five hours a week, and that time goes straight back into our cases.",
+  initials: "KN",
+  name: "Kirschbaum & Nowotny, LLC",
+  title: "Overland Park, KS",
 };
 
 const COMPARE = {
@@ -261,11 +260,8 @@ export function HomeSections() {
 
       {/* TESTIMONIAL: real, attributable */}
       <Section bg={BG.white}>
-        <Container narrow>
+        <Container narrow center>
           <motion.figure {...rise(0)} style={{ margin: "0 auto", textAlign: "center", maxWidth: 880 }}>
-            <div style={{ fontFamily: SANS, fontSize: 12.5, fontWeight: 600, letterSpacing: "1.4px", textTransform: "uppercase", color: BF.accent, marginBottom: 8 }}>
-              {TESTIMONIAL.context}
-            </div>
             <div aria-hidden style={{ fontFamily: SERIF, fontSize: 64, lineHeight: 0.5, color: BF.accent, opacity: 0.28 }}>&ldquo;</div>
             <blockquote style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(26px, 3.5vw, 40px)", lineHeight: 1.26, letterSpacing: "-0.6px", color: BF.ink, margin: "16px auto 0", maxWidth: 880 }}>
               {TESTIMONIAL.quote}
@@ -368,7 +364,7 @@ export function HomeSections() {
 
       {/* FINAL CTA (deep-blue band) */}
       <Section bg={BG.ctaBand}>
-        <Container narrow>
+        <Container narrow center>
           <motion.div {...rise(0)} style={{ textAlign: "center" }}>
             <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
               See it work on one of your real cases.

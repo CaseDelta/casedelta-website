@@ -146,7 +146,7 @@ export function DemoClient() {
 
       {/* BOOKING (this page is the conversion, so this stands in for the final CTA band) */}
       <Section bg={BG.ctaBand}>
-        <Container narrow>
+        <Container narrow center>
           <motion.div {...rise(0)} style={{ textAlign: "center" }}>
             <Eyebrow light>Pick a time</Eyebrow>
             <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
