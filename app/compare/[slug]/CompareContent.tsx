@@ -144,7 +144,7 @@ export function CompareContent({ comparison: c }: { comparison: Comparison }) {
 
       {/* FINAL CTA */}
       <Section bg={BG.ctaBand}>
-        <Container narrow>
+        <Container narrow center>
           <motion.div {...rise(0)} style={{ textAlign: "center" }}>
             <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
               See Delta inside your firm&apos;s stack.
