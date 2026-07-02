@@ -1,103 +1,117 @@
 "use client";
 
+/**
+ * Compare index. Migrated to the marketing kit (components/marketing/kit.tsx).
+ *
+ * Honest positioning (POSITIONING.md): Delta's wedge is shape, not a security
+ * claim. It operates the tools the firm already runs, does the whole routine job,
+ * learns the firm's playbook, cites its sources, and waits for a human to approve.
+ * Never claim "no third-party LLM" or "data never leaves our infrastructure"
+ * (false: prod runs on enterprise OpenAI). Delta is gender-neutral. No em dashes.
+ */
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
-import { BottomCTA } from "@/components/BottomCTA";
+import {
+  BF, BG, SERIF, SANS,
+  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, TextLink, Check, PageHero,
+} from "@/components/marketing/kit";
 import { COMPARISONS } from "@/lib/comparisons";
 
-const ACCENT = "#2563EB";
-const DELTA_BLUE = "#1D4ED8";
-const SUBTITLE_BLUE = "#60A5FA";
-const BORDER = "#EDEDED";
-const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const wrap: React.CSSProperties = { maxWidth: 1080, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" };
-
 export function CompareIndexContent() {
-  return (
-    <main style={{ backgroundColor: "#FFFFFF", fontFamily: FONT }}>
-      <section style={{ padding: "clamp(120px, 16vw, 200px) 0 clamp(40px, 5vw, 64px)" }}>
-        <div style={wrap}>
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: EASE_OUT }}
-            style={{ fontSize: "clamp(40px, 7vw, 80px)", fontWeight: 700, color: DELTA_BLUE, lineHeight: 0.98, letterSpacing: "-0.04em", margin: 0 }}
-          >
-            CaseDelta vs the field.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
-            style={{ fontSize: "clamp(17px, 1.7vw, 22px)", color: SUBTITLE_BLUE, lineHeight: 1.4, letterSpacing: "-0.02em", marginTop: "clamp(20px, 2.5vw, 32px)", maxWidth: 720 }}
-          >
-            Most legal AI is a destination: you upload work to it, move your firm onto it, or work inside it. Delta is the associate that drives the tools you already run. Here is how it compares, honestly and with sources.
-          </motion.p>
-        </div>
-      </section>
+  const rise = useRise();
 
-      <section style={{ padding: "clamp(24px, 3vw, 40px) 0 clamp(48px, 7vw, 90px)" }}>
-        <div style={wrap}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
+  return (
+    <main style={{ background: BG.white }}>
+      <PageHero
+        eyebrow="Comparisons"
+        title={<>How CaseDelta <span style={{ color: BF.accent, fontStyle: "italic" }}>compares.</span></>}
+        sub="Most legal AI is a place you send work to, or a tab you paste into. Delta is a different shape: it operates the tools your firm already runs, does the routine job end to end, cites its sources, and waits for a human to approve before anything goes out. Here is how it stacks up, honestly and with sources."
+        ctaHref="/demo"
+        ctaLabel="Book a demo"
+      />
+
+      {/* GRID OF COMPARISONS */}
+      <Section bg={BG.offWhite}>
+        <Container>
+          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
+            <Eyebrow>Side by side</Eyebrow>
+            <H>
+              Pick the tool you are <Accent>weighing.</Accent>
+            </H>
+            <Sub>
+              Every comparison leads with a straight answer, lays the differences out in a table, then explains the real distinction. We state CaseDelta&apos;s strengths without inventing weaknesses in anyone else.
+            </Sub>
+            <TextLink href="/pricing">See transparent, flat pricing</TextLink>
+          </motion.div>
+
+          <div className="cd-compare-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 56 }}>
             {COMPARISONS.map((c, i) => (
-              <motion.div
-                key={c.slug}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, delay: i * 0.05, ease: EASE_OUT }}
-              >
+              <motion.div key={c.slug} {...rise(0.05 * i)}>
                 <Link
                   href={`/compare/${c.slug}`}
+                  className="cd-compare-card"
                   style={{
-                    display: "block",
+                    display: "flex",
+                    flexDirection: "column",
                     height: "100%",
                     textDecoration: "none",
-                    border: `1px solid ${BORDER}`,
-                    borderRadius: 14,
-                    padding: "clamp(22px, 2.5vw, 30px)",
-                    backgroundColor: "#FAFAFA",
-                    transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease",
+                    background: BF.card,
+                    border: `1px solid ${BF.hairlineStrong}`,
+                    borderRadius: 16,
+                    padding: "28px 26px 26px",
+                    transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
                   }}
-                  className="compare-card"
                 >
-                  <div style={{ fontSize: "clamp(18px, 1.8vw, 22px)", fontWeight: 700, color: DELTA_BLUE, letterSpacing: "-0.02em", marginBottom: 10 }}>
+                  <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 24, lineHeight: 1.15, letterSpacing: "-0.5px", color: BF.ink, margin: 0 }}>
                     CaseDelta vs {c.competitor}
-                  </div>
-                  <p style={{ fontSize: "clamp(13px, 1.1vw, 15px)", color: "#555", lineHeight: 1.6, letterSpacing: "-0.01em", margin: 0 }}>
+                  </h3>
+                  <p style={{ fontFamily: SANS, fontSize: 15, lineHeight: 1.55, color: BF.muted, margin: "12px 0 0" }}>
                     {c.cardBlurb}
                   </p>
-                  <div style={{ marginTop: 18, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, fontWeight: 600, color: ACCENT }}>
-                    Compare
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                      <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
+                  <span style={{ marginTop: "auto", paddingTop: 22, display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 15, fontWeight: 600, color: BF.accent, letterSpacing: "-0.2px" }}>
+                    See the comparison
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+                  </span>
                 </Link>
               </motion.div>
             ))}
           </div>
-          <style>{`
-            .compare-card:hover {
-              transform: translateY(-3px);
-              box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-              border-color: #D4D4D4;
-              background: #FFFFFF !important;
-            }
-          `}</style>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <BottomCTA
-        ctaHeading="The honest comparison is a live demo."
-        ctaSubheading="See Delta drive a sandbox of your firm's actual stack, end to end, in twenty minutes."
-        ctaLabel="Book a demo"
-        ctaHref="/demo"
-      />
+      {/* FINAL CTA */}
+      <Section bg={BG.ctaBand}>
+        <Container narrow>
+          <motion.div {...rise(0)} style={{ textAlign: "center" }}>
+            <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
+              The honest comparison is a live demo.
+            </h2>
+            <p style={{ fontFamily: SANS, fontSize: 18, lineHeight: 1.5, color: "rgba(255,255,255,0.72)", margin: "20px auto 0", maxWidth: 560 }}>
+              See Delta drive a sandbox of your firm&apos;s actual stack, end to end, in fifteen minutes. Bring one real file.
+            </p>
+            <div style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
+              <PillLink href="/demo" location="compare_index_final" onDark>Book a 15-minute demo</PillLink>
+            </div>
+          </motion.div>
+        </Container>
+      </Section>
+
       <FooterV2 />
+
+      <style>{`
+        .cd-compare-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 32px 64px -36px rgba(47,111,224,0.32);
+          border-color: ${BF.accentBorderHover};
+        }
+        @media (max-width: 980px) {
+          .cd-compare-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 640px) {
+          .cd-compare-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </main>
   );
 }

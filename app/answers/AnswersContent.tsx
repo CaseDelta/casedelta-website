@@ -1,111 +1,103 @@
 "use client";
 
-import Link from "next/link";
+/**
+ * Answers hub. Migrated to the marketing kit (components/marketing/kit.tsx).
+ *
+ * AEO-friendly: question-based headings that mirror what a lawyer would type,
+ * each answered answer-first from the shared lib/answers data (reused as-is).
+ * Grouped by category, restyled to the Newsreader serif + Hanken grotesk system.
+ * Honest claims only, Delta is gender-neutral, no em dashes.
+ */
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
-import { BottomCTA } from "@/components/BottomCTA";
 import { ANSWER_CATEGORIES } from "@/lib/answers";
-
-const ACCENT = "#2563EB";
-const DELTA_BLUE = "#1D4ED8";
-const SUBTITLE_BLUE = "#60A5FA";
-const BORDER = "#EDEDED";
-const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const wrap: React.CSSProperties = { maxWidth: 880, margin: "0 auto", padding: "0 clamp(24px, 4vw, 48px)" };
+import {
+  BF, BG, SERIF, SANS,
+  useRise, Container, Section, H, Eyebrow, Accent, PillLink, TextLink, PageHero,
+} from "@/components/marketing/kit";
 
 export function AnswersContent() {
+  const rise = useRise();
+
   return (
-    <main style={{ backgroundColor: "#FFFFFF", fontFamily: FONT }}>
-      {/* Hero / definition-first opening */}
-      <section style={{ padding: "clamp(120px, 16vw, 200px) 0 clamp(32px, 4vw, 56px)" }}>
-        <div style={wrap}>
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: EASE_OUT }}
-            style={{ fontSize: "clamp(40px, 7vw, 78px)", fontWeight: 700, color: DELTA_BLUE, lineHeight: 0.98, letterSpacing: "-0.04em", margin: 0 }}
-          >
-            Answers.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
-            style={{ fontSize: "clamp(17px, 1.7vw, 22px)", color: SUBTITLE_BLUE, lineHeight: 1.45, letterSpacing: "-0.02em", marginTop: "clamp(20px, 2.5vw, 32px)", maxWidth: 680 }}
-          >
-            CaseDelta is an AI associate for plaintiff law firms that drives the tools you already use. Here are direct answers to the questions firms ask most.
-          </motion.p>
-
-          {/* on-page nav (internal links + jump links) */}
-          <motion.nav
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: "clamp(28px, 3vw, 40px)" }}
-          >
-            {ANSWER_CATEGORIES.map((cat) => (
-              <a
-                key={cat.id}
-                href={`#${cat.id}`}
-                style={{ fontSize: 13, fontWeight: 600, color: "#444", textDecoration: "none", border: `1px solid ${BORDER}`, borderRadius: 999, padding: "8px 16px", backgroundColor: "#FAFAFA" }}
-              >
-                {cat.title}
-              </a>
-            ))}
-          </motion.nav>
-        </div>
-      </section>
-
-      {/* Q&A categories */}
-      <section style={{ padding: "clamp(24px, 3vw, 40px) 0 clamp(40px, 6vw, 72px)" }}>
-        <div style={wrap}>
+    <main style={{ background: BG.white }}>
+      <PageHero
+        eyebrow="Answers"
+        title={<>The questions firms ask, <Accent>answered directly.</Accent></>}
+        sub="CaseDelta is an AI associate for plaintiff law firms that drives the tools you already use. Direct, answer-first responses to what firms want to know before a demo."
+      >
+        <nav style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 36 }}>
           {ANSWER_CATEGORIES.map((cat) => (
-            <div key={cat.id} id={cat.id} style={{ marginBottom: "clamp(40px, 5vw, 64px)", scrollMarginTop: 100 }}>
-              <h2 style={{ fontSize: "clamp(20px, 2.4vw, 28px)", fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", margin: "0 0 8px", paddingBottom: 14, borderBottom: `1px solid ${BORDER}` }}>
-                {cat.title}
-              </h2>
-              {cat.items.map((item, i) => (
+            <a
+              key={cat.id}
+              href={`#${cat.id}`}
+              className="cd-jump"
+              style={{
+                fontFamily: SANS, fontSize: 14, fontWeight: 600, color: BF.muted,
+                textDecoration: "none", border: `1px solid ${BF.hairlineStrong}`,
+                borderRadius: 999, padding: "9px 18px", background: BG.white,
+                letterSpacing: "-0.1px", transition: "color 0.2s ease, border-color 0.2s ease",
+              }}
+            >
+              {cat.title}
+            </a>
+          ))}
+        </nav>
+      </PageHero>
+
+      {ANSWER_CATEGORIES.map((cat, i) => (
+        <Section key={cat.id} id={cat.id} bg={i % 2 === 0 ? BG.offWhite : BG.white}>
+          <Container narrow>
+            <motion.div {...rise(0)}>
+              <Eyebrow>{String(i + 1).padStart(2, "0")}</Eyebrow>
+              <H>{cat.title}</H>
+            </motion.div>
+            <div style={{ marginTop: 44 }}>
+              {cat.items.map((item, j) => (
                 <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: i * 0.04, ease: EASE_OUT }}
-                  style={{ padding: "24px 0", borderBottom: `1px solid ${BORDER}` }}
+                  key={item.question}
+                  {...rise(0.05 * j)}
+                  style={{ padding: "28px 0", borderTop: `1px solid ${j === 0 ? BF.hairlineStrong : BF.hairline}` }}
                 >
-                  <h3 style={{ fontSize: "clamp(16px, 1.5vw, 20px)", fontWeight: 600, color: "#0A0A0A", letterSpacing: "-0.01em", margin: "0 0 10px" }}>
+                  <h3 style={{ fontFamily: SANS, fontSize: 19.5, fontWeight: 600, letterSpacing: "-0.35px", color: BF.ink, lineHeight: 1.3, margin: 0 }}>
                     {item.question}
                   </h3>
-                  <p style={{ fontSize: "clamp(14px, 1.2vw, 17px)", color: "#555", lineHeight: 1.7, letterSpacing: "-0.01em", margin: 0 }}>
+                  <p style={{ fontFamily: SANS, fontSize: 16.5, lineHeight: 1.65, letterSpacing: "-0.1px", color: BF.muted, marginTop: 12 }}>
                     {item.answer}
                   </p>
-                  {item.href && (
-                    <Link
-                      href={item.href}
-                      style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 12, fontSize: 14, fontWeight: 600, color: ACCENT, textDecoration: "none" }}
-                    >
-                      {item.hrefLabel ?? "Learn more"}
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                        <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </Link>
-                  )}
+                  {item.href && <TextLink href={item.href}>{item.hrefLabel ?? "Learn more"}</TextLink>}
                 </motion.div>
               ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </Container>
+        </Section>
+      ))}
 
-      <BottomCTA
-        ctaHeading="The best answer is a live demo."
-        ctaSubheading="See Delta drive a sandbox of your firm's actual stack, end to end, in twenty minutes."
-        ctaLabel="Book a demo"
-        ctaHref="/demo"
-      />
+      {/* FINAL CTA */}
+      <Section bg={BG.ctaBand}>
+        <Container narrow>
+          <motion.div {...rise(0)} style={{ textAlign: "center" }}>
+            <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
+              The best answer is a live demo.
+            </h2>
+            <p style={{ fontFamily: SANS, fontSize: 18, lineHeight: 1.5, color: "rgba(255,255,255,0.72)", margin: "20px auto 0", maxWidth: 540 }}>
+              Bring one real file and watch Delta do the job inside your own tools, in fifteen minutes. No migration, nothing to rip out.
+            </p>
+            <div style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
+              <PillLink href="/demo" location="answers_final" onDark>Book a 15-minute demo</PillLink>
+            </div>
+          </motion.div>
+        </Container>
+      </Section>
+
       <FooterV2 />
+
+      <style>{`
+        .cd-jump:hover { color: ${BF.accent} !important; border-color: ${BF.accentBorderHover} !important; }
+        @media (max-width: 600px) {
+          .cd-jump { font-size: 13px !important; padding: 8px 14px !important; }
+        }
+      `}</style>
     </main>
   );
 }

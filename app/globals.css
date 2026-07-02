@@ -282,3 +282,20 @@ a:hover {
 .mobile-nav-accordion[open] .accordion-icon {
   transform: rotate(180deg);
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Marketing design-system kit (components/marketing/kit.tsx).
+   Shared hover/interaction styles for the below-the-fold + subpages.
+   ───────────────────────────────────────────────────────────── */
+.cd-pill2 { will-change: transform; }
+.cd-pill2:hover { background: #284b78; box-shadow: 0 10px 26px rgba(31, 58, 95, 0.22); transform: translateY(-1px); }
+.cd-pill-d:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
+.cd-tlink { transition: gap 0.2s ease; }
+.cd-tlink:hover { gap: 11px; }
+.cd-card { transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
+.cd-card:hover { border-color: rgba(47, 111, 224, 0.4); transform: translateY(-4px); box-shadow: 0 24px 50px -28px rgba(20, 23, 31, 0.16); }
+.cd-logo { transition: opacity 0.3s ease, filter 0.3s ease; }
+.cd-logo:hover { opacity: 1 !important; }
+.cd-video { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.cd-video:hover { transform: translateY(-3px); }
+.cd-video:hover .cd-play { transform: scale(1.06); }

@@ -1,13 +1,25 @@
 "use client";
 
-import { useState } from "react";
+/**
+ * Use-case detail template. Migrated to the marketing kit (components/marketing/kit.tsx).
+ *
+ * Per use case: answer-first overview -> the problem -> how Delta handles it ->
+ * what you get -> FAQ -> related comparisons -> CTA to /demo. Honest claims only
+ * (POSITIONING.md): teammate not tool, a human reviews before anything sends,
+ * outputs cited to source. Security is parity, so never "no third-party LLM" or
+ * "data never leaves our infrastructure" (false). Delta is gender-neutral. No em dashes.
+ */
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import type { UseCase } from "@/lib/use-cases";
 import { getComparisonBySlug } from "@/lib/comparisons";
+import {
+  BF, BG, SERIF, SANS,
+  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, PageHero,
+} from "@/components/marketing/kit";
 
-/* Per-practice-area related comparisons (cross-links into the /compare funnel) */
+/* Per-practice-area related comparisons (cross-links into the /compare funnel). */
 const RELATED_COMPARE: Record<string, string[]> = {
   "personal-injury": ["casedelta-vs-evenup", "casedelta-vs-supio", "casedelta-vs-clio"],
   "medical-malpractice": ["casedelta-vs-supio", "casedelta-vs-evenup", "casedelta-vs-eve"],
@@ -15,813 +27,363 @@ const RELATED_COMPARE: Record<string, string[]> = {
   "mass-tort": ["casedelta-vs-supio", "casedelta-vs-evenup", "casedelta-vs-proplaintiff"],
 };
 
-/* ─── Design Tokens ─── */
-
-const ACCENT = "#2563EB";
-const DELTA_BLUE = "#1D4ED8";
-const SUBTITLE_BLUE = "#60A5FA";
-const BORDER = "#EDEDED";
-const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const springBounce = { type: "spring" as const, stiffness: 400, damping: 22 };
-
-/* ─── "What Delta Knows" Mockup ─── */
-
-function DeltaKnowsMockup({
-  firmName,
-  entries,
-}: {
-  firmName: string;
-  entries: { label: string; value: string }[];
-}) {
-  return (
-    <div
-      style={{
-        borderRadius: 12,
-        border: `1px solid ${BORDER}`,
-        backgroundColor: "#FAFAFA",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.06)",
-        overflow: "hidden",
-        fontFamily: FONT,
-      }}
-    >
-      <div
-        style={{
-          padding: "14px 20px",
-          borderBottom: `1px solid ${BORDER}`,
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <div
-          style={{
-            width: 20,
-            height: 20,
-            borderRadius: 5,
-            backgroundColor: "#1A1A1A",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            src="/assets/branding/delta-icon-light.svg"
-            alt=""
-            style={{ width: 12, height: 12 }}
-          />
-        </div>
-        <span style={{ fontSize: 13, fontWeight: 600, color: "#1A1A1A" }}>
-          What Delta runs across the firm
-        </span>
-        <span style={{ fontSize: 11, color: "#999", marginLeft: "auto" }}>
-          {firmName}
-        </span>
-      </div>
-      <div style={{ padding: "8px 0" }}>
-        {entries.map((e, i) => (
-          <div
-            key={i}
-            style={{
-              padding: "10px 20px",
-              borderBottom: i < entries.length - 1 ? `1px solid ${BORDER}` : "none",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: "#999",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                marginBottom: 4,
-              }}
-            >
-              {e.label}
-            </div>
-            <div style={{ fontSize: 13, color: "#333", lineHeight: 1.5 }}>
-              {e.value}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─── FAQ Accordion ─── */
-
-function FAQItem({
-  question,
-  answer,
-  isOpen,
-  onToggle,
-}: {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-      <button
-        onClick={onToggle}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-          padding: "20px 0",
-          fontFamily: FONT,
-          fontSize: "clamp(15px, 1.2vw, 17px)",
-          fontWeight: 500,
-          color: "#1A1A1A",
-          backgroundColor: "transparent",
-          border: "none",
-          cursor: "pointer",
-          textAlign: "left",
-          lineHeight: 1.4,
-          gap: 16,
-        }}
-      >
-        <span>{question}</span>
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          style={{
-            flexShrink: 0,
-            transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-            transition: "transform 0.25s ease",
-          }}
-        >
-          <path
-            d="M10 4v12M4 10h12"
-            stroke="#999"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      </button>
-      <div
-        style={{
-          maxHeight: isOpen ? 400 : 0,
-          overflow: "hidden",
-          transition: "max-height 0.35s ease",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: FONT,
-            fontSize: "clamp(14px, 1.1vw, 16px)",
-            color: "#666",
-            lineHeight: 1.65,
-            margin: 0,
-            paddingBottom: 20,
-          }}
-        >
-          {answer}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-/* ─── Main Page Content ─── */
+/* Skip pain points framed as a public-AI / third-party-provider scare. Delta runs
+   on enterprise AI under no-training terms, so security is parity, not a
+   no-third-party-LLM architecture claim (see lib/comparisons.ts house rules). */
+const HIDE_PROBLEM = /third-party provider|public ai|free ai tool/i;
 
 export function UseCasePageContent({ useCase }: { useCase: UseCase }) {
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const rise = useRise();
+  const area = useCase.title.toLowerCase();
+  const problems = useCase.painPoints.filter(
+    (p) => !HIDE_PROBLEM.test(`${p.title} ${p.description}`)
+  );
+  const related = (RELATED_COMPARE[useCase.slug] ?? [])
+    .map((slug) => getComparisonBySlug(slug))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
-    <main style={{ backgroundColor: "#FFFFFF", fontFamily: FONT }}>
-      {/* ═══════════════════════════════════════
-          HERO
-          ═══════════════════════════════════════ */}
-      <section style={{ backgroundColor: "#FFFFFF" }}>
-        <div
-          style={{
-            width: "100%",
-            maxWidth: 1320,
-            margin: "0 auto",
-            padding:
-              "clamp(140px, 18vw, 220px) clamp(24px, 4vw, 48px) clamp(80px, 10vw, 120px)",
-          }}
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 36, filter: "blur(12px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1, delay: 0.2, ease: EASE_OUT }}
-            style={{ margin: 0 }}
-          >
-            <span
+    <main style={{ background: BG.white }}>
+      <PageHero
+        eyebrow={useCase.title}
+        title={useCase.heroHeadline}
+        sub={useCase.heroSubheadline}
+        ctaHref="/demo"
+        ctaLabel="Book a demo"
+      />
+
+      {/* ANSWER-FIRST OVERVIEW */}
+      <Section bg={BG.offWhite}>
+        <Container narrow>
+          <motion.div {...rise(0)}>
+            <Eyebrow>Overview</Eyebrow>
+            <H>
+              What CaseDelta does for <Accent>{area} firms.</Accent>
+            </H>
+            <p
               style={{
-                fontFamily: FONT,
-                fontSize: "clamp(40px, 7vw, 80px)",
-                fontWeight: 700,
-                color: DELTA_BLUE,
-                lineHeight: 1.05,
-                letterSpacing: "-0.04em",
-                display: "block",
+                fontFamily: SANS,
+                fontSize: "clamp(17px, 1.6vw, 20px)",
+                lineHeight: 1.7,
+                letterSpacing: "-0.2px",
+                color: BF.muted,
+                marginTop: 22,
+                maxWidth: 760,
               }}
             >
-              {useCase.heroHeadline}
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(16px, 1.4vw, 20px)",
-              fontWeight: 400,
-              color: "#666",
-              lineHeight: 1.6,
-              letterSpacing: "-0.01em",
-              maxWidth: 680,
-              marginTop: "clamp(20px, 2.5vw, 32px)",
-              marginBottom: 0,
-            }}
-          >
-            {useCase.heroSubheadline}
-          </motion.p>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.0, ease: EASE_OUT }}
-            className="grid grid-cols-1 sm:grid-cols-3"
-            style={{
-              gap: "clamp(16px, 2vw, 32px)",
-              marginTop: "clamp(40px, 5vw, 64px)",
-            }}
-          >
-            {useCase.stats.map((stat, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: "clamp(16px, 2vw, 24px)",
-                  borderRadius: 8,
-                  border: `1px solid ${BORDER}`,
-                  backgroundColor: "#FAFAFA",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: "clamp(28px, 3vw, 40px)",
-                    fontWeight: 700,
-                    color: DELTA_BLUE,
-                    letterSpacing: "-0.03em",
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {stat.value}
-                </div>
-                <div
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: 13,
-                    color: "#999",
-                    marginTop: 8,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              {useCase.geoOpening}
+            </p>
           </motion.div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* ═══════════════════════════════════════
-          GEO OPENING
-          ═══════════════════════════════════════ */}
-      <section
-        style={{
-          borderTop: `1px solid ${BORDER}`,
-          backgroundColor: "#FFFFFF",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1320,
-            margin: "0 auto",
-            padding: "clamp(60px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-          }}
-        >
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(16px, 1.3vw, 19px)",
-              fontWeight: 400,
-              color: "#555",
-              lineHeight: 1.7,
-              letterSpacing: "-0.01em",
-              maxWidth: 800,
-              margin: 0,
-            }}
-          >
-            {useCase.geoOpening}
-          </motion.p>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          PAIN POINTS
-          ═══════════════════════════════════════ */}
-      <section
-        style={{
-          borderTop: `1px solid ${BORDER}`,
-          backgroundColor: "#FAFAFA",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1320,
-            margin: "0 auto",
-            padding: "clamp(60px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-          }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 700,
-              color: "#0A0A0A",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginTop: 0,
-              marginBottom: "clamp(40px, 5vw, 64px)",
-            }}
-          >
-            The problems you already know
-          </motion.h2>
-
+      {/* STATS BAND */}
+      <Section bg={BG.statBand}>
+        <Container>
+          <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
+            <Eyebrow light>By the numbers</Eyebrow>
+            <H light>What that looks like in practice.</H>
+          </motion.div>
           <div
-            className="grid grid-cols-1 md:grid-cols-2"
-            style={{ gap: "clamp(20px, 2.5vw, 32px)" }}
+            className="uc-stat-grid"
+            style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0, marginTop: 56 }}
           >
-            {useCase.painPoints.map((pain, i) => (
+            {useCase.stats.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.6,
-                  delay: i * 0.1,
-                  ease: EASE_OUT,
-                }}
-                style={{
-                  padding: "clamp(24px, 3vw, 36px)",
-                  borderRadius: 10,
-                  border: `1px solid ${BORDER}`,
-                  backgroundColor: "#FFFFFF",
-                }}
+                {...rise(0.05 * i)}
+                style={{ padding: "0 30px", borderLeft: i === 0 ? "none" : "1px solid rgba(255,255,255,0.12)" }}
               >
-                <h3
+                <div
                   style={{
-                    fontFamily: FONT,
-                    fontSize: "clamp(17px, 1.3vw, 20px)",
-                    fontWeight: 600,
-                    color: "#1A1A1A",
-                    letterSpacing: "-0.02em",
-                    lineHeight: 1.3,
-                    marginTop: 0,
-                    marginBottom: 12,
+                    fontFamily: SERIF,
+                    fontWeight: 400,
+                    fontSize: "clamp(38px, 4.6vw, 56px)",
+                    lineHeight: 1.02,
+                    letterSpacing: "-1.4px",
+                    color: "#fff",
                   }}
                 >
-                  {pain.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: FONT,
-                    fontSize: "clamp(14px, 1.05vw, 16px)",
-                    color: "#666",
-                    lineHeight: 1.65,
-                    margin: 0,
-                  }}
-                >
-                  {pain.description}
-                </p>
+                  {s.value}
+                </div>
+                <div style={{ fontFamily: SANS, fontSize: 14.5, lineHeight: 1.45, color: "rgba(255,255,255,0.6)", marginTop: 16 }}>
+                  {s.label}
+                </div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* ═══════════════════════════════════════
-          HOW DELTA HELPS
-          ═══════════════════════════════════════ */}
-      <section
-        style={{
-          borderTop: `1px solid ${BORDER}`,
-          backgroundColor: "#FFFFFF",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1320,
-            margin: "0 auto",
-            padding: "clamp(60px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-          }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 700,
-              color: "#0A0A0A",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginTop: 0,
-              marginBottom: 12,
-            }}
-          >
-            How Delta runs your{" "}
-            <span style={{ color: DELTA_BLUE }}>
-              {useCase.title.toLowerCase()}
-            </span>{" "}
-            practice
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.1, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(16px, 1.3vw, 19px)",
-              color: "#666",
-              lineHeight: 1.6,
-              letterSpacing: "-0.01em",
-              maxWidth: 600,
-              marginTop: 0,
-              marginBottom: "clamp(48px, 6vw, 80px)",
-            }}
-          >
-            Delta connects across the tools your firm already uses and runs the
-            legal and administrative work in one conversation. Many tools, hours
-            of work, done in one go.
-          </motion.p>
-
+      {/* THE PROBLEM */}
+      <Section bg={BG.white}>
+        <Container>
+          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
+            <Eyebrow>The problem</Eyebrow>
+            <H>The work that piles up.</H>
+          </motion.div>
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "clamp(20px, 2.5vw, 32px)",
-            }}
+            className="uc-prob-grid"
+            style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginTop: 48 }}
           >
+            {problems.map((p, i) => (
+              <motion.article
+                key={i}
+                {...rise(0.05 * i)}
+                style={{ background: BF.card, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "28px 26px 30px" }}
+              >
+                <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 22, lineHeight: 1.16, letterSpacing: "-0.4px", color: BF.ink, margin: 0 }}>
+                  {p.title}
+                </h3>
+                <p style={{ fontFamily: SANS, fontSize: 15, lineHeight: 1.55, color: BF.muted, marginTop: 10 }}>
+                  {p.description}
+                </p>
+              </motion.article>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      {/* HOW DELTA HANDLES IT */}
+      <Section bg={BG.offWhite}>
+        <Container>
+          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
+            <Eyebrow>How Delta handles it</Eyebrow>
+            <H>
+              How Delta runs your <Accent>{area}</Accent> practice.
+            </H>
+            <Sub>
+              Delta works across the tools your firm already uses and does the routine work end to end. A person on your team reviews and approves before anything leaves the firm, and every output is cited to its source.
+            </Sub>
+          </motion.div>
+          <div style={{ display: "flex", flexDirection: "column", marginTop: 52 }}>
             {useCase.howDeltaHelps.map((cap, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.6,
-                  delay: i * 0.08,
-                  ease: EASE_OUT,
-                }}
+                {...rise(0.05 * i)}
                 style={{
                   display: "flex",
-                  gap: "clamp(16px, 2vw, 24px)",
+                  gap: 20,
                   alignItems: "flex-start",
+                  padding: "22px 0",
+                  borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}`,
                 }}
               >
-                {/* Number indicator */}
-                <div
+                <span
                   style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 8,
-                    backgroundColor: `${ACCENT}0A`,
-                    border: `1px solid ${ACCENT}18`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    marginTop: 2,
+                    flex: "0 0 auto",
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    background: BF.accentSoft,
+                    border: `1px solid ${BF.accentBorderHover}`,
+                    display: "grid",
+                    placeItems: "center",
+                    fontFamily: SERIF,
+                    fontSize: 17,
+                    color: BF.accent,
                   }}
                 >
-                  <span
-                    style={{
-                      fontFamily: FONT,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: ACCENT,
-                    }}
-                  >
-                    {i + 1}
-                  </span>
-                </div>
+                  {i + 1}
+                </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <h3
-                    style={{
-                      fontFamily: FONT,
-                      fontSize: "clamp(17px, 1.3vw, 20px)",
-                      fontWeight: 600,
-                      color: "#1A1A1A",
-                      letterSpacing: "-0.02em",
-                      lineHeight: 1.3,
-                      marginTop: 0,
-                      marginBottom: 8,
-                    }}
-                  >
+                  <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 22, lineHeight: 1.18, letterSpacing: "-0.4px", color: BF.ink, margin: 0 }}>
                     {cap.title}
                   </h3>
-                  <p
-                    style={{
-                      fontFamily: FONT,
-                      fontSize: "clamp(14px, 1.05vw, 16px)",
-                      color: "#666",
-                      lineHeight: 1.65,
-                      margin: 0,
-                      maxWidth: 640,
-                    }}
-                  >
+                  <p style={{ fontFamily: SANS, fontSize: 15.5, lineHeight: 1.55, color: BF.muted, marginTop: 10, maxWidth: 720 }}>
                     {cap.description}
                   </p>
                 </div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* ═══════════════════════════════════════
-          "WHAT DELTA KNOWS" EXAMPLE
-          ═══════════════════════════════════════ */}
-      <section
-        style={{
-          borderTop: `1px solid ${BORDER}`,
-          backgroundColor: "#FAFAFA",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1320,
-            margin: "0 auto",
-            padding: "clamp(60px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-          }}
-        >
+      {/* WHAT YOU GET */}
+      <Section bg={BG.white}>
+        <Container>
           <div
-            className="grid grid-cols-1 lg:grid-cols-2 items-center"
-            style={{ gap: "clamp(32px, 4vw, 64px)" }}
+            className="uc-know-grid"
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(32px, 4vw, 64px)", alignItems: "center" }}
           >
-            {/* Text */}
-            <div>
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.7, ease: EASE_OUT }}
-                style={{
-                  fontFamily: FONT,
-                  fontSize: "clamp(28px, 3.5vw, 44px)",
-                  fontWeight: 700,
-                  color: "#0A0A0A",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1.15,
-                  marginTop: 0,
-                  marginBottom: 16,
-                }}
-              >
-                This is what Delta runs across the firm
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: 0.1, ease: EASE_OUT }}
-                style={{
-                  fontFamily: FONT,
-                  fontSize: "clamp(16px, 1.3vw, 19px)",
-                  color: "#666",
-                  lineHeight: 1.6,
-                  letterSpacing: "-0.01em",
-                  maxWidth: 480,
-                  margin: 0,
-                }}
-              >
-                The tools Delta connects to, the workflows it runs, and the
-                guardrails on your firm&rsquo;s data. One assistant across the
-                stack you already use.
-              </motion.p>
-            </div>
-
-            {/* Mockup */}
+            <motion.div {...rise(0)}>
+              <Eyebrow>What you get</Eyebrow>
+              <H>
+                What Delta runs <Accent>across the firm.</Accent>
+              </H>
+              <Sub>
+                The tools it connects to, the workflows it runs, and how your firm&apos;s data is handled. One teammate across the stack you already use, with a person signing off before anything goes out.
+              </Sub>
+            </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
+              {...rise(0.08)}
+              style={{ background: BF.card, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, overflow: "hidden" }}
             >
-              <DeltaKnowsMockup
-                firmName={useCase.deltaLearnsExample.firmName}
-                entries={useCase.deltaLearnsExample.entries}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  padding: "16px 22px",
+                  borderBottom: `1px solid ${BF.hairline}`,
+                  background: BG.offWhite,
+                }}
+              >
+                <span style={{ fontFamily: SANS, fontSize: 13, fontWeight: 600, color: BF.ink }}>
+                  What Delta runs across the firm
+                </span>
+                <span style={{ fontFamily: SANS, fontSize: 12, color: BF.faint, marginLeft: "auto" }}>
+                  {useCase.deltaLearnsExample.firmName}
+                </span>
+              </div>
+              <div>
+                {useCase.deltaLearnsExample.entries.map((e, i, arr) => (
+                  <div
+                    key={i}
+                    style={{ padding: "16px 22px", borderBottom: i < arr.length - 1 ? `1px solid ${BF.hairline}` : "none" }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: SANS,
+                        fontSize: 11.5,
+                        fontWeight: 600,
+                        letterSpacing: "0.6px",
+                        textTransform: "uppercase",
+                        color: BF.faint,
+                        marginBottom: 6,
+                      }}
+                    >
+                      {e.label}
+                    </div>
+                    <div style={{ fontFamily: SANS, fontSize: 14.5, lineHeight: 1.55, color: BF.ink }}>{e.value}</div>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* ═══════════════════════════════════════
-          FAQ
-          ═══════════════════════════════════════ */}
-      <section
-        style={{
-          borderTop: `1px solid ${BORDER}`,
-          backgroundColor: "#FFFFFF",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 800,
-            margin: "0 auto",
-            padding: "clamp(60px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-          }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 700,
-              color: "#0A0A0A",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginTop: 0,
-              marginBottom: "clamp(32px, 4vw, 48px)",
-            }}
-          >
-            Frequently asked questions
-          </motion.h2>
-          <div>
+      {/* FAQ */}
+      <Section bg={BG.offWhite}>
+        <Container narrow>
+          <motion.div {...rise(0)}>
+            <Eyebrow>Questions</Eyebrow>
+            <H>Frequently asked questions</H>
+          </motion.div>
+          <div style={{ marginTop: 40 }}>
             {useCase.faq.map((item, i) => (
-              <FAQItem
+              <motion.div
                 key={i}
-                question={item.question}
-                answer={item.answer}
-                isOpen={openFAQ === i}
-                onToggle={() => setOpenFAQ(openFAQ === i ? null : i)}
-              />
+                {...rise(0.03 * i)}
+                style={{ padding: "24px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}
+              >
+                <h3 style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, margin: 0 }}>
+                  {item.question}
+                </h3>
+                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, marginTop: 10 }}>
+                  {item.answer}
+                </p>
+              </motion.div>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      {/* ═══════════════════════════════════════
-          CTA
-          ═══════════════════════════════════════ */}
-      <section
-        style={{
-          backgroundColor: "#FAFAFA",
-          borderTop: `1px solid ${BORDER}`,
-          borderBottom: `1px solid ${BORDER}`,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1320,
-            margin: "0 auto",
-            padding: "clamp(64px, 8vw, 100px) clamp(24px, 4vw, 48px)",
-            textAlign: "center",
-          }}
-        >
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(28px, 3.5vw, 44px)",
-              fontWeight: 700,
-              color: "#0A0A0A",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginTop: 0,
-              marginBottom: 16,
-            }}
-          >
-            See Delta in your stack.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.1, ease: EASE_OUT }}
-            style={{
-              fontFamily: FONT,
-              fontSize: "clamp(16px, 1.3vw, 19px)",
-              fontWeight: 400,
-              color: "#666",
-              lineHeight: 1.6,
-              letterSpacing: "-0.01em",
-              marginBottom: 32,
-              maxWidth: 560,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            {useCase.ctaText}
-          </motion.p>
-          <motion.a
-            href="/demo"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: FONT,
-              height: 48,
-              padding: "0 28px",
-              fontSize: 15,
-              fontWeight: 500,
-              backgroundColor: ACCENT,
-              color: "#FFFFFF",
-              borderRadius: 6,
-              textDecoration: "none",
-              letterSpacing: "-0.01em",
-              boxShadow: `0 1px 3px ${ACCENT}20`,
-            }}
-            whileHover={{
-              y: -2,
-              backgroundColor: DELTA_BLUE,
-              boxShadow: `0 6px 20px ${ACCENT}35`,
-            }}
-            whileTap={{ y: 0, scale: 0.97 }}
-            transition={springBounce}
-          >
-            Book a demo
-          </motion.a>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════
-          RELATED COMPARISONS (cross-link to /compare)
-          ═══════════════════════════════════════ */}
-      {(RELATED_COMPARE[useCase.slug] ?? []).length > 0 && (
-        <section style={{ borderTop: `1px solid ${BORDER}` }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto", padding: "clamp(56px, 7vw, 88px) clamp(24px, 4vw, 48px)" }}>
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: EASE_OUT }}
-              style={{ fontFamily: FONT, fontSize: "clamp(22px, 2.6vw, 32px)", fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.025em", margin: "0 0 8px" }}
-            >
-              Comparing your options?
-            </motion.h2>
-            <p style={{ fontFamily: FONT, fontSize: "clamp(14px, 1.2vw, 17px)", color: "#666", lineHeight: 1.6, margin: "0 0 clamp(20px, 3vw, 32px)", maxWidth: 560 }}>
-              See how CaseDelta stacks up against the tools firms like yours evaluate.
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              {(RELATED_COMPARE[useCase.slug] ?? []).map((slug) => {
-                const c = getComparisonBySlug(slug);
-                if (!c) return null;
-                return (
-                  <Link
-                    key={slug}
-                    href={`/compare/${slug}`}
-                    style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: FONT, fontSize: 14, fontWeight: 600, color: DELTA_BLUE, textDecoration: "none", border: `1px solid ${BORDER}`, borderRadius: 999, padding: "10px 18px", backgroundColor: "#FAFAFA" }}
-                  >
-                    CaseDelta vs {c.competitor}
-                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                      <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+      {/* RELATED COMPARISONS */}
+      {related.length > 0 && (
+        <Section bg={BG.white}>
+          <Container>
+            <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
+              <Eyebrow>Compare</Eyebrow>
+              <H>Comparing your options?</H>
+              <Sub>See how CaseDelta stacks up against the tools firms like yours evaluate.</Sub>
+            </motion.div>
+            <motion.div {...rise(0.08)} style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 40 }}>
+              {related.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/compare/${c.slug}`}
+                  className="uc-cmp-pill"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 9,
+                    fontFamily: SANS,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: BF.accent,
+                    letterSpacing: "-0.2px",
+                    textDecoration: "none",
+                    border: `1px solid ${BF.hairlineStrong}`,
+                    borderRadius: 999,
+                    padding: "11px 20px",
+                    background: BF.card,
+                  }}
+                >
+                  CaseDelta vs {c.competitor}
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h13M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              ))}
+            </motion.div>
+          </Container>
+        </Section>
       )}
 
-      {/* ═══════════════════════════════════════
-          FOOTER
-          ═══════════════════════════════════════ */}
+      {/* FINAL CTA */}
+      <Section bg={BG.ctaBand}>
+        <Container narrow>
+          <motion.div {...rise(0)} style={{ textAlign: "center" }}>
+            <h2
+              style={{
+                fontFamily: SERIF,
+                fontWeight: 400,
+                fontSize: "clamp(34px, 4.8vw, 56px)",
+                lineHeight: 1.04,
+                letterSpacing: "-1.4px",
+                color: "#fff",
+                margin: "0 auto",
+                maxWidth: 720,
+              }}
+            >
+              See Delta work your {area} cases in your own tools.
+            </h2>
+            <p
+              style={{
+                fontFamily: SANS,
+                fontSize: 18,
+                lineHeight: 1.5,
+                color: "rgba(255,255,255,0.72)",
+                margin: "20px auto 0",
+                maxWidth: 560,
+              }}
+            >
+              {useCase.ctaText}
+            </p>
+            <div style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
+              <PillLink href="/demo" location={`use_case_${useCase.slug}_cta`} onDark>
+                Book a 15-minute demo
+              </PillLink>
+            </div>
+          </motion.div>
+        </Container>
+      </Section>
+
       <FooterV2 />
+
+      <style>{`
+        @media (max-width: 880px) {
+          .uc-prob-grid { grid-template-columns: 1fr !important; }
+          .uc-know-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 760px) {
+          .uc-stat-grid { grid-template-columns: 1fr !important; gap: 36px 0 !important; }
+          .uc-stat-grid > div { border-left: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+        }
+      `}</style>
     </main>
   );
 }
