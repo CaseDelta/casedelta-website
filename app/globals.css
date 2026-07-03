@@ -299,3 +299,10 @@ a:hover {
 .cd-video { transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .cd-video:hover { transform: translateY(-3px); }
 .cd-video:hover .cd-play { transform: scale(1.06); }
+
+/* FAQ drawers (kit FaqAccordion) */
+.cd-faq > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 0; transition: color 0.2s ease; }
+.cd-faq > summary::-webkit-details-marker { display: none; }
+.cd-faq > summary:hover { color: #2f6fe0; }
+.cd-faq .cd-faq-chev { flex: 0 0 auto; transition: transform 0.25s ease; }
+.cd-faq[open] > summary .cd-faq-chev { transform: rotate(180deg); }

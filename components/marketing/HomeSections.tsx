@@ -19,7 +19,7 @@ import { trackEvent } from "@/lib/posthog";
 import { HOME_FAQ } from "@/lib/home-content";
 import {
   BF, BG, SERIF, SANS, MAXW, PAGE_PAD,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, TextLink, Check,
+  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, TextLink, Check, FaqAccordion,
 } from "@/components/marketing/kit";
 
 /* ---- product-demo video: a faux product-UI poster (real video drops into the stage) ---- */
@@ -351,14 +351,12 @@ export function HomeSections() {
             <Eyebrow>Questions</Eyebrow>
             <H>Frequently asked questions</H>
           </motion.div>
-          <div style={{ marginTop: 40 }}>
-            {HOME_FAQ.map((item, i) => (
-              <motion.div key={i} {...rise(0.03 * i)} style={{ padding: "24px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                <h3 style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, margin: 0 }}>{item.q}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, marginTop: 10 }}>{item.a}</p>
-              </motion.div>
-            ))}
-          </div>
+          <motion.div {...rise(0.06)} style={{ marginTop: 28 }}>
+            <FaqAccordion items={HOME_FAQ} />
+          </motion.div>
+          <motion.div {...rise(0.12)}>
+            <TextLink href="/answers">See all questions</TextLink>
+          </motion.div>
         </Container>
       </Section>
 

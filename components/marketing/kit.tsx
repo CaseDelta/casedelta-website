@@ -169,6 +169,27 @@ export function Check({ color }: { color?: string }) {
 }
 
 /*
+ * FAQ drawers. Native <details> so each answer is click-to-open, accessible, and
+ * still present in the server HTML (crawlable + AEO/FAQPage-schema safe), just
+ * collapsed. The chevron rotates via the .cd-faq[open] rule in globals.css.
+ */
+export function FaqAccordion({ items }: { items: ReadonlyArray<{ q: string; a: string }> }) {
+  return (
+    <div style={{ marginTop: 12 }}>
+      {items.map((item, i) => (
+        <details key={i} className="cd-faq" style={{ borderTop: `1px solid ${BF.hairline}` }}>
+          <summary className="cd-faq-q" style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink }}>
+            <span>{item.q}</span>
+            <svg className="cd-faq-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M6 9l6 6 6-6" /></svg>
+          </summary>
+          <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, margin: "2px 0 26px", maxWidth: 720 }}>{item.a}</p>
+        </details>
+      ))}
+    </div>
+  );
+}
+
+/*
  * PageHero: the standard subpage header. Clears the fixed global navbar with top
  * padding, then an eyebrow + serif H1 + one-sentence sub, optionally a pill CTA.
  * Subpages open with this, then stack <Section> blocks, then <FooterV2/>.
