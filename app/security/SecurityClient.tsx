@@ -16,7 +16,7 @@ import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import {
   BF, BG, SERIF, SANS,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero,
+  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero, FaqAccordion,
 } from "@/components/marketing/kit";
 
 /* How client data is handled: the concrete guarantees, in plain language. */
@@ -88,10 +88,6 @@ const FAQ = [
   {
     q: "Who can see my firm's data?",
     a: "Only authorized users at your firm. Every firm's data is isolated from every other firm, and no CaseDelta employee accesses your case data without explicit authorization. The enterprise AI Delta uses never retains your data and never trains on it.",
-  },
-  {
-    q: "Can I verify what Delta did?",
-    a: "Yes. Every action is logged with a timestamp, the document accessed, the query made, the answer generated, and the sources cited. Because every answer cites its source, you can open the record behind any claim and check it yourself. The audit trail is exportable for bar compliance review.",
   },
 ];
 
@@ -204,14 +200,9 @@ export default function SecurityClient() {
             <Eyebrow>Questions</Eyebrow>
             <H>Security questions</H>
           </motion.div>
-          <div style={{ marginTop: 40 }}>
-            {FAQ.map((item, i) => (
-              <motion.div key={i} {...rise(0.03 * i)} style={{ padding: "24px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                <h3 style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, margin: 0 }}>{item.q}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, marginTop: 10 }}>{item.a}</p>
-              </motion.div>
-            ))}
-          </div>
+          <motion.div {...rise(0.06)} style={{ marginTop: 28 }}>
+            <FaqAccordion items={FAQ} />
+          </motion.div>
         </Container>
       </Section>
 

@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import {
   BF, BG, SERIF, SANS,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero,
+  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero, FaqAccordion,
 } from "@/components/marketing/kit";
 
 const INCLUDED = [
@@ -44,10 +44,6 @@ const FAQ = [
   {
     q: "Are there setup, migration, or add-on fees?",
     a: "No. There is nothing to migrate and no implementation project. Delta connects to the tools you already pay for, so getting started is a login, not an invoice.",
-  },
-  {
-    q: "How does it compare to hiring a paralegal?",
-    a: "A paralegal runs roughly $50,000 to $65,000 a year loaded, takes months to hire, and often moves on within two years. Delta is a fraction of that per user, works every case at once, and never leaves with what it learned.",
   },
   {
     q: "What if it is not the right fit for my firm?",
@@ -129,14 +125,9 @@ export default function PricingClient() {
             <Eyebrow>Questions</Eyebrow>
             <H>Pricing questions</H>
           </motion.div>
-          <div style={{ marginTop: 40 }}>
-            {FAQ.map((item, i) => (
-              <motion.div key={i} {...rise(0.03 * i)} style={{ padding: "24px 0", borderTop: i === 0 ? "none" : `1px solid ${BF.hairline}` }}>
-                <h3 style={{ fontFamily: SANS, fontSize: 18, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, margin: 0 }}>{item.q}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 16, lineHeight: 1.6, color: BF.muted, marginTop: 10 }}>{item.a}</p>
-              </motion.div>
-            ))}
-          </div>
+          <motion.div {...rise(0.06)} style={{ marginTop: 28 }}>
+            <FaqAccordion items={FAQ} />
+          </motion.div>
         </Container>
       </Section>
 
