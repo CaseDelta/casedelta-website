@@ -22,21 +22,12 @@ import {
   useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, TextLink, Check, FaqAccordion,
 } from "@/components/marketing/kit";
 
-/* ---- product-demo video: a faux product-UI poster (real video drops into the stage) ---- */
-const POSTER_ROWS = [
-  { s: "done", t: "Requested records from Mercy General" },
-  { s: "run", t: "Drafting the demand letter" },
-  { s: "done", t: "Updated the matter in Clio + billing" },
-  { s: "todo", t: "Flagged: response deadline in 4 days" },
-];
-
+/* ---- product-demo video: the real product walkthrough, hosted on our CDN ---- */
 function VideoPlaceholder() {
   return (
-    <a
-      href="/demo"
-      onClick={() => trackEvent("cta_click", { location: "demo_video" })}
+    <div
       className="cd-video"
-      style={{ display: "block", maxWidth: 1000, margin: "52px auto 0", borderRadius: 18, overflow: "hidden", border: `1px solid ${BF.hairlineStrong}`, background: "#0e1420", boxShadow: "0 60px 110px -45px rgba(20,23,31,0.5), 0 0 0 1px rgba(47,111,224,0.05)", textDecoration: "none" }}
+      style={{ maxWidth: 1000, margin: "52px auto 0", borderRadius: 18, overflow: "hidden", border: `1px solid ${BF.hairlineStrong}`, background: "#0e1420", boxShadow: "0 60px 110px -45px rgba(20,23,31,0.5), 0 0 0 1px rgba(47,111,224,0.05)" }}
     >
       {/* browser chrome */}
       <div style={{ display: "flex", alignItems: "center", gap: 8, height: 42, padding: "0 16px", background: "linear-gradient(#171c27, #11151e)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
@@ -45,51 +36,22 @@ function VideoPlaceholder() {
         <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
         <span style={{ marginLeft: 12, display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.45)" }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6aa6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-          app.casedelta.com / Ortega v. Memorial
+          app.casedelta.com
         </span>
       </div>
 
-      {/* stage: faux product UI poster + dimmed overlay + play */}
-      <div className="cd-video-stage" style={{ position: "relative", aspectRatio: "16 / 9", background: "#0c1119", overflow: "hidden" }}>
-        <div className="cd-poster" style={{ position: "absolute", inset: 0, display: "flex" }}>
-          {/* sidebar */}
-          <div style={{ width: "23%", minWidth: 150, background: "#10151f", borderRight: "1px solid rgba(255,255,255,0.06)", padding: "18px 16px", display: "flex", flexDirection: "column", gap: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <span style={{ width: 24, height: 24, borderRadius: 7, background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", fontFamily: SERIF, color: "#fff", fontSize: 14, lineHeight: 1 }}>D</span>
-              <span style={{ fontFamily: SERIF, color: "rgba(255,255,255,0.86)", fontSize: 15 }}>Delta</span>
-            </div>
-            {["Cases", "Inbox", "Tasks", "Documents", "Billing"].map((n, i) => (
-              <span key={n} style={{ fontFamily: SANS, fontSize: 12.5, color: i === 0 ? "rgba(255,255,255,0.82)" : "rgba(255,255,255,0.38)", padding: "3px 0" }}>{n}</span>
-            ))}
-          </div>
-          {/* main */}
-          <div style={{ flex: 1, padding: "20px 22px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-              <span style={{ fontFamily: SERIF, color: "#fff", fontSize: 17, letterSpacing: "-0.3px" }}>Ortega v. Memorial</span>
-              <span style={{ fontFamily: SANS, fontSize: 10.5, fontWeight: 600, letterSpacing: "0.4px", textTransform: "uppercase", color: "#6aa6ff", background: "rgba(58,120,224,0.16)", border: "1px solid rgba(106,166,255,0.25)", borderRadius: 6, padding: "4px 8px" }}>Delta working</span>
-            </div>
-            {POSTER_ROWS.map((r, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 12px", borderRadius: 9, marginBottom: 7, background: r.s === "todo" ? "rgba(58,120,224,0.12)" : "rgba(255,255,255,0.02)", border: r.s === "todo" ? "1px solid rgba(106,166,255,0.22)" : "1px solid transparent" }}>
-                <span style={{ width: 17, height: 17, borderRadius: 5, flex: "0 0 auto", display: "grid", placeItems: "center", background: r.s === "done" ? "#3a78e0" : "transparent", border: r.s === "done" ? "none" : r.s === "run" ? "2px solid #6aa6ff" : "1.5px solid rgba(255,255,255,0.25)" }}>
-                  {r.s === "done" && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>}
-                </span>
-                <span style={{ fontFamily: SANS, fontSize: 13, color: r.s === "todo" ? "#fff" : "rgba(255,255,255,0.7)" }}>{r.t}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* dim overlay + play */}
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 70% at 50% 45%, rgba(8,12,20,0.35) 0%, rgba(8,12,20,0.72) 100%)", display: "grid", placeItems: "center" }}>
-          <span className="cd-play" style={{ width: 76, height: 76, borderRadius: "50%", background: "#ffffff", display: "grid", placeItems: "center", boxShadow: "0 18px 44px -10px rgba(0,0,0,0.55)", transition: "transform 0.2s ease" }}>
-            <svg width="27" height="27" viewBox="0 0 24 24" fill="#1f3a5f"><path d="M8 5.5v13l11-6.5z" /></svg>
-          </span>
-        </div>
-        <span style={{ position: "absolute", bottom: 18, left: 0, right: 0, textAlign: "center", fontFamily: SANS, fontSize: 13, fontWeight: 500, letterSpacing: "0.2px", color: "rgba(255,255,255,0.72)" }}>
-          Watch Delta work a real case · 2 min
-        </span>
-      </div>
-    </a>
+      {/* the real product walkthrough drops into the stage */}
+      <video
+        className="cd-video-stage"
+        src="https://reports.casedelta.com/marketing/casedelta-demo.mp4"
+        poster="https://reports.casedelta.com/marketing/casedelta-demo-poster.jpg"
+        controls
+        preload="metadata"
+        playsInline
+        onPlay={() => trackEvent("cta_click", { location: "demo_video" })}
+        style={{ display: "block", width: "100%", height: "auto", background: "#0c1119" }}
+      />
+    </div>
   );
 }
 
@@ -385,9 +347,6 @@ export function HomeSections() {
           .cd-sec-grid { grid-template-columns: 1fr !important; }
           .cd-stat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 40px 0 !important; }
           .cd-stat-grid > div:nth-child(odd) { border-left: none !important; padding-left: 0 !important; }
-        }
-        @media (max-width: 600px) {
-          .cd-poster { display: none !important; }
         }
         @media (max-width: 520px) {
           .cd-stat-grid { grid-template-columns: 1fr !important; }
