@@ -14,6 +14,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' https://snap.licdn.com https://connect.facebook.net https://us-assets.i.posthog.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
+      "media-src 'self' https://reports.casedelta.com",
       "font-src 'self' data:",
       "connect-src 'self' https://px.ads.linkedin.com https://snap.licdn.com https://www.facebook.com https://us.i.posthog.com https://us-assets.i.posthog.com",
       "frame-ancestors 'none'",
