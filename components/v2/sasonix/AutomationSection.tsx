@@ -56,24 +56,24 @@ function CodePanel() {
 
 const CARDS: Card[] = [
   {
-    heading: "Advanced capabilities for intelligent automation",
-    sub: "Explore amazing and powerful features that make Sasonix a complete ai agent platform for your workflows.",
-    checks: ["Real-time reporting", "Smart alerts", "Dynamic task allocation"],
+    heading: "Drives the tools you already use",
+    sub: "Delta works inside your case manager, email, drive, and billing. It drafts the letter, updates the file, and chases the records, then your team approves.",
+    checks: ["Clio, MyCase, Filevine, and more", "Drafting, updates, and follow-up", "Nothing new for your team to learn"],
     photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
     panel: <CodePanel />,
   },
   {
-    heading: "End-to-end AI-powered automation",
-    sub: "Discover the powerful features that make Sasonix the premier AI agent platform for automating.",
-    checks: ["Instant data visualization", "Proactive notifications", "Adaptive resource management"],
+    heading: "Builds cited chronologies in minutes",
+    sub: "Point Delta at a document set of a few hundred or a few thousand pages. It returns a clean medical or case chronology, every entry linked back to its source.",
+    checks: ["Hundreds to thousands of pages", "Every entry cited to the record", "Med-mal and mass tort"],
     photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
     // eslint-disable-next-line @next/next/no-img-element
     panel: <img src={IMG("Gg2IiSRFyZek4fK2e0pYNUsxKEU.png")} alt="" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-44%, -50%)", width: 442, height: "auto", borderRadius: 12, boxShadow: "0 10px 68px rgba(0,0,0,0.14)" }} />,
   },
   {
-    heading: "AI-powered, full-spectrum process automation",
-    sub: "Discover the powerful features that make Sasonix the premier AI agent platform for automating.",
-    checks: ["Instant data visualization", "Automated alerts and notifications", "Adaptive resource allocation and management"],
+    heading: "Learns how your firm works",
+    sub: "Delta builds a memory of your matters, your opposing counsel, and your preferences, so it gets sharper on every case instead of starting from zero.",
+    checks: ["Firm-specific memory", "Compounds over time", "Across every active matter"],
     photo: IMG("psmbnZin0yEqHm2rJhS4fljiI.png"),
     panel: (
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", display: "flex", flexDirection: "column", gap: 22, width: 435 }}>
@@ -91,7 +91,7 @@ export function AutomationSection() {
     <section style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
         <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>
-          Powerful features designed for intelligent automation
+          An associate that does the work, not just the answers
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
           {CARDS.map((c, i) => (

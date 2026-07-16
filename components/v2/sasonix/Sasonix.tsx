@@ -1,26 +1,31 @@
 "use client";
 
 /**
- * Sasonix pixel-exact clone (route /v2). Built section-by-section against the live
- * site (https://sasonix.framer.website/) with a Playwright pixel-diff gate. Sasonix
- * as-is now; rebrand to CaseDelta later by swapping tokens.ts.
+ * CaseDelta homepage (route /v2), composed to Camren's 7-beat progressive-disclosure
+ * framework on top of the Sasonix primitive kit:
+ *   1. Hero            -> the dream outcome ("Run more cases without hiring")
+ *      + BrandStrip    -> trust strip riding under the hero (placeholder logos)
+ *   2. AutomationSection -> "What Delta is" (three capability cards)
+ *   3. HowItWorks      -> how it works + integrates + onboards in 5 minutes (combined)
+ *   4. Testimonials    -> one real, attributable quote
+ *   5. WhySasonix      -> Delta vs a generic AI chatbot
+ *   6. Pricing         -> three flat tiers priced by attorney count
+ *   7. Faq + CtaFooter -> reinforcement and the ask
  *
- * Sections (Framer's own names): Hero, Brand strip, Automation Flow, Automation
- * (3 feature cards), How to Work, Smart Process Flow, Integrations, Why Sasonix,
- * Testimonials, Pricing, FAQ, CTA, Footer. Currently: Hero.
+ * Copy is CaseDelta; the visual identity is still the Sasonix placeholder (orange,
+ * cream, hotlinked imagery) and flips on the tokens.ts rebrand. The unused Sasonix
+ * primitives (AutomationFlow, HowToWork, SmartFlow, Integrations) are kept in the repo
+ * as a library for future pages.
  */
 import { SX } from "./tokens";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
 import { BrandStrip } from "./BrandStrip";
-import { AutomationFlow } from "./AutomationFlow";
 import { AutomationSection } from "./AutomationSection";
-import { HowToWork } from "./HowToWork";
-import { SmartFlow } from "./SmartFlow";
-import { Integrations } from "./Integrations";
-import { WhySasonix } from "./WhySasonix";
+import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
+import { WhySasonix } from "./WhySasonix";
 import { Pricing } from "./Pricing";
 import { Faq } from "./Faq";
 import { CtaFooter } from "./CtaFooter";
@@ -30,16 +35,20 @@ export function Sasonix() {
     <div style={{ background: SX.white, color: SX.ink, minHeight: "100vh" }}>
       <SmoothScroll />
       <Nav />
+      {/* 1. Hero: the dream outcome + trust strip */}
       <Hero />
       <BrandStrip />
-      <AutomationFlow />
+      {/* 2. What Delta is */}
       <AutomationSection />
-      <HowToWork />
-      <SmartFlow />
-      <Integrations />
-      <WhySasonix />
+      {/* 3. How it works + integrates + onboards in 5 minutes */}
+      <HowItWorks />
+      {/* 4. Testimonial */}
       <Testimonials />
+      {/* 5. Delta vs a generic AI chatbot */}
+      <WhySasonix />
+      {/* 6. Pricing */}
       <Pricing />
+      {/* 7. Reinforcement + CTA */}
       <Faq />
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}

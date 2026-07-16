@@ -24,7 +24,7 @@ export function BrandStrip() {
       <Container>
         <div style={{ display: "flex", alignItems: "center", height: 100, gap: 0 }}>
           <p style={{ flex: "0 0 auto", width: 300, fontFamily: SX.body, fontWeight: 500, fontSize: 18, lineHeight: "25.2px", color: SX.ink, margin: 0 }}>
-            Embraced by startups, agencies, and teams across the world.
+            Purpose-built for personal injury, mass tort, and medical malpractice firms.
           </p>
           <div className="sx-marquee" style={{ flex: "1 1 auto", marginLeft: 72, overflow: "hidden", maskImage: "linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)" }}>
             <div className="sx-marquee-track" style={{ display: "flex", alignItems: "center", gap: 20, width: "max-content" }}>

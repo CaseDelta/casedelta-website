@@ -5,11 +5,14 @@
  * transparent with white text over the hero, transitioning to white-bg / dark-text
  * once scrolled past the hero. Geometry measured from the live site: flex
  * space-between row, content 80..1360 (max-width 1360, 40px gutter), 32px link gaps.
+ *
+ * Copy is CaseDelta; the visual identity (orange, logo mark) is still the Sasonix
+ * placeholder and flips on the tokens.ts rebrand.
  */
 import { useEffect, useState } from "react";
 import { SX } from "./tokens";
 
-const LINKS = ["All Pages", "Pricing", "Case Studies", "Contact"];
+const LINKS = ["Features", "Pricing", "Security", "Contact"];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -44,21 +47,20 @@ export function Nav() {
           <span aria-hidden style={{ width: 34, height: 34, borderRadius: 9, background: SX.orange, display: "grid", placeItems: "center" }}>
             <svg width="19" height="19" viewBox="0 0 24 24" fill="#fff" aria-hidden><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
           </span>
-          <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 24, letterSpacing: "-0.4px", color: fg, transition: "color 0.3s ease" }}>Sasonix</span>
+          <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 24, letterSpacing: "-0.4px", color: fg, transition: "color 0.3s ease" }}>CaseDelta</span>
         </a>
         {/* links */}
         <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          {LINKS.map((l, i) => (
+          {LINKS.map((l) => (
             <a key={l} href="#" className="sx-navlink" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>
               {l}
-              {i === 0 && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={fg} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.3s ease" }}><path d="M6 9l6 6 6-6" /></svg>}
             </a>
           ))}
         </div>
         {/* actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-          <a href="#" className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Login</a>
-          <a href="#" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: SX.ink, borderRadius: 12, padding: "13px 20px", textDecoration: "none", whiteSpace: "nowrap" }}>Create Free Account</a>
+          <a href="#" className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Log in</a>
+          <a href="#" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: SX.ink, borderRadius: 12, padding: "13px 20px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
         </div>
       </div>
     </header>
