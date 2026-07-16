@@ -296,9 +296,6 @@ a:hover {
 .cd-card:hover { border-color: rgba(47, 111, 224, 0.4); transform: translateY(-4px); box-shadow: 0 24px 50px -28px rgba(20, 23, 31, 0.16); }
 .cd-logo { transition: opacity 0.3s ease, filter 0.3s ease; }
 .cd-logo:hover { opacity: 1 !important; }
-.cd-video { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.cd-video:hover { transform: translateY(-3px); }
-.cd-video:hover .cd-play { transform: scale(1.06); }
 
 /* FAQ drawers (kit FaqAccordion) */
 .cd-faq > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 0; transition: color 0.2s ease; }

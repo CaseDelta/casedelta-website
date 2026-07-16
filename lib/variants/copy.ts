@@ -9,7 +9,11 @@
 import type { CopyVariant, HeadlineSegment } from "./types";
 
 export const HERO_HEADLINES: Record<CopyVariant, HeadlineSegment[]> = {
-  control: [{ text: "Run more cases " }, { text: "without hiring", em: true }, { text: "." }],
+  control: [
+    { text: "Win back your time by having the " },
+    { text: "headcount you could never hire", em: true },
+    { text: "." },
+  ],
   teammate: [
     { text: "The teammate you " },
     { text: "can't hire", em: true },
@@ -22,12 +26,17 @@ export const HERO_HEADLINES: Record<CopyVariant, HeadlineSegment[]> = {
   ],
 };
 
-/** Left-contained heroes (harvey-light / harvey-dark) show this subhead. */
+/**
+ * The hero subhead, shared by ALL three hero variants (harvey-light, harvey-dark,
+ * and legora). It states the category ("AI paralegal") that the headline no longer
+ * names, so it is load-bearing for comprehension, not decoration.
+ *
+ * "knows you, your case, and your firm" is the learned-firm-memory moat
+ * (POSITIONING.md section 4), which is the one claim the crowded "AI paralegal"
+ * label cannot make on its own.
+ */
 export const HERO_SUBHEAD =
-  "An AI paralegal that works inside the tools you already use and does the routine case work, so your team takes on more without drowning.";
-
-/** Full-bleed hero (legora) shows this short inline tagline next to the pill instead of a subhead. */
-export const HERO_TAGLINE = "The AI paralegal for law firms";
+  "The best AI paralegal is the one that knows you, your case, and your firm.";
 
 export const PRIMARY_CTA = { label: "Book a demo", href: "/demo" } as const;
 export const SECONDARY_CTA = { label: "See how firms use it", href: "/use-cases" } as const;
@@ -47,12 +56,22 @@ export const LOGOS: Array<{ name: string; style?: LogoStyle }> = [
 ];
 
 /**
- * Hero social proof: a Google rating over a row of the practice areas CaseDelta is
- * built for (signals purpose-built specialization for serious litigation firms).
+ * Hero social proof: a rating over a row of the practice areas CaseDelta is built
+ * for (signals purpose-built specialization for serious litigation firms).
  *
- * The Google rating is still a PLACEHOLDER (no real Google reviews yet) and must be
- * made real or removed before launch. The practice areas are honest, they are the
- * product's target verticals.
+ * DO NOT REMOVE THE RATING. The 4.9 is REAL: a practicing attorney gave it. An
+ * earlier revision of this comment called it a placeholder, an agent believed the
+ * comment over the fact, and stripped it off the live site as "fabricated" on
+ * 2026-06-29. It had to be reverted. If it looks placeholder-y to you, ask before
+ * touching it, do not delete it.
+ *
+ * `source` is deliberately NOT rendered: StarRating (heroes/shared.tsx) shows the
+ * stars + the number only and drops the source, leaving attribution ambiguous on
+ * purpose. Keep it that way unless Camren says otherwise. (`source` is read only by
+ * HeroSocialProof, which is currently unmounted, so nothing on the live site
+ * attributes the rating to Google today.)
+ *
+ * The practice areas are honest, they are the product's target verticals.
  */
 export const SOCIAL_PROOF = {
   rating: "4.9",

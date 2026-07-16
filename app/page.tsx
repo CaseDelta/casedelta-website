@@ -6,9 +6,10 @@ import { resolveVariants } from "@/lib/variants";
 
 /**
  * Home is dynamic (it reads `?variant=`/`?hero=` for QA and resolves the design
- * variant). With no params and no cookie, it renders control (harvey-light), which
- * is what Googlebot sees (no cloaking). JSON-LD + the FAQ schema ship in the server
- * HTML regardless of variant.
+ * variant). With no params and no cookie it renders DEFAULT_DESIGN (currently the
+ * legora hero, see lib/variants/constants.ts), which is exactly what Googlebot sees,
+ * so there is no cloaking. JSON-LD + the FAQ schema ship in the server HTML
+ * regardless of variant.
  */
 export default async function HomePage({
   searchParams,
