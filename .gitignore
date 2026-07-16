@@ -50,3 +50,7 @@ next-env.d.ts
 *copy/
 *copy*/
 *.backup
+
+# Reference-site extractions (design-extract.ts output).
+# Never commit: contains the source site's own assets and fonts.
+_ref/

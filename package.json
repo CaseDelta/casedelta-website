@@ -13,7 +13,9 @@
     "meta:budget": "tsx --env-file=.env.local scripts/meta-budget.ts",
     "meta:pause": "tsx --env-file=.env.local scripts/meta-pause.ts",
     "meta:resume": "tsx --env-file=.env.local scripts/meta-resume.ts",
-    "meta:create-ad": "tsx --env-file=.env.local scripts/meta-create-ad.ts"
+    "meta:create-ad": "tsx --env-file=.env.local scripts/meta-create-ad.ts",
+    "design:extract": "tsx scripts/design-extract.ts",
+    "design:diff": "tsx scripts/design-diff.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
@@ -35,10 +37,13 @@
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22",
     "@types/pg": "^8.20.0",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.20",
+    "pixelmatch": "^7.2.0",
     "playwright": "^1.57.0",
+    "pngjs": "^7.0.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.22.3",
