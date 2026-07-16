@@ -31,14 +31,15 @@ export function Hero() {
 
       {/* centered copy */}
       <div style={{ position: "relative", zIndex: 10, maxWidth: 1200, margin: "0 auto", padding: "0 40px", textAlign: "center" }}>
-        <div style={{ paddingTop: 128, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        {/* paddingTop 147 matches the live hero copy block (H1 top y=147 @1440) */}
+        <div style={{ paddingTop: 147, display: "flex", flexDirection: "column", alignItems: "center" }}>
           <h1 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 60, lineHeight: "66px", letterSpacing: "-2px", color: "#fff", margin: 0, maxWidth: 620 }}>
             Turn your ideas into execution with AI agents
           </h1>
-          <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 18, lineHeight: "30.6px", color: "#fff", margin: "18px 0 0", maxWidth: 560 }}>
+          <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 18, lineHeight: "30.6px", color: "#fff", margin: "16px 0 0", maxWidth: 560 }}>
             No coding. No setup complexity. Just describe your workflow and watch Sasonix turn ideas into automated execution.
           </p>
-          <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
+          <div style={{ display: "flex", gap: 12, marginTop: 22 }}>
             <a href="#" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: SX.ink, borderRadius: 12, padding: "11px 18px", textDecoration: "none" }}>Get Started Free</a>
             <a href="#" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.black, background: "#fff", borderRadius: 12, padding: "11px 18px", textDecoration: "none" }}>Book a Demo</a>
           </div>

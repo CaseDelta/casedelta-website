@@ -2,8 +2,18 @@
 
 /**
  * Pricing Section (live top 8448, h1160): centered mono eyebrow + Archivo 48px heading
- * + Geist sub, a Monthly/Yearly toggle ("SAVE 20%"), two plan cards (Professional
- * highlighted with an orange border), and a wide contact card below.
+ * + Geist sub, a Monthly/Yearly toggle ("SAVE 20%"), then two large plan cards.
+ *
+ * Measured against the live (Playwright, desktop 1440):
+ *  - Card list: maxWidth 1220 (x110..1330), two cards w594 each, gap 32, radius 12, pad 24.
+ *  - Starter card bg = cream #fcf8f4; Professional card bg = FULL orange #ff7029.
+ *  - Each card opens with an inner WHITE box (radius 12, pad 20) holding name / blurb / price.
+ *    name  Geist 18/600 ink | blurb Geist 16/400 ink2 | price Archivo 500 48px/-1px ink
+ *    + "/per month" Geist 18/400 ink2.
+ *  - Below the box: "What's included:" (Geist 16/500) + a 2-column feature grid (Geist 16/400).
+ *    Starter = orange checks + ink text; Professional = white checks + white text.
+ *  - Full-width "Book a Free Demo" button (ink bg, white text, radius 12) at the bottom of both.
+ *  - There is NO separate contact card in the live section.
  */
 import { useState } from "react";
 import { SX } from "./tokens";
@@ -23,8 +33,12 @@ const PLANS = [
   { name: "Professional Plan", blurb: "Built for professionals and teams who want to automate and scale workflows efficiently.", monthly: 99, featured: true },
 ];
 
-function Check() {
-  return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={SX.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden><path d="M20 6L9 17l-5-5" /></svg>;
+function Check({ color }: { color: string }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  );
 }
 
 export function Pricing() {
@@ -40,7 +54,7 @@ export function Pricing() {
           titleMaxW={560}
           subMaxW={440}
         />
-        {/* toggle */}
+        {/* Monthly / Yearly toggle */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, marginTop: 34 }}>
           <span style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: yearly ? SX.ink2 : SX.ink }}>Monthly</span>
           <button type="button" role="switch" aria-checked={yearly} onClick={() => setYearly((v) => !v)} aria-label="Toggle yearly billing" style={{ width: 52, height: 30, borderRadius: 999, background: yearly ? SX.orange : "rgba(26,23,18,0.18)", border: "none", cursor: "pointer", padding: 3, transition: "background 0.2s ease" }}>
@@ -49,35 +63,49 @@ export function Pricing() {
           <span style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: yearly ? SX.ink : SX.ink2 }}>Yearly</span>
           <span style={{ fontFamily: SX.ui, fontSize: 12, fontWeight: 500, color: SX.orange, background: "rgba(255,112,41,0.12)", borderRadius: 999, padding: "5px 11px" }}>SAVE 20%</span>
         </div>
+
         {/* plan cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24, maxWidth: 940, margin: "44px auto 0", alignItems: "start" }}>
-          {PLANS.map((p) => (
-            <div key={p.name} style={{ background: SX.white, borderRadius: 20, border: p.featured ? `2px solid ${SX.orange}` : `1px solid ${SX.hairline}`, padding: "34px 34px 38px", boxShadow: p.featured ? "0 40px 80px -46px rgba(255,112,41,0.4)" : "none" }}>
-              <h3 style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: SX.ink, margin: 0 }}>{p.name}</h3>
-              <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "10px 0 0", minHeight: 52 }}>{p.blurb}</p>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 6, margin: "22px 0 26px" }}>
-                <span style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 52, letterSpacing: "-1.5px", color: SX.ink, lineHeight: 1 }}>${price(p.monthly)}</span>
-                <span style={{ fontFamily: SX.body, fontSize: 18, color: SX.ink2 }}>/per month</span>
+        <div className="sx-price-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, maxWidth: 1220, margin: "44px auto 0", alignItems: "stretch" }}>
+          {PLANS.map((p) => {
+            const onOrange = p.featured;
+            const onText = onOrange ? "#fff" : SX.ink;
+            const checkColor = onOrange ? "#fff" : SX.orange;
+            return (
+              <div key={p.name} style={{ background: onOrange ? SX.orange : SX.cream, borderRadius: 12, padding: 24, minHeight: 527, display: "flex", flexDirection: "column" }}>
+                {/* inner white box: name + blurb + price */}
+                <div style={{ background: "#fff", borderRadius: 12, padding: 20 }}>
+                  <h3 style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: SX.ink, margin: 0 }}>{p.name}</h3>
+                  <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "8px 0 0", minHeight: 52 }}>{p.blurb}</p>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginTop: 24 }}>
+                    <span style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, letterSpacing: "-1px", color: SX.ink, lineHeight: 1 }}>${price(p.monthly)}</span>
+                    <span style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 400, color: SX.ink2 }}>/per month</span>
+                  </div>
+                </div>
+
+                {/* What's included */}
+                <div style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: onText, margin: "24px 0 16px" }}>What&rsquo;s included:</div>
+
+                {/* 2-column feature grid (column-major: first 3 left, last 3 right) */}
+                <div style={{ display: "flex", gap: 24 }}>
+                  {[FEATURES.slice(0, 3), FEATURES.slice(3, 6)].map((col, ci) => (
+                    <div key={ci} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+                      {col.map((f) => (
+                        <span key={f} style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: onText }}>
+                          <Check color={checkColor} />{f}
+                        </span>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+
+                {/* full-width button, pinned to the card bottom */}
+                <a href="#" className="sx-btn" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", marginTop: "auto", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a Free Demo</a>
               </div>
-              <a href="#" className="sx-btn" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: p.featured ? SX.orange : SX.ink, color: "#fff", borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: p.featured ? "#e85f18" : "#2c2820" }}>Book a Free Demo</a>
-              <div style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, margin: "28px 0 16px" }}>What&rsquo;s included:</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {FEATURES.map((f) => (
-                  <span key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, color: SX.ink }}><Check />{f}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-        {/* contact card */}
-        <div style={{ maxWidth: 940, margin: "24px auto 0", background: SX.cream, borderRadius: 20, border: `1px solid ${SX.hairline}`, padding: "32px 36px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
-          <div style={{ maxWidth: 620 }}>
-            <h3 style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: SX.ink, margin: 0 }}>Custom solutions for growing teams</h3>
-            <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "8px 0 0" }}>Design automation that fits your exact requirements with flexible integrations and scalable performance.</p>
-          </div>
-          <a href="#" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 22px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", whiteSpace: "nowrap", ["--v2-btn-hover" as string]: "#2c2820" }}>Contact Sales</a>
+            );
+          })}
         </div>
       </Container>
+      <style>{`@media (max-width: 820px){ .sx-price-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }

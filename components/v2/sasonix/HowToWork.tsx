@@ -28,10 +28,15 @@ export function HowToWork() {
           Let&rsquo;s break down how everything works for you
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginTop: 56 }}>
-          {STEPS.map((s) => (
+          {STEPS.map((s, i) => (
             <div key={s.t} style={{ position: "relative", background: SX.cream, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.12)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", height: 565, padding: "27px 27px 63px", overflow: "hidden" }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.cream2, borderRadius: 90, padding: "8px 24px" }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: SX.orange }} />
+                {/* live: an 8px blur(6px) glow layer behind a solid dot, both #ff6c02;
+                    the gentle staggered pulse is our "dynamic" add (Camren's request). */}
+                <span style={{ position: "relative", width: 8, height: 8, flex: "0 0 auto" }}>
+                  <span aria-hidden className="sx-dot-glow" style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.orangeDeep, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }} />
+                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: SX.orangeDeep }} />
+                </span>
                 <span style={{ fontFamily: SX.mono, fontSize: 16, letterSpacing: "-0.5px", color: SX.ink }}>{s.n}</span>
               </span>
               <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 20, lineHeight: "25.2px", color: SX.ink, margin: "24px 0 0" }}>{s.t}</p>
@@ -43,7 +48,15 @@ export function HowToWork() {
           ))}
         </div>
       </Container>
-      <style>{`@media (max-width: 900px){ .v2-how-grid { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`
+        @media (max-width: 900px){ .v2-how-grid { grid-template-columns: 1fr !important; } }
+        .sx-dot-glow { animation: sx-dot-pulse 2.4s ease-in-out infinite; }
+        @keyframes sx-dot-pulse {
+          0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.85; }
+          50%      { transform: translate(-50%,-50%) scale(1.75); opacity: 0.3; }
+        }
+        @media (prefers-reduced-motion: reduce){ .sx-dot-glow { animation: none; } }
+      `}</style>
     </section>
   );
 }

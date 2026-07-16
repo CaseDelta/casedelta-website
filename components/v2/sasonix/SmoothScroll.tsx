@@ -17,7 +17,7 @@ export function SmoothScroll() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const EASE = 0.09; // lower = heavier / slower
+    const EASE = 0.12; // lower = heavier / slower (was 0.09; nudged up for a lighter, faster feel)
     let target = window.scrollY;
     let current = window.scrollY;
     let running = false;
