@@ -10,12 +10,12 @@
  *   4. Testimonials    -> one real, attributable quote
  *   5. WhySasonix      -> Delta vs a generic AI chatbot
  *   6. Pricing         -> three flat tiers priced by attorney count
- *   7. Faq + CtaFooter -> reinforcement and the ask
+ *   7. CtaFooter    -> reinforcement and the ask
  *
  * Copy is CaseDelta; the visual identity is still the Sasonix placeholder (orange,
  * cream, hotlinked imagery) and flips on the tokens.ts rebrand. The unused Sasonix
- * primitives (AutomationFlow, HowToWork, SmartFlow, Integrations) are kept in the repo
- * as a library for future pages.
+ * primitives (AutomationFlow, HowToWork, SmartFlow, Integrations, Faq) are kept in the
+ * repo as a library for future pages.
  */
 import { SX } from "./tokens";
 import { SmoothScroll } from "./SmoothScroll";
@@ -27,7 +27,6 @@ import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
 import { WhySasonix } from "./WhySasonix";
 import { Pricing } from "./Pricing";
-import { Faq } from "./Faq";
 import { CtaFooter } from "./CtaFooter";
 
 export function Sasonix() {
@@ -49,7 +48,6 @@ export function Sasonix() {
       {/* 6. Pricing */}
       <Pricing />
       {/* 7. Reinforcement + CTA */}
-      <Faq />
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}
       <style>{`

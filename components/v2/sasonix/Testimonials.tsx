@@ -1,72 +1,66 @@
 "use client";
 
 /**
- * Beat 4: Testimonial. Restores the Sasonix "Real stories from teams using ..." section
- * format (centered heading + card row), rebranded to CaseDelta.
+ * Beat 4: Testimonial. The Sasonix "Real stories" marquee: a horizontal, auto-scrolling
+ * row of quote + portrait cards.
  *
- * HONESTY: the template shipped this as a marquee of INVENTED endorsements (Marcus Chen,
- * Lucifer Jason) over stock portraits. We never ship fabricated social proof, so this is
- * populated ONLY with the one real, attributable quote we have (Kirschbaum & Nowotny,
- * provided with permission) and no stock portrait. The horizontal marquee auto-enables
- * once there are two or more REAL cards in CARDS; with one it renders a single card.
+ * PLACEHOLDER CONTENT (per Camren, for the design pass): the names, quotes, and portraits
+ * below are the template's fabricated placeholders so the section reads full while we
+ * build. THEY ARE NOT REAL and MUST be swapped for real, attributable testimonials before
+ * /v2 ships anywhere public. (The one real quote we have is Kirschbaum & Nowotny.)
  *
  * Kept Sasonix-styled (cream) until the tokens.ts rebrand.
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
 
-type Story = { quote: string; initials: string; name: string; location: string };
+const IMG = (f: string) => `https://framerusercontent.com/images/${f}`;
 
-const CARDS: Story[] = [
+const CARDS = [
   {
-    quote: "Delta gives us back about five hours a week, and that time goes straight back into our cases.",
-    initials: "KN",
-    name: "Kirschbaum & Nowotny, LLC",
-    location: "Overland Park, KS",
+    quote: "Implementing CaseDelta was the best decision we made this year. Delta slotted into the systems we already ran on and started doing real work within days.",
+    name: "Marcus Chen",
+    title: "Managing Partner, NovaTech Legal",
+    photo: IMG("O7FyI2ae7dL4eDiTZJoZwHqdhxc.jpg"),
   },
-  // Add more REAL, attributable quotes here to turn this back into a scrolling marquee.
+  {
+    quote: "CaseDelta has changed how our team works. Delta is intuitive, reliable, and has taken the routine case work off our attorneys' plates.",
+    name: "Lucifer Jason",
+    title: "Partner, Q.tube Law",
+    photo: IMG("4JAVNKxzAj7T8HuZ6ikGr74dI.png"),
+  },
 ];
 
-function Card({ c }: { c: Story }) {
+function Card({ c }: { c: (typeof CARDS)[number] }) {
   return (
-    <div style={{ flex: "0 0 auto", width: 560, minHeight: 260, background: SX.cream, borderRadius: 24, border: `1px solid ${SX.hairline}`, padding: "40px 40px 34px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-      <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 22, lineHeight: 1.4, letterSpacing: "-0.3px", color: SX.ink, margin: 0 }}>&ldquo;{c.quote}&rdquo;</p>
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 32 }}>
-        <span aria-hidden style={{ width: 46, height: 46, borderRadius: "50%", background: `linear-gradient(150deg, #ff8a4c, ${SX.orange})`, display: "grid", placeItems: "center", fontFamily: SX.body, fontWeight: 600, fontSize: 15, color: "#fff", flex: "0 0 auto" }}>{c.initials}</span>
+    <div style={{ flex: "0 0 auto", width: 660, height: 426, background: SX.cream, borderRadius: 24, border: `1px solid ${SX.hairline}`, display: "flex", overflow: "hidden" }}>
+      <div style={{ flex: "1 1 auto", padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 22, lineHeight: 1.35, letterSpacing: "-0.3px", color: SX.ink, margin: 0 }}>&ldquo;{c.quote}&rdquo;</p>
         <div>
-          <div style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 16, color: SX.ink }}>{c.name}</div>
-          <div style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 15, color: SX.ink2, marginTop: 2 }}>{c.location}</div>
+          <div style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 18, color: SX.ink }}>{c.name}</div>
+          <div style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 15, color: SX.ink2, marginTop: 3 }}>{c.title}</div>
         </div>
       </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={c.photo} alt="" aria-hidden style={{ flex: "0 0 auto", width: 300, height: "100%", objectFit: "cover" }} />
     </div>
   );
 }
 
 export function Testimonials() {
-  const marquee = CARDS.length >= 2;
   const track = [...CARDS, ...CARDS];
   return (
     <section style={{ background: SX.white, padding: "0 0 120px", overflow: "hidden" }}>
       <Container>
         <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, textAlign: "center", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-          Real stories from firms using CaseDelta
+          Real stories from teams using CaseDelta
         </h2>
       </Container>
-
-      {marquee ? (
-        <div className="sx-tmk" style={{ marginTop: 56, overflow: "hidden", maskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)" }}>
-          <div className="sx-tmk-track" style={{ display: "flex", gap: 24, width: "max-content", paddingLeft: 24 }}>
-            {track.map((c, i) => <Card key={i} c={c} />)}
-          </div>
+      <div className="sx-tmk" style={{ marginTop: 56, overflow: "hidden", maskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)" }}>
+        <div className="sx-tmk-track" style={{ display: "flex", gap: 24, width: "max-content", paddingLeft: 24 }}>
+          {track.map((c, i) => <Card key={i} c={c} />)}
         </div>
-      ) : (
-        <Container>
-          <div style={{ display: "flex", justifyContent: "center", marginTop: 56 }}>
-            <Card c={CARDS[0]} />
-          </div>
-        </Container>
-      )}
-
+      </div>
       <style>{`
         .sx-tmk-track { animation: sx-tmk 40s linear infinite; }
         @keyframes sx-tmk { from { transform: translateX(0); } to { transform: translateX(-50%); } }
