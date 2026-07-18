@@ -14,6 +14,7 @@
  */
 import { SX } from "./tokens";
 import { Reveal } from "./reveal";
+import { scrollToSection } from "./scrollToSection";
 
 const COLS = [
   { head: "Product", links: ["Features", "Pricing", "Security", "Integrations", "Book a demo"] },
@@ -75,7 +76,7 @@ function Socials() {
 
 export function CtaFooter() {
   return (
-    <div style={{ position: "relative", overflow: "hidden", background: SX.cream }}>
+    <div id="contact" style={{ position: "relative", overflow: "hidden", background: SX.cream }}>
       {/* faint grid (masked to the CTA area) */}
       <div aria-hidden style={{ position: "absolute", inset: 0, opacity: 0.55, backgroundImage: `linear-gradient(${SX.hairline} 1px, transparent 1px), linear-gradient(90deg, ${SX.hairline} 1px, transparent 1px)`, backgroundSize: "56px 56px", maskImage: "radial-gradient(80% 55% at 50% 30%, black, transparent)", WebkitMaskImage: "radial-gradient(80% 55% at 50% 30%, black, transparent)" }} />
       {/* layered sunrise glow at the bottom-center edge */}
@@ -91,7 +92,7 @@ export function CtaFooter() {
         </p>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 34 }}>
           <a href="#" className="sx-btn" style={{ background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 24px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a demo</a>
-          <a href="#" className="sx-btn-outline" style={{ background: "transparent", color: SX.ink, border: "1px solid rgba(26, 23, 18, 0.18)", borderRadius: 12, padding: "14px 24px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none" }}>See pricing</a>
+          <a href="#pricing" onClick={(e) => { e.preventDefault(); scrollToSection("pricing"); }} className="sx-btn-outline" style={{ background: "transparent", color: SX.ink, border: "1px solid rgba(26, 23, 18, 0.18)", borderRadius: 12, padding: "14px 24px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none" }}>See pricing</a>
         </div>
       </Reveal>
 

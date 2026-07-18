@@ -41,7 +41,7 @@ function Check({ color }: { color: string }) {
 
 export function Pricing() {
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section id="pricing" style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
         <Reveal>
           <SectionHead

@@ -23,6 +23,7 @@
  */
 import { motion, useReducedMotion } from "framer-motion";
 import { SX, SX_IMG } from "./tokens";
+import { scrollToSection } from "./scrollToSection";
 
 const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number]; // Perform text ease
 const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number]; // Perform photo ease
@@ -117,7 +118,7 @@ export function Hero() {
               </span>
             </a>
             {/* secondary: ghost */}
-            <a href="#" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.42)", borderRadius: 999, padding: "11px 22px", textDecoration: "none", backdropFilter: "blur(2px)" }}>
+            <a href="#howitworks" onClick={(e) => { e.preventDefault(); scrollToSection("howitworks"); }} className="sx-btn" style={{ display: "inline-flex", alignItems: "center", fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.42)", borderRadius: 999, padding: "11px 22px", textDecoration: "none", backdropFilter: "blur(2px)" }}>
               See how it works
             </a>
           </motion.div>

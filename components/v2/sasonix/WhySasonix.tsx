@@ -29,7 +29,7 @@ const COLS = "1fr 1.12fr 1.12fr";
 
 export function WhySasonix() {
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section id="security" style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
         <Reveal>
           <SectionHead eyebrow="Why Delta?" title="Delta vs a generic AI chatbot" titleMaxW={560} />

@@ -11,8 +11,14 @@
  */
 import { useEffect, useState } from "react";
 import { SX } from "./tokens";
+import { scrollToSection } from "./scrollToSection";
 
-const LINKS = ["Features", "Pricing", "Security", "Contact"];
+const LINKS: { label: string; id: string }[] = [
+  { label: "Features", id: "features" },
+  { label: "Pricing", id: "pricing" },
+  { label: "Security", id: "security" },
+  { label: "Contact", id: "contact" },
+];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -52,8 +58,14 @@ export function Nav() {
         {/* links */}
         <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
           {LINKS.map((l) => (
-            <a key={l} href="#" className="sx-navlink" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>
-              {l}
+            <a
+              key={l.id}
+              href={`#${l.id}`}
+              onClick={(e) => { e.preventDefault(); scrollToSection(l.id); }}
+              className="sx-navlink"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}
+            >
+              {l.label}
             </a>
           ))}
         </div>

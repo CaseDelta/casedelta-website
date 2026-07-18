@@ -33,7 +33,7 @@ const CENTERS = [140, 390, 640, 890, 1140]; // tile centers in the 1280 containe
 
 export function HowItWorks() {
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section id="howitworks" style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
         <Reveal>
           <SectionHead
