@@ -13,6 +13,7 @@
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Reveal } from "./reveal";
 
 const IMG = (f: string) => `https://framerusercontent.com/images/${f}`;
 
@@ -52,15 +53,17 @@ export function Testimonials() {
   return (
     <section style={{ background: SX.white, padding: "0 0 120px", overflow: "hidden" }}>
       <Container>
-        <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, textAlign: "center", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-          Real stories from teams using CaseDelta
-        </h2>
+        <Reveal>
+          <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, textAlign: "center", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+            Real stories from teams using CaseDelta
+          </h2>
+        </Reveal>
       </Container>
-      <div className="sx-tmk" style={{ marginTop: 56, overflow: "hidden", maskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)" }}>
+      <Reveal className="sx-tmk" delay={0.05} style={{ marginTop: 56, overflow: "hidden", maskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, #000 6%, #000 94%, transparent)" }}>
         <div className="sx-tmk-track" style={{ display: "flex", gap: 24, width: "max-content", paddingLeft: 24 }}>
           {track.map((c, i) => <Card key={i} c={c} />)}
         </div>
-      </div>
+      </Reveal>
       <style>{`
         .sx-tmk-track { animation: sx-tmk 40s linear infinite; }
         @keyframes sx-tmk { from { transform: translateX(0); } to { transform: translateX(-50%); } }

@@ -17,6 +17,7 @@
  * primitives (AutomationFlow, HowToWork, SmartFlow, Integrations, Faq) are kept in the
  * repo as a library for future pages.
  */
+import { MotionConfig } from "framer-motion";
 import { SX } from "./tokens";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
@@ -31,6 +32,7 @@ import { CtaFooter } from "./CtaFooter";
 
 export function Sasonix() {
   return (
+    <MotionConfig reducedMotion="user">
     <div style={{ background: SX.white, color: SX.ink, minHeight: "100vh" }}>
       <SmoothScroll />
       <Nav />
@@ -60,5 +62,6 @@ export function Sasonix() {
         @media (prefers-reduced-motion: reduce) { .sx-btn { transition: none; } .sx-btn:hover { transform: none; } }
       `}</style>
     </div>
+    </MotionConfig>
   );
 }

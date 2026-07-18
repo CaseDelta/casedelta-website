@@ -11,8 +11,10 @@
  *
  * Kept Sasonix-styled (cream / orange) until the tokens.ts rebrand.
  */
+import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
+import { Reveal, revealProps } from "./reveal";
 
 const TIERS = [
   { band: "Up to 5 attorneys", price: "$999", featured: false },
@@ -41,22 +43,24 @@ export function Pricing() {
   return (
     <section style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
-        <SectionHead
-          eyebrow="Pricing"
-          title="Priced per firm, not per seat"
-          sub="Flat monthly pricing by attorney count. Bring your whole staff, paralegals and all, at no extra cost."
-          titleMaxW={560}
-          subMaxW={480}
-        />
+        <Reveal>
+          <SectionHead
+            eyebrow="Pricing"
+            title="Priced per firm, not per seat"
+            sub="Flat monthly pricing by attorney count. Bring your whole staff, paralegals and all, at no extra cost."
+            titleMaxW={560}
+            subMaxW={480}
+          />
+        </Reveal>
 
         {/* three attorney-count tiers */}
         <div className="sx-price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, maxWidth: 1120, margin: "56px auto 0", alignItems: "stretch" }}>
-          {TIERS.map((t) => {
+          {TIERS.map((t, i) => {
             const on = t.featured;
             const nameColor = on ? "#fff" : SX.ink;
             const subColor = on ? "rgba(255,255,255,0.82)" : SX.ink2;
             return (
-              <div key={t.band} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: on ? "0 40px 80px -46px rgba(255,112,41,0.5)" : "none" }}>
+              <motion.div key={t.band} {...revealProps({ delay: i * 0.08, amount: 0.3 })} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: on ? "0 40px 80px -46px rgba(255,112,41,0.5)" : "none" }}>
                 {on && (
                   <span style={{ position: "absolute", top: 24, right: 24, fontFamily: SX.ui, fontSize: 12, fontWeight: 600, color: SX.orange, background: "#fff", borderRadius: 999, padding: "5px 12px" }}>Most popular</span>
                 )}
@@ -67,18 +71,20 @@ export function Pricing() {
                 </div>
                 <div style={{ fontFamily: SX.body, fontSize: 15, lineHeight: "22px", color: subColor, margin: "12px 0 28px" }}>Flat monthly. Unlimited staff.</div>
                 <a href="#" className="sx-btn" style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a demo</a>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* firms above 20 attorneys */}
-        <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-          More than 20 attorneys? <a href="#" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
-        </p>
+        <Reveal>
+          <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
+            More than 20 attorneys? <a href="#" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
+          </p>
+        </Reveal>
 
         {/* shared: every plan includes the same product */}
-        <div style={{ maxWidth: 860, margin: "44px auto 0", background: SX.cream, borderRadius: 16, border: `1px solid ${SX.hairline}`, padding: "30px 36px" }}>
+        <Reveal style={{ maxWidth: 860, margin: "44px auto 0", background: SX.cream, borderRadius: 16, border: `1px solid ${SX.hairline}`, padding: "30px 36px" }}>
           <div style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, marginBottom: 18, textAlign: "center" }}>Every plan includes</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 40, rowGap: 14 }}>
             {INCLUDED.map((f) => (
@@ -87,7 +93,7 @@ export function Pricing() {
               </span>
             ))}
           </div>
-        </div>
+        </Reveal>
       </Container>
       <style>{`@media (max-width: 860px){ .sx-price-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>

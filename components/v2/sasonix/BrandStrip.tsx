@@ -8,6 +8,7 @@
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Reveal } from "./reveal";
 
 const LOGOS = [
   "https://framerusercontent.com/images/4fMdQURZjmnz4MzthqdHnuPRWG0.svg",
@@ -22,7 +23,7 @@ export function BrandStrip() {
   return (
     <section style={{ background: SX.white, padding: "34px 0 120px" }}>
       <Container>
-        <div style={{ display: "flex", alignItems: "center", height: 100, gap: 0 }}>
+        <Reveal style={{ display: "flex", alignItems: "center", height: 100, gap: 0 }}>
           <p style={{ flex: "0 0 auto", width: 300, fontFamily: SX.body, fontWeight: 500, fontSize: 18, lineHeight: "25.2px", color: SX.ink, margin: 0 }}>
             Purpose-built for personal injury, mass tort, and medical malpractice firms.
           </p>
@@ -34,7 +35,7 @@ export function BrandStrip() {
               ))}
             </div>
           </div>
-        </div>
+        </Reveal>
       </Container>
 
       <style>{`

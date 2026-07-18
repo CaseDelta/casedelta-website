@@ -11,8 +11,10 @@
  * Tool tiles use the real integration logos in /public/assets/integrations. Everything
  * else stays Sasonix-styled (orange) until the tokens.ts rebrand.
  */
+import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead, Eyebrow } from "./kit";
+import { Reveal, revealProps } from "./reveal";
 
 const STEPS = [
   { n: "Step 01", t: "Connect the tools you already use", d: "Your case manager, email, calendar, drive, and billing. No migration, no rip-out, and nothing new for your team to learn." },
@@ -33,18 +35,20 @@ export function HowItWorks() {
   return (
     <section style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
-        <SectionHead
-          eyebrow="Onboarding"
-          title="Connect your firm in five minutes"
-          sub="No engineer, no migration. Tell Delta what your firm runs on, and it connects, learns your matters, and starts working."
-          titleMaxW={560}
-          subMaxW={460}
-        />
+        <Reveal>
+          <SectionHead
+            eyebrow="Onboarding"
+            title="Connect your firm in five minutes"
+            sub="No engineer, no migration. Tell Delta what your firm runs on, and it connects, learns your matters, and starts working."
+            titleMaxW={560}
+            subMaxW={460}
+          />
+        </Reveal>
 
         {/* the three steps */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginTop: 56 }}>
           {STEPS.map((s, i) => (
-            <div key={s.t} style={{ background: SX.cream, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.12)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", padding: 32 }}>
+            <motion.div key={s.t} {...revealProps({ delay: i * 0.09, amount: 0.35 })} style={{ background: SX.cream, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.12)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", padding: 32 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.cream2, borderRadius: 90, padding: "8px 24px" }}>
                 <span style={{ position: "relative", width: 8, height: 8, flex: "0 0 auto" }}>
                   <span aria-hidden className="sx-dot-glow" style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.orangeDeep, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }} />
@@ -54,12 +58,12 @@ export function HowItWorks() {
               </span>
               <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 20, lineHeight: "25.2px", color: SX.ink, margin: "24px 0 0" }}>{s.t}</p>
               <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "12px 0 0" }}>{s.d}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* integration hub: Delta on top of the firm's existing stack */}
-        <div style={{ marginTop: 96, display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Reveal style={{ marginTop: 96, display: "flex", flexDirection: "column", alignItems: "center" }}>
           <Eyebrow>Works on top of your stack</Eyebrow>
           <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "18px 0 0", maxWidth: 480, textAlign: "center" }}>
             Delta connects to the tools your firm already pays for. No rip-out, no migration, no new logins for your team.
@@ -90,7 +94,7 @@ export function HowItWorks() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </Container>
 
       <style>{`

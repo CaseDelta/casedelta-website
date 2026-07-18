@@ -12,6 +12,7 @@
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Reveal } from "./reveal";
 
 const IMG = (f: string) => `https://framerusercontent.com/images/${f}`;
 
@@ -90,12 +91,14 @@ export function AutomationSection() {
   return (
     <section style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
-        <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>
-          An associate that does the work, not just the answers
-        </h2>
+        <Reveal>
+          <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>
+            An associate that does the work, not just the answers
+          </h2>
+        </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
           {CARDS.map((c, i) => (
-            <div key={c.heading} style={{ position: "relative", background: SX.card, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.10)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <Reveal key={c.heading} amount={0.2} style={{ position: "relative", background: SX.card, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.10)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
               {/* left text */}
               <div style={{ padding: "56px 40px 56px 32px", display: "flex", flexDirection: "column" }}>
                 <IconChip path={ICONS[i]} />
@@ -113,7 +116,7 @@ export function AutomationSection() {
                 <img src={c.photo} alt="" aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                 {c.panel}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>

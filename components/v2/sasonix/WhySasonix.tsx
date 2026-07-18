@@ -8,6 +8,7 @@
  */
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
+import { Reveal } from "./reveal";
 
 const ROWS = [
   { feat: "Where it works", sx: "Inside the tools you already use", other: "In one more browser tab", otherOk: false },
@@ -30,8 +31,10 @@ export function WhySasonix() {
   return (
     <section style={{ background: SX.white, padding: "0 0 120px" }}>
       <Container>
-        <SectionHead eyebrow="Why Delta?" title="Delta vs a generic AI chatbot" titleMaxW={560} />
-        <div style={{ position: "relative", maxWidth: 940, margin: "56px auto 0" }}>
+        <Reveal>
+          <SectionHead eyebrow="Why Delta?" title="Delta vs a generic AI chatbot" titleMaxW={560} />
+        </Reveal>
+        <Reveal amount={0.15} style={{ position: "relative", maxWidth: 940, margin: "56px auto 0" }}>
           {/* highlighted Sasonix column */}
           <div aria-hidden style={{ position: "absolute", top: 0, bottom: 0, left: "calc(1/3.24*100%)", width: "calc(1.12/3.24*100%)", border: `2px solid ${SX.orange}`, borderRadius: 16, background: "rgba(255,112,41,0.04)", pointerEvents: "none" }} />
           {/* header */}
@@ -57,7 +60,7 @@ export function WhySasonix() {
               </span>
             </div>
           ))}
-        </div>
+        </Reveal>
       </Container>
     </section>
   );
