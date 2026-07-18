@@ -10,7 +10,7 @@
  * idle, so the two do not fight in practice. Honors reduced motion (jumps instantly).
  * Distinct from SmoothScroll.tsx, which handles wheel momentum.
  */
-const NAV_OFFSET = 100; // fixed nav height + a little breathing room above the heading
+const NAV_OFFSET = 156; // fixed nav (~83px) + breathing room, so headers land clear of the nav
 
 export function scrollToSection(id: string, offset: number = NAV_OFFSET) {
   if (typeof window === "undefined") return;
