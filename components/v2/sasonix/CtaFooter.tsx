@@ -14,11 +14,38 @@
  */
 import { SX } from "./tokens";
 import { Reveal } from "./reveal";
+import { scrollToSection } from "./scrollToSection";
+import { CalendlyEmbed } from "./CalendlyEmbed";
 
-const COLS = [
-  { head: "Product", links: ["Features", "Pricing", "Security", "Integrations", "Book a demo"] },
-  { head: "Company", links: ["About", "Contact", "Careers"] },
-  { head: "Legal", links: ["Privacy policy", "Terms of service"] },
+// `section` links smooth-scroll on the homepage and fall back to /v2#id from a
+// secondary page; `href` links are plain navigations. About + Careers have no /v2
+// page yet, so they fall back to the homepage for now.
+const COLS: { head: string; links: { label: string; section?: string; href?: string }[] }[] = [
+  {
+    head: "Product",
+    links: [
+      { label: "Features", section: "features" },
+      { label: "Pricing", section: "pricing" },
+      { label: "Security", section: "security" },
+      { label: "Integrations", section: "howitworks" },
+      { label: "Book a demo", href: "/v2/demo" },
+    ],
+  },
+  {
+    head: "Company",
+    links: [
+      { label: "About", href: "/v2" },
+      { label: "Contact", href: "/v2/demo" },
+      { label: "Careers", href: "/v2" },
+    ],
+  },
+  {
+    head: "Legal",
+    links: [
+      { label: "Privacy policy", href: "/privacy" },
+      { label: "Terms of service", href: "/terms" },
+    ],
+  },
 ];
 
 function Wordmark() {
@@ -90,10 +117,11 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
           Give your team back their evenings
         </h2>
         <p style={{ fontFamily: SX.body, fontSize: 18, lineHeight: "30.6px", color: SX.ink2, margin: "20px auto 0", maxWidth: 560 }}>
-          See what Delta does with your firm&rsquo;s real matters. Book a short walkthrough and we will run it on your own cases.
+          Pick a time below for a 15 minute walkthrough. We will run Delta on your firm&rsquo;s real cases, live.
         </p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 34 }}>
-          <a href="/v2/demo" className="sx-btn" style={{ background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 24px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a demo</a>
+        {/* Inline scheduler: ready buyers book here without leaving the homepage (lazy-loaded). */}
+        <div style={{ maxWidth: 720, margin: "40px auto 0", background: "#fff", border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(26,23,18,0.28)", overflow: "hidden", textAlign: "left" }}>
+          <CalendlyEmbed lazy />
         </div>
       </Reveal>
       )}
@@ -111,9 +139,23 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
             <div key={col.head}>
               <div style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, marginBottom: 16 }}>{col.head}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {col.links.map((l) => (
-                  <a key={l} href="#" className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2, textDecoration: "none" }}>{l}</a>
-                ))}
+                {col.links.map((l) =>
+                  l.section ? (
+                    <a
+                      key={l.label}
+                      href={`/v2#${l.section}`}
+                      onClick={(e) => { e.preventDefault(); scrollToSection(l.section as string); }}
+                      className="sx-navlink"
+                      style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2, textDecoration: "none" }}
+                    >
+                      {l.label}
+                    </a>
+                  ) : (
+                    <a key={l.label} href={l.href} className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2, textDecoration: "none" }}>
+                      {l.label}
+                    </a>
+                  )
+                )}
               </div>
             </div>
           ))}

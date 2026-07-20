@@ -13,7 +13,6 @@
  * left column carries the pitch, what-to-expect, and one real proof quote; the right
  * column holds the scheduler. Layout mirrors the homepage hero's split.
  */
-import { useEffect } from "react";
 import { MotionConfig } from "framer-motion";
 import { SX } from "./tokens";
 import { SmoothScroll } from "./SmoothScroll";
@@ -21,8 +20,7 @@ import { Nav } from "./Nav";
 import { CtaFooter } from "./CtaFooter";
 import { Container, Eyebrow } from "./kit";
 import { Reveal } from "./reveal";
-
-const CALENDLY_URL = "https://calendly.com/camren-casedelta/new-meeting";
+import { CalendlyEmbed } from "./CalendlyEmbed";
 
 const EXPECT = [
   "15 minutes, live over video",
@@ -87,7 +85,7 @@ export function DemoPage() {
 
               {/* RIGHT: the Calendly scheduler, in a card */}
               <Reveal delay={0.08} style={{ background: "#fff", border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(26,23,18,0.28)", overflow: "hidden" }}>
-                <CalendlyEmbed url={CALENDLY_URL} />
+                <CalendlyEmbed />
               </Reveal>
             </div>
           </Container>
@@ -98,29 +96,6 @@ export function DemoPage() {
         <CtaFooter showCta={false} />
       </div>
     </MotionConfig>
-  );
-}
-
-/* Calendly inline embed — the canonical class-based widget: widget.js auto-initializes
-   any .calendly-inline-widget on load, reading data-url verbatim (so our primary_color
-   orange + hidden GDPR banner apply). The Book a demo links are full page loads, so the
-   script loads fresh on each visit and auto-init always fires. */
-function CalendlyEmbed({ url }: { url: string }) {
-  useEffect(() => {
-    if (document.querySelector('script[data-calendly="1"]')) return;
-    const s = document.createElement("script");
-    s.src = "https://assets.calendly.com/assets/external/widget.js";
-    s.async = true;
-    s.dataset.calendly = "1";
-    document.body.appendChild(s);
-  }, []);
-
-  return (
-    <>
-      {/* React 19 hoists this stylesheet link to <head>; deduped by href. */}
-      <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
-      <div className="calendly-inline-widget" data-url={`${url}?primary_color=ff7029&hide_gdpr_banner=1`} style={{ minWidth: 320, height: 720 }} />
-    </>
   );
 }
 
