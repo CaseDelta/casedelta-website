@@ -11,12 +11,14 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://snap.licdn.com https://connect.facebook.net https://us-assets.i.posthog.com",
-      "style-src 'self' 'unsafe-inline'",
+      // *.calendly.com covers assets.calendly.com (embed script/css); calendly.com (bare) is the scheduler iframe.
+      "script-src 'self' 'unsafe-inline' https://snap.licdn.com https://connect.facebook.net https://us-assets.i.posthog.com https://*.calendly.com",
+      "style-src 'self' 'unsafe-inline' https://*.calendly.com",
       "img-src 'self' data: blob: https:",
       "media-src 'self' https://reports.casedelta.com",
       "font-src 'self' data:",
-      "connect-src 'self' https://px.ads.linkedin.com https://snap.licdn.com https://www.facebook.com https://us.i.posthog.com https://us-assets.i.posthog.com",
+      "connect-src 'self' https://px.ads.linkedin.com https://snap.licdn.com https://www.facebook.com https://us.i.posthog.com https://us-assets.i.posthog.com https://calendly.com https://*.calendly.com",
+      "frame-src 'self' https://calendly.com https://*.calendly.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

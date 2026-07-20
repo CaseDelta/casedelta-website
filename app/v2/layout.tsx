@@ -34,5 +34,11 @@ const jbmono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], disp
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", variable: "--sx-inter" });
 
 export default function V2Layout({ children }: { children: React.ReactNode }) {
-  return <div className={`${archivo.variable} ${geist.variable} ${jbmono.variable} ${inter.variable}`}>{children}</div>;
+  return (
+    <div className={`${archivo.variable} ${geist.variable} ${jbmono.variable} ${inter.variable}`}>
+      {/* Offset hash landings (e.g. arriving at /v2#pricing from a secondary page) below the fixed nav. */}
+      <style>{`#features,#howitworks,#security,#pricing,#contact{scroll-margin-top:156px}`}</style>
+      {children}
+    </div>
+  );
 }

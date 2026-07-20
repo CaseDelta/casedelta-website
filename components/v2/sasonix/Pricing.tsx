@@ -70,7 +70,7 @@ export function Pricing() {
                   <span style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 400, color: subColor }}>/month</span>
                 </div>
                 <div style={{ fontFamily: SX.body, fontSize: 15, lineHeight: "22px", color: subColor, margin: "12px 0 28px" }}>Flat monthly. Unlimited staff.</div>
-                <a href="#" className="sx-btn" style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a demo</a>
+                <a href="/v2/demo" className="sx-btn" style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a demo</a>
               </motion.div>
             );
           })}
@@ -79,7 +79,7 @@ export function Pricing() {
         {/* firms above 20 attorneys */}
         <Reveal>
           <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-            More than 20 attorneys? <a href="#" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
+            More than 20 attorneys? <a href="/v2/demo" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
           </p>
         </Reveal>
 

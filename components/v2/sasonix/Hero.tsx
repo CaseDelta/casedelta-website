@@ -111,7 +111,7 @@ export function Hero() {
           {/* CTAs — appear @1.2s */}
           <motion.div {...rise(1.2)} style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}>
             {/* primary: white pill + dark circular arrow badge (Perform CTA) */}
-            <a href="#" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, background: "#fff", borderRadius: 999, padding: "8px 8px 8px 22px", textDecoration: "none" }}>
+            <a href="/v2/demo" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, background: "#fff", borderRadius: 999, padding: "8px 8px 8px 22px", textDecoration: "none" }}>
               Book a demo
               <span aria-hidden style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, borderRadius: 999, background: SX.ink, color: "#fff" }}>
                 <ArrowUpRight />

@@ -20,14 +20,17 @@ const LINKS: { label: string; id: string }[] = [
   { label: "Contact", id: "contact" },
 ];
 
-export function Nav() {
-  const [scrolled, setScrolled] = useState(false);
+export function Nav({ solid = false }: { solid?: boolean } = {}) {
+  // `solid` forces the scrolled (white-bg, dark-text) treatment from the top, for
+  // pages that have no dark hero behind the nav (e.g. /v2/demo).
+  const [scrolled, setScrolled] = useState(solid);
   useEffect(() => {
+    if (solid) { setScrolled(true); return; }
     const onScroll = () => setScrolled(window.scrollY > 880);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [solid]);
 
   const fg = scrolled ? SX.ink : "#ffffff";
 
@@ -60,7 +63,7 @@ export function Nav() {
           {LINKS.map((l) => (
             <a
               key={l.id}
-              href={`#${l.id}`}
+              href={`/v2#${l.id}`}
               onClick={(e) => { e.preventDefault(); scrollToSection(l.id); }}
               className="sx-navlink"
               style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}
@@ -71,8 +74,8 @@ export function Nav() {
         </div>
         {/* actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-          <a href="#" className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Log in</a>
-          <a href="#" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: SX.ink, borderRadius: 12, padding: "13px 20px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
+          <a href="https://app.casedelta.com" className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Log in</a>
+          <a href="/v2/demo" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: SX.ink, borderRadius: 12, padding: "13px 20px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
         </div>
       </div>
     </header>

@@ -15,7 +15,11 @@ const NAV_OFFSET = 156; // fixed nav (~83px) + breathing room, so headers land c
 export function scrollToSection(id: string, offset: number = NAV_OFFSET) {
   if (typeof window === "undefined") return;
   const el = document.getElementById(id);
-  if (!el) return;
+  if (!el) {
+    // Section isn't on this page (e.g. a secondary page like /v2/demo) — jump to the homepage anchor.
+    window.location.href = `/v2#${id}`;
+    return;
+  }
 
   const startY = window.scrollY;
   const maxY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
