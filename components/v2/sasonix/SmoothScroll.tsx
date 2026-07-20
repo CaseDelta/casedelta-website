@@ -26,15 +26,20 @@ export function SmoothScroll() {
     const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
     const clamp = (v: number) => Math.max(0, Math.min(v, maxScroll()));
 
+    // behavior:"instant" so the global `html { scroll-behavior: smooth }` doesn't ALSO
+    // animate each frame's scrollTo. That double-smoothing makes the page creep for a
+    // moment (native smooth-scroll chasing a target that moves every frame), then lurch
+    // ahead once this lerp settles. This lerp must be the only smoothing.
+    const jump = (y: number) => window.scrollTo({ top: y, left: 0, behavior: "instant" as ScrollBehavior });
     const animate = () => {
       current += (target - current) * EASE;
       if (Math.abs(target - current) < 0.5) {
         current = target;
         running = false;
-        window.scrollTo(0, current);
+        jump(current);
         return;
       }
-      window.scrollTo(0, current);
+      jump(current);
       raf = requestAnimationFrame(animate);
     };
 
