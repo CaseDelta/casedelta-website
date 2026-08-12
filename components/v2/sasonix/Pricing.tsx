@@ -22,15 +22,6 @@ const TIERS = [
   { band: "Up to 20 attorneys", price: "$3,999", featured: false },
 ];
 
-const INCLUDED = [
-  "Works in the tools you already use",
-  "Chronologies, every fact cited",
-  "Learns how your firm works",
-  "Unlimited staff and matters",
-  "You approve before anything moves",
-  "Working in five minutes",
-];
-
 function Check({ color }: { color: string }) {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
@@ -81,18 +72,6 @@ export function Pricing() {
           <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
             More than 20 attorneys? <a href="/v2/demo" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
           </p>
-        </Reveal>
-
-        {/* shared: every plan includes the same product */}
-        <Reveal style={{ maxWidth: 860, margin: "44px auto 0", background: SX.cream, borderRadius: 16, border: `1px solid ${SX.hairline}`, padding: "30px 36px" }}>
-          <div style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, marginBottom: 18, textAlign: "center" }}>Every plan includes</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: 40, rowGap: 14 }}>
-            {INCLUDED.map((f) => (
-              <span key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: SX.ink }}>
-                <Check color={SX.orange} />{f}
-              </span>
-            ))}
-          </div>
         </Reveal>
       </Container>
       <style>{`@media (max-width: 860px){ .sx-price-grid { grid-template-columns: 1fr !important; } }`}</style>

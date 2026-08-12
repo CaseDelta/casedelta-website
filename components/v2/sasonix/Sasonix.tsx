@@ -3,8 +3,7 @@
 /**
  * CaseDelta homepage (route /v2), composed to Camren's 7-beat progressive-disclosure
  * framework on top of the Sasonix primitive kit:
- *   1. Hero            -> the dream outcome ("Run more cases without hiring")
- *      + BrandStrip    -> trust strip riding under the hero (placeholder logos)
+ *   1. Hero            -> what Delta is, and the ask
  *   2. AutomationSection -> "What Delta is" (three capability cards)
  *   3. HowItWorks      -> how it works + integrates + onboards in 5 minutes (combined)
  *   4. Testimonials    -> one real, attributable quote
@@ -23,9 +22,7 @@ import { ThemeVars, useThemeOverride } from "./ThemeVars";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
-import { BrandStrip } from "./BrandStrip";
 import { AutomationSection } from "./AutomationSection";
-import { RunIllustration } from "./RunIllustration";
 import { UseCases } from "./UseCases";
 import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
@@ -41,24 +38,21 @@ export function Sasonix() {
     <div data-sx-theme={theme} style={{ background: SX.bg, color: SX.ink, minHeight: "100vh" }}>
       <SmoothScroll />
       <Nav />
-      {/* 1. Hero: the dream outcome + trust strip */}
+      {/* 1. Hero */}
       <Hero />
-      <BrandStrip />
       {/* 2. What Delta is */}
       <AutomationSection />
-      {/* 2b. What actually comes back: the artifact, rendered */}
-      <RunIllustration />
       {/* 3. How it works, onboarding and the stack, in one banded section */}
       <HowItWorks />
-      {/* 4. The work, cut by practice area (Grok's "how the team is using it") */}
+      {/* 4. The work, cut by practice area */}
       <UseCases />
-      {/* 4. Testimonial */}
+      {/* 5. Testimonial */}
       <Testimonials />
-      {/* 5. Trust: the objection a firm actually raises */}
+      {/* 6. Trust: the objection a firm actually raises */}
       <Trust />
-      {/* 6. Pricing */}
+      {/* 7. Pricing */}
       <Pricing />
-      {/* 7. Reinforcement + CTA */}
+      {/* 8. Reinforcement + CTA */}
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}
       <style>{`
