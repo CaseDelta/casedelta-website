@@ -71,18 +71,6 @@ export function HowItWorks() {
             >
               Working in five minutes, on top of what you already run
             </h2>
-            <p
-              style={{
-                fontFamily: SX.body,
-                fontSize: 18,
-                lineHeight: "30px",
-                color: SX.onMediaMuted,
-                margin: "18px 0 0",
-                maxWidth: 520,
-              }}
-            >
-              Delta connects to the tools your firm already pays for. No rip out, no migration, no new logins for your team.
-            </p>
           </div>
         </Reveal>
 

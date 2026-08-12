@@ -51,7 +51,7 @@ export function Pricing() {
             const nameColor = on ? SX.onInk : SX.ink;
             const subColor = on ? "color-mix(in srgb, var(--sx-on-ink) 82%, transparent)" : SX.ink2;
             return (
-              <motion.div key={t.band} {...revealProps({ delay: i * 0.08, amount: 0.3 })} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: on ? "0 40px 80px -46px color-mix(in srgb, var(--sx-accent) 50%, transparent)" : "none" }}>
+              <motion.div key={t.band} className="sx-tier" data-featured={on ? "true" : "false"} {...revealProps({ delay: i * 0.08, amount: 0.3 })} whileHover={{ y: -6 }} transition={{ type: "tween", duration: 0.28, ease: [0.22, 1, 0.36, 1] }} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: "var(--sx-tier-shadow)" }}>
                 <div style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: nameColor }}>{t.band}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, margin: "20px 0 0" }}>
                   <span style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, letterSpacing: "-1px", color: nameColor, lineHeight: 1 }}>{t.price}</span>
@@ -71,7 +71,35 @@ export function Pricing() {
           </p>
         </Reveal>
       </Container>
-      <style>{`@media (max-width: 860px){ .sx-price-grid { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`
+        /* Tier hover: the card lifts and its shadow deepens.
+           TWO THINGS TO KNOW BEFORE EDITING THIS.
+           1. The lift comes from framer's whileHover, not CSS. These are motion
+              components, so framer owns the inline transform and any stylesheet
+              :hover transform is simply overridden. A CSS-only version looked
+              correct in the file and did nothing in the browser.
+           2. The shadow routes through --sx-tier-shadow. The card sets
+              box-shadow inline, which beats any stylesheet rule at any
+              specificity, but the VARIABLE it references still cascades, so
+              :hover can change it. */
+        .sx-tier {
+          --sx-tier-shadow: 0 1px 2px rgba(var(--sx-shadow-rgb), 0.04);
+          transition: box-shadow 0.28s ease;
+          will-change: transform;
+        }
+        .sx-tier:hover { --sx-tier-shadow: 0 26px 50px -28px rgba(var(--sx-shadow-rgb), 0.30); }
+        /* the featured tier keeps its accent glow, deepened rather than replaced */
+        .sx-tier[data-featured="true"] {
+          --sx-tier-shadow: 0 40px 80px -46px color-mix(in srgb, var(--sx-accent) 50%, transparent);
+        }
+        .sx-tier[data-featured="true"]:hover {
+          --sx-tier-shadow: 0 52px 90px -44px color-mix(in srgb, var(--sx-accent) 66%, transparent);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sx-tier { transition: none; }
+        }
+        @media (max-width: 860px){ .sx-price-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
     </section>
   );
 }
