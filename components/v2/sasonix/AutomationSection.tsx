@@ -57,24 +57,24 @@ function CodePanel() {
 
 const CARDS: Card[] = [
   {
-    heading: "It works in your systems",
-    sub: "Delta signs in to Filevine, Clio, MyCase, your email and drive. It uses them the way your staff does.",
-    checks: ["Filevine, Clio, MyCase, and more", "Your email, calendar and drive", "Nothing new for your team to learn"],
+    heading: "A computer of its own",
+    sub: "Delta has a computer of its own, so work does not stall when you step away. It signs in and works across your apps, tools and websites, including the ones with no clean API, and comes back with the work finished.",
+    checks: ["Filevine, Clio, MyCase, and more", "Your email, calendar and drive", "Works where there is no API"],
     photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
     panel: <CodePanel />,
   },
   {
-    heading: "It knows the whole case",
-    sub: "Your case is spread across email, files, and your case system. No one tool sees all of it. Delta reads all of it.",
-    checks: ["Reads across every system", "Every fact linked to its page", "Hundreds or thousands of pages"],
+    heading: "Ask it like a teammate",
+    sub: "Ask Delta the way you would ask someone on your team. Other tools make you build workflows first. With Delta you just ask, and it gets it done.",
+    checks: ["Nothing to set up", "Nothing new to learn", "Ask in plain English"],
     photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
     // eslint-disable-next-line @next/next/no-img-element
     panel: <img src={IMG("Gg2IiSRFyZek4fK2e0pYNUsxKEU.png")} alt="" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-44%, -50%)", width: 442, height: "auto", borderRadius: 12, boxShadow: "0 10px 68px rgba(var(--sx-shadow-rgb), 0.14)" }} />,
   },
   {
-    heading: "You stay in control",
-    sub: "Delta does the first pass. A person approves it. Nothing goes out without you.",
-    checks: ["You approve before it moves", "Every answer shows its source", "It learns how your firm works"],
+    heading: "Trust it with more over time",
+    sub: "Delta gets sharper the more you work together. It keeps context on how your firm likes work done. After a few files it picks up your templates, your edge cases, and knows when to ask versus keep going.",
+    checks: ["Learns how your firm works", "Knows when to ask you", "That knowledge stays when people leave"],
     photo: IMG("psmbnZin0yEqHm2rJhS4fljiI.png"),
     panel: (
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", display: "flex", flexDirection: "column", gap: 22, width: 435 }}>
@@ -93,7 +93,7 @@ export function AutomationSection() {
       <Container>
         <Reveal>
           <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>
-            What Delta does
+            How Delta is different
           </h2>
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>

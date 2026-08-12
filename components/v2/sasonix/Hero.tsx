@@ -119,7 +119,7 @@ export function Hero() {
            fits inside one viewport instead of pushing the proof off the fold. */
         @media (min-width: 1101px) and (max-height: 800px) {
           .sx-hero-title { font-size: 54px !important; line-height: 58px !important; }
-          .sx-hero-subhead { font-size: 17px !important; margin-top: 18px !important; }
+          .sx-hero-subhead { font-size: 19px !important; line-height: 30px !important; margin-top: 18px !important; }
           .sx-hero-actions { margin-top: 24px !important; }
           .sx-hero-proof { margin-top: 30px !important; }
         }
@@ -156,7 +156,7 @@ export function Hero() {
           }
           .sx-hero-copy { max-width: 100% !important; }
           .sx-hero-title { font-size: 46px !important; line-height: 50px !important; }
-          .sx-hero-subhead { max-width: 100% !important; font-size: 17px !important; line-height: 28px !important; }
+          .sx-hero-subhead { max-width: 100% !important; font-size: 18px !important; line-height: 29px !important; }
           .sx-hero-actions { flex-wrap: wrap; }
           .sx-hero-proof { margin-top: 34px !important; }
         }
@@ -230,7 +230,7 @@ export function Hero() {
                 textWrap: "balance",
               }}
             >
-              An associate that knows the whole case.
+              Meet Delta
             </motion.h1>
 
             <motion.p
@@ -239,14 +239,14 @@ export function Hero() {
               style={{
                 fontFamily: SX.body,
                 fontWeight: 400,
-                fontSize: 18,
-                lineHeight: "30px",
+                fontSize: 22,
+                lineHeight: "34px",
                 color: SX.onMediaMuted,
-                margin: "24px 0 0",
-                maxWidth: 500,
+                margin: "22px 0 0",
+                maxWidth: 560,
               }}
             >
-              Tell Delta to brief the case, pull records, or draft the demand. It works in the tools you already use. You approve everything.
+              Delta is the AI paralegal you can give real work to. It has a computer of its own, works inside the tools your firm already uses, and comes back with the work finished.
             </motion.p>
 
             <motion.div

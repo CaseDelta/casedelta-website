@@ -25,7 +25,7 @@ import { Nav } from "./Nav";
 import { Hero } from "./Hero";
 import { BrandStrip } from "./BrandStrip";
 import { AutomationSection } from "./AutomationSection";
-import { Jobs } from "./Jobs";
+import { UseCases } from "./UseCases";
 import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
 import { Trust } from "./Trust";
@@ -45,8 +45,8 @@ export function Sasonix() {
       <BrandStrip />
       {/* 2. What Delta is */}
       <AutomationSection />
-      {/* 2b. The work, named the way a firm names it */}
-      <Jobs />
+      {/* 2b. The work, cut by practice area (Grok's "how the team is using it") */}
+      <UseCases />
       {/* 3. How it works + integrates + onboards in 5 minutes */}
       <HowItWorks />
       {/* 4. Testimonial */}
