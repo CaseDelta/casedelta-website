@@ -25,9 +25,10 @@ import { Nav } from "./Nav";
 import { Hero } from "./Hero";
 import { BrandStrip } from "./BrandStrip";
 import { AutomationSection } from "./AutomationSection";
+import { Jobs } from "./Jobs";
 import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
-import { WhySasonix } from "./WhySasonix";
+import { Trust } from "./Trust";
 import { Pricing } from "./Pricing";
 import { CtaFooter } from "./CtaFooter";
 
@@ -44,12 +45,14 @@ export function Sasonix() {
       <BrandStrip />
       {/* 2. What Delta is */}
       <AutomationSection />
+      {/* 2b. The work, named the way a firm names it */}
+      <Jobs />
       {/* 3. How it works + integrates + onboards in 5 minutes */}
       <HowItWorks />
       {/* 4. Testimonial */}
       <Testimonials />
-      {/* 5. Delta vs a generic AI chatbot */}
-      <WhySasonix />
+      {/* 5. Trust: the objection a firm actually raises */}
+      <Trust />
       {/* 6. Pricing */}
       <Pricing />
       {/* 7. Reinforcement + CTA */}

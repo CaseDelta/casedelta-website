@@ -14,7 +14,8 @@ import { SX } from "./tokens";
 import { scrollToSection } from "./scrollToSection";
 
 const LINKS: { label: string; id: string }[] = [
-  { label: "Features", id: "features" },
+  { label: "What it does", id: "features" },
+  { label: "The work", id: "jobs" },
   { label: "Pricing", id: "pricing" },
   { label: "Security", id: "security" },
   { label: "Contact", id: "contact" },

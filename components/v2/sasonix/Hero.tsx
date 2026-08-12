@@ -230,7 +230,7 @@ export function Hero() {
                 textWrap: "balance",
               }}
             >
-              Win back your time by having the headcount you could never hire.
+              An associate that knows the whole case.
             </motion.h1>
 
             <motion.p
@@ -243,10 +243,10 @@ export function Hero() {
                 lineHeight: "30px",
                 color: SX.onMediaMuted,
                 margin: "24px 0 0",
-                maxWidth: 470,
+                maxWidth: 500,
               }}
             >
-              The best AI paralegal is the one that knows you, your case, and your firm.
+              Tell Delta to brief the case, pull records, or draft the demand. It works in the tools you already use. You approve everything.
             </motion.p>
 
             <motion.div

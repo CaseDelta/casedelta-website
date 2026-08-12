@@ -17,9 +17,9 @@ import { Container, SectionHead, Eyebrow } from "./kit";
 import { Reveal, revealProps } from "./reveal";
 
 const STEPS = [
-  { n: "Step 01", t: "Connect the tools you already use", d: "Your case manager, email, calendar, drive, and billing. No migration, no rip-out, and nothing new for your team to learn." },
-  { n: "Step 02", t: "Hand it work in plain English", d: "Tell Delta what you would tell a new paralegal. Request these records. Draft the demand. Update the file. Chase the client." },
-  { n: "Step 03", t: "Review, approve, and it learns", d: "You approve before anything goes out. Over about a month it learns your firm's playbook, so you delegate instead of instruct." },
+  { n: "Step 01", t: "Connect", d: "Delta signs in to your case system, email, calendar and drive. No migration. Nothing new to learn. Five minutes." },
+  { n: "Step 02", t: "Ask", d: "Give Delta your onboarding doc and the flow your firm already runs. Same as a new hire." },
+  { n: "Step 03", t: "Approve", d: "You approve before anything goes out. Delta learns how your firm works. That knowledge stays when people leave." },
 ];
 
 const TOOLS = [
@@ -38,8 +38,8 @@ export function HowItWorks() {
         <Reveal>
           <SectionHead
             eyebrow="Onboarding"
-            title="Connect your firm in five minutes"
-            sub="No engineer, no migration. Tell Delta what your firm runs on, and it connects, learns your matters, and starts working."
+            title="Working in five minutes"
+            sub="No engineer. No migration. Tell Delta what your firm runs on, and it starts working."
             titleMaxW={560}
             subMaxW={460}
           />

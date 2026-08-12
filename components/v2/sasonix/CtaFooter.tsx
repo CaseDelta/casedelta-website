@@ -113,11 +113,11 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
       {/* CTA */}
       {showCta && (
       <Reveal style={{ position: "relative", zIndex: 1, maxWidth: 1360, margin: "0 auto", padding: "clamp(90px,10vw,140px) 40px 40px", textAlign: "center" }}>
-        <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: "0 auto", maxWidth: 620 }}>
-          Give your team back their evenings
+        <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: "0 auto", maxWidth: 760 }}>
+          An associate that knows the whole case, and does the work. The judgment stays yours.
         </h2>
         <p style={{ fontFamily: SX.body, fontSize: 18, lineHeight: "30.6px", color: SX.ink2, margin: "20px auto 0", maxWidth: 560 }}>
-          Pick a time below for a 15 minute walkthrough. We will run Delta on your firm&rsquo;s real cases, live.
+          Pick a time below. Fifteen minutes, on your own cases, live.
         </p>
         {/* Inline scheduler: ready buyers book here without leaving the homepage (lazy-loaded). */}
         <div style={{ maxWidth: 720, margin: "40px auto 0", background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", overflow: "hidden", textAlign: "left" }}>

@@ -23,12 +23,12 @@ const TIERS = [
 ];
 
 const INCLUDED = [
-  "Works inside the tools you already use",
-  "Document chronologies with citations",
-  "Firm-specific memory that compounds",
+  "Works in the tools you already use",
+  "Chronologies, every fact cited",
+  "Learns how your firm works",
   "Unlimited staff and matters",
-  "Every action approved by your team",
-  "Onboarding in five minutes",
+  "You approve before anything moves",
+  "Working in five minutes",
 ];
 
 function Check({ color }: { color: string }) {
@@ -46,8 +46,8 @@ export function Pricing() {
         <Reveal>
           <SectionHead
             eyebrow="Pricing"
-            title="Priced per firm, not per seat"
-            sub="Flat monthly pricing by attorney count. Bring your whole staff, paralegals and all, at no extra cost."
+            title="A fraction of another salary"
+            sub="One flat price by attorney count. Your whole staff included."
             titleMaxW={560}
             subMaxW={480}
           />

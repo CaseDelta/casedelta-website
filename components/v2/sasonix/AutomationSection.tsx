@@ -57,24 +57,24 @@ function CodePanel() {
 
 const CARDS: Card[] = [
   {
-    heading: "Drives the tools you already use",
-    sub: "Delta works inside your case manager, email, drive, and billing. It drafts the letter, updates the file, and chases the records, then your team approves.",
-    checks: ["Clio, MyCase, Filevine, and more", "Drafting, updates, and follow-up", "Nothing new for your team to learn"],
+    heading: "It works in your systems",
+    sub: "Delta signs in to Filevine, Clio, MyCase, your email and drive. It uses them the way your staff does.",
+    checks: ["Filevine, Clio, MyCase, and more", "Your email, calendar and drive", "Nothing new for your team to learn"],
     photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
     panel: <CodePanel />,
   },
   {
-    heading: "Builds cited chronologies in minutes",
-    sub: "Point Delta at a document set of a few hundred or a few thousand pages. It returns a clean medical or case chronology, every entry linked back to its source.",
-    checks: ["Hundreds to thousands of pages", "Every entry cited to the record", "Med-mal and mass tort"],
+    heading: "It knows the whole case",
+    sub: "Your case is spread across email, files, and your case system. No one tool sees all of it. Delta reads all of it.",
+    checks: ["Reads across every system", "Every fact linked to its page", "Hundreds or thousands of pages"],
     photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
     // eslint-disable-next-line @next/next/no-img-element
     panel: <img src={IMG("Gg2IiSRFyZek4fK2e0pYNUsxKEU.png")} alt="" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-44%, -50%)", width: 442, height: "auto", borderRadius: 12, boxShadow: "0 10px 68px rgba(var(--sx-shadow-rgb), 0.14)" }} />,
   },
   {
-    heading: "Learns how your firm works",
-    sub: "Delta builds a memory of your matters, your opposing counsel, and your preferences, so it gets sharper on every case instead of starting from zero.",
-    checks: ["Firm-specific memory", "Compounds over time", "Across every active matter"],
+    heading: "You stay in control",
+    sub: "Delta does the first pass. A person approves it. Nothing goes out without you.",
+    checks: ["You approve before it moves", "Every answer shows its source", "It learns how your firm works"],
     photo: IMG("psmbnZin0yEqHm2rJhS4fljiI.png"),
     panel: (
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", display: "flex", flexDirection: "column", gap: 22, width: 435 }}>
@@ -93,7 +93,7 @@ export function AutomationSection() {
       <Container>
         <Reveal>
           <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>
-            An associate that does the work, not just the answers
+            What Delta does
           </h2>
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
