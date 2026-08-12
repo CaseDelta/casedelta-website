@@ -43,7 +43,7 @@ import { Container } from "./kit";
 import { Reveal } from "./reveal";
 
 type Icon = typeof FileText;
-type Example = { title: string; body: string; Icon: Icon };
+type Example = { title: string; body: string[]; Icon: Icon };
 type Practice = { key: string; label: string; examples: Example[] };
 
 const PRACTICES: Practice[] = [
@@ -54,17 +54,26 @@ const PRACTICES: Practice[] = [
       {
         Icon: FileText,
         title: "Demand packages",
-        body: "Build the demand overnight. Reads every record, dates each treatment, drafts the demand in your firm's voice, and leaves it in the file for you to approve.",
+        body: [
+          "Build the demand overnight.",
+          "Reads every record, dates each treatment, drafts the demand in your firm's voice, and leaves it in the file for you to approve.",
+        ],
       },
       {
         Icon: ShieldAlert,
         title: "Policy limits",
-        body: "Catch the coverage problem early. Reads the dec page and the police report, checks the limits against the damages, and flags the conflict on the file.",
+        body: [
+          "Catch the coverage problem early.",
+          "Reads the dec page and the police report, checks the limits against the damages, and flags the conflict on the file.",
+        ],
       },
       {
         Icon: Send,
         title: "Records chasing",
-        body: "Keep the records moving. Drafts every request, tracks what came back, chases what did not, and leaves the follow ups for you to approve.",
+        body: [
+          "Keep the records moving.",
+          "Drafts every request, tracks what came back, chases what did not, and leaves the follow ups for you to approve.",
+        ],
       },
     ],
   },
@@ -75,17 +84,26 @@ const PRACTICES: Practice[] = [
       {
         Icon: Layers,
         title: "Chronology at scale",
-        body: "Build the chronology on every file, not just the ones someone got to. Reads thousands of pages across hundreds of plaintiffs and cites every fact to its page.",
+        body: [
+          "Build the chronology on every file, not just the ones someone got to.",
+          "Reads thousands of pages across hundreds of plaintiffs and cites every fact to its page.",
+        ],
       },
       {
         Icon: ClipboardList,
         title: "Plaintiff fact sheets",
-        body: "Get the fact sheets off the pile. Pulls the answers from the records, drafts every field, cites the page, and parks the sheet for review.",
+        body: [
+          "Get the fact sheets off the pile.",
+          "Pulls the answers from the records, drafts every field, cites the page, and parks the sheet for review.",
+        ],
       },
       {
         Icon: Activity,
         title: "Status across the docket",
-        body: "Know what moved this week. Reads every file, gathers what changed, and comes back with it in plain English.",
+        body: [
+          "Know what moved this week.",
+          "Reads every file, gathers what changed, and comes back with it in plain English.",
+        ],
       },
     ],
   },
@@ -96,17 +114,26 @@ const PRACTICES: Practice[] = [
       {
         Icon: HeartPulse,
         title: "Medical chronology",
-        body: "Build the treatment timeline. Reads the full chart, dates every entry, links each one to its page, and leaves the chronology for you to approve.",
+        body: [
+          "Build the treatment timeline.",
+          "Reads the full chart, dates every entry, links each one to its page, and leaves the chronology for you to approve.",
+        ],
       },
       {
         Icon: FileSearch,
         title: "New records on arrival",
-        body: "Read the record the day it lands. Opens it on arrival with nobody prompting it, and flags what changes the value of the case.",
+        body: [
+          "Read the record the day it lands.",
+          "Opens it on arrival with nobody prompting it, and flags what changes the value of the case.",
+        ],
       },
       {
         Icon: Package,
         title: "Expert packets",
-        body: "Get your expert what they asked for. Pulls the records, assembles the packet, drafts the cover letter, and parks it for your approval.",
+        body: [
+          "Get your expert what they asked for.",
+          "Pulls the records, assembles the packet, drafts the cover letter, and parks it for your approval.",
+        ],
       },
     ],
   },
@@ -117,17 +144,26 @@ const PRACTICES: Practice[] = [
       {
         Icon: FolderPlus,
         title: "New matter opening",
-        body: "Open the file the moment it arrives. Reads the intake email, opens the matter, files the documents, and starts the intake steps.",
+        body: [
+          "Open the file the moment it arrives.",
+          "Reads the intake email, opens the matter, files the documents, and starts the intake steps.",
+        ],
       },
       {
         Icon: MailPlus,
         title: "First response",
-        body: "Answer new intakes fast. Drafts the response in your firm's voice, and never sends it without you.",
+        body: [
+          "Answer new intakes fast.",
+          "Drafts the response in your firm's voice, and never sends it without you.",
+        ],
       },
       {
         Icon: FileWarning,
         title: "Missing documents",
-        body: "Close the gaps in the file. Checks what is still missing, drafts the request to the client, and parks it for your approval.",
+        body: [
+          "Close the gaps in the file.",
+          "Checks what is still missing, drafts the request to the client, and parks it for your approval.",
+        ],
       },
     ],
   },
@@ -138,17 +174,26 @@ const PRACTICES: Practice[] = [
       {
         Icon: Sunrise,
         title: "Morning briefing",
-        body: "Start the day already caught up. Reads what changed across your matters overnight and leaves the briefing before you open the office.",
+        body: [
+          "Start the day already caught up.",
+          "Reads what changed across your matters overnight and leaves the briefing before you open the office.",
+        ],
       },
       {
         Icon: BellRing,
         title: "Nothing goes quiet",
-        body: "Nothing sits still. Finds what is overdue and who has gone quiet, drafts the nudge, and leaves it for you to send.",
+        body: [
+          "Nothing sits still.",
+          "Finds what is overdue and who has gone quiet, drafts the nudge, and leaves it for you to send.",
+        ],
       },
       {
         Icon: Brain,
         title: "Knowledge that stays",
-        body: "Keep what your firm knows. Learns how your firm likes work done, and keeps it when people leave.",
+        body: [
+          "Keep what your firm knows.",
+          "Learns how your firm likes work done, and keeps it when people leave.",
+        ],
       },
     ],
   },
@@ -230,7 +275,11 @@ export function UseCases() {
                     <Icon size={22} strokeWidth={1.7} />
                   </span>
                   <h3 className="sx-uc-title">{title}</h3>
-                  <p className="sx-uc-body">{body}</p>
+                  <div className="sx-uc-body">
+                    {body.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -316,12 +365,21 @@ export function UseCases() {
           letter-spacing: -0.3px;
           color: var(--sx-ink);
         }
+        /* one paragraph per statement, so the card scans in beats */
         .sx-uc-body {
           margin: 12px 0 0;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .sx-uc-body p {
+          margin: 0;
           font-size: 16px;
           line-height: 26px;
           color: var(--sx-ink-2);
         }
+        /* the opening imperative is the outcome, so it leads at full ink */
+        .sx-uc-body p:first-child { color: var(--sx-ink); font-weight: 500; }
 
         @media (prefers-reduced-motion: reduce) {
           .sx-uc-card, .sx-uc-card::after, .sx-uc-chip { transition: none; }

@@ -27,18 +27,30 @@ import { Reveal, revealProps } from "./reveal";
 
 const BAND_IMAGE = "/v2/ambient/forest-dark.webp";
 
-const POINTS: { title: string; body: string }[] = [
+const POINTS: { title: string; body: string[] }[] = [
   {
     title: "Your files stay put",
-    body: "Your files never leave your systems. A paralegal would never take them home. Neither does Delta.",
+    body: [
+          "Your files never leave your systems.",
+          "A paralegal would never take them home.",
+          "Neither does Delta.",
+        ],
   },
   {
     title: "Every answer shows its source",
-    body: "Every answer shows the page it came from. You check it yourself.",
+    body: [
+          "Every answer shows the page it came from.",
+          "You check it yourself.",
+        ],
   },
   {
     title: "Built for client data",
-    body: "Your data stays yours. It is encrypted and kept apart from other firms. It never trains a model. HIPAA and bar compliant.",
+    body: [
+          "Your data stays yours.",
+          "It is encrypted and kept apart from other firms.",
+          "It never trains a model.",
+          "HIPAA and bar compliant.",
+        ],
   },
 ];
 
@@ -122,17 +134,16 @@ export function Trust() {
               >
                 {p.title}
               </h3>
-              <p
-                style={{
-                  fontFamily: SX.body,
-                  fontSize: 16,
-                  lineHeight: "26px",
-                  color: SX.onMediaMuted,
-                  margin: "12px 0 0",
-                }}
-              >
-                {p.body}
-              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, margin: "12px 0 0" }}>
+                {p.body.map((line) => (
+                  <p
+                    key={line}
+                    style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "26px", color: SX.onMediaMuted, margin: 0 }}
+                  >
+                    {line}
+                  </p>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>

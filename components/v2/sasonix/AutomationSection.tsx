@@ -38,7 +38,7 @@ const ICONS = [
   <><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" /></>,
 ];
 
-type Card = { heading: string; sub: string; checks: string[]; photo: string; panel: React.ReactNode };
+type Card = { heading: string; sub: string[]; checks: string[]; photo: string; panel: React.ReactNode };
 
 function CodePanel() {
   return (
@@ -58,14 +58,21 @@ function CodePanel() {
 const CARDS: Card[] = [
   {
     heading: "A computer of its own",
-    sub: "Delta has a computer of its own in the cloud, so work does not stall when you step away. It can sign in and work across apps, tools, and websites, including the ones with no clean API, and come back with the work finished.",
+    sub: [
+      "Delta has a computer of its own in the cloud, so work does not stall when you step away.",
+      "It can sign in and work across apps, tools, and websites, including the ones with no clean API, and come back with the work finished.",
+    ],
     checks: ["Your case system", "Your inbox, calendar and files", "Even where there is no API"],
     photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
     panel: <CodePanel />,
   },
   {
     heading: "Message it like a teammate",
-    sub: "You can message Delta the way you would text someone on your team. Other legal AI tools may ask you to set up and build workflows first. With Delta, simply message it to take on a task and it gets it done.",
+    sub: [
+      "You can message Delta the way you would text someone on your team.",
+      "Other legal AI tools may ask you to set up and build workflows first.",
+      "With Delta, simply message it to take on a task and it gets it done.",
+    ],
     checks: ["Nothing to set up", "Nothing new to learn", "Ask in plain English"],
     photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
     // eslint-disable-next-line @next/next/no-img-element
@@ -73,7 +80,11 @@ const CARDS: Card[] = [
   },
   {
     heading: "Trust it with more over time",
-    sub: "Delta is a teammate that gets sharper over time. It keeps context on how you like work done. After a few files it picks up your voice, your edge cases, and knows when to ask versus keep going.",
+    sub: [
+      "Delta is a teammate that gets sharper over time.",
+      "It keeps context on how you like work done.",
+      "After a few files it picks up your voice, your edge cases, and knows when to ask versus keep going.",
+    ],
     checks: ["Learns how your firm works", "Knows when to ask you", "That knowledge stays when people leave"],
     photo: IMG("psmbnZin0yEqHm2rJhS4fljiI.png"),
     panel: (
@@ -107,7 +118,11 @@ export function AutomationSection() {
               <div style={{ padding: "56px 40px 56px 32px", display: "flex", flexDirection: "column" }}>
                 <IconChip path={ICONS[i]} />
                 <h3 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 32, lineHeight: "38.4px", letterSpacing: "-0.5px", color: SX.ink, margin: "28px 0 0", maxWidth: 410 }}>{c.heading}</h3>
-                <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "16px 0 0", maxWidth: 380 }}>{c.sub}</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14, margin: "16px 0 0", maxWidth: 380 }}>
+                  {c.sub.map((line) => (
+                    <p key={line} style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: 0 }}>{line}</p>
+                  ))}
+                </div>
                 <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 14 }}>
                   {c.checks.map((ck) => (
                     <span key={ck} style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink }}><Check />{ck}</span>
