@@ -59,7 +59,7 @@ const CARDS: Card[] = [
   {
     heading: "A computer of its own",
     sub: "Delta has a computer of its own, so work does not stall when you step away. It signs in and works across your apps, tools and websites, including the ones with no clean API, and comes back with the work finished.",
-    checks: ["Filevine, Clio, MyCase, and more", "Your email, calendar and drive", "Works where there is no API"],
+    checks: ["Your case system", "Your inbox, calendar and files", "Even where there is no API"],
     photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
     panel: <CodePanel />,
   },

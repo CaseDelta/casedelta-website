@@ -1,97 +1,148 @@
 "use client";
 
 /**
- * Beat 3 of the CaseDelta /v2 arc: "How it works + integrates + onboards in 5 minutes."
- * A single combined section built from two Sasonix primitives:
- *   - the "How to Work" stepped cards (glowing Step 0X pill + title + copy), and
- *   - the "Integrations" hub-and-spoke (Delta at the center, tools around it).
- * Leads with the five-minute onboarding claim per Camren's framework. The standalone
- * HowToWork.tsx and Integrations.tsx primitives are kept in the repo as a library.
+ * Onboarding and "works on top of your stack", consolidated into ONE banded section.
  *
- * Tool tiles use the real integration logos in /public/assets/integrations. Everything
- * else stays Sasonix-styled (orange) until the tokens.ts rebrand.
+ * WHY IT LOOKS DIFFERENT FROM ITS NEIGHBOURS: the page was a long run of white
+ * sections with cream cards, and the eye stopped reading. This one is full bleed on
+ * an ambient photograph with light type over it, so the page has a dark band in the
+ * middle and the reader gets a beat. It is the only banded section; if a second one
+ * appears, the device stops working.
+ *
+ * NO VENDOR LOGOS, deliberately (Camren, 2026-08-11). The old version fanned
+ * connector lines out to Clio, MyCase, Filevine, Drive and Gmail tiles. Naming
+ * logos dates the page, invites "do you support X" objections we then have to
+ * answer, and implies a fixed integration list when the actual claim is the
+ * opposite: Delta signs in to whatever the firm already runs. The tiles are now
+ * CATEGORIES, not brands. Do not put logos back.
  */
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
-import { Container, SectionHead, Eyebrow } from "./kit";
+import { Container } from "./kit";
 import { Reveal, revealProps } from "./reveal";
 
 const STEPS = [
-  { n: "Step 01", t: "Connect", d: "Delta signs in to your case system, email, calendar and drive. No migration. Nothing new to learn. Five minutes." },
+  { n: "Step 01", t: "Connect", d: "Delta signs in to your case system, inbox, calendar and files. No migration. Nothing new to learn. Five minutes." },
   { n: "Step 02", t: "Ask", d: "Give Delta your onboarding doc and the flow your firm already runs. Same as a new hire." },
   { n: "Step 03", t: "Approve", d: "You approve before anything goes out. Delta learns how your firm works. That knowledge stays when people leave." },
 ];
 
-const TOOLS = [
-  { src: "/assets/integrations/clio-icon.png", name: "Clio" },
-  { src: "/assets/integrations/mycase-icon.jpg", name: "MyCase" },
-  { src: "/assets/integrations/filevine-icon.svg", name: "Filevine" },
-  { src: "/assets/integrations/google-drive.svg", name: "Google Drive" },
-  { src: "/assets/integrations/gmail.svg", name: "Gmail" },
-];
-const CENTERS = [140, 390, 640, 890, 1140]; // tile centers in the 1280 container
+/** Categories, never brands. See the header note. */
+const SURFACES = ["Case system", "Inbox", "Calendar", "Documents", "Billing"];
+
+/** The one banded section on the page. */
+const BAND_IMAGE = "/v2/ambient/water-dark.webp";
 
 export function HowItWorks() {
   return (
-    <section id="howitworks" style={{ background: SX.white, padding: "0 0 120px" }}>
-      <Container>
+    <section id="howitworks" className="sx-band" style={{ position: "relative", overflow: "hidden", padding: "112px 0 120px", marginBottom: 120 }}>
+      {/* full-width ambient backdrop */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={BAND_IMAGE}
+        alt=""
+        aria-hidden
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0 }}
+      />
+      {/* scrim: the band carries body copy, so it needs more cover than the hero does */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          background:
+            "linear-gradient(180deg, rgba(var(--sx-scrim-rgb),0.72) 0%, rgba(var(--sx-scrim-rgb),0.58) 45%, rgba(var(--sx-scrim-rgb),0.74) 100%)",
+        }}
+      />
+
+      <Container style={{ position: "relative", zIndex: 2 }}>
         <Reveal>
-          <SectionHead
-            eyebrow="Onboarding"
-            title="Working in five minutes"
-            sub="No engineer. No migration. Tell Delta what your firm runs on, and it starts working."
-            titleMaxW={560}
-            subMaxW={460}
-          />
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                fontFamily: SX.mono,
+                fontSize: 13,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: SX.onMediaMuted,
+                border: `1px solid ${SX.glassEdge}`,
+                borderRadius: 999,
+                padding: "7px 16px",
+              }}
+            >
+              Onboarding
+            </span>
+            <h2
+              style={{
+                fontFamily: SX.display,
+                fontWeight: 500,
+                fontSize: 48,
+                lineHeight: "55.2px",
+                letterSpacing: "-1px",
+                color: SX.onMedia,
+                margin: "24px 0 0",
+                maxWidth: 640,
+              }}
+            >
+              Working in five minutes, on top of what you already run
+            </h2>
+            <p
+              style={{
+                fontFamily: SX.body,
+                fontSize: 18,
+                lineHeight: "30px",
+                color: SX.onMediaMuted,
+                margin: "18px 0 0",
+                maxWidth: 520,
+              }}
+            >
+              Delta connects to the tools your firm already pays for. No rip out, no migration, no new logins for your team.
+            </p>
+          </div>
         </Reveal>
 
-        {/* the three steps */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginTop: 56 }}>
+        {/* the three steps, as glass panels over the photograph */}
+        <div className="sx-hiw-steps" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 56 }}>
           {STEPS.map((s, i) => (
-            <motion.div key={s.t} {...revealProps({ delay: i * 0.09, amount: 0.35 })} style={{ background: SX.cream, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.12)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", padding: 32 }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.cream2, borderRadius: 90, padding: "8px 24px" }}>
+            <motion.div
+              key={s.t}
+              {...revealProps({ delay: i * 0.09, amount: 0.35 })}
+              style={{
+                background: SX.glass,
+                borderRadius: 22,
+                border: `1px solid ${SX.glassEdge}`,
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                padding: 32,
+              }}
+            >
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
                 <span style={{ position: "relative", width: 8, height: 8, flex: "0 0 auto" }}>
-                  <span aria-hidden className="sx-dot-glow" style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.orangeDeep, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }} />
-                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: SX.orangeDeep }} />
+                  <span
+                    aria-hidden
+                    className="sx-dot-glow"
+                    style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.onMedia, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }}
+                  />
+                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: SX.onMedia }} />
                 </span>
-                <span style={{ fontFamily: SX.mono, fontSize: 16, letterSpacing: "-0.5px", color: SX.ink }}>{s.n}</span>
+                <span style={{ fontFamily: SX.mono, fontSize: 14, letterSpacing: "-0.5px", color: SX.onMediaMuted }}>{s.n}</span>
               </span>
-              <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 20, lineHeight: "25.2px", color: SX.ink, margin: "24px 0 0" }}>{s.t}</p>
-              <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "12px 0 0" }}>{s.d}</p>
+              <p style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 24, lineHeight: "30px", color: SX.onMedia, margin: "20px 0 0" }}>{s.t}</p>
+              <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.onMediaMuted, margin: "12px 0 0" }}>{s.d}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* integration hub: Delta on top of the firm's existing stack */}
-        <Reveal style={{ marginTop: 96, display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <Eyebrow>Works on top of your stack</Eyebrow>
-          <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "18px 0 0", maxWidth: 480, textAlign: "center" }}>
-            Delta connects to the tools your firm already pays for. No rip-out, no migration, no new logins for your team.
-          </p>
-          {/* central orange brand mark */}
-          <span style={{ marginTop: 48, width: 116, height: 116, borderRadius: 28, background: `linear-gradient(150deg, color-mix(in srgb, var(--sx-accent) 78%, white), var(--sx-accent))`, display: "grid", placeItems: "center", boxShadow: `0 24px 50px -18px color-mix(in srgb, var(--sx-accent) 55%, transparent)` }} aria-hidden>
-            <svg width="52" height="52" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
-          </span>
-          {/* connector lines fanning from the mark down to the tiles */}
-          <svg viewBox="0 0 1280 92" fill="none" aria-hidden style={{ width: "100%", height: 92, marginTop: 4 }} preserveAspectRatio="xMidYMid meet">
-            <g stroke={SX.orange} strokeWidth="1.5" opacity="0.85" strokeLinecap="round" fill="none">
-              <path d="M640 0 L640 30" />
-              <path d="M140 46 Q140 30 156 30 L1124 30 Q1140 30 1140 46" />
-              <path d="M140 30 L140 46 M390 30 L390 76 M640 30 L640 76 M890 30 L890 76 M1140 30 L1140 76" />
-            </g>
-            <g fill={SX.orange} opacity="0.85">
-              {CENTERS.map((c) => (
-                <path key={c} d={`M${c - 4} 76 L${c + 4} 76 L${c} 84 Z`} />
-              ))}
-            </g>
-          </svg>
-          {/* 5 tool tiles (real integration logos) */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 24, width: "100%" }}>
-            {TOOLS.map((t) => (
-              <div key={t.name} className="v2-tool-tile" style={{ aspectRatio: "1 / 1", maxWidth: 156, margin: "0 auto", width: "100%", background: SX.cream2, borderRadius: 24, display: "grid", placeItems: "center" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={t.src} alt={t.name} title={t.name} style={{ width: 46, height: 46, objectFit: "contain" }} />
-              </div>
+        {/* what it connects to, as categories */}
+        <Reveal delay={0.1} style={{ marginTop: 44 }}>
+          <div className="sx-surfaces">
+            {SURFACES.map((label) => (
+              <span key={label} className="sx-surface-pill">
+                {label}
+              </span>
             ))}
           </div>
         </Reveal>
@@ -103,10 +154,25 @@ export function HowItWorks() {
           0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.85; }
           50%      { transform: translate(-50%,-50%) scale(1.75); opacity: 0.3; }
         }
-        .v2-tool-tile { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-        .v2-tool-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(var(--sx-shadow-rgb), 0.4); }
+        .sx-surfaces {
+          display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+        }
+        .sx-surface-pill {
+          font-family: var(--sx-body-font, inherit);
+          font-size: 15px;
+          color: var(--sx-on-media);
+          background: var(--sx-glass);
+          border: 1px solid var(--sx-glass-edge);
+          border-radius: 999px;
+          padding: 10px 20px;
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
         @media (prefers-reduced-motion: reduce) { .sx-dot-glow { animation: none; } }
-        @media (max-width: 900px){ .sx-hiw-steps { grid-template-columns: 1fr !important; } }
+        @media (max-width: 900px){
+          .sx-hiw-steps { grid-template-columns: 1fr !important; }
+          .sx-band { padding: 80px 0 88px !important; margin-bottom: 88px !important; }
+        }
       `}</style>
     </section>
   );

@@ -15,35 +15,48 @@ import { SX } from "./tokens";
 import { Container } from "./kit";
 import { Reveal } from "./reveal";
 
-const IMG = (f: string) => `https://framerusercontent.com/images/${f}`;
-
+/**
+ * Cards sit ON an ambient image rather than beside a portrait (Camren, 2026-08-11).
+ * Stock portraits read as stock the moment a reader looks twice, and a fake face
+ * attached to a fake name is the most damaging thing on the page. The backdrop is
+ * from the same ICM set as the hero and the banded section, so the page reads as
+ * one world.
+ */
 const CARDS = [
   {
     quote: "Implementing CaseDelta was the best decision we made this year. Delta slotted into the systems we already ran on and started doing real work within days.",
     name: "Marcus Chen",
     title: "Managing Partner, NovaTech Legal",
-    photo: IMG("O7FyI2ae7dL4eDiTZJoZwHqdhxc.jpg"),
+    bg: "/v2/ambient/valley-mist.webp",
   },
   {
     quote: "CaseDelta has changed how our team works. Delta is intuitive, reliable, and has taken the routine case work off our attorneys' plates.",
     name: "Lucifer Jason",
     title: "Partner, Q.tube Law",
-    photo: IMG("4JAVNKxzAj7T8HuZ6ikGr74dI.png"),
+    bg: "/v2/ambient/cloud-pastel.webp",
   },
 ];
 
 function Card({ c }: { c: (typeof CARDS)[number] }) {
   return (
-    <div style={{ flex: "0 0 auto", width: 660, height: 426, background: SX.cream, borderRadius: 24, border: `1px solid ${SX.hairline}`, display: "flex", overflow: "hidden" }}>
-      <div style={{ flex: "1 1 auto", padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-        <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 22, lineHeight: 1.35, letterSpacing: "-0.3px", color: SX.ink, margin: 0 }}>&ldquo;{c.quote}&rdquo;</p>
+    <div style={{ position: "relative", flex: "0 0 auto", width: 620, height: 380, borderRadius: 24, overflow: "hidden", border: `1px solid ${SX.hairline}` }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={c.bg} alt="" aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(180deg, rgba(var(--sx-scrim-rgb),0.34) 0%, rgba(var(--sx-scrim-rgb),0.62) 62%, rgba(var(--sx-scrim-rgb),0.78) 100%)",
+        }}
+      />
+      <div style={{ position: "relative", zIndex: 1, height: "100%", padding: "40px 36px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 22, lineHeight: 1.4, letterSpacing: "-0.3px", color: SX.onMedia, margin: 0 }}>&ldquo;{c.quote}&rdquo;</p>
         <div>
-          <div style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 18, color: SX.ink }}>{c.name}</div>
-          <div style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 15, color: SX.ink2, marginTop: 3 }}>{c.title}</div>
+          <div style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 17, color: SX.onMedia }}>{c.name}</div>
+          <div style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 15, color: SX.onMediaMuted, marginTop: 3 }}>{c.title}</div>
         </div>
       </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={c.photo} alt="" aria-hidden style={{ flex: "0 0 auto", width: 300, height: "100%", objectFit: "cover" }} />
     </div>
   );
 }
