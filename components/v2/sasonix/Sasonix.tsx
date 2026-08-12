@@ -55,10 +55,10 @@ export function Sasonix() {
       <AutomationSection />
       {/* 3. How it works, onboarding and the stack, in one banded section */}
       <HowItWorks />
-      {/* 4. The work, cut by practice area */}
-      <UseCases />
-      {/* 5. Testimonial */}
+      {/* 4. Testimonial */}
       <Testimonials />
+      {/* 5. The work, cut by practice area */}
+      <UseCases />
       {/* 6. Trust: the objection a firm actually raises */}
       <Trust />
       {/* 7. Pricing */}
