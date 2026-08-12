@@ -36,20 +36,39 @@ const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
 const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number];
 
 /**
- * The arrival sequence. The headline lands alone and holds, then the subhead, then
- * the ask, then everything else. The gaps are deliberately wide enough to READ as
- * sequence rather than as one group easing in together: under about 0.3s apart the
- * eye reads simultaneous.
+ * The arrival sequence, derived rather than hand-tuned.
  *
- * Tune here, not at the callsites.
+ * ONE constant sets the pace: SECONDS_PER_WORD. Both lines reveal at that same
+ * speed, so a two-word headline and a twenty-seven-word subhead feel like the same
+ * hand writing them, and each line takes as long as it deserves. 0.085s a word is
+ * roughly 700 words a minute: quicker than reading for comprehension, slow enough
+ * to read along with.
+ *
+ * The cues then fall out of the copy itself. Each line starts a beat after the
+ * previous one finishes, so editing the subhead re-times everything after it and
+ * nothing needs adjusting by hand. Do not go back to literal delays per element.
  */
+const SECONDS_PER_WORD = 0.085;
+const BEAT = 0.3;
+
+const HEADLINE = "Meet Delta";
+const SUBHEAD =
+  "The AI paralegal you can give real work to. Delta signs in to your tools, uses them just like you do, and comes back with finished work.";
+
+const words = (t: string) => t.split(" ").length;
+
+const HEADLINE_AT = 0.25;
+const SUBHEAD_AT = HEADLINE_AT + words(HEADLINE) * SECONDS_PER_WORD + BEAT;
+const CTA_AT = SUBHEAD_AT + words(SUBHEAD) * SECONDS_PER_WORD + BEAT;
+
 const CUE = {
-  headline: 0.25,
-  subhead: 1.0,
-  cta: 1.7,
-  media: 1.95,
-  proof: 2.2,
+  headline: HEADLINE_AT,
+  subhead: SUBHEAD_AT,
+  cta: CTA_AT,
+  media: CTA_AT + 0.2,
+  proof: CTA_AT + 0.45,
 } as const;
+
 
 /**
  * The hero owns the whole viewport: nothing from the next section may peek above
@@ -93,6 +112,51 @@ const BACKDROPS = {
 } as const;
 
 const DEFAULT_BACKDROP: keyof typeof BACKDROPS = "mountain";
+
+/**
+ * Reveals text one word at a time, each word FADING in. Not a typewriter: nothing
+ * is typed, cropped or slid, the words simply arrive in reading order.
+ *
+ * Each word is its own inline-block so lines still wrap at word boundaries. The
+ * trailing space rides inside the span with white-space: pre, otherwise JSX
+ * collapses it and the words run together.
+ *
+ * Accessibility: the wrapper carries the full string as aria-label and the word
+ * spans are aria-hidden, so a screen reader reads one sentence rather than a
+ * stream of fragments. prefers-reduced-motion renders plain text.
+ */
+function FadeWords({
+  text,
+  delay,
+  step,
+  duration = 0.62,
+}: {
+  text: string;
+  delay: number;
+  step: number;
+  duration?: number;
+}) {
+  const reduce = useReducedMotion();
+  if (reduce) return <>{text}</>;
+
+  const words = text.split(" ");
+  return (
+    <span aria-label={text} style={{ display: "inline" }}>
+      {words.map((word, i) => (
+        <motion.span
+          key={`${word}-${i}`}
+          aria-hidden
+          style={{ display: "inline-block", whiteSpace: "pre" }}
+          initial={{ opacity: 0.001 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: delay + i * step, duration, ease: EASE_TEXT, type: "tween" }}
+        >
+          {i < words.length - 1 ? `${word} ` : word}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -231,8 +295,7 @@ export function Hero() {
         <div className="sx-hero-grid">
           {/* LEFT: the argument, disclosed in order of importance. */}
           <div className="sx-hero-copy" style={{ maxWidth: 620 }}>
-            <motion.h1
-              {...rise(CUE.headline, 10)}
+            <h1
               className="sx-hero-title"
               style={{
                 fontFamily: SX.display,
@@ -246,11 +309,10 @@ export function Hero() {
                 textWrap: "balance",
               }}
             >
-              Meet Delta
-            </motion.h1>
+              <FadeWords text={HEADLINE} delay={CUE.headline} step={SECONDS_PER_WORD} duration={0.9} />
+            </h1>
 
-            <motion.p
-              {...rise(CUE.subhead)}
+            <p
               className="sx-hero-subhead"
               style={{
                 fontFamily: SX.body,
@@ -262,8 +324,8 @@ export function Hero() {
                 maxWidth: 560,
               }}
             >
-              The AI paralegal you can give real work to. Delta signs in to your tools, uses them just like you do, and comes back with finished work.
-            </motion.p>
+              <FadeWords text={SUBHEAD} delay={CUE.subhead} step={SECONDS_PER_WORD} duration={0.9} />
+            </p>
 
             <motion.div
               {...rise(CUE.cta)}
