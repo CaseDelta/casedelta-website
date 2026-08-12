@@ -36,12 +36,12 @@ export function WhySasonix() {
         </Reveal>
         <Reveal amount={0.15} style={{ position: "relative", maxWidth: 940, margin: "56px auto 0" }}>
           {/* highlighted Sasonix column */}
-          <div aria-hidden style={{ position: "absolute", top: 0, bottom: 0, left: "calc(1/3.24*100%)", width: "calc(1.12/3.24*100%)", border: `2px solid ${SX.orange}`, borderRadius: 16, background: "rgba(255,112,41,0.04)", pointerEvents: "none" }} />
+          <div aria-hidden style={{ position: "absolute", top: 0, bottom: 0, left: "calc(1/3.24*100%)", width: "calc(1.12/3.24*100%)", border: `2px solid ${SX.orange}`, borderRadius: 16, background: "var(--sx-accent-soft)", pointerEvents: "none" }} />
           {/* header */}
           <div style={{ display: "grid", gridTemplateColumns: COLS, alignItems: "center" }}>
             <span style={{ padding: "18px 22px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink }}>Features</span>
             <span style={{ padding: "18px 22px", display: "flex", alignItems: "center", justifyContent: "center", gap: 9 }}>
-              <span style={{ width: 24, height: 24, borderRadius: 7, background: SX.orange, display: "grid", placeItems: "center" }} aria-hidden><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg></span>
+              <span style={{ width: 24, height: 24, borderRadius: 7, background: SX.orange, display: "grid", placeItems: "center" }} aria-hidden><svg width="13" height="13" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg></span>
               <span style={{ fontFamily: SX.body, fontSize: 20, fontWeight: 600, letterSpacing: "-0.3px", color: SX.ink }}>Delta</span>
             </span>
             <span style={{ padding: "18px 22px", textAlign: "center", fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink }}>Generic AI</span>

@@ -52,7 +52,7 @@ function Wordmark() {
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
       <span aria-hidden style={{ width: 34, height: 34, borderRadius: 9, background: SX.orange, display: "grid", placeItems: "center" }}>
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="#fff"><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
       </span>
       <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 24, letterSpacing: "-0.4px", color: SX.ink }}>CaseDelta</span>
     </span>
@@ -64,13 +64,13 @@ function Wordmark() {
    -> orange mids -> near-white core). overflow:hidden on the parent clips the lower half. */
 function FooterGlow() {
   const layers = [
-    { d: 424, bg: "rgba(255,108,2,0.24)", blur: 50 },
-    { d: 365, bg: "rgb(255,112,41)", blur: 50 },
-    { d: 301, bg: "rgb(252,151,78)", blur: 20 },
-    { d: 242, bg: "rgb(251,190,145)", blur: 27.5 },
-    { d: 242, bg: "rgb(255,112,41)", blur: 12.5 },
-    { d: 178, bg: "rgb(245,137,59)", blur: 15 },
-    { d: 123, bg: "rgb(253,236,224)", blur: 12.5 },
+    { d: 424, bg: "color-mix(in srgb, var(--sx-accent) 24%, transparent)", blur: 50 },
+    { d: 365, bg: "var(--sx-accent)", blur: 50 },
+    { d: 301, bg: "color-mix(in srgb, var(--sx-accent) 82%, white)", blur: 20 },
+    { d: 242, bg: "color-mix(in srgb, var(--sx-accent) 52%, white)", blur: 27.5 },
+    { d: 242, bg: "var(--sx-accent)", blur: 12.5 },
+    { d: 178, bg: "color-mix(in srgb, var(--sx-accent) 90%, white)", blur: 15 },
+    { d: 123, bg: "color-mix(in srgb, var(--sx-accent) 14%, white)", blur: 12.5 },
   ];
   return (
     <div aria-hidden style={{ position: "absolute", left: "50%", bottom: -30, width: 0, height: 0, zIndex: 0, pointerEvents: "none" }}>
@@ -120,7 +120,7 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
           Pick a time below for a 15 minute walkthrough. We will run Delta on your firm&rsquo;s real cases, live.
         </p>
         {/* Inline scheduler: ready buyers book here without leaving the homepage (lazy-loaded). */}
-        <div style={{ maxWidth: 720, margin: "40px auto 0", background: "#fff", border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(26,23,18,0.28)", overflow: "hidden", textAlign: "left" }}>
+        <div style={{ maxWidth: 720, margin: "40px auto 0", background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", overflow: "hidden", textAlign: "left" }}>
           <CalendlyEmbed lazy />
         </div>
       </Reveal>

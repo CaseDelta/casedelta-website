@@ -19,6 +19,7 @@
  */
 import { MotionConfig } from "framer-motion";
 import { SX } from "./tokens";
+import { ThemeVars, useThemeOverride } from "./ThemeVars";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
@@ -31,9 +32,11 @@ import { Pricing } from "./Pricing";
 import { CtaFooter } from "./CtaFooter";
 
 export function Sasonix() {
+  const theme = useThemeOverride();
   return (
     <MotionConfig reducedMotion="user">
-    <div style={{ background: SX.white, color: SX.ink, minHeight: "100vh" }}>
+    <ThemeVars />
+    <div data-sx-theme={theme} style={{ background: SX.bg, color: SX.ink, minHeight: "100vh" }}>
       <SmoothScroll />
       <Nav />
       {/* 1. Hero: the dream outcome + trust strip */}

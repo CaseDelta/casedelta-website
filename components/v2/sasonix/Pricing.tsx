@@ -57,12 +57,12 @@ export function Pricing() {
         <div className="sx-price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, maxWidth: 1120, margin: "56px auto 0", alignItems: "stretch" }}>
           {TIERS.map((t, i) => {
             const on = t.featured;
-            const nameColor = on ? "#fff" : SX.ink;
-            const subColor = on ? "rgba(255,255,255,0.82)" : SX.ink2;
+            const nameColor = on ? SX.onInk : SX.ink;
+            const subColor = on ? "color-mix(in srgb, var(--sx-on-ink) 82%, transparent)" : SX.ink2;
             return (
-              <motion.div key={t.band} {...revealProps({ delay: i * 0.08, amount: 0.3 })} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: on ? "0 40px 80px -46px rgba(255,112,41,0.5)" : "none" }}>
+              <motion.div key={t.band} {...revealProps({ delay: i * 0.08, amount: 0.3 })} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: on ? "0 40px 80px -46px color-mix(in srgb, var(--sx-accent) 50%, transparent)" : "none" }}>
                 {on && (
-                  <span style={{ position: "absolute", top: 24, right: 24, fontFamily: SX.ui, fontSize: 12, fontWeight: 600, color: SX.orange, background: "#fff", borderRadius: 999, padding: "5px 12px" }}>Most popular</span>
+                  <span style={{ position: "absolute", top: 24, right: 24, fontFamily: SX.ui, fontSize: 12, fontWeight: 600, color: SX.orange, background: SX.surface, borderRadius: 999, padding: "5px 12px" }}>Most popular</span>
                 )}
                 <div style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: nameColor }}>{t.band}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, margin: "20px 0 0" }}>
@@ -70,7 +70,7 @@ export function Pricing() {
                   <span style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 400, color: subColor }}>/month</span>
                 </div>
                 <div style={{ fontFamily: SX.body, fontSize: 15, lineHeight: "22px", color: subColor, margin: "12px 0 28px" }}>Flat monthly. Unlimited staff.</div>
-                <a href="/v2/demo" className="sx-btn" style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: "#fff", borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: "#2c2820" }}>Book a demo</a>
+                <a href="/v2/demo" className="sx-btn" style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>Book a demo</a>
               </motion.div>
             );
           })}

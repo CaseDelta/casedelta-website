@@ -29,7 +29,7 @@ export function HowToWork() {
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginTop: 56 }}>
           {STEPS.map((s, i) => (
-            <div key={s.t} style={{ position: "relative", background: SX.cream, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.12)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", height: 565, padding: "27px 27px 63px", overflow: "hidden" }}>
+            <div key={s.t} style={{ position: "relative", background: SX.cream, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.12)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 565, padding: "27px 27px 63px", overflow: "hidden" }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.cream2, borderRadius: 90, padding: "8px 24px" }}>
                 {/* live: an 8px blur(6px) glow layer behind a solid dot, both #ff6c02;
                     the gentle staggered pulse is our "dynamic" add (Camren's request). */}
@@ -43,7 +43,7 @@ export function HowToWork() {
               <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: "12px 0 0", maxWidth: 300 }}>{s.d}</p>
               {/* product-UI illustration, positioned in the lower-middle (live: top 229) */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={s.img} alt="" aria-hidden style={{ position: "absolute", left: 27, top: 229, width: 346, height: "auto", borderRadius: 12, boxShadow: "0 10px 40px -18px rgba(26,23,18,0.35)" }} />
+              <img src={s.img} alt="" aria-hidden style={{ position: "absolute", left: 27, top: 229, width: 346, height: "auto", borderRadius: 12, boxShadow: "0 10px 40px -18px rgba(var(--sx-shadow-rgb), 0.35)" }} />
             </div>
           ))}
         </div>

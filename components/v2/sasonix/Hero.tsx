@@ -1,47 +1,56 @@
 "use client";
 
 /**
- * CaseDelta hero, composed to the "Perform" template's split layout
- * (https://perform.framer.website/): the eyebrow + headline + sub + CTA + proof
- * stack is anchored to the LEFT half over a full-bleed background photo, and the
- * product composite (dashboard screenshot + "Untitled Database" code card) sits
- * on the RIGHT half. Like Perform, the hero is one viewport (900 @1440) and
- * HARD-CUTS into the white section below (no fade-to-white).
+ * CaseDelta hero: ambient full-bleed background, copy anchored LEFT, product
+ * video bounded on the RIGHT. The Granola and Ada pattern.
  *
- * ENTRANCE ANIMATION — mimicked exactly from Perform's Framer "appear effects"
- * (read verbatim from window.__framer__appearAnimationsContent):
- *   text:  initial { opacity: 0.001, y: 20 } -> animate { opacity: 1, y: 0 },
- *          duration 0.5s, ease cubic-bezier(0.44, 0, 0.56, 1), staggered by delay
- *          (eyebrow 0.8s, headline+sub 1.0s, CTA 1.2s, proof 1.4s).
- *   photo: initial { opacity: 0.001, scale: 1.05 } -> animate { opacity: 1,
- *          scale: 1 }, duration 2s, ease cubic-bezier(0.12, 0.23, 0.5, 1).
- * The product composite (our addition, not in Perform) is choreographed into the
- * same cascade with the softer photo easing. prefers-reduced-motion disables it.
+ * WHAT CHANGED, 2026-08-11 (Camren's direction)
+ *   - The right half was a typing "tell Delta to..." command demo. Killed. A chat
+ *     input box is the one thing every AI site does and nobody believes. The right
+ *     half is now a bounded video frame, and the video is the thing that explains
+ *     what Delta does.
+ *   - PROGRESSIVE DISCLOSURE is the organising rule: elements arrive in order of
+ *     importance rather than all at once, so the eye is led down the left column
+ *     (headline, then sub, then the ask) while the media settles alongside it.
  *
- * Background image and product assets are unchanged Sasonix placeholders
- * (tokens.ts) pending the CaseDelta rebrand. Tuned for desktop 1440.
+ * THE VIDEO SLOT
+ *   `HeroMedia` renders a placeholder frame until an asset exists. To ship the
+ *   real thing, pass `src` (and a real `poster`) at the callsite below. Nothing
+ *   else changes: the frame, its proportions and its motion already hold the
+ *   space. See HERO_MEDIA below.
+ *
+ * Entrance easing is carried over from the Perform reference: text rises 20px
+ * over 0.5s on cubic-bezier(0.44, 0, 0.56, 1); the photo does a 2s 1.05 -> 1
+ * settle on cubic-bezier(0.12, 0.23, 0.5, 1). prefers-reduced-motion drops all
+ * of it.
+ *
+ * The background image is still the Sasonix placeholder, hotlinked from Framer's
+ * CDN. It MUST be replaced with a CaseDelta asset and self-hosted before launch.
  */
+import { ArrowUpRight, Play } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SX, SX_IMG } from "./tokens";
-import { scrollToSection } from "./scrollToSection";
 
-const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number]; // Perform text ease
-const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number]; // Perform photo ease
+const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
+const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number];
 
-const HERO_H = 900; // one viewport; hard cut into the white strip below (Perform)
+const HERO_H = 860; // one viewport, hard cut into the section below
 
-// Right-half product composite, contained within the page content edge (x=1360).
-const DASH_W = 700;
-const DASH_TOP = 294;
-const DASH_RIGHT = 80; // aligns the dashboard's right edge to the content column
-const CODE_W = 340;
-const CODE_TOP = 452;
-const CODE_LEFT = 700; // floats over the dashboard's lower-left, fully on-page
+/**
+ * The hero video. `src` undefined renders the placeholder frame.
+ * Drop the asset in and this hero is finished:
+ *   src: "/videos/<the-cut>.mp4", poster: "/v2/<its-first-frame>.jpg"
+ */
+const HERO_MEDIA: { src?: string; poster?: string; caption: string } = {
+  src: undefined,
+  poster: undefined,
+  caption: "Delta, working a file end to end",
+};
 
 export function Hero() {
   const reduce = useReducedMotion();
 
-  // Perform's exact text appear: fade + 20px rise, staggered by delay.
+  /** Perform's text appear: fade plus a 20px rise, ordered by importance. */
   const rise = (delay: number) =>
     reduce
       ? {}
@@ -52,8 +61,56 @@ export function Hero() {
         };
 
   return (
-    <section style={{ position: "relative", height: HERO_H, background: "#0e0b08", fontFamily: SX.body, overflow: "hidden" }}>
-      {/* full-bleed hero photo — Perform's 2s fade + 1.05 -> 1 scale reveal */}
+    <section
+      className="sx-hero"
+      style={{ position: "relative", height: HERO_H, background: SX.ink, fontFamily: SX.body, overflow: "hidden" }}
+    >
+      <style>{`
+        /* Two columns on desktop; the media stacks under the copy on narrow screens. */
+        .sx-hero-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+          align-items: center;
+          gap: 56px;
+          height: 100%;
+        }
+
+        /* Below the two-column breakpoint the media STACKS under the copy. It is
+           never hidden: the video is what explains the product, so a phone
+           visitor has to reach it too. */
+        @media (max-width: 1100px) {
+          .sx-hero { height: auto !important; }
+          .sx-hero-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 44px;
+            height: auto !important;
+            align-content: start;
+            padding: 132px 0 72px;
+          }
+          .sx-hero-copy { max-width: 680px !important; }
+          .sx-hero-media { max-width: 620px; }
+        }
+
+        @media (max-width: 760px) {
+          .sx-hero { height: auto !important; min-height: 760px; }
+          .sx-hero-grid {
+            height: auto !important;
+            align-content: start;
+            padding: 112px 0 64px !important;
+          }
+          .sx-hero-copy { max-width: 100% !important; }
+          .sx-hero-title { font-size: 46px !important; line-height: 50px !important; }
+          .sx-hero-subhead { max-width: 100% !important; font-size: 17px !important; line-height: 28px !important; }
+          .sx-hero-actions { flex-wrap: wrap; }
+          .sx-hero-proof { margin-top: 34px !important; }
+        }
+
+        @media (max-width: 430px) {
+          .sx-hero-title { font-size: 40px !important; line-height: 44px !important; }
+        }
+      `}</style>
+
+      {/* Ambient background, settling over 2s so the hero is never static on arrival. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <motion.img
         src={SX_IMG.heroBg}
@@ -64,126 +121,259 @@ export function Hero() {
           : {
               initial: { opacity: 0.001, scale: 1.05 },
               animate: { opacity: 1, scale: 1 },
-              transition: { delay: 0, duration: 2, ease: EASE_SOFT, type: "tween" as const },
+              transition: { duration: 2, ease: EASE_SOFT, type: "tween" as const },
             })}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", transformOrigin: "center", zIndex: 0 }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+          transformOrigin: "center",
+          zIndex: 0,
+        }}
       />
-      {/* left-darkening scrim so the white text reads over the bright sky (no bottom fade: Perform hard-cuts) */}
-      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(to right, rgba(6,6,10,0.64) 0%, rgba(6,6,10,0.44) 26%, rgba(6,6,10,0.14) 48%, rgba(6,6,10,0) 66%)" }} />
-
-      {/* right-half product composite: dashboard base + floating code card */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <motion.img
-        src={SX_IMG.dashboard}
-        alt="Delta driving a firm's workflows"
-        {...(reduce
-          ? {}
-          : {
-              initial: { opacity: 0.001, y: 18 },
-              animate: { opacity: 1, y: 0 },
-              transition: { delay: 0.95, duration: 0.7, ease: EASE_SOFT, type: "tween" as const },
-            })}
-        style={{ position: "absolute", top: DASH_TOP, right: DASH_RIGHT, width: DASH_W, height: "auto", zIndex: 5, borderRadius: 14, border: "1px solid rgba(255,255,255,0.55)", boxShadow: "0 34px 90px rgba(8,10,20,0.34)" }}
+      {/* Scrim: heaviest on the left so the copy holds, clearing by the media column. */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          background:
+            "linear-gradient(to right, rgba(var(--sx-scrim-rgb),0.66) 0%, rgba(var(--sx-scrim-rgb),0.46) 28%, rgba(var(--sx-scrim-rgb),0.16) 52%, rgba(var(--sx-scrim-rgb),0.04) 72%)",
+        }}
       />
-      <CodeCard reduce={!!reduce} />
 
-      {/* left text column, vertically centered and aligned to the page content-left */}
-      <div style={{ position: "relative", zIndex: 10, maxWidth: 1360, margin: "0 auto", padding: "0 40px", height: "100%", display: "flex", alignItems: "center" }}>
-        <div style={{ maxWidth: 620 }}>
-          {/* eyebrow: thin rule + label (Perform pattern) — appear @0.8s */}
-          <motion.div {...rise(0.8)} style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
-            <span aria-hidden style={{ width: 40, height: 1, background: "rgba(255,255,255,0.6)" }} />
-            <span style={{ fontFamily: SX.mono, fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.82)" }}>
-              AI associate for law firms
-            </span>
-          </motion.div>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          maxWidth: 1360,
+          margin: "0 auto",
+          padding: "0 40px",
+          height: "100%",
+        }}
+      >
+        <div className="sx-hero-grid">
+          {/* LEFT: the argument, disclosed in order of importance. */}
+          <div className="sx-hero-copy" style={{ maxWidth: 620 }}>
+            <motion.h1
+              {...rise(0.15)}
+              className="sx-hero-title"
+              style={{
+                fontFamily: SX.display,
+                fontWeight: 500,
+                fontSize: 66,
+                lineHeight: "70px",
+                letterSpacing: 0,
+                color: SX.onMedia,
+                margin: 0,
+                maxWidth: 580,
+                textWrap: "balance",
+              }}
+            >
+              Win back your time by having the headcount you could never hire.
+            </motion.h1>
 
-          {/* headline + sub animate together as one group (Perform's 1ranmkn) — appear @1.0s */}
-          <motion.div {...rise(1.0)}>
-            <h1 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 70, lineHeight: "74px", letterSpacing: "-3px", color: "#fff", margin: 0, maxWidth: 580 }}>
-              Run more cases without hiring
-            </h1>
-            <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 18, lineHeight: "30px", color: "rgba(255,255,255,0.88)", margin: "24px 0 0", maxWidth: 470 }}>
-              Delta is an AI associate that works inside the tools your firm already runs on. Hand it the routine case work, and your team approves before anything goes out.
-            </p>
-          </motion.div>
+            <motion.p
+              {...rise(0.4)}
+              className="sx-hero-subhead"
+              style={{
+                fontFamily: SX.body,
+                fontWeight: 400,
+                fontSize: 18,
+                lineHeight: "30px",
+                color: SX.onMediaMuted,
+                margin: "24px 0 0",
+                maxWidth: 470,
+              }}
+            >
+              The best AI paralegal is the one that knows you, your case, and your firm.
+            </motion.p>
 
-          {/* CTAs — appear @1.2s */}
-          <motion.div {...rise(1.2)} style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}>
-            {/* primary: white pill + dark circular arrow badge (Perform CTA) */}
-            <a href="/v2/demo" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, background: "#fff", borderRadius: 999, padding: "8px 8px 8px 22px", textDecoration: "none" }}>
-              Book a demo
-              <span aria-hidden style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 34, height: 34, borderRadius: 999, background: SX.ink, color: "#fff" }}>
-                <ArrowUpRight />
-              </span>
-            </a>
-            {/* secondary: ghost */}
-            <a href="#howitworks" onClick={(e) => { e.preventDefault(); scrollToSection("howitworks"); }} className="sx-btn" style={{ display: "inline-flex", alignItems: "center", fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.42)", borderRadius: 999, padding: "11px 22px", textDecoration: "none", backdropFilter: "blur(2px)" }}>
-              See how it works
-            </a>
-          </motion.div>
+            <motion.div
+              {...rise(0.62)}
+              className="sx-hero-actions"
+              style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}
+            >
+              <a
+                href="/v2/demo"
+                className="sx-btn"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 12,
+                  fontFamily: SX.body,
+                  fontSize: 16,
+                  fontWeight: 500,
+                  color: SX.ink,
+                  background: SX.surface,
+                  borderRadius: 999,
+                  padding: "8px 8px 8px 22px",
+                  textDecoration: "none",
+                }}
+              >
+                Book a demo
+                <span
+                  aria-hidden
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 34,
+                    height: 34,
+                    borderRadius: 999,
+                    background: SX.ink,
+                    color: SX.onInk,
+                  }}
+                >
+                  <ArrowUpRight size={17} strokeWidth={2} />
+                </span>
+              </a>
+            </motion.div>
 
-          {/* proof: vertical rule + stars + one real, attributable line — appear @1.4s */}
-          <motion.div {...rise(1.4)} style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 46, textShadow: "0 1px 18px rgba(0,0,0,0.35)" }}>
-            <span aria-hidden style={{ width: 1, height: 46, background: "rgba(255,255,255,0.4)" }} />
-            <div>
-              <div style={{ display: "flex", gap: 3, marginBottom: 8 }}>
-                {[0, 1, 2, 3, 4].map((i) => <Star key={i} />)}
+            {/* Proof arrives last: it confirms the claim rather than making it. */}
+            <motion.div
+              {...rise(0.88)}
+              className="sx-hero-proof"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                marginTop: 46,
+                textShadow: "0 1px 18px rgba(var(--sx-scrim-rgb),0.35)",
+              }}
+            >
+              <span aria-hidden style={{ width: 1, height: 46, background: SX.glassEdge }} />
+              <div>
+                <div style={{ display: "flex", gap: 3, marginBottom: 8 }}>
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star key={i} />
+                  ))}
+                </div>
+                <div style={{ fontFamily: SX.body, fontSize: 14.5, lineHeight: "20px", color: SX.onMedia }}>
+                  &ldquo;Delta gives us back about five hours a week.&rdquo;
+                </div>
+                <div style={{ fontFamily: SX.body, fontSize: 13, lineHeight: "18px", color: SX.onMediaMuted, marginTop: 2 }}>
+                  Kirschbaum &amp; Nowotny, LLC &middot; Overland Park, KS
+                </div>
               </div>
-              <div style={{ fontFamily: SX.body, fontSize: 14.5, lineHeight: "20px", color: "rgba(255,255,255,0.94)" }}>
-                &ldquo;Delta gives us back about five hours a week.&rdquo;
-              </div>
-              <div style={{ fontFamily: SX.body, fontSize: 13, lineHeight: "18px", color: "rgba(255,255,255,0.72)", marginTop: 2 }}>
-                Kirschbaum &amp; Nowotny, LLC &middot; Overland Park, KS
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
+
+          {/* RIGHT: the video. Settles alongside the copy, not before it. */}
+          <HeroMedia reduce={!!reduce} />
         </div>
       </div>
     </section>
   );
 }
 
-/* The "Untitled Database" card: a composite of the frame PNG (white body + footer),
-   live header text, and a code-line image, matching the live site's layered card.
-   Floats over the right-half dashboard; joins the entrance cascade @1.15s. */
-function CodeCard({ reduce }: { reduce: boolean }) {
-  const CARD_H = Math.round((CODE_W * 1200) / 1848); // frame aspect 1848x1200
+/**
+ * The bounded media frame. Holds its proportions whether it is showing the real
+ * video or the placeholder, so wiring the asset never moves the layout.
+ */
+function HeroMedia({ reduce }: { reduce: boolean }) {
+  const { src, poster, caption } = HERO_MEDIA;
+
   const anim = reduce
     ? {}
     : {
-        initial: { opacity: 0.001, y: 20, scale: 0.985 },
-        animate: { opacity: 1, y: 0, scale: 1 },
-        transition: { delay: 1.15, duration: 0.6, ease: EASE_SOFT, type: "tween" as const },
+        initial: { opacity: 0.001, y: 22 },
+        animate: { opacity: 1, y: 0 },
+        transition: { delay: 0.5, duration: 0.8, ease: EASE_SOFT, type: "tween" as const },
       };
+
   return (
-    <motion.div {...anim} style={{ position: "absolute", top: CODE_TOP, left: CODE_LEFT, width: CODE_W, height: CARD_H, transformOrigin: "center", zIndex: 6, borderRadius: 12, boxShadow: "0 24px 80px rgba(8,10,20,0.32)", overflow: "hidden", background: "#fff" }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={SX_IMG.codeCard} alt="" aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-      {/* header row: orange bar + title + Unsaved */}
-      <div style={{ position: "absolute", top: 15, left: 18, right: 18, display: "flex", alignItems: "center", gap: 10 }}>
-        <span style={{ width: 3, height: 18, background: SX.orange, borderRadius: 2 }} />
-        <span style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: SX.ink }}>Untitled Database</span>
-        <span style={{ marginLeft: "auto", fontFamily: SX.ui, fontSize: 13, fontStyle: "italic", color: "#0c0c0c" }}>Unsaved</span>
-      </div>
-      {/* code lines */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={SX_IMG.codeWrapper} alt="" aria-hidden style={{ position: "absolute", top: 52, left: 14, width: CODE_W - 28, height: "auto" }} />
+    <motion.div
+      className="sx-hero-media"
+      {...anim}
+      style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "16 / 10",
+        borderRadius: 20,
+        overflow: "hidden",
+        background: SX.glass,
+        border: `1px solid ${SX.glassEdge}`,
+        boxShadow: "0 30px 80px -24px rgba(var(--sx-scrim-rgb),0.55)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+      }}
+    >
+      {src ? (
+        <video
+          src={src}
+          poster={poster}
+          autoPlay={!reduce}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={caption}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+      ) : (
+        <PlaceholderFrame caption={caption} />
+      )}
     </motion.div>
   );
 }
 
-function ArrowUpRight() {
+/**
+ * Deliberately reads as a reserved slot rather than a broken image: the frame,
+ * proportions and motion are final, only the footage is outstanding.
+ */
+function PlaceholderFrame({ caption }: { caption: string }) {
   return (
-    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 11L11 4M11 4H5M11 4V10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "grid",
+        placeItems: "center",
+        gap: 14,
+        gridAutoRows: "min-content",
+        alignContent: "center",
+        background: "linear-gradient(160deg, rgba(var(--sx-scrim-rgb),0.20), rgba(var(--sx-scrim-rgb),0.42))",
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          display: "grid",
+          placeItems: "center",
+          width: 62,
+          height: 62,
+          borderRadius: 999,
+          background: SX.glass,
+          border: `1px solid ${SX.glassEdge}`,
+          color: SX.onMedia,
+        }}
+      >
+        <Play size={22} strokeWidth={1.8} style={{ marginLeft: 3 }} />
+      </span>
+      <span
+        style={{
+          fontFamily: SX.ui,
+          fontSize: 12,
+          fontWeight: 600,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          color: SX.onMediaMuted,
+        }}
+      >
+        {caption}
+      </span>
+    </div>
   );
 }
 
 function Star() {
   return (
-    <svg width="15" height="15" viewBox="0 0 20 20" fill={SX.orange} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg width="15" height="15" viewBox="0 0 20 20" fill={SX.accentOnMedia} xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z" />
     </svg>
   );

@@ -26,13 +26,13 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
   const [scrolled, setScrolled] = useState(solid);
   useEffect(() => {
     if (solid) { setScrolled(true); return; }
-    const onScroll = () => setScrolled(window.scrollY > 880);
+    const onScroll = () => setScrolled(window.scrollY > 780);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [solid]);
 
-  const fg = scrolled ? SX.ink : "#ffffff";
+  const fg = scrolled ? SX.ink : SX.onMedia;
 
   return (
     <header
@@ -42,40 +42,64 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
         left: 0,
         right: 0,
         zIndex: 50,
-        background: scrolled ? "rgba(255,255,255,0.92)" : "transparent",
+        background: scrolled ? "color-mix(in srgb, var(--sx-bg) 92%, transparent)" : "transparent",
         backdropFilter: scrolled ? "saturate(1.3) blur(10px)" : "none",
         WebkitBackdropFilter: scrolled ? "saturate(1.3) blur(10px)" : "none",
         borderBottom: `1px solid ${scrolled ? SX.hairline : "transparent"}`,
-        boxShadow: scrolled ? "0 10px 30px -12px rgba(26, 23, 18, 0.16)" : "none",
+        boxShadow: scrolled ? "0 10px 30px -12px rgba(var(--sx-shadow-rgb), 0.16)" : "none",
         transition: "background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease",
       }}
     >
-      <div style={{ maxWidth: 1360, margin: "0 auto", padding: "24px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <style>{`
+        @media (max-width: 760px) {
+          .sx-nav-inner {
+            padding: 12px 20px !important;
+            gap: 16px;
+          }
+
+          .sx-nav-links,
+          .sx-nav-login {
+            display: none !important;
+          }
+
+          .sx-nav-demo {
+            padding: 9px 14px !important;
+            font-size: 14px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .sx-nav-demo {
+            display: none !important;
+          }
+        }
+      `}</style>
+      <div className="sx-nav-inner" style={{ maxWidth: 1360, margin: "0 auto", padding: "12px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {/* logo */}
-        <a href="/v2" className="sx-logo" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <span aria-hidden style={{ width: 34, height: 34, borderRadius: 9, background: SX.orange, display: "grid", placeItems: "center" }}>
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="#fff" aria-hidden><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
+        <a href="/v2" className="sx-logo" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none" }}>
+          <span aria-hidden style={{ width: 28, height: 28, borderRadius: 8, background: SX.accent, display: "grid", placeItems: "center" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill={SX.onAccent} aria-hidden><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
           </span>
-          <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 24, letterSpacing: "-0.4px", color: fg, transition: "color 0.3s ease" }}>CaseDelta</span>
+          <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 20, letterSpacing: "-0.4px", color: fg, transition: "color 0.3s ease" }}>CaseDelta</span>
         </a>
         {/* links */}
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+        <div className="sx-nav-links" style={{ display: "flex", alignItems: "center", gap: 32 }}>
           {LINKS.map((l) => (
             <a
               key={l.id}
               href={`/v2#${l.id}`}
               onClick={(e) => { e.preventDefault(); scrollToSection(l.id); }}
               className="sx-navlink"
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 15, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}
             >
               {l.label}
             </a>
           ))}
         </div>
         {/* actions */}
-        <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-          <a href="https://app.casedelta.com" className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Log in</a>
-          <a href="/v2/demo" className="sx-btn" style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: "#fff", background: SX.ink, borderRadius: 12, padding: "13px 20px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <a href="https://app.casedelta.com" className="sx-navlink sx-nav-login" style={{ fontFamily: SX.body, fontSize: 15, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Log in</a>
+          <a href="/v2/demo" className="sx-btn sx-nav-demo" style={{ fontFamily: SX.body, fontSize: 15, fontWeight: 500, color: SX.onInk, background: SX.ink, borderRadius: 10, padding: "9px 16px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
         </div>
       </div>
     </header>

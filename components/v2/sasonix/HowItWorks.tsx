@@ -48,7 +48,7 @@ export function HowItWorks() {
         {/* the three steps */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginTop: 56 }}>
           {STEPS.map((s, i) => (
-            <motion.div key={s.t} {...revealProps({ delay: i * 0.09, amount: 0.35 })} style={{ background: SX.cream, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.12)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", padding: 32 }}>
+            <motion.div key={s.t} {...revealProps({ delay: i * 0.09, amount: 0.35 })} style={{ background: SX.cream, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.12)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", padding: 32 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.cream2, borderRadius: 90, padding: "8px 24px" }}>
                 <span style={{ position: "relative", width: 8, height: 8, flex: "0 0 auto" }}>
                   <span aria-hidden className="sx-dot-glow" style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.orangeDeep, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }} />
@@ -69,8 +69,8 @@ export function HowItWorks() {
             Delta connects to the tools your firm already pays for. No rip-out, no migration, no new logins for your team.
           </p>
           {/* central orange brand mark */}
-          <span style={{ marginTop: 48, width: 116, height: 116, borderRadius: 28, background: `linear-gradient(150deg, #ff8a4c, ${SX.orange})`, display: "grid", placeItems: "center", boxShadow: `0 24px 50px -18px rgba(255,112,41,0.55)` }} aria-hidden>
-            <svg width="52" height="52" viewBox="0 0 24 24" fill="#fff"><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
+          <span style={{ marginTop: 48, width: 116, height: 116, borderRadius: 28, background: `linear-gradient(150deg, color-mix(in srgb, var(--sx-accent) 78%, white), var(--sx-accent))`, display: "grid", placeItems: "center", boxShadow: `0 24px 50px -18px color-mix(in srgb, var(--sx-accent) 55%, transparent)` }} aria-hidden>
+            <svg width="52" height="52" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
           </span>
           {/* connector lines fanning from the mark down to the tiles */}
           <svg viewBox="0 0 1280 92" fill="none" aria-hidden style={{ width: "100%", height: 92, marginTop: 4 }} preserveAspectRatio="xMidYMid meet">
@@ -104,7 +104,7 @@ export function HowItWorks() {
           50%      { transform: translate(-50%,-50%) scale(1.75); opacity: 0.3; }
         }
         .v2-tool-tile { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-        .v2-tool-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(26,23,18,0.4); }
+        .v2-tool-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(var(--sx-shadow-rgb), 0.4); }
         @media (prefers-reduced-motion: reduce) { .sx-dot-glow { animation: none; } }
         @media (max-width: 900px){ .sx-hiw-steps { grid-template-columns: 1fr !important; } }
       `}</style>

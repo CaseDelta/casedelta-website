@@ -21,6 +21,7 @@ import { CtaFooter } from "./CtaFooter";
 import { Container, Eyebrow } from "./kit";
 import { Reveal } from "./reveal";
 import { CalendlyEmbed } from "./CalendlyEmbed";
+import { ThemeVars, useThemeOverride } from "./ThemeVars";
 
 const EXPECT = [
   "15 minutes, live over video",
@@ -30,13 +31,17 @@ const EXPECT = [
 ];
 
 export function DemoPage() {
+  // Mounts the palette itself: this page is its own tree, so without ThemeVars
+  // every var(--sx-*) here would resolve to nothing.
+  const theme = useThemeOverride();
   return (
     <MotionConfig reducedMotion="user">
-      <div style={{ background: SX.white, color: SX.ink, minHeight: "100vh" }}>
+      <ThemeVars />
+      <div data-sx-theme={theme} style={{ background: SX.bg, color: SX.ink, minHeight: "100vh" }}>
         <SmoothScroll />
         <Nav solid />
 
-        <section style={{ background: SX.white, padding: "156px 0 112px" }}>
+        <section style={{ background: SX.bg, padding: "132px 0 112px" }}>
           <Container>
             <div className="sx-demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "start" }}>
               {/* LEFT: the pitch */}
@@ -84,7 +89,7 @@ export function DemoPage() {
               </Reveal>
 
               {/* RIGHT: the Calendly scheduler, in a card */}
-              <Reveal delay={0.08} style={{ background: "#fff", border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(26,23,18,0.28)", overflow: "hidden" }}>
+              <Reveal delay={0.08} style={{ background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", overflow: "hidden" }}>
                 <CalendlyEmbed />
               </Reveal>
             </div>

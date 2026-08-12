@@ -16,17 +16,47 @@ export const SX = {
   mono: "var(--sx-mono), 'JetBrains Mono Placeholder', monospace", // eyebrow labels
   ui: "var(--sx-inter), 'Inter Placeholder', sans-serif", // small panel UI
 
-  // ---- color (exact) ----
-  orange: "#ff7029", // rgb(255,112,41) primary accent
-  orangeDeep: "#ff6c02", // rgb(255,108,2)
-  ink: "#120a04", // rgb(18,10,4) near-black brown (also the dark button bg)
-  ink2: "#5c4c3f", // rgb(92,76,63) secondary text
-  black: "#020202",
-  white: "#ffffff",
-  cream: "#fcf8f4", // rgb(252,248,244) page cream
-  cream2: "#f8f3ec", // rgb(248,243,236) deeper cream / eyebrow pill bg
-  card: "#fefaf6", // rgb(254,250,246) feature-card surface
-  hairline: "rgba(44,24,11,0.10)",
+  // ---- color ----
+  // Every value resolves to a CSS custom property emitted by theme.ts, so the
+  // whole palette hot-swaps from one object. Never write a colour literal in a
+  // component: add a role in theme.ts and reference it here.
+  //
+  // Semantic names are preferred in new code. The legacy Sasonix names below
+  // them (orange, cream) are kept so the existing components keep working, and
+  // are aliases onto the same roles, not separate values.
+
+  // semantic roles
+  accent: "var(--sx-accent)",
+  accentDeep: "var(--sx-accent-deep)",
+  accentSoft: "var(--sx-accent-soft)",
+  onAccent: "var(--sx-on-accent)",
+  ink: "var(--sx-ink)", // primary text, also the dark button fill
+  ink2: "var(--sx-ink-2)", // secondary text
+  ink3: "var(--sx-ink-3)", // tertiary text, eyebrow labels
+  onInk: "var(--sx-on-ink)", // text on the ink-filled (dark) button
+  bg: "var(--sx-bg)",
+  bgAlt: "var(--sx-bg-alt)",
+  surface: "var(--sx-surface)",
+  surfaceAlt: "var(--sx-surface-alt)",
+  hairline: "var(--sx-hairline)",
+  accentOnMedia: "var(--sx-accent-on-media)", // the accent, kept legible over media
+  onMedia: "var(--sx-on-media)", // text over photography or video
+  onMediaMuted: "var(--sx-on-media-muted)",
+  glass: "var(--sx-glass)", // frosted panel over media
+  glassEdge: "var(--sx-glass-edge)",
+
+  // legacy Sasonix aliases (same roles, old names)
+  orange: "var(--sx-accent)",
+  orangeDeep: "var(--sx-accent-deep)",
+  black: "var(--sx-ink)",
+  white: "var(--sx-surface)",
+  cream: "var(--sx-bg-alt)",
+  cream2: "var(--sx-bg-alt)",
+  card: "var(--sx-surface-alt)",
+
+  /** Elevation shadow in the theme's shadow colour. `sh(y, blur, alpha)`. */
+  sh: (y: number, blur: number, alpha: number) =>
+    `0 ${y}px ${blur}px rgba(var(--sx-shadow-rgb), ${alpha})`,
 } as const;
 
 /* Sasonix's own resize-CDN images (hotlinked during the clone-fidelity phase so the

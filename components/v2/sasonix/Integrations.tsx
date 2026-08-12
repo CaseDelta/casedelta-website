@@ -27,8 +27,8 @@ export function Integrations() {
         <SectionHead eyebrow="Integrations" title="Connect all your tools and automate workflows" titleMaxW={560} />
         <div style={{ marginTop: 56, display: "flex", flexDirection: "column", alignItems: "center" }}>
           {/* central orange brand mark */}
-          <span style={{ width: 116, height: 116, borderRadius: 28, background: `linear-gradient(150deg, #ff8a4c, ${SX.orange})`, display: "grid", placeItems: "center", boxShadow: `0 24px 50px -18px rgba(255,112,41,0.55)` }} aria-hidden>
-            <svg width="52" height="52" viewBox="0 0 24 24" fill="#fff"><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
+          <span style={{ width: 116, height: 116, borderRadius: 28, background: `linear-gradient(150deg, color-mix(in srgb, var(--sx-accent) 78%, white), var(--sx-accent))`, display: "grid", placeItems: "center", boxShadow: `0 24px 50px -18px color-mix(in srgb, var(--sx-accent) 55%, transparent)` }} aria-hidden>
+            <svg width="52" height="52" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
           </span>
           {/* connector lines fanning from the mark down to the tiles */}
           <svg viewBox="0 0 1280 92" fill="none" aria-hidden style={{ width: "100%", height: 92, marginTop: 4 }} preserveAspectRatio="xMidYMid meet">
@@ -56,7 +56,7 @@ export function Integrations() {
       </Container>
       <style>{`
         .v2-tool-tile { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-        .v2-tool-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(26,23,18,0.4); }
+        .v2-tool-tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(var(--sx-shadow-rgb), 0.4); }
       `}</style>
     </section>
   );

@@ -42,14 +42,14 @@ type Card = { heading: string; sub: string; checks: string[]; photo: string; pan
 
 function CodePanel() {
   return (
-    <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", width: 429, borderRadius: 12, background: "#fff", boxShadow: "0 10px 68px rgba(0,0,0,0.14)", overflow: "hidden" }}>
+    <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", width: 429, borderRadius: 12, background: SX.surface, boxShadow: "0 10px 68px rgba(var(--sx-shadow-rgb), 0.14)", overflow: "hidden" }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={IMG("HKoXTpndSrMAq7ojdzpGjxUyzg.png")} alt="" aria-hidden style={{ display: "block", width: "100%", height: "auto" }} />
       {/* opaque header bar covering the code image's top (the live composite) */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 48, background: SX.card, borderBottom: `1px solid ${SX.hairline}`, display: "flex", alignItems: "center", gap: 10, padding: "0 20px" }}>
         <span style={{ width: 3, height: 18, background: SX.orange, borderRadius: 2 }} />
         <span style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink }}>Untitled Database</span>
-        <span style={{ marginLeft: "auto", fontFamily: SX.ui, fontSize: 13, fontStyle: "italic", color: "#0c0c0c" }}>Unsaved</span>
+        <span style={{ marginLeft: "auto", fontFamily: SX.ui, fontSize: 13, fontStyle: "italic", color: SX.ink }}>Unsaved</span>
       </div>
     </div>
   );
@@ -69,7 +69,7 @@ const CARDS: Card[] = [
     checks: ["Hundreds to thousands of pages", "Every entry cited to the record", "Med-mal and mass tort"],
     photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
     // eslint-disable-next-line @next/next/no-img-element
-    panel: <img src={IMG("Gg2IiSRFyZek4fK2e0pYNUsxKEU.png")} alt="" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-44%, -50%)", width: 442, height: "auto", borderRadius: 12, boxShadow: "0 10px 68px rgba(0,0,0,0.14)" }} />,
+    panel: <img src={IMG("Gg2IiSRFyZek4fK2e0pYNUsxKEU.png")} alt="" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-44%, -50%)", width: 442, height: "auto", borderRadius: 12, boxShadow: "0 10px 68px rgba(var(--sx-shadow-rgb), 0.14)" }} />,
   },
   {
     heading: "Learns how your firm works",
@@ -79,9 +79,9 @@ const CARDS: Card[] = [
     panel: (
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", display: "flex", flexDirection: "column", gap: 22, width: 435 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMG("dgH9W6cfNsvnbgJ75P4auo3Fpo.svg")} alt="" aria-hidden style={{ width: "100%", borderRadius: 12, boxShadow: "0 10px 40px rgba(0,0,0,0.12)" }} />
+        <img src={IMG("dgH9W6cfNsvnbgJ75P4auo3Fpo.svg")} alt="" aria-hidden style={{ width: "100%", borderRadius: 12, boxShadow: "0 10px 40px rgba(var(--sx-shadow-rgb), 0.12)" }} />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMG("CLSy9JR8Yrh0fnx84m8yewhIFW8.svg")} alt="" aria-hidden style={{ width: "100%", borderRadius: 12, boxShadow: "0 10px 40px rgba(0,0,0,0.12)" }} />
+        <img src={IMG("CLSy9JR8Yrh0fnx84m8yewhIFW8.svg")} alt="" aria-hidden style={{ width: "100%", borderRadius: 12, boxShadow: "0 10px 40px rgba(var(--sx-shadow-rgb), 0.12)" }} />
       </div>
     ),
   },
@@ -98,7 +98,7 @@ export function AutomationSection() {
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
           {CARDS.map((c, i) => (
-            <Reveal key={c.heading} amount={0.2} style={{ position: "relative", background: SX.card, borderRadius: 22, border: "1px solid rgba(26, 23, 18, 0.10)", boxShadow: "0 1px 3px rgba(26, 23, 18, 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <Reveal key={c.heading} amount={0.2} style={{ position: "relative", background: SX.card, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
               {/* left text */}
               <div style={{ padding: "56px 40px 56px 32px", display: "flex", flexDirection: "column" }}>
                 <IconChip path={ICONS[i]} />
