@@ -13,8 +13,9 @@
  * connector lines out to Clio, MyCase, Filevine, Drive and Gmail tiles. Naming
  * logos dates the page, invites "do you support X" objections we then have to
  * answer, and implies a fixed integration list when the actual claim is the
- * opposite: Delta signs in to whatever the firm already runs. The tiles are now
- * CATEGORIES, not brands. Do not put logos back.
+ * opposite: Delta signs in to whatever the firm already runs. A category-pill row
+ * replaced the logos briefly and was also cut: it restated the copy above it. The
+ * claim lives in the sentence, not in a row of chips. Do not put either back.
  */
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
@@ -26,9 +27,6 @@ const STEPS = [
   { n: "Step 02", t: "Ask", d: "Give Delta your onboarding doc and the flow your firm already runs. Same as a new hire." },
   { n: "Step 03", t: "Approve", d: "You approve before anything goes out. Delta learns how your firm works. That knowledge stays when people leave." },
 ];
-
-/** Categories, never brands. See the header note. */
-const SURFACES = ["Case system", "Inbox", "Calendar", "Documents", "Billing"];
 
 /** The one banded section on the page. */
 const BAND_IMAGE = "/v2/ambient/water-dark.webp";
@@ -136,16 +134,6 @@ export function HowItWorks() {
           ))}
         </div>
 
-        {/* what it connects to, as categories */}
-        <Reveal delay={0.1} style={{ marginTop: 44 }}>
-          <div className="sx-surfaces">
-            {SURFACES.map((label) => (
-              <span key={label} className="sx-surface-pill">
-                {label}
-              </span>
-            ))}
-          </div>
-        </Reveal>
       </Container>
 
       <style>{`
@@ -153,20 +141,6 @@ export function HowItWorks() {
         @keyframes sx-dot-pulse {
           0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.85; }
           50%      { transform: translate(-50%,-50%) scale(1.75); opacity: 0.3; }
-        }
-        .sx-surfaces {
-          display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-        }
-        .sx-surface-pill {
-          font-family: var(--sx-body-font, inherit);
-          font-size: 15px;
-          color: var(--sx-on-media);
-          background: var(--sx-glass);
-          border: 1px solid var(--sx-glass-edge);
-          border-radius: 999px;
-          padding: 10px 20px;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
         }
         @media (prefers-reduced-motion: reduce) { .sx-dot-glow { animation: none; } }
         @media (max-width: 900px){
