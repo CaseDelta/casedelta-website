@@ -3,9 +3,9 @@
 /**
  * Beat 6: Pricing. CaseDelta is priced per FIRM by attorney count, flat monthly,
  * regardless of staff size (the wedge against per-seat research tools). Three tiers:
- *   up to 5 attorneys  -> $999/mo
- *   up to 10 attorneys -> $1,999/mo   (highlighted)
- *   up to 20 attorneys -> $3,999/mo
+ *   up to 5 attorneys  -> $499/mo
+ *   up to 10 attorneys -> $999/mo   (highlighted)
+ *   up to 20 attorneys -> $1,999/mo
  * A contact line handles firms above 20. The value is identical across tiers, so the
  * feature list is shared once below the cards rather than repeated three times.
  *
@@ -17,9 +17,9 @@ import { Container, SectionHead } from "./kit";
 import { Reveal, revealProps } from "./reveal";
 
 const TIERS = [
-  { band: "Up to 5 attorneys", price: "$999", featured: false },
-  { band: "Up to 10 attorneys", price: "$1,999", featured: true },
-  { band: "Up to 20 attorneys", price: "$3,999", featured: false },
+  { band: "Up to 5 attorneys", price: "$499", featured: false },
+  { band: "Up to 10 attorneys", price: "$999", featured: true },
+  { band: "Up to 20 attorneys", price: "$1,999", featured: false },
 ];
 
 function Check({ color }: { color: string }) {
@@ -52,9 +52,6 @@ export function Pricing() {
             const subColor = on ? "color-mix(in srgb, var(--sx-on-ink) 82%, transparent)" : SX.ink2;
             return (
               <motion.div key={t.band} {...revealProps({ delay: i * 0.08, amount: 0.3 })} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: on ? "0 40px 80px -46px color-mix(in srgb, var(--sx-accent) 50%, transparent)" : "none" }}>
-                {on && (
-                  <span style={{ position: "absolute", top: 24, right: 24, fontFamily: SX.ui, fontSize: 12, fontWeight: 600, color: SX.orange, background: SX.surface, borderRadius: 999, padding: "5px 12px" }}>Most popular</span>
-                )}
                 <div style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: nameColor }}>{t.band}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, margin: "20px 0 0" }}>
                   <span style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, letterSpacing: "-1px", color: nameColor, lineHeight: 1 }}>{t.price}</span>
