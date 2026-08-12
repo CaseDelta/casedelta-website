@@ -58,14 +58,14 @@ function CodePanel() {
 const CARDS: Card[] = [
   {
     heading: "A computer of its own",
-    sub: "Delta has a computer of its own, so work does not stall when you step away. It signs in and works across your apps, tools and websites, including the ones with no clean API, and comes back with the work finished.",
+    sub: "Delta has a computer of its own in the cloud, so work does not stall when you step away. It can sign in and work across apps, tools, and websites, including the ones with no clean API, and come back with the work finished.",
     checks: ["Your case system", "Your inbox, calendar and files", "Even where there is no API"],
     photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
     panel: <CodePanel />,
   },
   {
-    heading: "Ask it like a teammate",
-    sub: "Ask Delta the way you would ask someone on your team. Other tools make you build workflows first. With Delta you just ask, and it gets it done.",
+    heading: "Message it like a teammate",
+    sub: "You can message Delta the way you would text someone on your team. Other legal AI tools may ask you to set up and build workflows first. With Delta, simply message it to take on a task and it gets it done.",
     checks: ["Nothing to set up", "Nothing new to learn", "Ask in plain English"],
     photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
     // eslint-disable-next-line @next/next/no-img-element
@@ -73,7 +73,7 @@ const CARDS: Card[] = [
   },
   {
     heading: "Trust it with more over time",
-    sub: "Delta gets sharper the more you work together. It keeps context on how your firm likes work done. After a few files it picks up your templates, your edge cases, and knows when to ask versus keep going.",
+    sub: "Delta is a teammate that gets sharper over time. It keeps context on how you like work done. After a few files it picks up your voice, your edge cases, and knows when to ask versus keep going.",
     checks: ["Learns how your firm works", "Knows when to ask you", "That knowledge stays when people leave"],
     photo: IMG("psmbnZin0yEqHm2rJhS4fljiI.png"),
     panel: (

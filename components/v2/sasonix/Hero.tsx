@@ -246,7 +246,7 @@ export function Hero() {
                 maxWidth: 560,
               }}
             >
-              Delta is the AI paralegal you can give real work to. It has a computer of its own, works inside the tools your firm already uses, and comes back with the work finished.
+              The AI paralegal you can give real work to. Delta signs in to your tools, uses them just like you do, and comes back with finished work.
             </motion.p>
 
             <motion.div

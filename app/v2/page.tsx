@@ -7,7 +7,7 @@ import { Sasonix } from "@/components/v2/sasonix/Sasonix";
  * Isolated from the live homepage (app/page.tsx). Not indexed while it is a preview.
  */
 export const metadata: Metadata = {
-  title: "Sasonix clone (v2 preview)",
+  title: "Delta: A new kind of colleague",
   robots: { index: false, follow: false },
 };
 

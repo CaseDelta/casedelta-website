@@ -32,19 +32,19 @@ const PRACTICES: Practice[] = [
     examples: [
       {
         title: "Demand packages",
-        body: "Delta builds the chronology from the records, then drafts the demand from your own template. It lands in the file for review.",
+        body: "Build the demand overnight. Reads every record, dates each treatment, drafts the demand in your firm's voice, and leaves it in the file for you to approve.",
       },
       {
         title: "Policy limits",
-        body: "A dec page and a police report go in. Delta flags the policy limit problem on the file before it becomes one.",
+        body: "Catch the coverage problem early. Reads the dec page and the police report, checks the limits against the damages, and flags the conflict on the file.",
       },
       {
         title: "Records chasing",
-        body: "Delta drafts the records requests, tracks what came back, and follows up on what did not.",
+        body: "Keep the records moving. Drafts every request, tracks what came back, chases what did not, and leaves the follow ups for you to approve.",
       },
       {
         title: "Client updates",
-        body: "Delta drafts the update from what changed on the file this week. You approve, then it sends.",
+        body: "Never leave a client wondering. Reads what changed on the file this week, drafts the update in your voice, and parks it for your approval.",
       },
     ],
   },
@@ -54,19 +54,19 @@ const PRACTICES: Practice[] = [
     examples: [
       {
         title: "Chronology at scale",
-        body: "Thousands of pages across hundreds of plaintiffs. Delta builds a cited chronology on every file, not just the ones someone got to.",
+        body: "Build the chronology on every file, not just the ones someone got to. Reads thousands of pages across hundreds of plaintiffs, cites every fact to its page, and leaves a draft on each.",
       },
       {
         title: "Plaintiff fact sheets",
-        body: "Delta pulls the answers out of the records and drafts the sheet, every fact linked to its page.",
+        body: "Get the fact sheets off the pile. Pulls the answers from the records, drafts every field, cites the page, and parks the sheet for review.",
       },
       {
         title: "Status across the docket",
-        body: "Ask what moved this week. Delta reads every file and answers in plain English.",
+        body: "Know what moved this week. Reads every file, gathers what changed, and comes back with it in plain English.",
       },
       {
         title: "Bulk records intake",
-        body: "Records arrive in bulk. Delta files them to the right plaintiff and flags what is missing.",
+        body: "Sort the incoming records. Files each one to the right plaintiff, flags what is missing, and leaves the gaps in a list for you.",
       },
     ],
   },
@@ -76,19 +76,19 @@ const PRACTICES: Practice[] = [
     examples: [
       {
         title: "Medical chronology",
-        body: "Delta reads the full chart and builds the treatment timeline, every entry linked to its page.",
+        body: "Build the treatment timeline. Reads the full chart, dates every entry, links each one to its page, and leaves the chronology for you to approve.",
       },
       {
         title: "New records on arrival",
-        body: "An MRI report lands. Delta reads it right away and flags what changes the value of the case.",
+        body: "Read the record the day it lands. Opens it on arrival with nobody prompting it, and flags what changes the value of the case.",
       },
       {
         title: "Expert packets",
-        body: "Delta assembles the records your expert asked for and drafts the cover letter.",
+        body: "Get your expert what they asked for. Pulls the records, assembles the packet, drafts the cover letter, and parks it for your approval.",
       },
       {
         title: "Deadlines",
-        body: "Delta calendars the dates off the file and drafts the follow up.",
+        body: "Never miss a date. Reads the dates off the file, calendars them, drafts the follow up, and leaves it for you to send.",
       },
     ],
   },
@@ -98,19 +98,19 @@ const PRACTICES: Practice[] = [
     examples: [
       {
         title: "New matter opening",
-        body: "A file arrives by email. Delta opens the matter, files the documents, and starts intake.",
+        body: "Open the file the moment it arrives. Reads the intake email, opens the matter, files the documents, and starts the intake steps.",
       },
       {
         title: "Missing documents",
-        body: "Delta checks what the file still needs and drafts the request to the client.",
+        body: "Close the gaps in the file. Checks what is still missing, drafts the request to the client, and parks it for your approval.",
       },
       {
         title: "First response",
-        body: "Delta drafts the intake response in your firm's voice. A person approves before it sends.",
+        body: "Answer new intakes fast. Drafts the response in your firm's voice, and never sends it without you.",
       },
       {
         title: "Case briefing",
-        body: "Ask where a case stands before the call. Delta reads every system and briefs you.",
+        body: "Walk into the call ready. Reads every system, gathers where the case stands, and briefs you in plain English.",
       },
     ],
   },
@@ -120,19 +120,19 @@ const PRACTICES: Practice[] = [
     examples: [
       {
         title: "Morning briefing",
-        body: "Delta reports on what changed across your matters overnight, before you open the office.",
+        body: "Start the day already caught up. Reads what changed across your matters overnight and leaves the briefing before you open the office.",
       },
       {
         title: "Nothing goes quiet",
-        body: "Ask what is overdue and who has gone quiet. Delta drafts the nudge.",
+        body: "Nothing sits still. Finds what is overdue and who has gone quiet, drafts the nudge, and leaves it for you to send.",
       },
       {
         title: "Your own fields",
-        body: "Delta reads your own tabs and fields live, with no mapping project.",
+        body: "Work in the setup you already have. Reads your own tabs and fields live, with no mapping project.",
       },
       {
         title: "Knowledge that stays",
-        body: "Delta learns how your firm works. That knowledge stays when people leave.",
+        body: "Keep what your firm knows. Learns how your firm likes work done, and keeps it when people leave.",
       },
     ],
   },
