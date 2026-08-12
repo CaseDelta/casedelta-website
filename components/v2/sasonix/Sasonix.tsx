@@ -30,6 +30,7 @@ import { ThemeVars, useThemeOverride } from "./ThemeVars";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
+import { Stakes } from "./Stakes";
 import { AutomationSection } from "./AutomationSection";
 import { UseCases } from "./UseCases";
 import { HowItWorks } from "./HowItWorks";
@@ -48,7 +49,9 @@ export function Sasonix() {
       <Nav />
       {/* 1. Hero */}
       <Hero />
-      {/* 2. What Delta is */}
+      {/* 2. The stakes: the pain, and the evening they want back */}
+      <Stakes />
+      {/* 3. What Delta is */}
       <AutomationSection />
       {/* 3. How it works, onboarding and the stack, in one banded section */}
       <HowItWorks />
