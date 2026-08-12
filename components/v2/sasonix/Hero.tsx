@@ -64,6 +64,9 @@ const HERO_MEDIA: { src?: string; poster?: string; caption: string } = {
  * Swap by name; ?bg=<name> overrides it live for side-by-side judging.
  */
 const BACKDROPS = {
+  // The original Sasonix hero photo. Self-hosted now rather than hotlinked from
+  // framerusercontent.com, so restoring it does not restore the CDN dependency.
+  mountain: "/v2/ambient/mountain.webp",
   "water-dark": "/v2/ambient/water-dark.webp",
   "valley-mist": "/v2/ambient/valley-mist.webp",
   "cloud-pastel": "/v2/ambient/cloud-pastel.webp",
@@ -73,7 +76,7 @@ const BACKDROPS = {
   "forest-dark": "/v2/ambient/forest-dark.webp",
 } as const;
 
-const DEFAULT_BACKDROP: keyof typeof BACKDROPS = "water-dark";
+const DEFAULT_BACKDROP: keyof typeof BACKDROPS = "mountain";
 
 export function Hero() {
   const reduce = useReducedMotion();
