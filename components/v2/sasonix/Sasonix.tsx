@@ -11,6 +11,14 @@
  *   6. Pricing         -> three flat tiers priced by attorney count
  *   7. CtaFooter    -> reinforcement and the ask
  *
+ * SECTION SPACING CONVENTION: every section carries 60px top AND 60px bottom, so
+ * the gap between any two is 120px and DELETING a section leaves its neighbours'
+ * 60+60 intact. Do not go back to bottom-only padding: that was the old shape, and
+ * removing BrandStrip under the hero silently collapsed the gap to zero.
+ * Two exceptions, both deliberate: AutomationSection takes 120px on top because the
+ * hero is full bleed and contributes no half-gap, and HowItWorks paints a
+ * background so it owns internal padding plus a 60px outer margin on each side.
+ *
  * Copy is CaseDelta; the visual identity is still the Sasonix placeholder (orange,
  * cream, hotlinked imagery) and flips on the tokens.ts rebrand. The unused Sasonix
  * primitives (AutomationFlow, HowToWork, SmartFlow, Integrations, Faq) are kept in the

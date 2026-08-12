@@ -33,7 +33,7 @@ const BAND_IMAGE = "/v2/ambient/water-dark.webp";
 
 export function HowItWorks() {
   return (
-    <section id="howitworks" className="sx-band" style={{ position: "relative", overflow: "hidden", padding: "112px 0 120px", marginBottom: 120 }}>
+    <section id="howitworks" className="sx-band" style={{ position: "relative", overflow: "hidden", padding: "112px 0 120px", margin: "60px 0" }}>
       {/* full-width ambient backdrop */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -145,7 +145,7 @@ export function HowItWorks() {
         @media (prefers-reduced-motion: reduce) { .sx-dot-glow { animation: none; } }
         @media (max-width: 900px){
           .sx-hiw-steps { grid-template-columns: 1fr !important; }
-          .sx-band { padding: 80px 0 88px !important; margin-bottom: 88px !important; }
+          .sx-band { padding: 80px 0 88px !important; margin: 44px 0 !important; }
         }
       `}</style>
     </section>

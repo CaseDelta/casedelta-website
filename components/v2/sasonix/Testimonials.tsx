@@ -64,7 +64,7 @@ function Card({ c }: { c: (typeof CARDS)[number] }) {
 export function Testimonials() {
   const track = [...CARDS, ...CARDS];
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px", overflow: "hidden" }}>
+    <section style={{ background: SX.white, padding: "60px 0 60px", overflow: "hidden" }}>
       <Container>
         <Reveal>
           <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, textAlign: "center", maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>

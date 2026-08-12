@@ -89,7 +89,7 @@ const CARDS: Card[] = [
 
 export function AutomationSection() {
   return (
-    <section id="features" style={{ background: SX.white, padding: "120px 0 120px" }}>
+    <section id="features" style={{ background: SX.white, padding: "120px 0 60px" }}>
       <Container>
         <Reveal>
           <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>

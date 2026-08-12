@@ -143,7 +143,7 @@ export function UseCases() {
   const practice = PRACTICES.find((p) => p.key === active) ?? PRACTICES[0];
 
   return (
-    <section id="jobs" style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section id="jobs" style={{ background: SX.white, padding: "60px 0 60px" }}>
       <Container>
         <Reveal>
           <h2

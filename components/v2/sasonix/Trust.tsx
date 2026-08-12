@@ -31,7 +31,7 @@ const POINTS: { title: string; body: string }[] = [
 
 export function Trust() {
   return (
-    <section id="security" style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section id="security" style={{ background: SX.white, padding: "60px 0 60px" }}>
       <Container>
         <Reveal>
           <SectionHead
