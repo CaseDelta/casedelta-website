@@ -91,9 +91,13 @@ export function AutomationSection() {
   return (
     <section id="features" style={{ background: SX.white, padding: "60px 0 60px" }}>
       <Container>
+        {/* The plain-language definition, set at hero scale and centered. It is the
+            one place on the page that states the whole product in a breath, so it
+            is deliberately larger than a section heading and carries no eyebrow. */}
         <Reveal>
-          <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 620 }}>
-            How Delta is different
+          <h2 className="sx-thesis">
+            Delta is an AI paralegal with its own cloud computer. It signs into your tools, runs multi-step work
+            end-to-end like a human, and can even run tasks you approve without you prompting it.
           </h2>
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
@@ -120,6 +124,22 @@ export function AutomationSection() {
           ))}
         </div>
       </Container>
+      <style>{`
+        .sx-thesis {
+          max-width: 1000px;
+          margin: 0 auto;
+          text-align: center;
+          font-family: var(--sx-archivo), sans-serif;
+          font-weight: 500;
+          font-size: 44px;
+          line-height: 56px;
+          letter-spacing: -1.2px;
+          color: var(--sx-ink);
+          text-wrap: balance;
+        }
+        @media (max-width: 1100px) { .sx-thesis { font-size: 36px; line-height: 46px; } }
+        @media (max-width: 760px)  { .sx-thesis { font-size: 28px; line-height: 37px; letter-spacing: -0.6px; } }
+      `}</style>
     </section>
   );
 }

@@ -57,22 +57,6 @@ export function HowItWorks() {
       <Container style={{ position: "relative", zIndex: 2 }}>
         <Reveal>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                fontFamily: SX.mono,
-                fontSize: 13,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: SX.onMediaMuted,
-                border: `1px solid ${SX.glassEdge}`,
-                borderRadius: 999,
-                padding: "7px 16px",
-              }}
-            >
-              Onboarding
-            </span>
             <h2
               style={{
                 fontFamily: SX.display,
@@ -81,7 +65,7 @@ export function HowItWorks() {
                 lineHeight: "55.2px",
                 letterSpacing: "-1px",
                 color: SX.onMedia,
-                margin: "24px 0 0",
+                margin: 0,
                 maxWidth: 640,
               }}
             >
