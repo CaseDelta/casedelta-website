@@ -20,7 +20,7 @@
  * middle, finished artifact and approval gate at the close.
  */
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Activity,
   BellRing,
@@ -235,10 +235,13 @@ export function UseCases() {
                   aria-selected={on}
                   onClick={() => setActive(p.key)}
                   className="sx-uc-tab"
+                  /* Weight stays constant. Switching 400 to 600 on the active tab
+                     re-measures the text and shoves every tab after it sideways by
+                     2 to 3px on each click. The active state is carried by the
+                     pill and the ink instead. */
                   style={{
                     background: on ? SX.accentSoft : "transparent",
                     color: on ? SX.ink : SX.ink2,
-                    fontWeight: on ? 600 : 400,
                   }}
                 >
                   {p.label}
@@ -248,15 +251,19 @@ export function UseCases() {
           </div>
         </Reveal>
 
-        {/* three examples for the selected practice */}
-        <div style={{ marginTop: 32 }}>
-          <AnimatePresence mode="wait">
+        {/* Three examples for the selected practice.
+            No AnimatePresence: mode="wait" ran the exit, emptied the grid, and only
+            then mounted the replacement, so the section collapsed and snapped back
+            on every click. Re-keying swaps in a single commit instead, and `layout`
+            on the wrapper animates the height difference between practices, which
+            is real: Intake runs 26px shorter than the rest. */}
+        <motion.div layout style={{ marginTop: 32 }} transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}>
+          <div>
             <motion.div
               key={practice.key}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
               className="sx-uc-grid"
             >
               {practice.examples.map(({ title, body, Icon }, i) => (
@@ -283,8 +290,8 @@ export function UseCases() {
                 </motion.div>
               ))}
             </motion.div>
-          </AnimatePresence>
-        </div>
+          </div>
+        </motion.div>
       </Container>
 
       <style>{`
@@ -293,8 +300,9 @@ export function UseCases() {
           border-radius: 999px;
           padding: 10px 18px;
           font-size: 15px;
+          font-weight: 500;
           line-height: 1.2;
-          transition: background 0.2s ease, color 0.2s ease;
+          transition: background 0.24s ease, color 0.24s ease;
         }
         .sx-uc-tab:hover { background: var(--sx-surface-alt); }
 
