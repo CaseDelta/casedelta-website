@@ -27,9 +27,10 @@
  * The background image is still the Sasonix placeholder, hotlinked from Framer's
  * CDN. It MUST be replaced with a CaseDelta asset and self-hosted before launch.
  */
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { SX, SX_IMG } from "./tokens";
+import { SX } from "./tokens";
 
 const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
 const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number];
@@ -47,8 +48,26 @@ const HERO_MEDIA: { src?: string; poster?: string; caption: string } = {
   caption: "Delta, working a file end to end",
 };
 
+/**
+ * The ambient backdrop. Self-hosted ICM (intentional camera movement) photography
+ * in the cool teal family, which is the one coherent set across the whole page.
+ * Swap by name; ?bg=<name> overrides it live for side-by-side judging.
+ */
+const BACKDROPS = {
+  "water-dark": "/v2/ambient/water-dark.webp",
+  "valley-mist": "/v2/ambient/valley-mist.webp",
+  "cloud-pastel": "/v2/ambient/cloud-pastel.webp",
+  "horizon-blue": "/v2/ambient/horizon-blue.webp",
+  "cloud-swirl": "/v2/ambient/cloud-swirl.webp",
+  "meadow-light": "/v2/ambient/meadow-light.webp",
+  "forest-dark": "/v2/ambient/forest-dark.webp",
+} as const;
+
+const DEFAULT_BACKDROP: keyof typeof BACKDROPS = "water-dark";
+
 export function Hero() {
   const reduce = useReducedMotion();
+  const backdrop = useBackdropOverride();
 
   /** Perform's text appear: fade plus a 20px rise, ordered by importance. */
   const rise = (delay: number) =>
@@ -113,7 +132,7 @@ export function Hero() {
       {/* Ambient background, settling over 2s so the hero is never static on arrival. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <motion.img
-        src={SX_IMG.heroBg}
+        src={BACKDROPS[backdrop]}
         alt=""
         aria-hidden
         {...(reduce
@@ -377,4 +396,14 @@ function Star() {
       <path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z" />
     </svg>
   );
+}
+
+/** ?bg=<name> swaps the backdrop live, so candidates can be judged in place. */
+function useBackdropOverride(): keyof typeof BACKDROPS {
+  const [name, setName] = useState<keyof typeof BACKDROPS>(DEFAULT_BACKDROP);
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("bg");
+    if (q && q in BACKDROPS) setName(q as keyof typeof BACKDROPS);
+  }, []);
+  return name;
 }
