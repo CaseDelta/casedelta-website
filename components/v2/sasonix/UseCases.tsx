@@ -251,47 +251,53 @@ export function UseCases() {
           </div>
         </Reveal>
 
-        {/* Three examples for the selected practice.
-            No AnimatePresence: mode="wait" ran the exit, emptied the grid, and only
-            then mounted the replacement, so the section collapsed and snapped back
-            on every click. Re-keying swaps in a single commit instead, and `layout`
-            on the wrapper animates the height difference between practices, which
-            is real: Intake runs 26px shorter than the rest. */}
-        <motion.div layout style={{ marginTop: 32 }} transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}>
-          <div>
-            <motion.div
-              key={practice.key}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-              className="sx-uc-grid"
-            >
-              {practice.examples.map(({ title, body, Icon }, i) => (
-                <motion.div
-                  key={title}
-                  className="sx-uc-card"
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.06 + i * 0.07, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  /* The lift MUST come from framer. It owns the inline transform on
-                     motion components, so a CSS :hover transform is silently
-                     overridden. Same trap as the pricing tiers. */
-                  whileHover={{ y: -6 }}
-                >
-                  <span className="sx-uc-chip" aria-hidden>
-                    <Icon size={22} strokeWidth={1.7} />
-                  </span>
-                  <h3 className="sx-uc-title">{title}</h3>
-                  <div className="sx-uc-body">
-                    {body.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </motion.div>
+        {/* All five practices are rendered into the SAME grid cell, stacked, with
+            only the active one at full opacity.
+
+            Why, rather than swapping the content out:
+              1. The container sizes to the TALLEST practice, so the section height
+                 is fixed. Swapping meant Intake was 26px shorter and the page
+                 shifted under the reader's cursor on every click.
+              2. The change becomes a true crossfade. The outgoing layer fades while
+                 the incoming one fades up, instead of one vanishing and the next
+                 appearing after it.
+            The inactive layers are aria-hidden and take no pointer events. Nothing
+            inside a card is focusable, so they stay out of the way entirely. */}
+        <div className="sx-uc-stack">
+          {PRACTICES.map((pr) => {
+            const on = pr.key === practice.key;
+            return (
+              <motion.div
+                key={pr.key}
+                className="sx-uc-layer"
+                aria-hidden={!on}
+                /* Opacity only. A y offset here makes the outgoing and incoming
+                   layers slide past each other, which reads as the cards bobbing
+                   up and down on every switch. */
+                animate={{ opacity: on ? 1 : 0 }}
+                initial={false}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                style={{ pointerEvents: on ? "auto" : "none" }}
+              >
+                <div className="sx-uc-grid">
+                  {pr.examples.map(({ title, body, Icon }) => (
+                    <div key={title} className="sx-uc-card">
+                      <span className="sx-uc-chip" aria-hidden>
+                        <Icon size={22} strokeWidth={1.7} />
+                      </span>
+                      <h3 className="sx-uc-title">{title}</h3>
+                      <div className="sx-uc-body">
+                        {body.map((line) => (
+                          <p key={line}>{line}</p>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </Container>
 
       <style>{`
@@ -305,6 +311,11 @@ export function UseCases() {
           transition: background 0.24s ease, color 0.24s ease;
         }
         .sx-uc-tab:hover { background: var(--sx-surface-alt); }
+
+        /* every layer occupies row 1 / column 1, so the stack is as tall as the
+           tallest practice and never changes height */
+        .sx-uc-stack { display: grid; margin-top: 32px; }
+        .sx-uc-layer { grid-area: 1 / 1; }
 
         .sx-uc-grid {
           display: grid;
@@ -327,10 +338,13 @@ export function UseCases() {
           padding: 32px 30px 34px;
           box-shadow: var(--sx-uc-shadow);
           overflow: hidden;
-          transition: box-shadow 0.28s ease, border-color 0.28s ease;
+          transition: box-shadow 0.28s ease, border-color 0.28s ease, transform 0.28s cubic-bezier(0.22,1,0.36,1);
           will-change: transform;
         }
+        /* the cards are plain divs now, so the lift is CSS again. It works here
+           precisely because nothing sets an inline transform on them. */
         .sx-uc-card:hover {
+          transform: translateY(-6px);
           --sx-uc-shadow: 0 26px 50px -28px rgba(var(--sx-shadow-rgb), 0.28);
           border-color: color-mix(in srgb, var(--sx-accent) 38%, transparent);
         }
@@ -391,6 +405,7 @@ export function UseCases() {
 
         @media (prefers-reduced-motion: reduce) {
           .sx-uc-card, .sx-uc-card::after, .sx-uc-chip { transition: none; }
+          .sx-uc-card:hover { transform: none; }
           .sx-uc-card::after { display: none; }
         }
         @media (max-width: 980px) {
