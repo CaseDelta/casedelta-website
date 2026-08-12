@@ -26,7 +26,13 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
   const [scrolled, setScrolled] = useState(solid);
   useEffect(() => {
     if (solid) { setScrolled(true); return; }
-    const onScroll = () => setScrolled(window.scrollY > 780);
+    // Flip once the hero has essentially left the screen. Measured from the hero
+    // itself, since it is now viewport-height rather than a fixed value.
+    const threshold = () => {
+      const hero = document.querySelector(".sx-hero") as HTMLElement | null;
+      return (hero?.offsetHeight ?? window.innerHeight) - 90;
+    };
+    const onScroll = () => setScrolled(window.scrollY > threshold());
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

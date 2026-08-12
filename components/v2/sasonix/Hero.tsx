@@ -35,7 +35,17 @@ import { SX } from "./tokens";
 const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
 const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number];
 
-const HERO_H = 860; // one viewport, hard cut into the section below
+/**
+ * The hero owns the whole viewport: nothing from the next section may peek above
+ * the fold. Height is 100dvh (dynamic viewport height) rather than a fixed pixel
+ * value, so it tracks mobile browser chrome as it shows and hides instead of
+ * leaving a strip of the white section visible. The nav is fixed and sits over
+ * the hero, so it costs no layout height here.
+ *
+ * HERO_MIN is the floor for very short windows, below which the copy would be
+ * crushed. Short-viewport type sizes are handled in the (max-height) query.
+ */
+const HERO_MIN = 600;
 
 /**
  * The hero video. `src` undefined renders the placeholder frame.
@@ -82,9 +92,17 @@ export function Hero() {
   return (
     <section
       className="sx-hero"
-      style={{ position: "relative", height: HERO_H, background: SX.ink, fontFamily: SX.body, overflow: "hidden" }}
+      style={{ position: "relative", background: SX.ink, fontFamily: SX.body, overflow: "hidden" }}
     >
       <style>{`
+        /* Fill the viewport exactly. dvh tracks mobile browser chrome, so the
+           section below never peeks above the fold. vh is the fallback. */
+        .sx-hero {
+          height: 100vh;
+          height: 100dvh;
+          min-height: ${HERO_MIN}px;
+        }
+
         /* Two columns on desktop; the media stacks under the copy on narrow screens. */
         .sx-hero-grid {
           display: grid;
@@ -94,11 +112,27 @@ export function Hero() {
           height: 100%;
         }
 
+        /* Short laptop windows: pull the type down so the whole argument still
+           fits inside one viewport instead of pushing the proof off the fold. */
+        @media (min-width: 1101px) and (max-height: 800px) {
+          .sx-hero-title { font-size: 54px !important; line-height: 58px !important; }
+          .sx-hero-subhead { font-size: 17px !important; margin-top: 18px !important; }
+          .sx-hero-actions { margin-top: 24px !important; }
+          .sx-hero-proof { margin-top: 30px !important; }
+        }
+
+        @media (min-width: 1101px) and (max-height: 680px) {
+          .sx-hero-title { font-size: 44px !important; line-height: 48px !important; }
+          .sx-hero-proof { display: none !important; }
+        }
+
         /* Below the two-column breakpoint the media STACKS under the copy. It is
            never hidden: the video is what explains the product, so a phone
            visitor has to reach it too. */
         @media (max-width: 1100px) {
-          .sx-hero { height: auto !important; }
+          /* Media stacks under the copy here, so the hero grows past one screen.
+             It still starts by filling the viewport. */
+          .sx-hero { height: auto !important; min-height: 100dvh; }
           .sx-hero-grid {
             grid-template-columns: minmax(0, 1fr);
             gap: 44px;
@@ -111,7 +145,7 @@ export function Hero() {
         }
 
         @media (max-width: 760px) {
-          .sx-hero { height: auto !important; min-height: 760px; }
+          .sx-hero { height: auto !important; min-height: 100dvh; }
           .sx-hero-grid {
             height: auto !important;
             align-content: start;
