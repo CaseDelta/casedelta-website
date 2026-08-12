@@ -160,22 +160,10 @@ export function UseCases() {
           >
             How law firms are using Delta
           </h2>
-          <p
-            style={{
-              fontFamily: SX.body,
-              fontSize: 18,
-              lineHeight: "30px",
-              color: SX.ink2,
-              margin: "18px 0 0",
-              maxWidth: 560,
-            }}
-          >
-            A few of the ways firms are handing Delta real work. Pick a practice.
-          </p>
         </Reveal>
 
         {/* practice tabs */}
-        <Reveal amount={0.2} style={{ marginTop: 44 }}>
+        <Reveal amount={0.2} style={{ marginTop: 36 }}>
           <div className="sx-uc-tabs" role="tablist">
             {PRACTICES.map((p) => {
               const on = p.key === practice.key;
@@ -212,10 +200,6 @@ export function UseCases() {
             >
               {practice.examples.map((ex) => (
                 <div key={ex.title} className="sx-uc-card">
-                  <span className="sx-uc-chip">
-                    <span aria-hidden className="sx-uc-dot" />
-                    {practice.label}
-                  </span>
                   <h3
                     style={{
                       fontFamily: SX.display,
@@ -224,7 +208,7 @@ export function UseCases() {
                       lineHeight: "28px",
                       letterSpacing: "-0.3px",
                       color: SX.ink,
-                      margin: "18px 0 0",
+                      margin: 0,
                     }}
                   >
                     {ex.title}
@@ -267,18 +251,6 @@ export function UseCases() {
           border: 1px solid var(--sx-hairline);
           border-radius: 18px;
           padding: 28px 28px 32px;
-        }
-        .sx-uc-chip {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          font-family: var(--sx-ui-font, inherit);
-          font-size: 13px;
-          color: var(--sx-ink-3);
-        }
-        .sx-uc-dot {
-          width: 14px; height: 14px; border-radius: 999px;
-          background: var(--sx-accent); opacity: 0.85;
         }
         @media (max-width: 860px) {
           .sx-uc-grid { grid-template-columns: minmax(0, 1fr); }
