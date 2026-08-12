@@ -36,6 +36,22 @@ const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
 const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number];
 
 /**
+ * The arrival sequence. The headline lands alone and holds, then the subhead, then
+ * the ask, then everything else. The gaps are deliberately wide enough to READ as
+ * sequence rather than as one group easing in together: under about 0.3s apart the
+ * eye reads simultaneous.
+ *
+ * Tune here, not at the callsites.
+ */
+const CUE = {
+  headline: 0.25,
+  subhead: 1.0,
+  cta: 1.7,
+  media: 1.95,
+  proof: 2.2,
+} as const;
+
+/**
  * The hero owns the whole viewport: nothing from the next section may peek above
  * the fold. Height is 100dvh (dynamic viewport height) rather than a fixed pixel
  * value, so it tracks mobile browser chrome as it shows and hides instead of
@@ -82,14 +98,14 @@ export function Hero() {
   const reduce = useReducedMotion();
   const backdrop = useBackdropOverride();
 
-  /** Perform's text appear: fade plus a 20px rise, ordered by importance. */
-  const rise = (delay: number) =>
+  /** Fade in, with a small rise underneath it. Fade carries; the rise is seasoning. */
+  const rise = (delay: number, y = 14) =>
     reduce
       ? {}
       : {
-          initial: { opacity: 0.001, y: 20 },
+          initial: { opacity: 0.001, y },
           animate: { opacity: 1, y: 0 },
-          transition: { delay, duration: 0.5, ease: EASE_TEXT, type: "tween" as const },
+          transition: { delay, duration: 0.85, ease: EASE_TEXT, type: "tween" as const },
         };
 
   return (
@@ -216,7 +232,7 @@ export function Hero() {
           {/* LEFT: the argument, disclosed in order of importance. */}
           <div className="sx-hero-copy" style={{ maxWidth: 620 }}>
             <motion.h1
-              {...rise(0.15)}
+              {...rise(CUE.headline, 10)}
               className="sx-hero-title"
               style={{
                 fontFamily: SX.display,
@@ -234,7 +250,7 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              {...rise(0.4)}
+              {...rise(CUE.subhead)}
               className="sx-hero-subhead"
               style={{
                 fontFamily: SX.body,
@@ -250,7 +266,7 @@ export function Hero() {
             </motion.p>
 
             <motion.div
-              {...rise(0.62)}
+              {...rise(CUE.cta)}
               className="sx-hero-actions"
               style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}
             >
@@ -292,7 +308,7 @@ export function Hero() {
 
             {/* Proof arrives last: it confirms the claim rather than making it. */}
             <motion.div
-              {...rise(0.88)}
+              {...rise(CUE.proof)}
               className="sx-hero-proof"
               style={{
                 display: "flex",
@@ -339,7 +355,7 @@ function HeroMedia({ reduce }: { reduce: boolean }) {
     : {
         initial: { opacity: 0.001, y: 22 },
         animate: { opacity: 1, y: 0 },
-        transition: { delay: 0.5, duration: 0.8, ease: EASE_SOFT, type: "tween" as const },
+        transition: { delay: CUE.media, duration: 1.0, ease: EASE_SOFT, type: "tween" as const },
       };
 
   return (
