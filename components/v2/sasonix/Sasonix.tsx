@@ -25,6 +25,7 @@ import { Nav } from "./Nav";
 import { Hero } from "./Hero";
 import { BrandStrip } from "./BrandStrip";
 import { AutomationSection } from "./AutomationSection";
+import { RunIllustration } from "./RunIllustration";
 import { UseCases } from "./UseCases";
 import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
@@ -45,6 +46,8 @@ export function Sasonix() {
       <BrandStrip />
       {/* 2. What Delta is */}
       <AutomationSection />
+      {/* 2b. What actually comes back: the artifact, rendered */}
+      <RunIllustration />
       {/* 3. How it works, onboarding and the stack, in one banded section */}
       <HowItWorks />
       {/* 4. The work, cut by practice area (Grok's "how the team is using it") */}
