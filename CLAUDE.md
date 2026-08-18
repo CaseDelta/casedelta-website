@@ -1,47 +1,72 @@
 # CaseDelta Landing Page - AI Assistant Guide
 
 ## Project Overview
-CaseDelta's public marketing site (`casedelta.com`) — a single multi-page Next.js app: home, `/features`, `/use-cases`, `/blog` (MDX), `/pricing`, `/demo`, `/about`, `/security`, plus legal pages (`/privacy`, `/terms`). The current focus is the cold paid-Meta-traffic → `/demo` booking funnel.
+CaseDelta's public marketing site (`casedelta.com`) — a single multi-page Next.js app: home, `/features`, `/use-cases`, `/blog`, `/pricing`, `/demo`, `/about`, `/security`, `/answers` (knowledge-base / GEO hub), `/compare/[slug]` (competitor comparisons), plus legal pages (`/privacy`, `/terms`). The current focus is the cold paid-Meta-traffic → `/demo` booking funnel.
 
-**Core Value Proposition:** Delta is an AI associate that connects to the firm's existing tools (Clio, Filevine, Dropbox, Word, Gmail, etc.) and does the document-heavy cognitive work — chronologies, demand letters, follow-ups — that eats billable time. (The hero copy is the live source of truth for current positioning; see `components/HeroV2.tsx`.)
+**Core Value Proposition:** Delta is an AI paralegal that works inside the tools the firm already uses (Clio, Filevine, MyCase, Dropbox, Gmail, Microsoft 365, QuickBooks) and does the routine case work — chronologies, demand letters, record chasing, follow-ups — that eats billable time. Live positioning source of truth: `lib/variants/copy.ts` (hero) + `components/marketing/HomeSections.tsx` (below the fold).
 
-> **History:** This started as a 5-variant A/B landing-page experiment (light/dark × hero layouts). Those variant routes were removed — `next.config.ts` permanently redirects `/light/*` and `/dark/*` → `/`. The A/B rewrite machinery still exists in `proxy.ts` but is gated off by default (`NEXT_PUBLIC_ENABLE_AB_TESTING`) and its target routes no longer exist, so it is vestigial. Don't re-enable it without rebuilding the variant pages.
+> **History:** This started as a 5-variant A/B landing-page experiment (light/dark × hero layouts). Those variant *routes* were removed — `next.config.ts` permanently redirects `/light/*` and `/dark/*` → `/`. The old route-rewrite machinery still exists in `proxy.ts` but is gated off (`NEXT_PUBLIC_ENABLE_AB_TESTING`, default false) and its target routes no longer exist, so it is vestigial. Don't re-enable it. Variant testing is now done **in-page** via `lib/variants/*` + PostHog flags (see "Design Variants & Split Testing"), which is a different, live system.
 
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
-- **Styling:** Tailwind CSS v3.4 with custom CSS variables
+- **Styling:** Tailwind CSS v3.4 + CSS variables, but the marketing surface is mostly **inline styles driven by `components/marketing/kit.tsx`** (see Design System)
 - **Animation:** Framer Motion v11.15 (scroll-triggered effects)
-- **Analytics:** PostHog v1.311 (product analytics + conversion attribution)
+- **Analytics:** PostHog v1.311 (product analytics, conversion attribution, variant flags)
 - **Email:** Resend (contact / demo-booking notifications via `app/api/send`)
-- **Content:** MDX blog (`next-mdx-remote-client` + `gray-matter`), files in `content/blog/`
+- **Content:** DB-backed blog (Supabase `marketing_blog_posts` via `pg`), with legacy MDX files in `content/blog/` as fallback. See `docs/BLOG_CMS.md`.
 - **Deploy:** Vercel (project `casedelta-website`). `main` is production — pushes/merges auto-deploy. No GitHub Actions CI; `npm run build` is the only gate.
+
+> **`npm run lint` is broken** and has been since the Next 16 upgrade: `next lint` was removed from the CLI, so the script errors out. Use `npx tsc --noEmit` for type checking and `npm run build` as the real gate.
 
 ## Project Structure
 ```
 app/
 ├── layout.tsx              # Root layout: PostHog provider, MetaPixel, LinkedIn tag
-├── page.tsx                # Home page
+├── page.tsx                # Home (server: resolves variant, emits JSON-LD) -> HomeClient.tsx
+├── HomeClient.tsx          # Client home shell: <Hero/> + <HomeSections/> + footer
 ├── about/ features/ pricing/ demo/ security/ privacy/ terms/
 ├── use-cases/              # Index + dynamic [slug] pages
-├── blog/                   # Index + [slug] (MDX) + tag/[tag]
+├── answers/                # Knowledge-base hub (GEO/AI-search FAQPage schema)
+├── compare/                # Competitor comparison index + [slug]
+├── blog/                   # Index + [slug] + tag/[tag]  (ISR, DB-backed)
 ├── api/send/route.ts       # Resend contact/demo email handler
+├── api/revalidate/route.ts # On-demand ISR revalidation webhook (blog publish)
 ├── providers/              # PostHogProvider
 ├── sitemap.ts robots.ts opengraph-image.tsx
 └── globals.css
 
-components/                 # Reusable React components (V2 design system)
-├── HeroV2.tsx             # Animated hero (integration stack + demo video)
-├── NavbarV2.tsx FooterV2.tsx
-├── BelowFold.tsx BottomCTA.tsx SocialProof.tsx
+components/
+├── marketing/              # THE live marketing surface
+│   ├── kit.tsx            # Design system: tokens, Container/Section, H/Sub/Eyebrow, PillLink, FaqAccordion, PageHero
+│   ├── Hero.tsx           # Dispatches to one of the three hero variants
+│   ├── HomeSections.tsx   # Entire below-the-fold homepage
+│   └── heroes/            # HeroLegora, HeroHarveyLight, HeroHarveyDark, HeroHeader, shared.tsx
+├── VariantProvider.tsx     # Client PostHog flag assignment + exposure event
+├── NavbarV2.tsx FooterV2.tsx LegalPageLayoutV2.tsx
 ├── ContactModal.tsx        # Demo / pricing inquiry form
 ├── MetaPixel.tsx LinkedInInsightTag.tsx JsonLd.tsx
 └── demo/                   # /demo booking flow components
 
-lib/                        # blog, use-cases, posthog, meta-pixel, linkedin, meta/* (Marketing API)
-scripts/                    # meta-*.ts (Marketing API CLI), check-*.ts (ad-status probes)
-content/blog/               # MDX blog posts
+lib/
+├── variants/               # Design/copy variant system (constants, resolve, themes, copy, types)
+├── home-content.ts         # HOME_FAQ: single source for visible FAQ + FAQPage JSON-LD
+├── blog.ts answers.ts comparisons.ts use-cases.ts   # content data + DB reads
+├── db.ts                   # Server-only Postgres pool (returns null if DATABASE_URL unset)
+├── posthog.ts meta-pixel.ts linkedin.ts
+└── meta/                   # Marketing API client/insights/mutations/creatives/safety
+
+scripts/                    # meta-*.ts (Marketing API CLI)
+content/blog/               # Legacy MDX posts (fallback; DB wins on slug collision)
+sql/                        # 001_marketing_blog.sql, 002_seed_topics.sql
+docs/BLOG_CMS.md            # Blog CMS architecture + runbook
 proxy.ts                    # Next 16 middleware (renamed from middleware.ts): EU pixel geo-suppression
 ```
+
+### Dead code (do not re-mount, prefer deleting)
+- `components/SocialProof.tsx` + `lib/socialProof.ts` — unimported, and they contain **fictional firm names** ("Whitfield & Hayes LLP", "The Brennan Firm") from an early generation. Never render these.
+- `lib/theme.ts` — unimported and its tokens have drifted from `kit.tsx`. Not a source of truth.
+- `heroes/shared.tsx`: `HeroSocialProof`, `HeroLogoWall` (and therefore `LOGOS` / `LOGO_CAP` in `lib/variants/copy.ts`) — unmounted.
+- `components/HeroV2.tsx`, `BelowFold.tsx` — superseded by `components/marketing/*`.
 
 ## Key Features
 
@@ -51,12 +76,35 @@ In Next.js 16 the `middleware.ts` convention was renamed to `proxy.ts` (exports 
 - **A/B variant rewrite (vestigial):** gated behind `NEXT_PUBLIC_ENABLE_AB_TESTING=true` (default off). The `/light/*` `/dark/*` target routes were removed, so this path no longer renders anything — leave it disabled.
 
 ### Design System
-- **Base Font Size:** 14px (custom CaseDelta standard, not 16px)
-- **Spacing:** 4px grid system
-- **Colors:** Grayscale-first palette, semantic colors only when needed
-- **Typography:** Harvey Serif (headings) + CaseDelta Sans (body)
-- **Theming:** CSS custom properties (defined in `globals.css`)
-- **Animation:** Respects `prefers-reduced-motion`
+
+**`components/marketing/kit.tsx` is the source of truth** for the below-the-fold homepage and every subpage. Import from it rather than hand-rolling styles, so the site reads as one system.
+
+- **Typography:** Newsreader (serif display, headings) + Hanken Grotesk (sans, body). Loaded via `next/font` as `--font-newsreader` / `--font-hanken`.
+- **Palette:** ink on white with ONE blue accent (`BF.accent` `#2f6fe0`) and two dark bands (`BG.statBand` `#0e1420`, `BG.ctaBand` `#1f3a5f`). Grayscale-first, color only for meaning.
+- **Primitives:** `Container` / `Section` (layout), `Eyebrow` / `H` / `Sub` / `Accent` (type, all take `light` for dark bands), `PillLink` (CTA, auto-fires `cta_click`), `TextLink`, `Check`, `FaqAccordion`, `PageHero` (standard subpage header).
+- **Motion:** `useRise(delay)` for the standard scroll-in. Respects `prefers-reduced-motion` via framer's `useReducedMotion`. **Raw CSS `@keyframes` do NOT get that for free** — add an explicit `@media (prefers-reduced-motion: reduce)` opt-out.
+- **Animation:** `initial` / `whileInView` / `viewport={{ once: true }}` pattern.
+
+**Two systems coexist deliberately, do not merge them:**
+1. `kit.tsx` — fixed LIGHT design, below-the-fold + all subpages. Never themed.
+2. `lib/variants/themes.ts` + `components/marketing/heroes/shared.tsx` — themed, hero only, changes per design variant.
+
+`HomeClient.tsx` bridges them by syncing `html`/`body` background + `color-scheme` to the active hero theme (so the overscroll area matches the hero) and restoring on unmount.
+
+### Design Variants & Split Testing (live, in-page)
+
+Two independent axes, resolved server-side then re-synced client-side from PostHog flags:
+
+| Axis | Flag key | Variants | Default |
+|---|---|---|---|
+| Design (whole hero look) | `design-variant` | `control` (= harvey-light), `harvey-dark`, `legora` | **`legora`** |
+| Hero headline copy | `hero-copy` | `control`, `teammate`, `problem` | `control` |
+
+- Defaults live in `lib/variants/constants.ts`. **`DEFAULT_DESIGN` is `legora`, NOT `control`.** The name "control" is a PostHog-experiment convention (experiments require a variant named control), it is not what ships by default. Several docstrings used to claim otherwise; if you change the default, fix them together.
+- **Server** (`app/page.tsx` → `lib/variants/resolve.ts`): `?variant=` / `?hero=` override (preview only, gated on `VERCEL_ENV !== "production"`) → else the defaults. Googlebot gets the same default every visitor gets, so there is no cloaking.
+- **Client** (`components/VariantProvider.tsx`): dynamically imports posthog-js, reads both flags, and adopts them per-axis. This means a *configured* flag swaps the hero after hydration. Fires `design_variant_exposed`. A `?variant=` override pins PostHog and skips the client swap so QA sees exactly the server markup.
+- QA aliases accepted by `?variant=`: `harvey-light`/`light` → `control`, `dark` → `harvey-dark`.
+- To graduate to no-flicker server-decided variants: install `posthog-node`, set a stable id cookie in `proxy.ts`, insert a flag-eval step in `resolve.ts` between the override and the default. Everything downstream already consumes the result.
 
 ### Analytics Integration
 - PostHog lazy-loads after page render (zero Core Web Vitals impact)
@@ -72,15 +120,43 @@ NEXT_PUBLIC_POSTHOG_DEBUG=false                # Console logging
 NEXT_PUBLIC_META_PIXEL_ID=957094783732140      # Active Meta Pixel ID (see "Paid Meta Ads" section)
 NEXT_PUBLIC_LINKEDIN_PARTNER_ID=...            # LinkedIn Insight Tag partner ID
 NEXT_PUBLIC_DEMO_BOOKING_URL=...               # Google appointment scheduler URL used by /demo CTA
+DATABASE_URL=postgres://...                    # Supabase pool for the blog CMS (no sslmode; the pool sets SSL). Unset = file-only blog fallback.
+REVALIDATE_SECRET=...                          # Authorizes POST /api/revalidate (blog publish webhook)
 # NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID=  # Optional: LinkedIn Campaign Manager conversion ID for demo_page_viewed. Deferred until LinkedIn paid ads launch.
 # NEXT_PUBLIC_LINKEDIN_DEMO_BOOKED_CONVERSION_ID=   # Optional: LinkedIn Campaign Manager conversion ID for demo_booked. Deferred until LinkedIn paid ads launch.
 ```
 
 ## Important Files
-- `design-tokens.json` - Machine-readable design tokens
+- `components/marketing/kit.tsx` - Design system, single source of truth for the look
+- `components/marketing/HomeSections.tsx` - The whole below-the-fold homepage
+- `lib/variants/copy.ts` - Live hero positioning (headlines, subhead, CTAs, social proof)
+- `lib/variants/constants.ts` - Variant flags + which design actually ships by default
+- `lib/home-content.ts` - HOME_FAQ, must stay in sync with the FAQPage JSON-LD
+- `docs/BLOG_CMS.md` - Blog CMS architecture + publish runbook
 - `SEO_STRATEGY_2026.md` - SEO strategy / content plan
-- `components/HeroV2.tsx` - Hero (live positioning + integration stack)
+- `design-tokens.json` - Machine-readable design tokens (documentation only; `kit.tsx` is what renders)
 - `proxy.ts` - Next 16 edge middleware (EU pixel geo-suppression)
+
+## House Rules (copy + honesty)
+
+These are enforced across the marketing surface and the `blog_writer` agent. Violating them is a real risk, not a style nit.
+
+- **No em dashes anywhere.** Also avoid dashes generally in customer-facing copy.
+- **Delta is never gendered.** Never "she"/"her". Delta is "it".
+- **Never invent social proof.** No fabricated testimonials, firm names, ratings, or metrics. The 4.9 hero rating and the Kirschbaum & Nowotny testimonial are REAL and attributable, **do not remove them as "fabricated"** (this happened on 2026-06-29 and had to be reverted). If something looks placeholder-y, ask.
+- **Never claim "no third-party LLM" or "client data never leaves our infrastructure."** That is false: prod runs on enterprise AI under zero-retention/BAA terms. Use the defensible data-handling framing instead (encrypted, zero retention by the provider, never used to train, BAA available).
+- **Security is PARITY vs competitors, not an advantage.** Never claim a competitor "sends your data to OpenAI" and never name a competitor's subprocessor. See the house rules at the top of `lib/comparisons.ts`.
+- **Never imply autonomy.** Delta drafts and acts on instruction; a human on the firm's team reviews and approves before anything leaves the firm.
+- **Positioning:** teammate not tool, anchor to a salary, sell leverage not layoff.
+
+## Working On This Repo
+
+**`main` is production and there is no CI.** A merge to `main` is live on casedelta.com within a minute or two.
+
+- **Iterate locally for any visual change.** `npm run dev`, look at it in a real browser, THEN commit. Do not ship-and-look.
+- **Port 3000 is often taken** by another project's dev server on this machine. `next dev` may print "Local: http://localhost:3000" while a different app actually answers there. Verify with the page `<title>`, and use `npm run dev -- -p 3100` if it's occupied. Don't kill a server you didn't start; other Claude Code sessions run here.
+- **Get sign-off before merging creative/visual changes.** Show a screenshot first. Camren's call, not yours.
+- Gate before pushing: `npx tsc --noEmit` + `npm run build` (`npm run lint` is broken, see Tech Stack).
 
 ## Development Commands
 ```bash
@@ -533,28 +609,40 @@ When asked to "audit yesterday's ads" or similar:
 2. Register it in `app/sitemap.ts` and add any old-URL redirects in `next.config.ts`.
 
 ### Adding a Blog Post
-1. Drop a `.mdx` file in `content/blog/` with frontmatter (title, description, date, tags).
-2. It auto-surfaces on `/blog` and `/blog/[slug]` (see `lib/blog.ts`).
+The blog is **database-backed** — posts ship without a code push. Full detail in `docs/BLOG_CMS.md`.
+1. `INSERT` a row into Supabase `public.marketing_blog_posts` with `status='published'`.
+2. `POST /api/revalidate?secret=$REVALIDATE_SECRET` with the paths to refresh (`/blog`, `/blog/<slug>`, `/sitemap.xml`).
+3. Posts are rendered via ISR (`revalidate = 600`), so revalidation makes them live immediately with no rebuild.
+- Generation is autonomous: the `blog_writer` Codex skill in the GTM engine researches, writes, and **auto-publishes with no human review**. It lives in `openclaw-vps/engine/skills/blog_writer.md`, not here.
+- Legacy `content/blog/*.mdx` files still render and are merged by slug (**DB wins**). They are the fallback if the DB is unreachable, so the site never breaks.
 
-### Modifying Design Tokens
-1. Edit CSS variables in `app/globals.css`
-2. Update `design-tokens.json` for documentation
+### Modifying the Look
+1. Edit tokens in `components/marketing/kit.tsx` (`BF`, `BG`, `SERIF`, `SANS`) — this is what actually renders.
+2. `app/globals.css` holds the CSS variables + the `.cd-*` interaction/hover rules.
+3. `design-tokens.json` is documentation only; update it to keep docs honest.
 
 ### Tracking Conversions
 - PostHog captures pageviews + UTM first-touch automatically (see `lib/posthog.ts`).
 - The demo-booking conversion fires `trackMetaCompleteRegistration` (`lib/meta-pixel.ts`) from `components/demo/DemoBody.tsx` `handleBooked()`, and a `demo_booked` PostHog event.
 
 ## Design Philosophy
-- **Minimalist & Professional:** Inspired by Harvey, Rogo, Sierra
-- **Grayscale-First:** Color only for semantic meaning
+- **Minimalist & Professional:** Legora / Harvey / Filevine synthesis
+- **Grayscale-First:** Color only for semantic meaning, one blue accent
 - **Accessibility:** WCAG 2.1 AA compliant
 - **Performance:** Lazy-loaded analytics, zero Core Web Vitals impact
 - **Mobile-First:** Responsive design from smallest screens up
 
-## Current State
-- Multi-page marketing site (home, features, use-cases, blog, pricing, demo, security, legal) live in production on Vercel
-- PostHog analytics: Integrated but optional
-- LinkedIn Insight Tag: Live in production
-- Meta Pixel: Live in production (pixel `957094783732140`, see "Paid Meta Ads" section)
-- Paid Meta ad set `PBC_Partners_ADSET` (52531549521005) live, $20/day, 6 ads (PBC-AD-1 through PBC-AD-6) testing 6 cross-dimensional pain hooks per the PBC Week 1 framework (rewrite shipped 2026-05-19)
-- A/B variant routing: removed (vestigial machinery only, see "Edge Proxy & Geo-Suppression")
+## Current State (as of 2026-07-15)
+- Multi-page marketing site (home, features, use-cases, blog, answers, compare, pricing, demo, security, legal) live in production on Vercel
+- Default homepage hero: **legora** (full-bleed, dark, video-led). Variant + copy split-test machinery is wired but the PostHog flags are not driving a live experiment yet.
+- Homepage below-the-fold: "what it is → how → what it does → why different → proof → price → safe → stack → FAQ → ask"
+- Blog: DB-backed via Supabase + ISR, auto-published by the `blog_writer` Codex agent
+- PostHog analytics: integrated but optional. LinkedIn Insight Tag + Meta Pixel (`957094783732140`) live.
+- Paid Meta ad set `PBC_Partners_ADSET` (52531549521005), $20/day, 6 ads testing 6 cross-dimensional pain hooks per the PBC Week 1 framework (rewrite shipped 2026-05-19)
+- A/B variant *routing*: removed (vestigial machinery only). In-page variants replaced it.
+
+### Known drift / watch items
+- **`META_SYSTEM_USER_TOKEN` is a 60-day token generated 2026-05-19** and the refresh guidance is day ~50. It is very likely expired. Symptom: Graph error code `190`. Fix: `npm run meta:refresh-token`.
+- **The legora hero ships a 10.2 MB `legora.mp4` above the fold** with no `preload` hint, to every visitor including cold paid-Meta clicks. This is the LCP-relevant fact for the funnel; nobody has measured it yet.
+- `npm run lint` is broken (Next 16 removed `next lint`).
+- `_backup/` and `.playwright-mcp/` are stale local scratch, not part of the app.

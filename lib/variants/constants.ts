@@ -22,9 +22,12 @@ export const COPY_VARIANTS: readonly CopyVariant[] = [
   "problem",
 ] as const;
 
-// Primary look served when no flag/override is present (i.e. everyone, pre-split-test).
-// "control" === harvey-light, "harvey-dark" === the dark variant. Set to harvey-dark
-// per the current direction; the PostHog flag keeps "control" first for experiments.
+// Primary look served when no flag/override is present (i.e. everyone, pre-split-test,
+// including Googlebot). Currently "legora" (full-bleed, dark, video-led).
+// Note the naming: "control" === harvey-light, "harvey-dark" === the dark left-contained
+// variant. "control" stays first in DESIGN_VARIANTS because PostHog experiments expect a
+// variant literally named control, but it is NOT what the default serves. If you change
+// the default, update the sibling docstrings in resolve.ts and app/page.tsx too.
 export const DEFAULT_DESIGN: DesignVariant = "legora";
 export const DEFAULT_COPY: CopyVariant = "control";
 

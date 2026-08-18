@@ -14,44 +14,158 @@
  * teammate not tool, anchor to a salary, leverage not layoff, never "no third-party
  * LLM / data never leaves our infrastructure." Delta is gender-neutral. No em dashes.
  */
+import { Fragment } from "react";
 import { motion } from "framer-motion";
-import { trackEvent } from "@/lib/posthog";
 import { HOME_FAQ } from "@/lib/home-content";
 import {
   BF, BG, SERIF, SANS, MAXW, PAGE_PAD,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, TextLink, Check, FaqAccordion,
+  useRise, Container, Section, H, Sub, Accent, PillLink, TextLink, Check, FaqAccordion,
 } from "@/components/marketing/kit";
 
-/* ---- product-demo video: the real product walkthrough, hosted on our CDN ---- */
-function VideoPlaceholder() {
+/* ---- how Delta works: the product shape as a three-node flow ----
+   Replaces the old product-demo video. The whole differentiator is WHERE Delta
+   sits: between the person delegating and the systems the firm already runs on.
+   A video buried that lede behind a play button; three big icons state it at a
+   glance. Left to right: you ask -> Delta works -> the work lands in your tools,
+   with the approval gate called out because it is the #1 buyer objection. */
+
+const FLOW_NODES = [
+  {
+    k: "you",
+    label: "You delegate",
+    body: "Tell Delta what you would tell a new paralegal, in plain English.",
+  },
+  {
+    k: "delta",
+    label: "Delta does the work",
+    body: "Reads the file, drafts the letter, chases the records, takes the next action.",
+  },
+  {
+    // The payoff node carries the dream outcome from the hero ("Run more cases
+    // without hiring"), not a description of the plumbing. Landing the work in the
+    // firm's own systems is the MECHANISM, so it belongs in the body, not the label.
+    k: "systems",
+    label: "You run more cases",
+    body: "It lands in the tools you already pay for. Same team, more files moving.",
+  },
+] as const;
+
+/* The four logos shown inside the "your systems" node. A concrete, honest subset
+   of the full wall further down the page. */
+const FLOW_LOGOS = [
+  { src: "/assets/integrations/clio-icon.png", name: "Clio" },
+  { src: "/assets/integrations/gmail.svg", name: "Gmail" },
+  { src: "/assets/integrations/google-drive.svg", name: "Google Drive" },
+  { src: "/assets/integrations/quickbooks-icon.svg", name: "QuickBooks" },
+];
+
+const TILE = 132;
+
+function NodeIcon({ k }: { k: (typeof FLOW_NODES)[number]["k"] }) {
+  if (k === "you") {
+    return (
+      <svg width="62" height="62" viewBox="0 0 24 24" fill="none" stroke={BF.accent} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+        <path d="M8.5 10.5h7M8.5 14h4.5" />
+      </svg>
+    );
+  }
+  if (k === "delta") {
+    // Delta is personified on purpose: the positioning is "the teammate you cannot
+    // hire", so this node reads as a person, not a product mark or an abstract glyph.
+    return (
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <circle cx="12" cy="8.2" r="3.6" />
+        <path d="M4.8 20a7.2 7.2 0 0 1 14.4 0" />
+      </svg>
+    );
+  }
+  // The systems node shows the real tools rather than an abstract glyph: it is the
+  // one node where concreteness beats iconography.
   return (
-    <div
-      className="cd-video"
-      style={{ maxWidth: 1000, margin: "52px auto 0", borderRadius: 18, overflow: "hidden", border: `1px solid ${BF.hairlineStrong}`, background: "#0e1420", boxShadow: "0 60px 110px -45px rgba(20,23,31,0.5), 0 0 0 1px rgba(47,111,224,0.05)" }}
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px 18px", placeItems: "center" }} aria-hidden>
+      {FLOW_LOGOS.map((l) => (
+        <img key={l.name} src={l.src} alt="" title={l.name} style={{ width: 30, height: 30, objectFit: "contain" }} />
+      ))}
+    </div>
+  );
+}
+
+/* Connector: a rail with an accent pulse travelling along it into an arrowhead, so
+   the graphic reads as a directed flow rather than three unrelated cards. Fixed
+   width so the nodes (not the gaps) get the space. The rail runs horizontally on
+   desktop and rotates vertical when the nodes stack; the pulse is CSS (not framer)
+   so the media query can flip its axis, and it is dropped under reduced-motion. */
+function Connector() {
+  return (
+    <div className="cd-flow-conn" aria-hidden style={{ marginTop: TILE / 2 - 7 }}>
+      <span className="cd-flow-rail">
+        <span className="cd-flow-pulse" />
+      </span>
+      <svg className="cd-flow-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={BF.faint} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 6l6 6-6 6" />
+      </svg>
+    </div>
+  );
+}
+
+function SystemFlow() {
+  const rise = useRise();
+  return (
+    <motion.div
+      {...rise(0.08)}
+      style={{
+        maxWidth: 1000, margin: "56px auto 0", padding: "clamp(40px, 5vw, 68px) clamp(24px, 3.5vw, 52px)",
+        background: BG.offWhite, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 20,
+      }}
     >
-      {/* browser chrome */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8, height: 42, padding: "0 16px", background: "linear-gradient(#171c27, #11151e)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ width: 11, height: 11, borderRadius: "50%", background: "#2c2f3a" }} />
-        <span style={{ marginLeft: 12, display: "inline-flex", alignItems: "center", gap: 7, fontFamily: SANS, fontSize: 12.5, color: "rgba(255,255,255,0.45)" }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6aa6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-          app.casedelta.com
-        </span>
+      <div className="cd-flow" style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 0 }}>
+        {FLOW_NODES.map((node, i) => {
+          const isDelta = node.k === "delta";
+          return (
+            <Fragment key={node.k}>
+              {i > 0 && <Connector />}
+              <div className="cd-flow-node" style={{ flex: "1 1 0", minWidth: 0, textAlign: "center" }}>
+                {/* big icon tile: Delta is the filled, elevated one because it is the subject */}
+                <div
+                  style={{
+                    width: TILE, height: TILE, margin: "0 auto", borderRadius: 26, display: "grid", placeItems: "center",
+                    background: isDelta ? "linear-gradient(155deg, #3a7ce8, #1f3a5f)" : BF.card,
+                    border: `1px solid ${isDelta ? "transparent" : BF.hairlineStrong}`,
+                    boxShadow: isDelta
+                      ? "0 26px 54px -20px rgba(47,111,224,0.5)"
+                      : "0 14px 34px -24px rgba(20,23,31,0.45)",
+                  }}
+                >
+                  <NodeIcon k={node.k} />
+                </div>
+                <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 23, lineHeight: 1.15, letterSpacing: "-0.4px", color: BF.ink, margin: "26px 0 0" }}>
+                  {node.label}
+                </h3>
+                <p style={{ fontFamily: SANS, fontSize: 15, lineHeight: 1.55, color: BF.muted, margin: "10px auto 0", maxWidth: 252 }}>
+                  {node.body}
+                </p>
+              </div>
+            </Fragment>
+          );
+        })}
       </div>
 
-      {/* the real product walkthrough drops into the stage */}
-      <video
-        className="cd-video-stage"
-        src="https://reports.casedelta.com/marketing/casedelta-demo.mp4"
-        poster="https://reports.casedelta.com/marketing/casedelta-demo-poster.jpg"
-        controls
-        preload="metadata"
-        playsInline
-        onPlay={() => trackEvent("cta_click", { location: "demo_video" })}
-        style={{ display: "block", width: "100%", height: "auto", background: "#0c1119" }}
-      />
-    </div>
+      {/* the approval gate: the objection this graphic has to answer up front */}
+      <div
+        className="cd-approve"
+        style={{
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+          margin: "clamp(36px, 4vw, 52px) auto 0", padding: "13px 24px", maxWidth: "fit-content",
+          background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, borderRadius: 48,
+        }}
+      >
+        <Check />
+        <span style={{ fontFamily: SANS, fontSize: 15.5, fontWeight: 500, letterSpacing: "-0.2px", color: BF.ink }}>
+          Your team reviews and approves before anything leaves the firm.
+        </span>
+      </div>
+    </motion.div>
   );
 }
 
@@ -121,22 +235,56 @@ export function HomeSections() {
 
   return (
     <>
-      {/* WHAT IT IS: the comprehension moment, first thing below the hero */}
+      {/* PRIMER: the problem, stated before the answer. First beat below the hero.
+          Sits on off-white so the answer section that follows lands on bright white.
+
+          Enumerating the systems is CORRECT here and wrong in the section below. Here
+          the list IS the pain (the buyer's own words: "not having to go and log in to
+          20 different platforms", "toggling between these different myriad of
+          spreadsheets", GH #3925). Below, the same list would read as a cap on what
+          Delta can touch. Same nouns, opposite jobs.
+
+          Copy is POSITIONING.md line 95 ("Every case lives in five places, and
+          stitching it together falls on people you can't hire fast enough"), which is
+          the approved problem line and ties the sprawl to the hiring pain the hero
+          promises to solve. */}
+      <Section bg={BG.offWhite} id="problem" tight>
+        <Container narrow>
+          <motion.div {...rise(0)}>
+            <H>
+              Your case lives in <Accent>five places at once.</Accent>
+            </H>
+            <Sub>
+              Email, your case manager, your drive, your billing, and a note in someone&apos;s head. Stitching it together falls on the people you cannot hire fast enough.
+            </Sub>
+          </motion.div>
+        </Container>
+      </Section>
+
+      {/* WHAT IT IS: the comprehension moment, the answer to the primer above */}
       <Section bg={BG.white} id="what">
         <Container narrow>
           <motion.div {...rise(0)}>
-            <Eyebrow>What CaseDelta is</Eyebrow>
+            {/* "systems your firm already uses" is deliberately open-ended. Do NOT
+                "clarify" it into a list ("your case manager, your email, your billing",
+                POSITIONING.md line 27): that enumeration reads as the CAP on what Delta
+                can touch, when the point is that it has none. Per #3657, breadth-as-a-
+                claim is PARITY (EvenUp/Eve/Supio all claim it), so a longer list wins
+                nothing, and an explicit "any platform" boast is a crown-jewel claim we
+                have to demo rather than assert. */}
             <H>
-              An AI paralegal that works <Accent>inside the tools you already use.</Accent>
+              CaseDelta is the AI that <Accent>actually does the work</Accent> in the systems your firm already uses.
             </H>
+            {/* Kept short on purpose: the flow graphic below carries the explanation,
+                so a long paragraph here just competes with it. */}
             <Sub>
-              You delegate to it in plain English, the way you would a new hire: request the records, draft the demand, update the file, keep the case moving. It does the work inside your case manager, your email, and your billing, and your team reviews and approves before anything goes out.
+              Hand off work to Delta just like you would a paralegal.
             </Sub>
           </motion.div>
         </Container>
         <Container>
           <motion.div {...rise(0.08)}>
-            <VideoPlaceholder />
+            <SystemFlow />
           </motion.div>
         </Container>
       </Section>
@@ -145,7 +293,6 @@ export function HomeSections() {
       <Section bg={BG.offWhite} id="how">
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>How it works</Eyebrow>
             <H>
               Working your cases <Accent>the same afternoon you say yes.</Accent>
             </H>
@@ -167,7 +314,6 @@ export function HomeSections() {
       <Section bg={BG.white}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>What it does</Eyebrow>
             <H>It does the routine case work, end to end.</H>
             <Sub>The repetitive work that eats your team&apos;s hours, handled start to finish. Your team reviews and approves before anything goes out.</Sub>
           </motion.div>
@@ -189,7 +335,6 @@ export function HomeSections() {
       <Section bg={BG.offWhite}>
         <Container narrow>
           <motion.div {...rise(0)}>
-            <Eyebrow>Why it is different</Eyebrow>
             <H>
               A chatbot gives you an answer. <Accent>CaseDelta does the work.</Accent>
             </H>
@@ -243,7 +388,6 @@ export function HomeSections() {
       <Section bg={BG.statBand}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 760 }}>
-            <Eyebrow light>The math</Eyebrow>
             <H light>One teammate. Your whole firm.</H>
             <Sub light>Priced against the help you cannot hire. Every attorney and paralegal gets a teammate, for a fraction of what the next hire costs.</Sub>
           </motion.div>
@@ -262,7 +406,6 @@ export function HomeSections() {
       <Section bg={BG.offWhite}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>Trust and security</Eyebrow>
             <H>Built for the sensitivity of legal work.</H>
             <Sub>Your client matters run under enterprise agreements, never used to train a model and never retained by the provider, and a human on your team signs off before anything leaves the firm.</Sub>
           </motion.div>
@@ -284,7 +427,6 @@ export function HomeSections() {
       <Section bg={BG.white}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>Works with your stack</Eyebrow>
             <H>No platform to switch. No tool to learn.</H>
             <Sub>Delta logs into the systems your firm already runs on and gets to work. Your data stays where it is, and your team keeps the tools they know.</Sub>
           </motion.div>
@@ -310,7 +452,6 @@ export function HomeSections() {
       <Section bg={BG.offWhite}>
         <Container narrow>
           <motion.div {...rise(0)}>
-            <Eyebrow>Questions</Eyebrow>
             <H>Frequently asked questions</H>
           </motion.div>
           <motion.div {...rise(0.06)} style={{ marginTop: 28 }}>
@@ -340,7 +481,36 @@ export function HomeSections() {
       </Section>
 
       <style>{`
+        /* Flow connector: rail + travelling pulse + arrowhead. */
+        .cd-flow-conn { display: flex; align-items: center; gap: 3px; flex: 0 0 auto; width: 74px; align-self: flex-start; }
+        .cd-flow-rail { position: relative; flex: 1 1 auto; height: 2px; background: ${BF.hairlineStrong}; overflow: hidden; }
+        .cd-flow-pulse {
+          position: absolute; top: -1px; left: 0; width: 28px; height: 4px; border-radius: 2px;
+          background: linear-gradient(90deg, transparent, ${BF.accent});
+          animation: cd-flow-x 2s ease-in-out infinite;
+        }
+        @keyframes cd-flow-x { from { transform: translateX(-28px); } to { transform: translateX(74px); } }
+        /* framer's useReducedMotion covers the rise animations; this pulse is CSS, so it opts out here */
+        @media (prefers-reduced-motion: reduce) { .cd-flow-pulse { display: none; } }
+
+        /* Flow: horizontal rail on desktop, vertical stack on narrow screens.
+           The rail turns vertical and the arrow points down between stacked nodes. */
         @media (max-width: 880px) {
+          .cd-flow { flex-direction: column !important; align-items: center !important; }
+          .cd-flow-node { max-width: 420px; }
+          .cd-flow-conn {
+            flex-direction: column; width: auto; height: 52px;
+            align-self: center; margin: 26px 0 !important;
+          }
+          .cd-flow-rail { width: 2px; height: auto; }
+          .cd-flow-arrow { transform: rotate(90deg); }
+          .cd-flow-pulse {
+            top: 0; left: -1px; width: 4px; height: 28px;
+            background: linear-gradient(180deg, transparent, ${BF.accent});
+            animation-name: cd-flow-y;
+          }
+          @keyframes cd-flow-y { from { transform: translateY(-28px); } to { transform: translateY(52px); } }
+          .cd-approve { border-radius: 16px !important; align-items: flex-start !important; }
           .cd-step-grid { grid-template-columns: 1fr !important; }
           .cd-task-grid { grid-template-columns: 1fr !important; }
           .cd-two { grid-template-columns: 1fr !important; }

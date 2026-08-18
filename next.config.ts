@@ -11,12 +11,14 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://snap.licdn.com https://connect.facebook.net https://us-assets.i.posthog.com",
-      "style-src 'self' 'unsafe-inline'",
+      // *.calendly.com covers assets.calendly.com (embed script/css); calendly.com (bare) is the scheduler iframe.
+      "script-src 'self' 'unsafe-inline' https://snap.licdn.com https://connect.facebook.net https://us-assets.i.posthog.com https://*.calendly.com",
+      "style-src 'self' 'unsafe-inline' https://*.calendly.com",
       "img-src 'self' data: blob: https:",
       "media-src 'self' https://reports.casedelta.com",
       "font-src 'self' data:",
-      "connect-src 'self' https://px.ads.linkedin.com https://snap.licdn.com https://www.facebook.com https://us.i.posthog.com https://us-assets.i.posthog.com",
+      "connect-src 'self' https://px.ads.linkedin.com https://snap.licdn.com https://www.facebook.com https://us.i.posthog.com https://us-assets.i.posthog.com https://calendly.com https://*.calendly.com",
+      "frame-src 'self' https://calendly.com https://*.calendly.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
@@ -36,6 +38,16 @@ const nextConfig: NextConfig = {
       { source: "/contact", destination: "/", permanent: true },
       { source: "/book-a-demo", destination: "/demo", permanent: true },
       { source: "/book-demo", destination: "/demo", permanent: true },
+
+      // The homepage preview route. /v2 was the new homepage while it was being built
+      // and is now at /, so old bookmarks land on the real thing. It was robots:noindex
+      // for its whole life, so nothing external points at it.
+      //
+      // EXACT paths only, never "/v2/:path*". The ambient hero photography is served
+      // from public/v2/ambient/, and redirects are evaluated BEFORE public files, so a
+      // wildcard here would redirect every image on the homepage and blank the hero.
+      { source: "/v2", destination: "/", permanent: true },
+      { source: "/v2/demo", destination: "/demo", permanent: true },
 
       // Old A/B testing variant routes
       { source: "/dark", destination: "/", permanent: true },

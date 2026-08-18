@@ -10,11 +10,14 @@ export interface ResolvedVariants {
 /**
  * Lightweight, SSR-safe variant resolution.
  *
- * Precedence today: `?variant=` / `?hero=` URL override (QA/preview only) -> default (control).
+ * Precedence today: `?variant=` / `?hero=` URL override (QA/preview only) -> the
+ * defaults in constants.ts (DEFAULT_DESIGN, currently "legora", and DEFAULT_COPY).
  *
  * Real PostHog flag assignment runs CLIENT-side in VariantProvider, so the server
  * HTML stays crawler-safe: Googlebot sends no cookie and no `?variant=`, so it
- * deterministically gets control (Google's sanctioned, no-cloaking A/B pattern).
+ * deterministically gets whatever DEFAULT_DESIGN is (Google's sanctioned, no-cloaking
+ * A/B pattern). What matters for cloaking is that the crawler gets the SAME default
+ * every visitor gets, not that the default happens to be named "control".
  *
  * To graduate to no-flicker server-decided variants later, install `posthog-node`,
  * set a stable id cookie in proxy.ts (Next 16's middleware file), and insert a

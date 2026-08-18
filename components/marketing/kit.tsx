@@ -104,9 +104,12 @@ export function Eyebrow({ children, light = false }: { children: React.ReactNode
   );
 }
 
+/* text-wrap: balance evens out the line lengths and stops a long heading from
+   orphaning its last word ("...your firm already / uses."). Browsers only balance
+   short blocks (Chrome caps at ~6 lines), so body copy is unaffected. */
 export function H({ children, light = false }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(33px, 4.6vw, 50px)", lineHeight: 1.06, letterSpacing: "-1.2px", color: light ? "#fff" : BF.ink, margin: 0 }}>
+    <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(33px, 4.6vw, 50px)", lineHeight: 1.06, letterSpacing: "-1.2px", color: light ? "#fff" : BF.ink, margin: 0, textWrap: "balance" }}>
       {children}
     </h2>
   );
