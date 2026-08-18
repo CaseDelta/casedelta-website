@@ -21,14 +21,17 @@ export const SX = {
   // whole palette hot-swaps from one object. Never write a colour literal in a
   // component: add a role in theme.ts and reference it here.
   //
-  // Semantic names are preferred in new code. The legacy Sasonix names below
-  // them (orange, cream) are kept so the existing components keep working, and
-  // are aliases onto the same roles, not separate values.
+  // Every name here is SEMANTIC. There used to be a second set aliased onto the
+  // same roles under the template's colour names (orange, orangeDeep, cream,
+  // cream2, white, black). Those went when the brand went blue: an alias called
+  // SX.orange resolving to #5170FF is worse than no alias, because it reads as a
+  // fact and is a lie. If you want a colour, name the role it plays.
 
   // semantic roles
   accent: "var(--sx-accent)",
   accentDeep: "var(--sx-accent-deep)",
   accentSoft: "var(--sx-accent-soft)",
+  accentText: "var(--sx-accent-text)", // the accent as TEXT; see theme.ts for why it differs
   onAccent: "var(--sx-on-accent)",
   ink: "var(--sx-ink)", // primary text, also the dark button fill
   ink2: "var(--sx-ink-2)", // secondary text
@@ -44,15 +47,6 @@ export const SX = {
   onMediaMuted: "var(--sx-on-media-muted)",
   glass: "var(--sx-glass)", // frosted panel over media
   glassEdge: "var(--sx-glass-edge)",
-
-  // legacy Sasonix aliases (same roles, old names)
-  orange: "var(--sx-accent)",
-  orangeDeep: "var(--sx-accent-deep)",
-  black: "var(--sx-ink)",
-  white: "var(--sx-surface)",
-  cream: "var(--sx-bg-alt)",
-  cream2: "var(--sx-bg-alt)",
-  card: "var(--sx-surface-alt)",
 
   /** Elevation shadow in the theme's shadow colour. `sh(y, blur, alpha)`. */
   sh: (y: number, blur: number, alpha: number) =>

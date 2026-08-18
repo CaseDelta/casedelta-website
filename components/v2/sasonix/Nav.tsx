@@ -10,7 +10,9 @@
  * placeholder and flips on the tokens.ts rebrand.
  */
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { SX } from "./tokens";
+import { LOGO, logoWidth } from "./brand";
 import { scrollToSection } from "./scrollToSection";
 
 /**
@@ -30,6 +32,15 @@ const LINKS: { label: string; id?: string; href?: string }[] = [
   { label: "Security", id: "security" },
   { label: "Blog", href: "/blog" },
 ];
+
+/**
+ * Logo height in the nav. The header is 67px and stays 67px: its height is set by
+ * the 42px "Book a demo" button, not by the logo, so anything up to 42 is free.
+ * 36 puts the wordmark's glyph extent at ~23px, which reads as a peer of the 15px
+ * nav links rather than as something tucked in beside them. 28 measured correct
+ * and looked undersized on the page, which is the usual gap between the two.
+ */
+const LOGO_H = 36;
 
 export function Nav({ solid = false }: { solid?: boolean } = {}) {
   // `solid` forces the scrolled (white-bg, dark-text) treatment from the top, for
@@ -93,11 +104,30 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
       `}</style>
       <div className="sx-nav-inner" style={{ maxWidth: 1360, margin: "0 auto", padding: "12px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {/* logo */}
-        <a href="/" className="sx-logo" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none" }}>
-          <span aria-hidden style={{ width: 28, height: 28, borderRadius: 8, background: SX.accent, display: "grid", placeItems: "center" }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill={SX.onAccent} aria-hidden><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
-          </span>
-          <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 20, letterSpacing: "-0.4px", color: fg, transition: "color 0.3s ease" }}>CaseDelta</span>
+        {/* The real lockup, both cuts stacked and crossfaded on the same 0.3s ease as
+            the nav's colour flip, so the logo changes ink WITH the bar rather than
+            after it. Both files are identical geometry, so nothing moves. */}
+        <a
+          href="/"
+          className="sx-logo"
+          aria-label="CaseDelta home"
+          style={{ position: "relative", display: "block", flex: "0 0 auto", width: logoWidth(LOGO_H), height: LOGO_H, textDecoration: "none" }}
+        >
+          {[
+            { src: LOGO.onDark, shown: !scrolled },
+            { src: LOGO.onLight, shown: scrolled },
+          ].map(({ src, shown }) => (
+            <Image
+              key={src}
+              src={src}
+              alt=""
+              aria-hidden
+              width={LOGO.width}
+              height={LOGO.height}
+              priority
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", opacity: shown ? 1 : 0, transition: "opacity 0.3s ease" }}
+            />
+          ))}
         </a>
         {/* links */}
         <div className="sx-nav-links" style={{ display: "flex", alignItems: "center", gap: 32 }}>
