@@ -2,23 +2,27 @@ import { Geist, JetBrains_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
- * /v2 = a pixel-exact clone of the Sasonix Framer template (https://sasonix.framer.website/),
- * rebuilt from scratch in clean React. Sasonix as-is first (its orange, its fonts, its
- * copy); rebrand to CaseDelta later by swapping the tokens in components/v2/sasonix/tokens.ts.
+ * The homepage layout. This is a route GROUP, so "(home)" never appears in a URL: it
+ * exists only so the four Sasonix fonts and the hash-landing offset apply to "/" and
+ * to nothing else. Every other route keeps the root layout and the older marketing
+ * design system (kit.tsx, NavbarV2, FooterV2).
  *
- * Fonts: the four Sasonix uses, all free/OFL, self-hosted via next/font. Scoped to /v2
- * via this nested layout so the live site is untouched.
+ * Formerly app/v2/layout.tsx. The homepage began as a pixel-exact clone of the Sasonix
+ * Framer template rebuilt in clean React, lived at /v2 behind robots:noindex while it
+ * was rewritten into a real CaseDelta page, and was promoted over the old homepage on
+ * 2026-08-18.
+ *
+ * Fonts: the four Sasonix uses, all free/OFL, self-hosted via next/font.
  *   Archivo  -> display / headings
  *   Geist    -> body / buttons
  *   JetBrains Mono -> mono eyebrow labels
  *   Inter    -> small UI labels inside the product panels
  *
- * Archivo is self-hosted from the EXACT static masters the live site serves (Fontshare
- * cuts: 400=Book, 500=Medium, 700=Bold, in app/v2/fonts/). Google Fonts' Archivo is a
+ * Archivo is self-hosted from the EXACT static masters the template serves (Fontshare
+ * cuts: 400=Book, 500=Medium, 700=Bold, in ./fonts/). Google Fonts' Archivo is a
  * variable font whose interpolated 400/700 measurably diverge from Fontshare's static
- * masters (500 matched, 400/700 did not); using the originals makes the display type
- * byte-identical to the live template. Geist/JetBrains Mono measured identical to the
- * live site (same upstream) so they stay on next/font/google.
+ * masters (500 matched, 400/700 did not). Geist and JetBrains Mono measured identical
+ * (same upstream) so they stay on next/font/google.
  */
 const archivo = localFont({
   src: [
@@ -33,10 +37,10 @@ const geist = Geist({ subsets: ["latin"], weight: ["400", "500", "600", "700", "
 const jbmono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], display: "swap", variable: "--sx-mono" });
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", variable: "--sx-inter" });
 
-export default function V2Layout({ children }: { children: React.ReactNode }) {
+export default function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`${archivo.variable} ${geist.variable} ${jbmono.variable} ${inter.variable}`}>
-      {/* Offset hash landings (e.g. arriving at /v2#pricing from a secondary page) below the fixed nav. */}
+      {/* Offset hash landings (e.g. arriving at /#pricing from a secondary page) below the fixed nav. */}
       <style>{`#features,#howitworks,#security,#pricing,#contact{scroll-margin-top:156px}`}</style>
       {children}
     </div>
