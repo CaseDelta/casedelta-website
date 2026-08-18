@@ -1,15 +1,24 @@
 "use client";
 
 /**
- * Beat 4: Testimonial. The Sasonix "Real stories" marquee: a horizontal, auto-scrolling
- * row of quote + portrait cards.
+ * Beat 4: Testimonials. A horizontal, auto-scrolling row of quote cards on ambient
+ * imagery.
  *
- * PLACEHOLDER CONTENT (per Camren, for the design pass): the names, quotes, and portraits
- * below are the template's fabricated placeholders so the section reads full while we
- * build. THEY ARE NOT REAL and MUST be swapped for real, attributable testimonials before
- * /v2 ships anywhere public. (The one real quote we have is Kirschbaum & Nowotny.)
+ * CARDS IS EMPTY, AND THAT IS DELIBERATE. This section shipped with two fabricated
+ * testimonials inherited from the Sasonix template ("Marcus Chen, NovaTech Legal" and
+ * "Lucifer Jason, Q.tube Law"). Neither person, firm, nor quote exists. They were
+ * deleted on promotion to production rather than left unmounted, because a fabricated
+ * quote sitting in the file is one import away from being live again.
  *
- * Kept Sasonix-styled (cream) until the tokens.ts rebrand.
+ * Social proof on this site is real or it is absent. The one real, attributable quote
+ * is Kirschbaum & Nowotny, LLC of Overland Park, KS ("Delta gives us back about five
+ * hours a week"), and it already carries the hero, so repeating it here would be the
+ * same voice twice rather than a second story.
+ *
+ * TO BRING THIS SECTION BACK: add real, attributable quotes to CARDS and re-mount
+ * <Testimonials /> in Sasonix.tsx. The component renders nothing while CARDS is empty,
+ * so it cannot half-ship. The highest-value one to go get is a named attorney or firm
+ * administrator on record about their first hour with Delta.
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
@@ -20,24 +29,14 @@ import { Reveal } from "./reveal";
  * Stock portraits read as stock the moment a reader looks twice, and a fake face
  * attached to a fake name is the most damaging thing on the page. The backdrop is
  * from the same ICM set as the hero and the banded section, so the page reads as
- * one world.
+ * one world. `bg` picks from /v2/ambient (valley-mist and cloud-pastel were the two
+ * reserved for this section).
  */
-const CARDS = [
-  {
-    quote: "Implementing CaseDelta was the best decision we made this year. Delta slotted into the systems we already ran on and started doing real work within days.",
-    name: "Marcus Chen",
-    title: "Managing Partner, NovaTech Legal",
-    bg: "/v2/ambient/valley-mist.webp",
-  },
-  {
-    quote: "CaseDelta has changed how our team works. Delta is intuitive, reliable, and has taken the routine case work off our attorneys' plates.",
-    name: "Lucifer Jason",
-    title: "Partner, Q.tube Law",
-    bg: "/v2/ambient/cloud-pastel.webp",
-  },
-];
+type Testimonial = { quote: string; name: string; title: string; bg: string };
 
-function Card({ c }: { c: (typeof CARDS)[number] }) {
+const CARDS: Testimonial[] = [];
+
+function Card({ c }: { c: Testimonial }) {
   return (
     <div style={{ position: "relative", flex: "0 0 auto", width: 620, height: 380, borderRadius: 24, overflow: "hidden", border: `1px solid ${SX.hairline}` }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -62,6 +61,10 @@ function Card({ c }: { c: (typeof CARDS)[number] }) {
 }
 
 export function Testimonials() {
+  // No real quotes, no section. An empty marquee under "Real stories from teams using
+  // CaseDelta" is worse than no marquee.
+  if (CARDS.length === 0) return null;
+
   const track = [...CARDS, ...CARDS];
   return (
     <section style={{ background: SX.white, padding: "60px 0 60px", overflow: "hidden" }}>

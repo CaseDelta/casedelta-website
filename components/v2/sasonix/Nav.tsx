@@ -13,12 +13,22 @@ import { useEffect, useState } from "react";
 import { SX } from "./tokens";
 import { scrollToSection } from "./scrollToSection";
 
-const LINKS: { label: string; id: string }[] = [
+/**
+ * `id` smooth-scrolls to a section on this page; `href` is a plain navigation to a
+ * real route. The nav carries the homepage anchors plus Blog; the footer carries the
+ * full site map.
+ *
+ * "Contact" used to sit here pointing at #contact. No element with that id has ever
+ * existed on the page, so scrollToSection fell through to its /#contact fallback and
+ * the link did nothing. Contact is the demo booking, and the button to its right
+ * already is that, so the item is gone rather than repointed.
+ */
+const LINKS: { label: string; id?: string; href?: string }[] = [
   { label: "What it does", id: "features" },
   { label: "The work", id: "jobs" },
   { label: "Pricing", id: "pricing" },
   { label: "Security", id: "security" },
-  { label: "Contact", id: "contact" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export function Nav({ solid = false }: { solid?: boolean } = {}) {
@@ -83,7 +93,7 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
       `}</style>
       <div className="sx-nav-inner" style={{ maxWidth: 1360, margin: "0 auto", padding: "12px 40px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         {/* logo */}
-        <a href="/v2" className="sx-logo" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none" }}>
+        <a href="/" className="sx-logo" style={{ display: "inline-flex", alignItems: "center", gap: 9, textDecoration: "none" }}>
           <span aria-hidden style={{ width: 28, height: 28, borderRadius: 8, background: SX.accent, display: "grid", placeItems: "center" }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill={SX.onAccent} aria-hidden><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
           </span>
@@ -93,9 +103,9 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
         <div className="sx-nav-links" style={{ display: "flex", alignItems: "center", gap: 32 }}>
           {LINKS.map((l) => (
             <a
-              key={l.id}
-              href={`/v2#${l.id}`}
-              onClick={(e) => { e.preventDefault(); scrollToSection(l.id); }}
+              key={l.label}
+              href={l.href ?? `/#${l.id}`}
+              onClick={l.id ? (e) => { e.preventDefault(); scrollToSection(l.id as string); } : undefined}
               className="sx-navlink"
               style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: SX.body, fontSize: 15, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}
             >
@@ -106,7 +116,7 @@ export function Nav({ solid = false }: { solid?: boolean } = {}) {
         {/* actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <a href="https://app.casedelta.com" className="sx-navlink sx-nav-login" style={{ fontFamily: SX.body, fontSize: 15, fontWeight: 400, color: fg, textDecoration: "none", transition: "color 0.3s ease" }}>Log in</a>
-          <a href="/v2/demo" className="sx-btn sx-nav-demo" style={{ fontFamily: SX.body, fontSize: 15, fontWeight: 500, color: SX.onInk, background: SX.ink, borderRadius: 10, padding: "9px 16px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
+          <a href="/demo" className="sx-btn sx-nav-demo" style={{ fontFamily: SX.body, fontSize: 15, fontWeight: 500, color: SX.onInk, background: SX.ink, borderRadius: 10, padding: "9px 16px", textDecoration: "none", whiteSpace: "nowrap" }}>Book a demo</a>
         </div>
       </div>
     </header>

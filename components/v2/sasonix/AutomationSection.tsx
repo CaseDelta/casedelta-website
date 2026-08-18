@@ -14,7 +14,19 @@ import { SX } from "./tokens";
 import { Container } from "./kit";
 import { Reveal } from "./reveal";
 
-const IMG = (f: string) => `https://framerusercontent.com/images/${f}`;
+/**
+ * Self-hosted, NOT hotlinked. These panels used to load straight off
+ * framerusercontent.com, the Sasonix template's own Framer CDN: seven third-party
+ * requests on every homepage load, for the artwork in the largest section of the page.
+ * Same call that was already made for the hero photograph, now applied to the rest.
+ *
+ * Note that this fixes the DEPENDENCY, not the CONTENT. These are still the template's
+ * stock product shots and they depict a generic SaaS app (a database schema with
+ * order_id and products.id, a token-usage breakdown, an agent overview). They are not
+ * CaseDelta and not a law firm. Replacing them with real Delta screenshots is the
+ * outstanding piece of work on this section.
+ */
+const IMG = (f: string) => `/v2/product/${f}`;
 
 function Check() {
   return (
@@ -110,6 +122,13 @@ export function AutomationSection() {
             Delta is an AI paralegal with its own cloud computer. It signs into your tools, runs multi-step work
             end-to-end like a human, and can even run tasks you approve without you prompting it.
           </h2>
+          {/* Who it is for. This line was lost when BrandStrip was deleted, and until it
+              came back the page said "AI paralegal" without ever naming the buyer. It sits
+              under the thesis rather than above it because the thesis is staged to land
+              alone, and it stays quiet because it qualifies the claim, it does not make one. */}
+          <p className="sx-thesis-icp">
+            Purpose-built for personal injury, mass tort, and medical malpractice firms.
+          </p>
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
           {CARDS.map((c, i) => (
@@ -140,6 +159,18 @@ export function AutomationSection() {
         </div>
       </Container>
       <style>{`
+        .sx-thesis-icp {
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 28px;
+          color: var(--sx-ink-2);
+          text-align: center;
+          max-width: 620px;
+          margin: 22px auto 0;
+        }
+        @media (max-width: 760px) { .sx-thesis-icp { font-size: 16px; line-height: 25px; margin-top: 18px; } }
+
         .sx-thesis {
           max-width: 1000px;
           margin: 0 auto;

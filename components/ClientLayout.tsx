@@ -6,12 +6,13 @@ import { NavbarV2 } from "@/components/NavbarV2";
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  // The demo route is a standalone, chrome-free funnel page. The homepage renders
-  // its own themed sticky header inside the hero (matching the mockups), so the
-  // global light navbar is suppressed there too. /v2 (and every /v2/* secondary
-  // page) is the Sasonix-mirror rebuild, which ships its own nav + footer, so
-  // suppress the global navbar across all of /v2.
-  if (pathname === "/demo" || pathname === "/" || pathname === "/v2" || pathname.startsWith("/v2/")) {
+  // The demo route is a standalone, chrome-free funnel page. The homepage ships its
+  // own nav and footer (components/v2/sasonix/{Nav,CtaFooter}), so the global light
+  // navbar would be a second header stacked on top of it.
+  //
+  // /v2 and /v2/* used to be listed here as well. Those routes are gone: /v2 became
+  // the homepage on 2026-08-18 and both paths now redirect (see next.config.ts).
+  if (pathname === "/demo" || pathname === "/") {
     return <>{children}</>;
   }
 

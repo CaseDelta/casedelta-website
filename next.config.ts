@@ -39,6 +39,16 @@ const nextConfig: NextConfig = {
       { source: "/book-a-demo", destination: "/demo", permanent: true },
       { source: "/book-demo", destination: "/demo", permanent: true },
 
+      // The homepage preview route. /v2 was the new homepage while it was being built
+      // and is now at /, so old bookmarks land on the real thing. It was robots:noindex
+      // for its whole life, so nothing external points at it.
+      //
+      // EXACT paths only, never "/v2/:path*". The ambient hero photography is served
+      // from public/v2/ambient/, and redirects are evaluated BEFORE public files, so a
+      // wildcard here would redirect every image on the homepage and blank the hero.
+      { source: "/v2", destination: "/", permanent: true },
+      { source: "/v2/demo", destination: "/demo", permanent: true },
+
       // Old A/B testing variant routes
       { source: "/dark", destination: "/", permanent: true },
       { source: "/dark/:path*", destination: "/", permanent: true },

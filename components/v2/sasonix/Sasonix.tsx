@@ -6,7 +6,7 @@
  *   1. Hero            -> what Delta is, and the ask
  *   2. AutomationSection -> "What Delta is" (three capability cards)
  *   3. HowItWorks      -> how it works + integrates + onboards in 5 minutes (combined)
- *   4. Testimonials    -> one real, attributable quote
+ *   4. Testimonials    -> real, attributable quotes only; empty today, renders nothing
  *   5. WhySasonix      -> Delta vs a generic AI chatbot
  *   6. Pricing         -> three flat tiers priced by attorney count
  *   7. CtaFooter    -> reinforcement and the ask
@@ -55,7 +55,8 @@ export function Sasonix() {
       <AutomationSection />
       {/* 3. How it works, onboarding and the stack, in one banded section */}
       <HowItWorks />
-      {/* 4. Testimonial */}
+      {/* 4. Testimonials: renders nothing until there are real, attributable quotes.
+             Kept mounted so that adding one to Testimonials.tsx is the only step. */}
       <Testimonials />
       {/* 5. The work, cut by practice area */}
       <UseCases />

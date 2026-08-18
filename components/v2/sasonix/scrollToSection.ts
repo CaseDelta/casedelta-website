@@ -16,8 +16,8 @@ export function scrollToSection(id: string, offset: number = NAV_OFFSET) {
   if (typeof window === "undefined") return;
   const el = document.getElementById(id);
   if (!el) {
-    // Section isn't on this page (e.g. a secondary page like /v2/demo) — jump to the homepage anchor.
-    window.location.href = `/v2#${id}`;
+    // Section isn't on this page (e.g. a secondary page like /demo) - jump to the homepage anchor.
+    window.location.href = `/#${id}`;
     return;
   }
 

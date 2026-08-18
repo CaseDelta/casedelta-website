@@ -83,8 +83,16 @@ const CUE = {
 const HERO_MIN = 600;
 
 /**
- * The hero video. `src` undefined renders the placeholder frame.
- * Drop the asset in and this hero is finished:
+ * The hero video slot.
+ *
+ * `src` undefined means the hero runs COPY ONLY: one column, left anchored over the
+ * full-bleed photograph. It does not render the placeholder frame. A reserved slot
+ * with a play glyph is honest on a preview route and reads as unfinished on a
+ * production homepage, so on promotion the slot hides itself instead.
+ *
+ * Set `src` (and a real `poster`) and the two-column hero comes back on its own: the
+ * grid, the frame, its proportions and its entrance motion are all still here and
+ * still tuned. That is the whole change, one line:
  *   src: "/videos/<the-cut>.mp4", poster: "/v2/<its-first-frame>.jpg"
  */
 const HERO_MEDIA: { src?: string; poster?: string; caption: string } = {
@@ -92,6 +100,9 @@ const HERO_MEDIA: { src?: string; poster?: string; caption: string } = {
   poster: undefined,
   caption: "Delta, working a file end to end",
 };
+
+/** Drives both the grid shape and whether the media column mounts at all. */
+const HAS_MEDIA = Boolean(HERO_MEDIA.src);
 
 /**
  * The ambient backdrop. Self-hosted ICM (intentional camera movement) photography
@@ -195,6 +206,11 @@ export function Hero() {
           height: 100%;
         }
 
+        /* No video asset: one column, copy left over the photograph. The scrim is
+           already heaviest on the left and clears by 52%, so the right half simply
+           becomes open image rather than an empty box. */
+        .sx-hero-grid.sx-hero-solo { grid-template-columns: minmax(0, 1fr); }
+
         /* Short laptop windows: pull the type down so the whole argument still
            fits inside one viewport instead of pushing the proof off the fold. */
         @media (min-width: 1101px) and (max-height: 800px) {
@@ -292,7 +308,7 @@ export function Hero() {
           height: "100%",
         }}
       >
-        <div className="sx-hero-grid">
+        <div className={`sx-hero-grid${HAS_MEDIA ? "" : " sx-hero-solo"}`}>
           {/* LEFT: the argument, disclosed in order of importance. */}
           <div className="sx-hero-copy" style={{ maxWidth: 620 }}>
             <h1
@@ -333,7 +349,7 @@ export function Hero() {
               style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}
             >
               <a
-                href="/v2/demo"
+                href="/demo"
                 className="sx-btn"
                 style={{
                   display: "inline-flex",
@@ -397,8 +413,8 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* RIGHT: the video. Settles alongside the copy, not before it. */}
-          <HeroMedia reduce={!!reduce} />
+          {/* RIGHT: the video, when there is one. Settles alongside the copy, not before it. */}
+          {HAS_MEDIA ? <HeroMedia reduce={!!reduce} /> : null}
         </div>
       </div>
     </section>
