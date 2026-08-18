@@ -42,7 +42,7 @@ function IsoArt({ variant }: { variant: number }) {
 
 export function AutomationFlow() {
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section style={{ background: SX.surface, padding: "0 0 120px" }}>
       <Container>
         <SectionHead
           eyebrow="Automation Flow"
@@ -53,7 +53,7 @@ export function AutomationFlow() {
         />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginTop: 65 }}>
           {CARDS.map((c, i) => (
-            <div key={c.t} style={{ background: SX.cream, borderRadius: 24, height: 394, padding: "61px 32px 32px", display: "flex", flexDirection: "column" }}>
+            <div key={c.t} style={{ background: SX.bgAlt, borderRadius: 24, height: 394, padding: "61px 32px 32px", display: "flex", flexDirection: "column" }}>
               <div style={{ alignSelf: "flex-start" }}><IsoArt variant={i} /></div>
               <div style={{ marginTop: "auto" }}>
                 <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 18, lineHeight: "25.2px", color: SX.ink, margin: 0 }}>{c.t}</p>

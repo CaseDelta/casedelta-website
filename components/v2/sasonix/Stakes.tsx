@@ -38,7 +38,7 @@ const YOU_WITH_DELTA = 17; // just after five
 
 export function Stakes() {
   return (
-    <section id="stakes" style={{ background: SX.white, padding: "120px 0 60px" }}>
+    <section id="stakes" style={{ background: SX.surface, padding: "120px 0 60px" }}>
       <Container>
         <Reveal>
           <SectionHead
@@ -171,7 +171,11 @@ export function Stakes() {
           background: color-mix(in srgb, var(--sx-ink) 50%, transparent);
           box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sx-ink) 66%, transparent);
         }
-        .sx-bar-delta { background: var(--sx-accent); }
+        /* accent-DEEP, not accent: this bar carries a small white label, and white
+           on the raw brand blue is 4.11:1, an AA fail at this size. The deeper fill
+           is 5.80:1 and reads as the same colour. Same rule as the featured pricing
+           tier. */
+        .sx-bar-delta { background: var(--sx-accent-deep); }
 
         .sx-seg-tag {
           position: absolute;

@@ -30,7 +30,7 @@ const IMG = (f: string) => `/v2/product/${f}`;
 
 function Check() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SX.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
       <path d="M20 6L9 17l-5-5" />
     </svg>
   );
@@ -38,8 +38,8 @@ function Check() {
 
 function IconChip({ path }: { path: React.ReactNode }) {
   return (
-    <span style={{ display: "grid", placeItems: "center", width: 54, height: 54, borderRadius: 12, background: SX.white, border: `1px solid ${SX.hairline}` }}>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={SX.orange} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>{path}</svg>
+    <span style={{ display: "grid", placeItems: "center", width: 54, height: 54, borderRadius: 12, background: SX.surface, border: `1px solid ${SX.hairline}` }}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>{path}</svg>
     </span>
   );
 }
@@ -58,8 +58,8 @@ function CodePanel() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={IMG("HKoXTpndSrMAq7ojdzpGjxUyzg.png")} alt="" aria-hidden style={{ display: "block", width: "100%", height: "auto" }} />
       {/* opaque header bar covering the code image's top (the live composite) */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 48, background: SX.card, borderBottom: `1px solid ${SX.hairline}`, display: "flex", alignItems: "center", gap: 10, padding: "0 20px" }}>
-        <span style={{ width: 3, height: 18, background: SX.orange, borderRadius: 2 }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 48, background: SX.surfaceAlt, borderBottom: `1px solid ${SX.hairline}`, display: "flex", alignItems: "center", gap: 10, padding: "0 20px" }}>
+        <span style={{ width: 3, height: 18, background: SX.accent, borderRadius: 2 }} />
         <span style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink }}>Untitled Database</span>
         <span style={{ marginLeft: "auto", fontFamily: SX.ui, fontSize: 13, fontStyle: "italic", color: SX.ink }}>Unsaved</span>
       </div>
@@ -112,7 +112,7 @@ const CARDS: Card[] = [
 
 export function AutomationSection() {
   return (
-    <section id="features" style={{ background: SX.white, padding: "60px 0 60px" }}>
+    <section id="features" style={{ background: SX.surface, padding: "60px 0 60px" }}>
       <Container>
         {/* The plain-language definition, set at hero scale and centered. It is the
             one place on the page that states the whole product in a breath, so it
@@ -132,7 +132,7 @@ export function AutomationSection() {
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
           {CARDS.map((c, i) => (
-            <Reveal key={c.heading} amount={0.2} style={{ position: "relative", background: SX.card, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <Reveal key={c.heading} amount={0.2} style={{ position: "relative", background: SX.surfaceAlt, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
               {/* left text */}
               <div style={{ padding: "56px 40px 56px 32px", display: "flex", flexDirection: "column" }}>
                 <IconChip path={ICONS[i]} />

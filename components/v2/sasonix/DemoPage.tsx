@@ -106,7 +106,7 @@ export function DemoPage() {
 
 function Check() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SX.orange} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
       <path d="M20 6L9 17l-5-5" />
     </svg>
   );
@@ -114,7 +114,7 @@ function Check() {
 
 function Star() {
   return (
-    <svg width="15" height="15" viewBox="0 0 20 20" fill={SX.orange} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg width="15" height="15" viewBox="0 0 20 20" fill={SX.accent} xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z" />
     </svg>
   );

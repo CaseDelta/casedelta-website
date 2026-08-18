@@ -15,7 +15,7 @@ export function Container({ children, style }: { children: React.ReactNode; styl
 /* Mono eyebrow pill: cream bg + 3px orange left rule + JetBrains Mono, per the live. */
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", background: SX.cream2, borderLeft: `3px solid ${SX.orange}`, padding: "10px 20px", fontFamily: SX.mono, fontSize: 16, letterSpacing: "-1px", lineHeight: "25.6px", color: SX.ink }}>
+    <span style={{ display: "inline-flex", alignItems: "center", background: SX.bgAlt, borderLeft: `3px solid ${SX.accent}`, padding: "10px 20px", fontFamily: SX.mono, fontSize: 16, letterSpacing: "-1px", lineHeight: "25.6px", color: SX.ink }}>
       {children}
     </span>
   );

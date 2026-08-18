@@ -32,7 +32,7 @@ function Check({ color }: { color: string }) {
 
 export function Pricing() {
   return (
-    <section id="pricing" style={{ background: SX.white, padding: "60px 0 60px" }}>
+    <section id="pricing" style={{ background: SX.surface, padding: "60px 0 60px" }}>
       <Container>
         <Reveal>
           <SectionHead
@@ -46,12 +46,17 @@ export function Pricing() {
 
         {/* three attorney-count tiers */}
         <div className="sx-price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, maxWidth: 1120, margin: "56px auto 0", alignItems: "stretch" }}>
+          {/* The featured tier fills with accentDeep, not accent. It carries 15px body
+              text and a muted "/month", and white on the raw brand blue is 4.11:1, so
+              the muted variant of it lands near 3:1. The deeper fill takes white to
+              5.80:1 and the muted text back over AA, at a blue nobody reads as a
+              different colour. */}
           {TIERS.map((t, i) => {
             const on = t.featured;
             const nameColor = on ? SX.onInk : SX.ink;
             const subColor = on ? "color-mix(in srgb, var(--sx-on-ink) 82%, transparent)" : SX.ink2;
             return (
-              <motion.div key={t.band} className="sx-tier" data-featured={on ? "true" : "false"} {...revealProps({ delay: i * 0.08, amount: 0.3 })} whileHover={{ y: -6 }} transition={{ type: "tween", duration: 0.28, ease: [0.22, 1, 0.36, 1] }} style={{ position: "relative", background: on ? SX.orange : SX.cream, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: "var(--sx-tier-shadow)" }}>
+              <motion.div key={t.band} className="sx-tier" data-featured={on ? "true" : "false"} {...revealProps({ delay: i * 0.08, amount: 0.3 })} whileHover={{ y: -6 }} transition={{ type: "tween", duration: 0.28, ease: [0.22, 1, 0.36, 1] }} style={{ position: "relative", background: on ? SX.accentDeep : SX.bgAlt, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: "var(--sx-tier-shadow)" }}>
                 <div style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: nameColor }}>{t.band}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, margin: "20px 0 0" }}>
                   <span style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, letterSpacing: "-1px", color: nameColor, lineHeight: 1 }}>{t.price}</span>
@@ -67,7 +72,7 @@ export function Pricing() {
         {/* firms above 20 attorneys */}
         <Reveal>
           <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-            More than 20 attorneys? <a href="/demo" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
+            More than 20 attorneys? <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
           </p>
         </Reveal>
       </Container>

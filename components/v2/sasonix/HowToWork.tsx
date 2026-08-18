@@ -22,20 +22,20 @@ const STEPS = [
 
 export function HowToWork() {
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section style={{ background: SX.surface, padding: "0 0 120px" }}>
       <Container>
         <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0, maxWidth: 540 }}>
           Let&rsquo;s break down how everything works for you
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginTop: 56 }}>
           {STEPS.map((s, i) => (
-            <div key={s.t} style={{ position: "relative", background: SX.cream, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.12)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 565, padding: "27px 27px 63px", overflow: "hidden" }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.cream2, borderRadius: 90, padding: "8px 24px" }}>
+            <div key={s.t} style={{ position: "relative", background: SX.bgAlt, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.12)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 565, padding: "27px 27px 63px", overflow: "hidden" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 10, background: SX.bgAlt, borderRadius: 90, padding: "8px 24px" }}>
                 {/* live: an 8px blur(6px) glow layer behind a solid dot, both #ff6c02;
                     the gentle staggered pulse is our "dynamic" add (Camren's request). */}
                 <span style={{ position: "relative", width: 8, height: 8, flex: "0 0 auto" }}>
-                  <span aria-hidden className="sx-dot-glow" style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.orangeDeep, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }} />
-                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: SX.orangeDeep }} />
+                  <span aria-hidden className="sx-dot-glow" style={{ position: "absolute", left: "50%", top: "50%", width: 8, height: 8, transform: "translate(-50%,-50%)", borderRadius: "50%", background: SX.accentDeep, filter: "blur(6px)", animationDelay: `${i * 0.5}s` }} />
+                  <span style={{ position: "absolute", inset: 0, borderRadius: "50%", background: SX.accentDeep }} />
                 </span>
                 <span style={{ fontFamily: SX.mono, fontSize: 16, letterSpacing: "-0.5px", color: SX.ink }}>{s.n}</span>
               </span>

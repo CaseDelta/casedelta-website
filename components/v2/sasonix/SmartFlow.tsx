@@ -27,7 +27,7 @@ const TEXTS = [
 
 export function SmartFlow() {
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section style={{ background: SX.surface, padding: "0 0 120px" }}>
       <Container>
         {/* photo + floating node cards */}
         <div style={{ position: "relative", width: "100%", height: 605, borderRadius: 24, overflow: "hidden" }}>
@@ -55,7 +55,7 @@ export function SmartFlow() {
         {/* 4-up text row, each in a cream card (live: #fcf8f4, padding 32/32/35) */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginTop: 40 }}>
           {TEXTS.map((t) => (
-            <div key={t} style={{ background: SX.cream, borderRadius: 12, border: "1px solid rgba(var(--sx-shadow-rgb), 0.09)", padding: "32px 32px 35px" }}>
+            <div key={t} style={{ background: SX.bgAlt, borderRadius: 12, border: "1px solid rgba(var(--sx-shadow-rgb), 0.09)", padding: "32px 32px 35px" }}>
               <p style={{ fontFamily: SX.body, fontWeight: 500, fontSize: 18, lineHeight: "25.2px", letterSpacing: "-0.2px", color: SX.ink, margin: 0 }}>{t}</p>
             </div>
           ))}

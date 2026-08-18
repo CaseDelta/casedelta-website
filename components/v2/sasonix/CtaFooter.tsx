@@ -12,7 +12,9 @@
  *    page's bottom edge; the section clips overflow so only the rising top half shows.
  *  - Socials: plain dark brand glyphs (X, Facebook, Instagram, LinkedIn), no background box.
  */
+import Image from "next/image";
 import { SX } from "./tokens";
+import { LOGO, logoWidth } from "./brand";
 import { Reveal } from "./reveal";
 import { CalendlyEmbed } from "./CalendlyEmbed";
 
@@ -48,14 +50,18 @@ const COLS: { head: string; links: { label: string; href: string }[] }[] = [
   },
 ];
 
+/** Footer lockup. Always the dark cut: the footer surface is light in every theme
+ *  that ships, and the glow behind it is a tint, not a fill. */
 function Wordmark() {
+  const h = 34;
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-      <span aria-hidden style={{ width: 34, height: 34, borderRadius: 9, background: SX.orange, display: "grid", placeItems: "center" }}>
-        <svg width="19" height="19" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
-      </span>
-      <span style={{ fontFamily: SX.body, fontWeight: 600, fontSize: 24, letterSpacing: "-0.4px", color: SX.ink }}>CaseDelta</span>
-    </span>
+    <Image
+      src={LOGO.onLight}
+      alt="CaseDelta"
+      width={LOGO.width}
+      height={LOGO.height}
+      style={{ width: logoWidth(h), height: h, objectFit: "contain" }}
+    />
   );
 }
 
@@ -105,7 +111,7 @@ function Socials() {
 
 export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
   return (
-    <div id={showCta ? "contact" : undefined} style={{ position: "relative", overflow: "hidden", background: SX.cream }}>
+    <div id={showCta ? "contact" : undefined} style={{ position: "relative", overflow: "hidden", background: SX.bgAlt }}>
       {/* faint grid (masked to the CTA area) */}
       {showCta && (
         <div aria-hidden style={{ position: "absolute", inset: 0, opacity: 0.55, backgroundImage: `linear-gradient(${SX.hairline} 1px, transparent 1px), linear-gradient(90deg, ${SX.hairline} 1px, transparent 1px)`, backgroundSize: "56px 56px", maskImage: "radial-gradient(80% 55% at 50% 30%, black, transparent)", WebkitMaskImage: "radial-gradient(80% 55% at 50% 30%, black, transparent)" }} />

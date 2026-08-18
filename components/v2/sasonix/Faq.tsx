@@ -23,7 +23,7 @@ const ITEMS = [
 export function Faq() {
   const [open, setOpen] = useState(0); // first row open by default (matches live)
   return (
-    <section style={{ background: SX.white, padding: "0 0 120px" }}>
+    <section style={{ background: SX.surface, padding: "0 0 120px" }}>
       <Container>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
           <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: 0 }}>Got questions?</h2>
@@ -33,7 +33,7 @@ export function Faq() {
           {ITEMS.map((it, i) => {
             const isOpen = open === i;
             return (
-              <div key={i} style={{ background: SX.white, border: `1px solid ${SX.hairline}`, borderRadius: 12, overflow: "hidden" }}>
+              <div key={i} style={{ background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 12, overflow: "hidden" }}>
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? -1 : i)}
@@ -56,7 +56,7 @@ export function Faq() {
           })}
         </div>
         <p style={{ textAlign: "center", marginTop: 28, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-          Still have questions? <a href="#" style={{ color: SX.orange, fontWeight: 500, textDecoration: "none" }}>Contact us</a>
+          Still have questions? <a href="#" style={{ color: SX.accent, fontWeight: 500, textDecoration: "none" }}>Contact us</a>
         </p>
       </Container>
     </section>
