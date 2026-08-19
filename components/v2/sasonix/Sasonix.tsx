@@ -8,7 +8,7 @@
  *   3. HowItWorks      -> how it works + integrates + onboards in 5 minutes (combined)
  *   4. Testimonials    -> real, attributable quotes only; empty today, renders nothing
  *   5. WhySasonix      -> Delta vs a generic AI chatbot
- *   6. Pricing         -> three flat tiers priced by attorney count
+ *   6. Pricing         -> three flat tiers priced by account count
  *   7. CtaFooter    -> reinforcement and the ask
  *
  * SECTION SPACING CONVENTION: every section carries 60px top AND 60px bottom, so

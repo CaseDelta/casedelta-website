@@ -1,15 +1,32 @@
 "use client";
 
 /**
- * Beat 6: Pricing. CaseDelta is priced per FIRM by attorney count, flat monthly,
+ * Beat 6: Pricing. CaseDelta is priced per FIRM by account count, flat monthly,
  * regardless of staff size (the wedge against per-seat research tools). Three tiers:
- *   up to 5 attorneys  -> $499/mo
- *   up to 10 attorneys -> $999/mo   (highlighted)
- *   up to 20 attorneys -> $1,999/mo
- * A contact line handles firms above 20. The value is identical across tiers, so the
- * feature list is shared once below the cards rather than repeated three times.
+ *   less than 5 accounts  -> $499/mo
+ *   less than 10 accounts -> $999/mo   (highlighted)
+ *   less than 20 accounts -> $1,999/mo
+ * A contact line handles firms at 20 accounts or more. The value is identical across
+ * tiers, so the feature list is shared once below the cards rather than repeated
+ * three times.
  *
- * Kept Sasonix-styled (cream / orange) until the tokens.ts rebrand.
+ * The bands counted ATTORNEYS until 2026-08-19 and now count ACCOUNTS, which is the
+ * thing the firm actually provisions. Two knock-on notes for whoever edits next:
+ *
+ *  - The boundary moved. "Up to 5" included a five-attorney firm; "less than 5"
+ *    does not, so a firm with exactly five accounts now lands in the $999 band.
+ *    That is the wording as asked for, not a slip.
+ *  - The overflow line reads "20 or more accounts", not "more than 20". With a top
+ *    band of "less than 20", "more than 20" would have left a firm sitting on
+ *    exactly 20 matching no line on the page at all.
+ *
+ * UNRESOLVED, and left as it was found rather than quietly rewritten: the page
+ * still says "Your whole staff included" and "Flat monthly. Unlimited staff." Those
+ * read cleanly against an ATTORNEY count, where the point was that paralegals and
+ * admins cost nothing. Against an ACCOUNT count they only hold if an account is
+ * narrower than a person, and a cold reader has no way to know that. Whether the
+ * two can stand together depends on what an account IS, which is a pricing
+ * question, not a copy one. Ask before editing either line.
  */
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
@@ -17,9 +34,9 @@ import { Container, SectionHead } from "./kit";
 import { Reveal, revealProps } from "./reveal";
 
 const TIERS = [
-  { band: "Up to 5 attorneys", price: "$499", featured: false },
-  { band: "Up to 10 attorneys", price: "$999", featured: true },
-  { band: "Up to 20 attorneys", price: "$1,999", featured: false },
+  { band: "Less than 5 accounts", price: "$499", featured: false },
+  { band: "Less than 10 accounts", price: "$999", featured: true },
+  { band: "Less than 20 accounts", price: "$1,999", featured: false },
 ];
 
 function Check({ color }: { color: string }) {
@@ -38,13 +55,13 @@ export function Pricing() {
           <SectionHead
             eyebrow="Pricing"
             title="A fraction of another salary"
-            sub="One flat price by attorney count. Your whole staff included."
+            sub="One flat price by account count. Your whole staff included."
             titleMaxW={560}
             subMaxW={480}
           />
         </Reveal>
 
-        {/* three attorney-count tiers */}
+        {/* three account-count tiers */}
         <div className="sx-price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, maxWidth: 1120, margin: "56px auto 0", alignItems: "stretch" }}>
           {/* The featured tier fills with accentDeep, not accent. It carries 15px body
               text and a muted "/month", and white on the raw brand blue is 4.11:1, so
@@ -69,10 +86,10 @@ export function Pricing() {
           })}
         </div>
 
-        {/* firms above 20 attorneys */}
+        {/* firms at 20 accounts or more */}
         <Reveal>
           <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-            More than 20 attorneys? <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
+            20 or more accounts? <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
           </p>
         </Reveal>
       </Container>
