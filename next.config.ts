@@ -31,6 +31,13 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: false,
 
+  // /setup reads content/rep-setup.html at request time. Without this the file is left out
+  // of the deployed function bundle and the route answers 500 in production while working
+  // perfectly on a laptop.
+  outputFileTracingIncludes: {
+    "/setup": ["./content/rep-setup.html"],
+  },
+
   async redirects() {
     return [
       // Old pages that no longer exist — redirect to homepage
@@ -81,6 +88,26 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders,
+      },
+      // Rep onboarding. These are internal new-hire pages on a public marketing domain.
+      // The routes set the same header themselves; it is repeated here so a refusal, an
+      // error page or anything else Next serves on these paths carries it too. robots.ts
+      // disallows them as well, they are absent from the sitemap, and nothing links to them.
+      {
+        source: "/setup",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
+      },
+      {
+        source: "/install.sh",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
+      },
+      {
+        source: "/install.ps1",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
+      },
+      {
+        source: "/outreach-kit.zip",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
       },
       {
         source: "/assets/:path*",
