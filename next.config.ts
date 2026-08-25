@@ -31,17 +31,15 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   trailingSlash: false,
 
+  // /setup reads content/rep-setup.html at request time. Without this the file is left out
+  // of the deployed function bundle and the route answers 500 in production while working
+  // perfectly on a laptop.
+  outputFileTracingIncludes: {
+    "/setup": ["./content/rep-setup.html"],
+  },
+
   async redirects() {
     return [
-      // Rep onboarding. /setup serves public/setup.html. The two installer paths are
-      // redirects rather than files on purpose: the scripts live in the rep-kit bucket so
-      // they can be corrected without a website deploy, and only the short trusted name
-      // lives here. A new hire pasting a command aimed at a random supabase subdomain has
-      // no way to tell it is us; casedelta.com they already know.
-      { source: "/setup", destination: "/setup.html", permanent: false },
-      { source: "/install.sh", destination: "https://tbkomnyvzfutrebrywiw.supabase.co/storage/v1/object/public/rep-kit/install.sh", permanent: false },
-      { source: "/install.ps1", destination: "https://tbkomnyvzfutrebrywiw.supabase.co/storage/v1/object/public/rep-kit/install.ps1", permanent: false },
-
       // Old pages that no longer exist — redirect to homepage
       { source: "/download", destination: "/", permanent: true },
       { source: "/contact", destination: "/", permanent: true },
@@ -90,6 +88,26 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders,
+      },
+      // Rep onboarding. These are internal new-hire pages on a public marketing domain.
+      // The routes set the same header themselves; it is repeated here so a refusal, an
+      // error page or anything else Next serves on these paths carries it too. robots.ts
+      // disallows them as well, they are absent from the sitemap, and nothing links to them.
+      {
+        source: "/setup",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
+      },
+      {
+        source: "/install.sh",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
+      },
+      {
+        source: "/install.ps1",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
+      },
+      {
+        source: "/outreach-kit.zip",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet, noimageindex" }],
       },
       {
         source: "/assets/:path*",

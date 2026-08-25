@@ -140,6 +140,7 @@
 
   footer { margin-top: 34px; text-align: center; color: var(--ink-faint); font-size: 13.5px; }
   .hidden { display: none !important; }
+  a { color: var(--accent); text-underline-offset: 2px; }
   code.inline {
     font: 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
     background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px;
@@ -184,7 +185,7 @@
              <kbd>⌘</kbd><kbd>V</kbd>, then press <kbd>return</kbd>.</p>
           <div class="cmd">
             <div class="cmd-box">
-              <code id="cmd-mac">bash -c "$(curl -fsSL https://casedelta.com/install.sh)"</code>
+              <code id="cmd-mac">__CMD_MAC__</code>
               <button class="copy" data-target="cmd-mac">Copy</button>
             </div>
           </div>
@@ -303,6 +304,15 @@
         </div>
       </details>
       <details>
+        <summary>I already have Claude and just need the folder</summary>
+        <div class="inner">
+          <p>Then <a href="__ZIP_HREF__">download the folder</a>, unzip it, and drag
+             <strong>rep-outreach-kit</strong> onto your Desktop. Carry on from step 4.</p>
+          <p>Only take this route if somebody told you to. The command above checks the whole
+             machine and this one does not.</p>
+        </div>
+      </details>
+      <details>
         <summary>Nothing happens when I paste</summary>
         <div class="inner">
           <p>Click once inside the Terminal window first, so it is the window listening to your
@@ -354,7 +364,7 @@
              then press <kbd>enter</kbd>.</p>
           <div class="cmd">
             <div class="cmd-box">
-              <code id="cmd-win">irm https://casedelta.com/install.ps1 | iex</code>
+              <code id="cmd-win">__CMD_WIN__</code>
               <button class="copy" data-target="cmd-win">Copy</button>
             </div>
           </div>
@@ -397,9 +407,9 @@
   tabWin.addEventListener("click", function () { show("win"); });
   if (isWin) show("win");
 
-  // Copy, with a fallback. The async clipboard API needs a secure context and this page is
-  // often opened from a file:// URL or an email attachment, so execCommand backs it up, and
-  // the command itself is user-select:all so selecting it by hand always works too.
+  // Copy, with a fallback. The async clipboard API needs a secure context, which a saved
+  // copy of this page opened from disk is not, so execCommand backs it up and the command
+  // itself is user-select:all so selecting it by hand always works too.
   function copyText(text) {
     if (navigator.clipboard && window.isSecureContext) {
       return navigator.clipboard.writeText(text);
