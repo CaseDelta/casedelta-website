@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up your machine — CaseDelta</title>
+<style>
+  :root {
+    --bg: #f6f6f4;
+    --panel: #ffffff;
+    --ink: #1a1a18;
+    --ink-soft: #5c5c56;
+    --ink-faint: #8a8a82;
+    --line: #e2e2dc;
+    --accent: #b8562f;
+    --accent-soft: #f6ede8;
+    --code-bg: #24241f;
+    --code-ink: #f0efe8;
+    --ok: #2f7d4f;
+    --warn: #8a6d1f;
+    --warn-soft: #fbf4e0;
+    --radius: 10px;
+    --shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17171a;
+      --panel: #201f23;
+      --ink: #ececea;
+      --ink-soft: #a8a8a2;
+      --ink-faint: #787872;
+      --line: #33323a;
+      --accent: #e08256;
+      --accent-soft: #2c2320;
+      --code-bg: #0f0f11;
+      --code-ink: #ececea;
+      --ok: #6fbf8c;
+      --warn: #d9b45c;
+      --warn-soft: #2a2417;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  header { text-align: center; margin-bottom: 36px; }
+  .mark {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-weight: 620; letter-spacing: -.01em; color: var(--ink-soft); font-size: 15px;
+  }
+  .mark .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+  h1 { font-size: 30px; line-height: 1.2; letter-spacing: -.02em; margin: 18px 0 8px; }
+  .sub { color: var(--ink-soft); margin: 0; font-size: 16px; }
+
+  .tabs { display: flex; gap: 6px; justify-content: center; margin: 26px 0 0; }
+  .tab {
+    font: inherit; font-size: 14px; padding: 7px 16px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink-soft);
+    cursor: pointer; transition: all .15s ease;
+  }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 26px 26px 24px; margin: 20px 0;
+  }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .num {
+    flex: none; width: 27px; height: 27px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    display: grid; place-items: center; font-size: 14px; font-weight: 650;
+    margin-top: 1px;
+  }
+  .step h2 { font-size: 18px; letter-spacing: -.01em; margin: 0 0 6px; }
+  .step .body { flex: 1; min-width: 0; }
+  p { margin: 0 0 12px; }
+  p:last-child { margin-bottom: 0; }
+  .soft { color: var(--ink-soft); }
+  .faint { color: var(--ink-faint); font-size: 14px; }
+  kbd {
+    font: 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--bg); border: 1px solid var(--line); border-bottom-width: 2px;
+    border-radius: 5px; padding: 3px 6px; color: var(--ink);
+  }
+  strong { font-weight: 620; }
+
+  .cmd { margin: 14px 0 0; }
+  .cmd-box {
+    background: var(--code-bg); border-radius: 8px; padding: 14px 15px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .cmd-box code {
+    flex: 1; min-width: 0; color: var(--code-ink);
+    font: 12.5px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+    white-space: pre-wrap; word-break: break-all; user-select: all;
+  }
+  .copy {
+    flex: none; font: inherit; font-size: 13px; font-weight: 560;
+    padding: 7px 13px; border-radius: 6px; border: 0; cursor: pointer;
+    background: #45443d; color: #f0efe8; transition: background .15s ease;
+  }
+  .copy:hover { background: #56554c; }
+  .copy.done { background: var(--ok); color: #fff; }
+
+  .expect { margin: 18px 0 0; padding: 0; list-style: none; }
+  .expect li {
+    display: flex; gap: 11px; padding: 11px 0; border-top: 1px solid var(--line);
+  }
+  .expect li:first-child { border-top: 0; padding-top: 4px; }
+  .expect .ico { flex: none; width: 20px; text-align: center; font-size: 15px; margin-top: 1px; }
+  .expect b { display: block; font-weight: 600; margin-bottom: 1px; }
+  .expect span { color: var(--ink-soft); font-size: 14.5px; }
+
+  .note {
+    background: var(--warn-soft); border: 1px solid var(--line);
+    border-radius: 8px; padding: 13px 15px; font-size: 14.5px; margin: 16px 0 0;
+  }
+  .note b { color: var(--warn); }
+
+  details { border-top: 1px solid var(--line); padding: 13px 0 0; margin-top: 4px; }
+  details summary {
+    cursor: pointer; font-weight: 580; font-size: 15px; list-style: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "›"; color: var(--ink-faint); transition: transform .15s ease; display: inline-block; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details .inner { padding: 10px 0 6px 16px; font-size: 14.5px; color: var(--ink-soft); }
+  details .inner p { margin-bottom: 9px; }
+
+  .divider { text-align: center; margin: 34px 0 14px; color: var(--ink-faint); font-size: 13px;
+             letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+
+  footer { margin-top: 34px; text-align: center; color: var(--ink-faint); font-size: 13.5px; }
+  .hidden { display: none !important; }
+  code.inline {
+    font: 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 5px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mark"><span class="dot"></span> CaseDelta</div>
+    <h1>Set up your machine</h1>
+    <p class="sub">One command, once. It takes between five and twenty minutes.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-mac" role="tab" aria-selected="true">Mac</button>
+      <button class="tab" id="tab-win" role="tab" aria-selected="false">Windows</button>
+    </div>
+  </header>
+
+  <!-- ============================================================ MAC -->
+  <div id="mac">
+
+    <div class="card">
+      <div class="step">
+        <div class="num">1</div>
+        <div class="body">
+          <h2>Open Terminal</h2>
+          <p class="soft">Terminal is already on your Mac. Hold <kbd>⌘</kbd> and press <kbd>space</kbd>,
+             type <strong>terminal</strong>, and press <kbd>return</kbd>.</p>
+          <p class="faint">A small black or white window opens. That is the right one. This is the only
+             time you will use it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">2</div>
+        <div class="body">
+          <h2>Copy this, paste it in, press return</h2>
+          <p class="soft">Click Copy, click once inside the Terminal window, press
+             <kbd>⌘</kbd><kbd>V</kbd>, then press <kbd>return</kbd>.</p>
+          <div class="cmd">
+            <div class="cmd-box">
+              <code id="cmd-mac">bash -c "$(curl -fsSL https://casedelta.com/install.sh)"</code>
+              <button class="copy" data-target="cmd-mac">Copy</button>
+            </div>
+          </div>
+          <div class="note">
+            <b>Nothing to type.</b> If the Copy button does not work, click the command once to select
+            all of it, then press <kbd>⌘</kbd><kbd>C</kbd>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">3</div>
+        <div class="body">
+          <h2>Three things will happen. All three are expected.</h2>
+          <ul class="expect">
+            <li>
+              <span class="ico">🔑</span>
+              <span><b>It asks for a password.</b>
+              This is the password you use to log into this Mac, not your CaseDelta one.
+              Apple requires it to install their developer tools. Nothing is sent anywhere.
+              You will not see the letters as you type, which is normal.</span>
+            </li>
+            <li>
+              <span class="ico">🍎</span>
+              <span><b>A small Apple window appears.</b>
+              Click <strong>Install</strong>, then <strong>Agree</strong>, and leave it alone.
+              The Terminal window carries on by itself when Apple has finished.</span>
+            </li>
+            <li>
+              <span class="ico">🌐</span>
+              <span><b>Claude's download page opens in your browser.</b>
+              This happens only if you do not already have Claude. Download it, drag Claude into
+              your Applications folder, then switch back to Terminal. It is waiting for you and
+              continues on its own.</span>
+            </li>
+          </ul>
+          <div class="note">
+            <b>You do not need Homebrew.</b> If anything tells you to install it, that is the wrong
+            path. Close it and tell your manager.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">When it says your Mac is ready</div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">4</div>
+        <div class="body">
+          <h2>Open Claude and sign in</h2>
+          <p class="soft">Open <strong>Claude</strong> from your Applications folder and sign in with
+             the account your manager sent you.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">5</div>
+        <div class="body">
+          <h2>Open your work folder</h2>
+          <p class="soft">Click the <strong>Code</strong> tab at the top. Not Cowork, the Code tab.
+             Choose <strong>Local</strong>, click <strong>Select folder</strong>, and pick
+             <strong>rep-outreach-kit</strong> from your Desktop.</p>
+          <p class="soft">Claude may ask whether you trust this folder and whether to allow a browser
+             connection. Say yes to both.</p>
+          <p class="faint"><strong>Local matters.</strong> Cloud runs Claude on a computer somewhere
+             else, which cannot open your browser. If Claude ever says it is running on a Linux
+             machine, this is the setting to change.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">6</div>
+        <div class="body">
+          <h2>Say one sentence</h2>
+          <p class="soft">Type this and press enter:</p>
+          <div class="cmd">
+            <div class="cmd-box">
+              <code id="cmd-run">Run my setup.</code>
+              <button class="copy" data-target="cmd-run">Copy</button>
+            </div>
+          </div>
+          <p class="faint" style="margin-top:12px">Claude takes it from there and tells you when it is
+             done. After that, starting work every day is one sentence:
+             <strong>Start today's outreach run.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary>It said STOPPED</summary>
+        <div class="inner">
+          <p>That is the setup telling you it could not finish, and it always says which step. Send
+             your manager the line it printed, the one that starts with
+             <code class="inline">installer v</code>. Do not try to fix it yourself and do
+             not install anything it did not ask for.</p>
+          <p>Running the command a second time is always safe and usually finishes the job. If you are
+             not sure whether it worked, run it again.</p>
+        </div>
+      </details>
+      <details>
+        <summary>I already did this once</summary>
+        <div class="inner">
+          <p>Then you are set up and there is nothing to redo. Open the folder you already have.</p>
+          <p>Running the command again will not create a second folder. It checks for the one you have
+             and leaves it alone. <strong>You never need to download anything again to get an
+             update</strong>, because the tools and the instructions refresh themselves every time you
+             start a run.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Nothing happens when I paste</summary>
+        <div class="inner">
+          <p>Click once inside the Terminal window first, so it is the window listening to your
+             keyboard, then paste. Terminal does not always show the text as you paste it; press
+             <kbd>return</kbd> anyway.</p>
+        </div>
+      </details>
+      <details>
+        <summary>Before you start: LinkedIn Premium</summary>
+        <div class="inner">
+          <p>This will not work on a free LinkedIn account. A free account allows only about three to
+             five connection requests with a note per month, and every message this system sends has a
+             note. Any Premium tier fixes it, including the cheapest one. Your manager sorts this out
+             with you before your first run.</p>
+        </div>
+      </details>
+    </div>
+
+  </div>
+
+  <!-- ============================================================ WINDOWS -->
+  <div id="win" class="hidden">
+
+    <div class="card">
+      <div class="note" style="margin:0">
+        <b>Read this first.</b> The outreach tool itself does not run on Windows yet, so this will not
+        get you sending. It sets up the Claude app and nothing more. Tell your manager you are on
+        Windows.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">1</div>
+        <div class="body">
+          <h2>Open PowerShell</h2>
+          <p class="soft">Press the <kbd>Windows</kbd> key, type <strong>powershell</strong>, and press
+             <kbd>enter</kbd>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="num">2</div>
+        <div class="body">
+          <h2>Copy this, paste it in, press enter</h2>
+          <p class="soft">Click Copy, click once inside the PowerShell window, right-click to paste,
+             then press <kbd>enter</kbd>.</p>
+          <div class="cmd">
+            <div class="cmd-box">
+              <code id="cmd-win">irm https://casedelta.com/install.ps1 | iex</code>
+              <button class="copy" data-target="cmd-win">Copy</button>
+            </div>
+          </div>
+          <p class="faint" style="margin-top:14px">It installs Git, Chrome and the Claude app. If
+             Windows asks to allow changes, say yes.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Stuck for more than a few minutes? Message your manager rather than trying things.
+    Nothing here is urgent enough to guess at.
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  // Show the platform they are actually on. Getting this wrong is the single easiest way to
+  // waste somebody's morning, so it is detected rather than left as a choice, and the tabs
+  // stay so a wrong guess costs one click.
+  var isWin = /Win/i.test(navigator.platform || "") ||
+              /Windows/i.test(navigator.userAgent || "");
+  var mac = document.getElementById("mac"),
+      win = document.getElementById("win"),
+      tabMac = document.getElementById("tab-mac"),
+      tabWin = document.getElementById("tab-win");
+
+  function show(which) {
+    var w = which === "win";
+    win.classList.toggle("hidden", !w);
+    mac.classList.toggle("hidden", w);
+    tabWin.setAttribute("aria-selected", String(w));
+    tabMac.setAttribute("aria-selected", String(!w));
+    window.scrollTo(0, 0);
+  }
+  tabMac.addEventListener("click", function () { show("mac"); });
+  tabWin.addEventListener("click", function () { show("win"); });
+  if (isWin) show("win");
+
+  // Copy, with a fallback. The async clipboard API needs a secure context and this page is
+  // often opened from a file:// URL or an email attachment, so execCommand backs it up, and
+  // the command itself is user-select:all so selecting it by hand always works too.
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    }
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error("copy failed"));
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".copy"), function (btn) {
+    btn.addEventListener("click", function () {
+      var el = document.getElementById(btn.getAttribute("data-target"));
+      copyText(el.textContent.trim()).then(function () {
+        btn.textContent = "Copied";
+        btn.classList.add("done");
+        setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 2200);
+      }).catch(function () {
+        // Never leave them staring at a button that did nothing. Select it for them so the
+        // keyboard shortcut is the next thing that works.
+        btn.textContent = "Press ⌘C";
+        var r = document.createRange();
+        r.selectNodeContents(el);
+        var s = window.getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+        setTimeout(function () { btn.textContent = "Copy"; }, 3500);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -33,6 +33,15 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Rep onboarding. /setup serves public/setup.html. The two installer paths are
+      // redirects rather than files on purpose: the scripts live in the rep-kit bucket so
+      // they can be corrected without a website deploy, and only the short trusted name
+      // lives here. A new hire pasting a command aimed at a random supabase subdomain has
+      // no way to tell it is us; casedelta.com they already know.
+      { source: "/setup", destination: "/setup.html", permanent: false },
+      { source: "/install.sh", destination: "https://tbkomnyvzfutrebrywiw.supabase.co/storage/v1/object/public/rep-kit/install.sh", permanent: false },
+      { source: "/install.ps1", destination: "https://tbkomnyvzfutrebrywiw.supabase.co/storage/v1/object/public/rep-kit/install.ps1", permanent: false },
+
       // Old pages that no longer exist — redirect to homepage
       { source: "/download", destination: "/", permanent: true },
       { source: "/contact", destination: "/", permanent: true },
