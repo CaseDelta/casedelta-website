@@ -45,6 +45,8 @@
  * CLIENT AND MATTER NAMES ARE FICTIONAL. Do not put a real client or a real matter on
  * the marketing site.
  */
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { SX } from "./tokens";
 
 /* --------------------------------------------------------------------------- */
@@ -166,165 +168,564 @@ function LiveDot({ size = 7 }: { size?: number }) {
 /* --------------------------------------------------------------------------- */
 
 /**
- * Delta inside the firm's own case system, typing into a field.
+ * A browser, and Delta signing in to the firm's platform in it.
  *
- * The tabs carry the whole claim. A lawyer reads names they recognise, sees a case
- * and a field they recognise under them, and the sentence beside the panel stops
- * being a promise about software and starts being a picture of their Tuesday. The
- * cursor is the element that says Delta is the one typing, so keep it.
+ * THE SEQUENCE IS THE POINT (Camren, 2026-08-27). A static screenshot of a case
+ * system proves nothing: every legal product ships one. What no other product can
+ * show is the sign-in itself, so the panel plays it. Three beats, twice, once per
+ * platform:
+ *     login    the platform's sign-in page, Delta typing the address and the
+ *              password, then moving the pointer to the button
+ *     loading  the tab spins, the page-load bar runs
+ *     app      it is inside, and working
+ * Then it does the whole thing again on a different platform, which is the part
+ * that says "yours too" without a sentence claiming it.
  *
- * The tab set is Camren's, 2026-08-27. Two case systems in one window is not what a
- * real firm's browser looks like; the row reads as "the platforms firms use" rather
- * than "one firm's tabs", and naming more than one is what makes that read work.
+ * THE BROWSER IS DRAWN, NOT PHOTOGRAPHED. It is Chrome's shape at Chrome's
+ * proportions: traffic lights, rounded tabs with favicons and close glyphs, the new
+ * tab plus, back and forward and reload, the omnibox pill, the extensions puzzle and
+ * the profile avatar. Drawn rather than screenshotted because a screenshot is one
+ * fixed density, one fixed light theme, and one version of Chrome that dates the
+ * page the next time Google moves a button. Every colour here is an SX token, so it
+ * re-tints with the brand and renders correctly in the dark theme.
+ *
+ * THE PLATFORM SCREENS ARE OURS, drawn in the same way: a platform's own login art
+ * and product chrome are their trademarks and their screenshots, and putting them on
+ * our homepage is a different decision from naming them in a tab. Names only.
+ *
+ * COST. One interval at 60ms, and only while the panel is on screen: an
+ * IntersectionObserver arms it and disarms it. prefers-reduced-motion skips all of
+ * it and renders the last beat, Delta already signed in and working, which is the
+ * frame that carries the claim if only one frame gets to.
  */
-const TABS = ["Filevine", "CasePeer", "Lead Docket", "Outlook"];
+
+type Platform = {
+  name: string;
+  /** The address in the omnibox. A real host, because a fake one reads as a fake. */
+  host: string;
+  /** Fictional firm, fictional user. Never a real client on the marketing site. */
+  user: string;
+  app: React.ReactNode;
+};
+
+/** The three beats, twice. Durations in ms; the loop is the sum. */
+const BEATS = [
+  { platform: 0, screen: "login", ms: 3000 },
+  { platform: 0, screen: "loading", ms: 1100 },
+  { platform: 0, screen: "app", ms: 3200 },
+  { platform: 1, screen: "login", ms: 3000 },
+  { platform: 1, screen: "loading", ms: 1100 },
+  { platform: 1, screen: "app", ms: 3200 },
+] as const;
+
+const LOOP_MS = BEATS.reduce((total, b) => total + b.ms, 0);
+const TICK_MS = 60;
+
+/** The beat playing at `ms` into the loop, and how far into that beat we are. */
+function beatAt(ms: number) {
+  let start = 0;
+  for (const beat of BEATS) {
+    if (ms < start + beat.ms) return { beat, into: ms - start };
+    start += beat.ms;
+  }
+  return { beat: BEATS[BEATS.length - 1], into: 0 };
+}
+
+/**
+ * Cue sheet for the login beat, in ms from the start of it. Pulled out of the
+ * component because the pointer, the two fields and the button all have to agree
+ * about what is happening, and three copies of the same numbers drift.
+ */
+const CUE = {
+  typeUserFrom: 250,
+  msPerChar: 40,
+  toPasswordAt: 1450,
+  typePasswordFrom: 1520,
+  msPerDot: 55,
+  passwordDots: 10,
+  toButtonAt: 2260,
+  pressAt: 2620,
+} as const;
+
+/** Where the pointer sits during each phase of the login beat, in viewport pixels. */
+/**
+ * Where the pointer rests during each phase of the login beat, in viewport pixels.
+ *
+ * It sits at the RIGHT END of the field it is working in, not on the caret. On the
+ * caret it covers the text it is supposed to be typing, and the badge lands on top of
+ * the address the moment the address finishes. Resting where a hand would rest after
+ * clicking the field reads better and stays legible.
+ *
+ * These are hand-placed against the login layout below. If you change a margin there,
+ * these move with it: the whole illusion is the pointer being where it should be.
+ */
+const POINTER = {
+  user: { x: 290, y: 97 },
+  password: { x: 290, y: 163 },
+  button: { x: 214, y: 215 },
+} as const;
+
+/** The viewport is a fixed height on every beat, or the card jumps as they change. */
+const VIEW_H = 270;
+
+function useSignInLoop(reduced: boolean) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [ms, setMs] = useState(0);
+  const [onScreen, setOnScreen] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (reduced || !node || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), { threshold: 0.2 });
+    io.observe(node);
+    return () => io.disconnect();
+  }, [reduced]);
+
+  useEffect(() => {
+    if (reduced || !onScreen) return;
+    const id = setInterval(() => setMs((prev) => (prev + TICK_MS) % LOOP_MS), TICK_MS);
+    return () => clearInterval(id);
+  }, [reduced, onScreen]);
+
+  return { ref, ms };
+}
 
 function BrowserPanel() {
+  const reduced = !!useReducedMotion();
+  const { ref, ms } = useSignInLoop(reduced);
+
+  /* Reduced motion holds the last beat: signed in, and working. */
+  const { beat, into } = reduced ? { beat: BEATS[2], into: BEATS[2].ms } : beatAt(ms);
+  const platform = PLATFORMS[beat.platform];
+  const isLogin = beat.screen === "login";
+  const isLoading = beat.screen === "loading";
+
+  const typedUser = isLogin
+    ? platform.user.slice(0, Math.max(0, Math.floor((into - CUE.typeUserFrom) / CUE.msPerChar)))
+    : platform.user;
+  const typedDots = isLogin
+    ? Math.min(CUE.passwordDots, Math.max(0, Math.floor((into - CUE.typePasswordFrom) / CUE.msPerDot)))
+    : CUE.passwordDots;
+
+  const focus = into < CUE.toPasswordAt ? "user" : into < CUE.toButtonAt ? "password" : "button";
+  const pointer = POINTER[focus];
+  const pressed = isLogin && into >= CUE.pressAt;
+
   return (
     <Panel>
-      {/* chrome */}
-      <div
-        style={{
-          height: 40,
-          display: "flex",
-          alignItems: "flex-end",
-          gap: 10,
-          padding: "0 12px",
-          background: SX.surfaceAlt,
-          borderBottom: `1px solid ${SX.hairline}`,
-        }}
-      >
-        <span style={{ display: "flex", gap: 5, paddingBottom: 12 }} aria-hidden>
-          {[0, 1, 2].map((i) => (
-            <span key={i} style={{ width: 7, height: 7, borderRadius: 999, background: SX.hairline }} />
-          ))}
-        </span>
-        <span style={{ display: "flex", gap: 2, alignItems: "flex-end" }}>
-          {TABS.map((t, i) => (
-            <span
-              key={t}
-              style={{
-                fontFamily: SX.body,
-                fontSize: 11,
-                fontWeight: i === 0 ? 600 : 400,
-                color: i === 0 ? SX.ink : SX.ink3,
-                background: i === 0 ? SX.surface : "transparent",
-                border: `1px solid ${i === 0 ? SX.hairline : "transparent"}`,
-                borderBottomColor: i === 0 ? SX.surface : "transparent",
-                borderRadius: "7px 7px 0 0",
-                padding: "7px 10px 8px",
-                marginBottom: -1,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {t}
-            </span>
-          ))}
-        </span>
-      </div>
-
-      {/* one case, one field, being filled in */}
-      <div style={{ padding: "18px 18px 22px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontFamily: SX.body, fontSize: 14.5, fontWeight: 600, color: SX.ink }}>Morales, Elena</span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: 21,
-              padding: "0 9px",
-              borderRadius: 999,
-              background: SX.accentSoft,
-              fontFamily: SX.body,
-              fontSize: 10.5,
-              fontWeight: 600,
-              color: SX.accentText,
-              whiteSpace: "nowrap",
-            }}
-          >
-            In treatment
-          </span>
-        </div>
-
+      <div ref={ref}>
+        {/* ---- Chrome: tab strip ---- */}
         <div
           style={{
-            marginTop: 16,
-            fontFamily: SX.body,
-            fontSize: 9.5,
-            fontWeight: 600,
-            letterSpacing: "0.07em",
-            textTransform: "uppercase",
-            color: SX.ink3,
+            height: 38,
+            display: "flex",
+            alignItems: "flex-end",
+            gap: 9,
+            padding: "0 11px",
+            background: SX.bgAlt,
           }}
         >
-          Case status note
+          <span style={{ display: "flex", gap: 6, paddingBottom: 12 }} aria-hidden>
+            {[0, 1, 2].map((i) => (
+              <span key={i} style={{ width: 8, height: 8, borderRadius: 999, background: SX.hairline }} />
+            ))}
+          </span>
+          <span style={{ display: "flex", gap: 1, alignItems: "flex-end", minWidth: 0 }}>
+            {PLATFORMS.map((p, i) => (
+              <Tab key={p.name} label={p.name} active={i === beat.platform} spinning={i === beat.platform && isLoading} />
+            ))}
+            <Tab label="Outlook" active={false} spinning={false} />
+          </span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={SX.ink3} strokeWidth="2.2" strokeLinecap="round" style={{ marginBottom: 11 }} aria-hidden>
+            <path d="M12 5v14M5 12h14" />
+          </svg>
         </div>
 
-        <div style={{ position: "relative", marginTop: 7 }}>
-          <div
+        {/* ---- Chrome: toolbar ---- */}
+        <div
+          style={{
+            position: "relative",
+            height: 40,
+            display: "flex",
+            alignItems: "center",
+            gap: 9,
+            padding: "0 11px",
+            background: SX.surface,
+            borderBottom: `1px solid ${SX.hairline}`,
+          }}
+        >
+          <span style={{ display: "flex", gap: 8, color: SX.ink3 }} aria-hidden>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.45 }}>
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5" />
+            </svg>
+          </span>
+
+          <span
             style={{
-              minHeight: 62,
-              padding: "10px 12px",
-              borderRadius: 9,
-              border: `1px solid ${SX.accent}`,
-              boxShadow: `0 0 0 3px ${SX.accentSoft}`,
-              background: SX.surface,
-              fontFamily: SX.body,
-              fontSize: 12.5,
-              lineHeight: "20px",
-              color: SX.ink,
+              display: "flex",
+              alignItems: "center",
+              gap: 7,
+              flex: 1,
+              minWidth: 0,
+              height: 26,
+              padding: "0 11px",
+              borderRadius: 999,
+              background: SX.bgAlt,
             }}
           >
-            Records received from Northgate. Ready to draft demand.
-            <span
-              className="sx-caret"
-              aria-hidden
-              style={{ display: "inline-block", width: 1.5, height: 13, background: SX.ink, marginLeft: 3, verticalAlign: "-2px" }}
-            />
-          </div>
-
-          {/* the cursor: this is the element that says Delta is the one typing */}
-          <span style={{ position: "absolute", right: 30, bottom: -17, display: "flex", alignItems: "flex-start", gap: 4 }} aria-hidden>
-            <svg width="15" height="18" viewBox="0 0 16 19" fill="none">
-              <path d="M1 1.2 14 9.4 8.1 10.6 5.9 16.6z" fill={SX.surface} stroke={SX.ink} strokeWidth="1.4" strokeLinejoin="round" />
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={SX.ink3} strokeWidth="2.4" aria-hidden>
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
             </svg>
-            <span
-              style={{
-                marginTop: 9,
-                padding: "2px 7px",
-                borderRadius: 5,
-                background: SX.ink,
-                color: SX.onInk,
-                fontFamily: SX.body,
-                fontSize: 9.5,
-                fontWeight: 600,
-              }}
-            >
-              Delta
+            <span style={{ ...metaStyle, color: SX.ink2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {platform.host}
             </span>
           </span>
-        </div>
-      </div>
 
-      {/* one line of status, and it names the platform */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 9,
-          height: 42,
-          padding: "0 15px",
-          background: SX.surfaceAlt,
-          borderTop: `1px solid ${SX.hairline}`,
-        }}
-      >
-        <LiveDot />
-        <span style={{ fontFamily: SX.body, fontSize: 12, color: SX.ink }}>Signed in and working in Filevine</span>
-        <span style={{ ...metaStyle, marginLeft: "auto" }}>01:12</span>
+          <span style={{ display: "flex", alignItems: "center", gap: 8, color: SX.ink3 }} aria-hidden>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 13h2.5a2 2 0 0 0 0-4H4V6a2 2 0 0 1 2-2h3.2a2 2 0 1 1 3.6 0H16a2 2 0 0 1 2 2v3.2a2 2 0 1 0 0 3.6V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+            </svg>
+            <span style={{ width: 17, height: 17, borderRadius: 999, background: SX.accentSoft, display: "grid", placeItems: "center", fontFamily: SX.body, fontSize: 8.5, fontWeight: 700, color: SX.accentText }}>
+              D
+            </span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <circle cx="12" cy="5" r="1.6" />
+              <circle cx="12" cy="12" r="1.6" />
+              <circle cx="12" cy="19" r="1.6" />
+            </svg>
+          </span>
+
+          {/* page-load bar, the thing that says the click landed */}
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: 0,
+              bottom: -1,
+              height: 2,
+              background: SX.accent,
+              width: isLoading ? `${Math.min(100, (into / 1100) * 100)}%` : 0,
+              opacity: isLoading ? 1 : 0,
+            }}
+          />
+        </div>
+
+        {/* ---- the page ---- */}
+        <div style={{ position: "relative", height: VIEW_H, overflow: "hidden", background: isLogin || isLoading ? SX.bgAlt : SX.surface }}>
+          {isLogin || isLoading ? (
+            <LoginPage
+              platform={platform}
+              typedUser={typedUser}
+              typedDots={typedDots}
+              focus={focus}
+              pressed={pressed || isLoading}
+              dim={isLoading}
+            />
+          ) : (
+            platform.app
+          )}
+
+          {/* Delta's pointer. Only during the sign-in, because that is the claim. */}
+          {isLogin && (
+            <span
+              aria-hidden
+              className="sx-pointer"
+              style={{ position: "absolute", left: 0, top: 0, transform: `translate(${pointer.x}px, ${pointer.y}px)`, display: "flex", alignItems: "flex-start", gap: 4 }}
+            >
+              <svg width="15" height="18" viewBox="0 0 16 19" fill="none">
+                <path d="M1 1.2 14 9.4 8.1 10.6 5.9 16.6z" fill={SX.surface} stroke={SX.ink} strokeWidth="1.4" strokeLinejoin="round" />
+              </svg>
+              <span
+                style={{
+                  marginTop: 9,
+                  padding: "2px 7px",
+                  borderRadius: 5,
+                  background: SX.ink,
+                  color: SX.onInk,
+                  fontFamily: SX.body,
+                  fontSize: 9.5,
+                  fontWeight: 600,
+                }}
+              >
+                Delta
+              </span>
+            </span>
+          )}
+        </div>
+
+        {/* ---- one line of status, and it names the platform ---- */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 9,
+            height: 42,
+            padding: "0 15px",
+            background: SX.surfaceAlt,
+            borderTop: `1px solid ${SX.hairline}`,
+          }}
+        >
+          <LiveDot />
+          <span style={{ fontFamily: SX.body, fontSize: 12, color: SX.ink }}>
+            {isLogin ? `Signing in to ${platform.name}` : isLoading ? "Signing in" : `Signed in and working in ${platform.name}`}
+          </span>
+        </div>
       </div>
     </Panel>
   );
 }
+
+/** A Chrome tab. The favicon turns into a spinner while its page is loading. */
+function Tab({ label, active, spinning }: { label: string; active: boolean; spinning: boolean }) {
+  return (
+    <span
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+        maxWidth: 118,
+        fontFamily: SX.body,
+        fontSize: 10.5,
+        fontWeight: active ? 600 : 400,
+        color: active ? SX.ink : SX.ink3,
+        background: active ? SX.surface : "transparent",
+        borderRadius: "8px 8px 0 0",
+        padding: "7px 9px 8px",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {spinning ? (
+        <span className="sx-tab-spin" style={{ width: 9, height: 9, borderRadius: 999, border: `1.4px solid ${SX.accentSoft}`, borderTopColor: SX.accent, flex: "0 0 auto" }} />
+      ) : (
+        <span style={{ width: 9, height: 9, borderRadius: 2.5, background: active ? SX.accent : SX.hairline, flex: "0 0 auto" }} />
+      )}
+      <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{label}</span>
+      <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" style={{ opacity: active ? 0.5 : 0, flex: "0 0 auto" }} aria-hidden>
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </span>
+  );
+}
+
+/** The platform's sign-in page. Ours, not theirs: the name, and nothing else of it. */
+function LoginPage({
+  platform,
+  typedUser,
+  typedDots,
+  focus,
+  pressed,
+  dim,
+}: {
+  platform: Platform;
+  typedUser: string;
+  typedDots: number;
+  focus: string;
+  pressed: boolean;
+  dim: boolean;
+}) {
+  const field = (active: boolean): React.CSSProperties => ({
+    height: 34,
+    display: "flex",
+    alignItems: "center",
+    padding: "0 11px",
+    borderRadius: 8,
+    background: SX.surface,
+    border: `1px solid ${active ? SX.accent : SX.hairline}`,
+    boxShadow: active ? `0 0 0 3px ${SX.accentSoft}` : "none",
+    fontFamily: SX.body,
+    fontSize: 12,
+    color: SX.ink,
+  });
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        justifyContent: "center",
+        paddingTop: 22,
+        opacity: dim ? 0.55 : 1,
+        transition: "opacity 260ms ease",
+      }}
+    >
+      <div style={{ width: 310 }}>
+        <div style={{ fontFamily: SX.display, fontSize: 17, fontWeight: 600, letterSpacing: "-0.3px", color: SX.ink, textAlign: "center" }}>
+          {platform.name}
+        </div>
+
+        <div style={{ marginTop: 22, fontFamily: SX.body, fontSize: 10, fontWeight: 600, color: SX.ink3 }}>Email</div>
+        <div style={{ ...field(focus === "user"), marginTop: 6 }}>
+          {typedUser}
+          {focus === "user" && <span className="sx-caret" aria-hidden style={{ display: "inline-block", width: 1.5, height: 13, background: SX.ink, marginLeft: 1 }} />}
+        </div>
+
+        <div style={{ marginTop: 14, fontFamily: SX.body, fontSize: 10, fontWeight: 600, color: SX.ink3 }}>Password</div>
+        <div style={{ ...field(focus === "password"), marginTop: 6, letterSpacing: "2px" }}>
+          {"•".repeat(typedDots)}
+          {focus === "password" && <span className="sx-caret" aria-hidden style={{ display: "inline-block", width: 1.5, height: 13, background: SX.ink, marginLeft: 1 }} />}
+        </div>
+
+        <div
+          style={{
+            marginTop: 18,
+            height: 34,
+            display: "grid",
+            placeItems: "center",
+            borderRadius: 8,
+            background: pressed ? SX.accentDeep : SX.accent,
+            color: SX.onAccent,
+            fontFamily: SX.body,
+            fontSize: 12,
+            fontWeight: 600,
+            transform: pressed ? "scale(0.985)" : "none",
+            transition: "transform 140ms ease, background 140ms ease",
+          }}
+        >
+          Sign in
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---- what each platform looks like once Delta is inside it ---- */
+
+/** Shared shell so the two landing screens read as two apps, not two designs. */
+function AppShell({ name, children }: { name: string; children: React.ReactNode }) {
+  return (
+    <div style={{ position: "absolute", inset: 0, display: "flex" }}>
+      <div style={{ width: 42, background: SX.bgAlt, borderRight: `1px solid ${SX.hairline}`, padding: "12px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 9 }} aria-hidden>
+        <span style={{ width: 18, height: 18, borderRadius: 5, background: SX.accent }} />
+        {[0, 1, 2, 3].map((i) => (
+          <span key={i} style={{ width: 16, height: 3, borderRadius: 999, background: SX.hairline, marginTop: i === 0 ? 6 : 0 }} />
+        ))}
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ height: 34, display: "flex", alignItems: "center", padding: "0 14px", borderBottom: `1px solid ${SX.hairline}` }}>
+          <span style={{ fontFamily: SX.body, fontSize: 11.5, fontWeight: 600, color: SX.ink }}>{name}</span>
+        </div>
+        <div style={{ padding: "14px 14px 0" }}>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+/** Filevine: one case, one field, Delta typing into it. */
+function CaseScreen() {
+  return (
+    <AppShell name="Filevine">
+      <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+        <span style={{ fontFamily: SX.body, fontSize: 13.5, fontWeight: 600, color: SX.ink }}>Morales, Elena</span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            height: 20,
+            padding: "0 8px",
+            borderRadius: 999,
+            background: SX.accentSoft,
+            fontFamily: SX.body,
+            fontSize: 10,
+            fontWeight: 600,
+            color: SX.accentText,
+          }}
+        >
+          In treatment
+        </span>
+      </div>
+      <div style={{ marginTop: 14, fontFamily: SX.body, fontSize: 9, fontWeight: 600, letterSpacing: "0.07em", textTransform: "uppercase", color: SX.ink3 }}>
+        Case status note
+      </div>
+      <div
+        style={{
+          marginTop: 6,
+          minHeight: 56,
+          padding: "9px 11px",
+          borderRadius: 8,
+          border: `1px solid ${SX.accent}`,
+          boxShadow: `0 0 0 3px ${SX.accentSoft}`,
+          background: SX.surface,
+          fontFamily: SX.body,
+          fontSize: 12,
+          lineHeight: "19px",
+          color: SX.ink,
+        }}
+      >
+        Records received from Northgate. Ready to draft demand.
+        <span className="sx-caret" aria-hidden style={{ display: "inline-block", width: 1.5, height: 12, background: SX.ink, marginLeft: 3, verticalAlign: "-2px" }} />
+      </div>
+    </AppShell>
+  );
+}
+
+/** Lead Docket: the intake side, read rather than written. */
+const LEADS = [
+  { name: "Alvarez, M.", stage: "New", age: "today" },
+  { name: "Boone, T.", stage: "Chase", age: "2d" },
+  { name: "Carter, J.", stage: "Chase", age: "3d" },
+];
+
+function LeadsScreen() {
+  return (
+    <AppShell name="Lead Docket">
+      <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+        <span style={{ fontFamily: SX.body, fontSize: 13.5, fontWeight: 600, color: SX.ink }}>Leads, Chase</span>
+        <span style={{ ...metaStyle, marginLeft: "auto" }}>42 open</span>
+      </div>
+      <div style={{ marginTop: 10 }}>
+        {LEADS.map((l, i) => (
+          <div
+            key={l.name}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "10px 0",
+              borderTop: i === 0 ? "none" : `1px solid ${SX.hairline}`,
+            }}
+          >
+            <span style={{ fontFamily: SX.body, fontSize: 12, color: SX.ink }}>{l.name}</span>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                height: 19,
+                padding: "0 8px",
+                borderRadius: 999,
+                background: SX.accentSoft,
+                fontFamily: SX.body,
+                fontSize: 9.5,
+                fontWeight: 600,
+                color: SX.accentText,
+              }}
+            >
+              {l.stage}
+            </span>
+            <span style={{ ...metaStyle, marginLeft: "auto" }}>{l.age}</span>
+          </div>
+        ))}
+      </div>
+    </AppShell>
+  );
+}
+
+/**
+ * The two platforms the loop signs in to. Real hosts, because a made-up host reads
+ * as a made-up product. Fictional firm and fictional user, always.
+ */
+const PLATFORMS: Platform[] = [
+  { name: "Filevine", host: "app.filevine.com", user: "dana@harperlane.com", app: <CaseScreen /> },
+  { name: "Lead Docket", host: "harperlane.leaddocket.com", user: "dana@harperlane.com", app: <LeadsScreen /> },
+];
+
 
 /* --------------------------------------------------------------------------- */
 /* 2. Message it like a teammate                                                */
@@ -555,9 +956,18 @@ export function ProductPanelStyles() {
       .sx-caret { animation: sx-blink 1.15s steps(1, end) infinite; }
       @keyframes sx-blink { 0%, 45% { opacity: 1; } 46%, 100% { opacity: 0; } }
 
+      /* The pointer glides between the two fields and the button. The transition is
+         what makes it read as one hand moving rather than three pointers appearing. */
+      .sx-pointer { transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+      .sx-tab-spin { animation: sx-spin 0.7s linear infinite; }
+      @keyframes sx-spin { to { transform: rotate(360deg); } }
+
       @media (prefers-reduced-motion: reduce) {
         .sx-livedot-ring { animation: none; opacity: 0; }
         .sx-caret { animation: none; }
+        .sx-pointer { transition: none; }
+        .sx-tab-spin { animation: none; }
       }
     `}</style>
   );
