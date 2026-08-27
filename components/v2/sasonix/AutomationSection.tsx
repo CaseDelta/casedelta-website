@@ -1,32 +1,30 @@
 "use client";
 
 /**
- * Automation Section (live top 2045, h2392): a LEFT-aligned Archivo 48px heading,
- * then 3 stacked feature cards. Each card (cream #fefaf6, radius 12, 1280x654) is a
- * 50/50 split: left = 54px icon chip + Archivo 32px heading + Geist sub + a 3-item
- * checklist; right = a full-height photo with a floating product panel.
+ * "What Delta is": the thesis line, then three stacked capability cards. Each card
+ * is a 50/50 split: left is a 54px icon chip, an Archivo 32px heading, the claim in
+ * prose and a three-item checklist; right is an ambient photograph with a product
+ * panel floating over the seam between the halves.
  *
- * Photos + panel images are Sasonix's own assets (hotlinked as placeholders during
- * the fidelity phase; swapped on rebrand). Card 0's panel overlays live header text
- * onto the code image, matching the live composite.
+ * THE PANELS ARE DRAWN IN CODE, in ProductPanels.tsx. They used to be the Sasonix
+ * template's stock product shots, which showed a database schema of order_id and
+ * products.id, a token-usage bar chart naming four foundation models, and a tile
+ * counting API credits. That artwork survived the clone-fidelity phase, the rebrand
+ * from orange to blue, and the promotion of this page to the homepage, illustrating
+ * a developer SaaS on the largest section of a site that sells to personal injury
+ * firms. Do not reintroduce stock product imagery here: if a panel needs to change,
+ * it is a React component and it is edited as one.
+ *
+ * THE PHOTOGRAPHS are the site's own ambient set, self-hosted in /v2/ambient. The
+ * three warm desert and Yosemite shots that used to sit here came with the template
+ * and fought the blue brand; the ambient set is the one coherent family across the
+ * hero, this section and the two banded sections. Pick ones not already spoken for:
+ * mountain is the hero, water-dark is HowItWorks, forest-dark is Trust.
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
 import { Reveal } from "./reveal";
-
-/**
- * Self-hosted, NOT hotlinked. These panels used to load straight off
- * framerusercontent.com, the Sasonix template's own Framer CDN: seven third-party
- * requests on every homepage load, for the artwork in the largest section of the page.
- * Same call that was already made for the hero photograph, now applied to the rest.
- *
- * Note that this fixes the DEPENDENCY, not the CONTENT. These are still the template's
- * stock product shots and they depict a generic SaaS app (a database schema with
- * order_id and products.id, a token-usage breakdown, an agent overview). They are not
- * CaseDelta and not a law firm. Replacing them with real Delta screenshots is the
- * outstanding piece of work on this section.
- */
-const IMG = (f: string) => `/v2/product/${f}`;
+import { ComputerPanel, MemoryPanel, ProductPanelStyles, TeammatePanel } from "./ProductPanels";
 
 function Check() {
   return (
@@ -52,21 +50,6 @@ const ICONS = [
 
 type Card = { heading: string; sub: string[]; checks: string[]; photo: string; panel: React.ReactNode };
 
-function CodePanel() {
-  return (
-    <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", width: 429, borderRadius: 12, background: SX.surface, boxShadow: "0 10px 68px rgba(var(--sx-shadow-rgb), 0.14)", overflow: "hidden" }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={IMG("HKoXTpndSrMAq7ojdzpGjxUyzg.png")} alt="" aria-hidden style={{ display: "block", width: "100%", height: "auto" }} />
-      {/* opaque header bar covering the code image's top (the live composite) */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 48, background: SX.surfaceAlt, borderBottom: `1px solid ${SX.hairline}`, display: "flex", alignItems: "center", gap: 10, padding: "0 20px" }}>
-        <span style={{ width: 3, height: 18, background: SX.accent, borderRadius: 2 }} />
-        <span style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink }}>Untitled Database</span>
-        <span style={{ marginLeft: "auto", fontFamily: SX.ui, fontSize: 13, fontStyle: "italic", color: SX.ink }}>Unsaved</span>
-      </div>
-    </div>
-  );
-}
-
 const CARDS: Card[] = [
   {
     heading: "A computer of its own",
@@ -75,8 +58,8 @@ const CARDS: Card[] = [
       "It can sign in and work across apps, tools, and websites, including the ones with no clean API, and come back with the work finished.",
     ],
     checks: ["Your case system", "Your inbox, calendar and files", "Even where there is no API"],
-    photo: IMG("4m3eTQdDWT79LXkkrcuvnF8rgA.png"),
-    panel: <CodePanel />,
+    photo: "/v2/ambient/horizon-blue.webp",
+    panel: <ComputerPanel />,
   },
   {
     heading: "Message it like a teammate",
@@ -86,9 +69,8 @@ const CARDS: Card[] = [
       "With Delta, simply message it to take on a task and it gets it done.",
     ],
     checks: ["Nothing to set up", "Nothing new to learn", "Ask in plain English"],
-    photo: IMG("Ry6zbXiksEiuvZx8ekQ8kSJYuM.png"),
-    // eslint-disable-next-line @next/next/no-img-element
-    panel: <img src={IMG("Gg2IiSRFyZek4fK2e0pYNUsxKEU.png")} alt="" aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-44%, -50%)", width: 442, height: "auto", borderRadius: 12, boxShadow: "0 10px 68px rgba(var(--sx-shadow-rgb), 0.14)" }} />,
+    photo: "/v2/ambient/valley-mist.webp",
+    panel: <TeammatePanel />,
   },
   {
     heading: "Trust it with more over time",
@@ -98,21 +80,15 @@ const CARDS: Card[] = [
       "After a few files it picks up your voice, your edge cases, and knows when to ask versus keep going.",
     ],
     checks: ["Learns how your firm works", "Knows when to ask you", "That knowledge stays when people leave"],
-    photo: IMG("psmbnZin0yEqHm2rJhS4fljiI.png"),
-    panel: (
-      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-42%, -50%)", display: "flex", flexDirection: "column", gap: 22, width: 435 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMG("dgH9W6cfNsvnbgJ75P4auo3Fpo.svg")} alt="" aria-hidden style={{ width: "100%", borderRadius: 12, boxShadow: "0 10px 40px rgba(var(--sx-shadow-rgb), 0.12)" }} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={IMG("CLSy9JR8Yrh0fnx84m8yewhIFW8.svg")} alt="" aria-hidden style={{ width: "100%", borderRadius: 12, boxShadow: "0 10px 40px rgba(var(--sx-shadow-rgb), 0.12)" }} />
-      </div>
-    ),
+    photo: "/v2/ambient/meadow-light.webp",
+    panel: <MemoryPanel />,
   },
 ];
 
 export function AutomationSection() {
   return (
     <section id="features" style={{ background: SX.surface, padding: "60px 0 60px" }}>
+      <ProductPanelStyles />
       <Container>
         {/* The plain-language definition, set at hero scale and centered. It is the
             one place on the page that states the whole product in a breath, so it
@@ -132,9 +108,9 @@ export function AutomationSection() {
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
           {CARDS.map((c, i) => (
-            <Reveal key={c.heading} amount={0.2} style={{ position: "relative", background: SX.surfaceAlt, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", height: 654, overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <Reveal key={c.heading} amount={0.2} className="sx-cap-card" style={{ position: "relative", background: SX.surfaceAlt, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", overflow: "hidden" }}>
               {/* left text */}
-              <div style={{ padding: "56px 40px 56px 32px", display: "flex", flexDirection: "column" }}>
+              <div className="sx-cap-copy">
                 <IconChip path={ICONS[i]} />
                 <h3 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 32, lineHeight: "38.4px", letterSpacing: "-0.5px", color: SX.ink, margin: "28px 0 0", maxWidth: 410 }}>{c.heading}</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: 14, margin: "16px 0 0", maxWidth: 380 }}>
@@ -142,14 +118,14 @@ export function AutomationSection() {
                     <p key={line} style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 16, lineHeight: "25.6px", color: SX.ink2, margin: 0 }}>{line}</p>
                   ))}
                 </div>
-                <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 14 }}>
+                <div className="sx-cap-checks">
                   {c.checks.map((ck) => (
                     <span key={ck} style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink }}><Check />{ck}</span>
                   ))}
                 </div>
               </div>
               {/* right photo + panel */}
-              <div style={{ position: "relative", overflow: "hidden" }}>
+              <div className="sx-cap-media">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={c.photo} alt="" aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                 {c.panel}
@@ -159,6 +135,58 @@ export function AutomationSection() {
         </div>
       </Container>
       <style>{`
+        /* Two halves at full width; the panel floats over the seam between them.
+           The fixed height is what lets the checklist sit on the card's floor and
+           the photo fill its half edge to edge. */
+        .sx-cap-card {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          height: 654px;
+        }
+        .sx-cap-copy { padding: 56px 40px 56px 32px; display: flex; flex-direction: column; }
+        .sx-cap-checks { margin-top: auto; display: flex; flex-direction: column; gap: 14px; }
+        .sx-cap-media { position: relative; overflow: hidden; }
+
+        /* Below the split the card STACKS: copy first, then the photo with the panel
+           centred in it. The card's height goes to auto, because a fixed 654 with one
+           column crushed the copy and clipped it mid-sentence, which is how this
+           section rendered on every phone until 2026-08-27.
+
+           position: RELATIVE, not static, and this is not cosmetic. The backdrop
+           photograph is position: absolute in the same box, and an absolutely
+           positioned element paints above every non-positioned sibling, so a static
+           panel here renders completely behind the photo: the whole panel disappears
+           and only its SVG glyphs show through. It looked like the panel had failed to
+           render. Keep the panel positioned and keep it above the photo. */
+        @media (max-width: 1040px) {
+          .sx-cap-card { grid-template-columns: 1fr; height: auto; }
+          .sx-cap-copy { padding: 40px 32px 36px; }
+          .sx-cap-checks { margin-top: 28px; }
+          .sx-cap-media { min-height: 0; padding: 44px 0; }
+          .sx-panel-float {
+            position: relative;
+            z-index: 1;
+            top: auto;
+            left: auto;
+            transform: none;
+            display: flex;
+            justify-content: center;
+          }
+        }
+
+        /* Narrower than the panel's own 434px, so it is zoomed rather than reflowed:
+           the layout inside it is tuned at that width and squeezing it breaks the form
+           grid and the chat bubble. zoom, not transform: scale, because zoom shrinks
+           the box the panel occupies, and a scale would leave its original height
+           behind as a band of empty photograph. */
+        @media (max-width: 520px) {
+          .sx-cap-copy { padding: 32px 22px 30px; }
+          .sx-cap-media { padding: 34px 0; }
+          .sx-panel-float { zoom: 0.88; }
+        }
+        @media (max-width: 460px) { .sx-panel-float { zoom: 0.72; } }
+        @media (max-width: 400px) { .sx-panel-float { zoom: 0.64; } }
+
         .sx-thesis-icp {
           font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
           font-weight: 400;
