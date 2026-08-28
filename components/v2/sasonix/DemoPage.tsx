@@ -7,11 +7,15 @@
  * eyebrow + Archivo display type + tokens, scroll-in reveals, and the slim footer
  * (CtaFooter with the big CTA band removed, since this page IS the call to action).
  *
- * Booking is a Calendly inline embed (15 minute demo). Instant, in-session
- * scheduling is the single biggest lever on demo-booking conversion, and Calendly's
- * own booking questions capture firm + size for prep, so no separate lead form. The
- * left column carries the pitch, what-to-expect, and one real proof quote; the right
- * column holds the scheduler. Layout mirrors the homepage hero's split.
+ * NOT ROUTED. app/demo/page.tsx renders app/demo/DemoClient.tsx instead, which is
+ * the page actually serving /demo. This file is kept as the Sasonix-kit version of
+ * the same page.
+ *
+ * It held a Calendly inline embed until 2026-08-28. Calendly is gone from the site,
+ * and the live /demo booking button opens the firm's Google Calendar scheduling
+ * link from NEXT_PUBLIC_DEMO_BOOKING_URL, so this column now points at /demo rather
+ * than standing up a second scheduler. If this page is ever routed, wire the button
+ * to that same env var instead of hardcoding a vendor.
  */
 import { MotionConfig } from "framer-motion";
 import { SX } from "./tokens";
@@ -20,7 +24,6 @@ import { Nav } from "./Nav";
 import { CtaFooter } from "./CtaFooter";
 import { Container, Eyebrow } from "./kit";
 import { Reveal } from "./reveal";
-import { CalendlyEmbed } from "./CalendlyEmbed";
 import { ThemeVars, useThemeOverride } from "./ThemeVars";
 
 const EXPECT = [
@@ -88,9 +91,17 @@ export function DemoPage() {
                 </div>
               </Reveal>
 
-              {/* RIGHT: the Calendly scheduler, in a card */}
-              <Reveal delay={0.08} style={{ background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", overflow: "hidden" }}>
-                <CalendlyEmbed />
+              {/* RIGHT: the ask, in a card */}
+              <Reveal delay={0.08} style={{ background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", padding: "44px 40px", textAlign: "center" }}>
+                <div style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 30, letterSpacing: "-0.8px", lineHeight: 1.2, color: SX.ink }}>
+                  Book your fifteen minutes
+                </div>
+                <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "26px", color: SX.ink2, margin: "14px auto 0", maxWidth: 340 }}>
+                  Pick a slot that works for you, and bring one real case.
+                </p>
+                <a href="/demo" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", marginTop: 28, background: SX.ink, color: SX.surface, borderRadius: 12, padding: "15px 30px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>
+                  Book a demo
+                </a>
               </Reveal>
             </div>
           </Container>
