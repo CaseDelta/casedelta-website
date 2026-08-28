@@ -1,0 +1,92 @@
+/**
+ * The one place a CaseDelta price is written down.
+ *
+ * This file exists because the site published two different prices at the same
+ * time. The homepage said $499 / $999 / $1,999 by account band while /pricing,
+ * the answers hub and all six comparison pages said "$349 per user, per month,
+ * flat, no tiers". A prospect could read both in one session. Neither surface
+ * knew the other existed, because each had typed its own number.
+ *
+ * So: import from here. Never retype a price into a component, a metadata
+ * string, an FAQ answer or a comparison row. If a number has to change, it
+ * changes once in TIERS and everything else follows.
+ *
+ * The unit is ACCOUNTS, the thing a firm actually provisions, and the price is
+ * per FIRM, not per seat. That is the wedge against per-seat research tools, and
+ * it is why the tiers are bands rather than a multiplier.
+ *
+ * The three tiers are EQUIVALENT. There is no featured tier, no "most popular"
+ * badge and no highlighted middle. A firm picks the band its account count falls
+ * into, and that is the whole decision. The value is identical across all three,
+ * which is why the included list is written once, below the tiers, rather than
+ * repeated three times with checkmarks.
+ *
+ * "Up to" is inclusive on purpose. A firm sitting on exactly five accounts is in
+ * the $599 band, not pushed up into the next one. A brief pass at "less than" was
+ * reverted on 2026-08-19 for that reason. Keep the overflow line as "More than
+ * 20", which is only correct while the top band includes 20.
+ *
+ * DELIBERATELY NOT CLAIMED HERE: the old copy said "Your whole staff included"
+ * and "Flat monthly. Unlimited staff." Those read cleanly against an ATTORNEY
+ * count, where the point was that paralegals and admins cost nothing. Against an
+ * ACCOUNT count they only hold if an account is narrower than a person, and a
+ * cold reader has no way to know that. The prior author flagged it as unresolved
+ * and asked that nobody quietly rewrite it, so the claim is simply absent rather
+ * than restated or invented. Add it back only once someone can say what an
+ * account is.
+ */
+
+export interface Tier {
+  /** The account band, inclusive of its upper bound. */
+  band: string;
+  /** Formatted monthly price, thousands separated. */
+  price: string;
+  /** Plain-language band for prose and structured data. */
+  accounts: number;
+}
+
+export const TIERS: Tier[] = [
+  { band: "Up to 5 accounts", price: "$599", accounts: 5 },
+  { band: "Up to 10 accounts", price: "$1,099", accounts: 10 },
+  { band: "Up to 20 accounts", price: "$2,099", accounts: 20 },
+];
+
+/** The lowest published price, for "starts at" phrasing. */
+export const STARTING_PRICE = TIERS[0].price;
+
+/** The largest band we publish. Firms above it get a custom plan. */
+export const TOP_BAND_ACCOUNTS = TIERS[TIERS.length - 1].accounts;
+
+/**
+ * The canonical one-line price, for a comparison table cell. A complete sentence.
+ */
+export const PRICE_LINE =
+  "$599 to $2,099 a month per firm by account count. Flat, published, self-serve.";
+
+/**
+ * The same fact as a CLAUSE, with no internal sentence break, for dropping into
+ * the middle of a paragraph after "CaseDelta is ...".
+ *
+ * This exists because the comparison pages used to write `FLAT_PRICE.toLowerCase()`
+ * mid-sentence, which rendered as "CaseDelta is $349 per user, per month. flat,
+ * published, self-serve. No per-case math" on four live pages: a lowercase word
+ * opening a sentence, because the constant carried a period the caller could not
+ * see. Never lowercase a sentence to make it fit a slot. Use this instead.
+ */
+export const PRICE_CLAUSE =
+  "$599 to $2,099 a month for the firm by account count, flat, published, and self-serve";
+
+/**
+ * The canonical paragraph, for FAQ answers and page descriptions where there is
+ * room to say what the bands are.
+ */
+export const PRICE_PARAGRAPH =
+  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, and $2,099 for up to 20. Firms above 20 accounts get a custom plan. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published and self-serve, so a firm knows its cost before the demo.";
+
+/** What every tier includes. Identical across all three, which is the point. */
+export const INCLUDED = [
+  "Every integration: your case manager, email, calendar, drive, and billing",
+  "The full job: records requests, drafting, file updates, deadline tracking, chronologies",
+  "Onboarding by login, with no migration and no implementation project",
+  "Your firm's learned playbook, which compounds the longer Delta works your cases",
+];

@@ -106,14 +106,14 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
       {
         question: "How much does CaseDelta cost?",
         answer:
-          "CaseDelta is $349 per user, per month, flat. There are no tiers, no add-ons, no per-case or per-demand metering, no setup fees, and no required underlying subscription like Westlaw or Salesforce. The price is published and self-serve, so a firm knows its cost before the demo.",
+          "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, and $2,099 for up to 20. Firms above 20 accounts get a custom plan. There are no add-ons, no per-case or per-demand metering, no setup fees, and no required underlying subscription like Westlaw or Salesforce. The price is published and self-serve, so a firm knows its cost before the demo.",
         href: "/pricing",
         hrefLabel: "See pricing",
       },
       {
         question: "Does CaseDelta charge per case or per document?",
         answer:
-          "No. CaseDelta is a flat per-user subscription, priced like hiring an associate rather than buying deliverables. A heavy case with thousands of pages does not change the bill, which is a deliberate contrast to per-case, per-demand, and usage-credit models in the market.",
+          "No. CaseDelta is a flat monthly subscription for the firm, priced by account count rather than by deliverable. A heavy case with thousands of pages does not change the bill, and neither does adding a matter, which is a deliberate contrast to per-case, per-demand, and usage-credit models in the market.",
       },
     ],
   },

@@ -58,9 +58,12 @@ export function WebAppSchema() {
       "CaseDelta is an AI paralegal that works inside the tools your firm already uses and does the routine case work: requesting records, drafting letters, updating files across your case manager, CRM, and billing, and tracking deadlines. You delegate in plain English and your team reviews and approves. Each firm's data is isolated and is never used to train AI models.",
     browserRequirements: "Requires JavaScript and HTML5 support",
     offers: {
-      "@type": "Offer",
+      "@type": "AggregateOffer",
       description:
-        "Flat whole-firm pricing, anchored to a fraction of the cost of a hire, not priced per seat. Founding-firm pricing available.",
+        "Flat whole-firm pricing by account count, not priced per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20. Anchored to a fraction of the cost of a hire.",
+      priceCurrency: "USD",
+      lowPrice: "599",
+      highPrice: "2099",
     },
     operatingSystem: "Web-based",
   };
