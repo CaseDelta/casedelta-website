@@ -16,13 +16,14 @@
  * middle tier. See the header of components/v2/sasonix/Pricing.tsx for why that
  * is a correctness point and not a style one.
  */
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import {
   BF, BG, SERIF, SANS,
   useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero, FaqAccordion,
 } from "@/components/marketing/kit";
-import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED, PRICE_PARAGRAPH, STARTING_PRICE } from "@/lib/pricing";
+import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED, PRICE_PARAGRAPH, STARTING_PRICE, annualCost, perAccount, hireMultiple, HIRE_LOW, HIRE_HIGH, type Tier } from "@/lib/pricing";
 
 const COMPARE = [
   { k: "Cost", hire: "$50,000 to $65,000 a year, loaded", delta: `${STARTING_PRICE} to $2,099 a month for the firm, flat` },
@@ -54,8 +55,36 @@ const FAQ = [
   },
 ];
 
+const usd = (n: number) => "$" + n.toLocaleString("en-US");
+
+/**
+ * The arithmetic behind one tier. Every value is derived in lib/pricing.ts from
+ * the tier price and the loaded-hire figure this page already publishes in the
+ * comparison table below. No hours-saved numbers, no payback periods, no
+ * percentages: those would be claims, and this page cannot source them.
+ */
+function detailRows(t: Tier) {
+  return [
+    { label: "Automations included", value: String(t.automations), note: "Recurring workflows Delta runs on its own, without being asked." },
+    { label: "Per account, per month", value: perAccount(t), note: "At the full band. This is the number that improves as the bands go up." },
+    { label: "Per year", value: annualCost(t), note: "The whole firm, billed monthly." },
+    { label: "Against one hire", value: hireMultiple(t), note: `A paralegal runs ${usd(HIRE_LOW)} to ${usd(HIRE_HIGH)} a year, loaded.` },
+  ];
+}
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+      style={{ flex: "0 0 auto", transform: `rotate(${open ? 180 : 0}deg)`, transition: "transform 0.24s ease" }} aria-hidden>
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+
 export default function PricingClient() {
   const rise = useRise();
+  const [open, setOpen] = useState<string | null>(null);
+  const reduce = useReducedMotion();
 
   return (
     <main style={{ background: BG.white }}>
@@ -87,31 +116,75 @@ export default function PricingClient() {
           </motion.div>
 
           <div style={{ marginTop: 44, borderTop: `1px solid ${BF.hairlineStrong}` }}>
-            {TIERS.map((t, i) => (
-              <motion.div
-                key={t.band}
-                {...rise(0.05 * i)}
-                className="cd-tier-row"
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  justifyContent: "space-between",
-                  gap: 20,
-                  padding: "28px 4px",
-                  borderBottom: `1px solid ${BF.hairline}`,
-                }}
-              >
-                <span className="cd-tier-band" style={{ fontFamily: SANS, fontSize: 19, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>
-                  {t.band}
-                </span>
-                <span style={{ display: "flex", alignItems: "baseline", gap: 8, flex: "0 0 auto" }}>
-                  <span style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(40px, 5vw, 56px)", lineHeight: 1, letterSpacing: "-1.6px", color: BF.ink }}>
-                    {t.price}
-                  </span>
-                  <span className="cd-tier-per" style={{ fontFamily: SANS, fontSize: 17, fontWeight: 500, color: BF.muted }}>per month</span>
-                </span>
-              </motion.div>
-            ))}
+            {TIERS.map((t, i) => {
+              const isOpen = open === t.band;
+              const panelId = `cd-tier-${t.accounts}`;
+              return (
+                <motion.div key={t.band} {...rise(0.05 * i)} style={{ borderBottom: `1px solid ${BF.hairline}` }}>
+                  <button
+                    type="button"
+                    className="cd-tier-row"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setOpen(isOpen ? null : t.band)}
+                    style={{
+                      width: "100%",
+                      background: "none",
+                      border: "none",
+                      textAlign: "left",
+                      cursor: "pointer",
+                      font: "inherit",
+                      display: "flex",
+                      alignItems: "baseline",
+                      justifyContent: "space-between",
+                      gap: 20,
+                      padding: "28px 4px",
+                    }}
+                  >
+                    <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <Chevron open={isOpen} />
+                      <span className="cd-tier-band" style={{ fontFamily: SANS, fontSize: 19, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>
+                        {t.band}
+                      </span>
+                    </span>
+                    <span style={{ display: "flex", alignItems: "baseline", gap: 8, flex: "0 0 auto" }}>
+                      <span style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(40px, 5vw, 56px)", lineHeight: 1, letterSpacing: "-1.6px", color: BF.ink }}>
+                        {t.price}
+                      </span>
+                      <span className="cd-tier-per" style={{ fontFamily: SANS, fontSize: 17, fontWeight: 500, color: BF.muted }}>per month</span>
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={panelId}
+                        key="panel"
+                        initial={reduce ? false : { height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={reduce ? undefined : { height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ overflow: "hidden" }}
+                      >
+                        <div className="cd-tier-detail" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "22px 48px", padding: "4px 4px 32px 46px" }}>
+                          {detailRows(t).map((d) => (
+                            <div key={d.label} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                              <span style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "0.7px", textTransform: "uppercase", color: BF.faint }}>
+                                {d.label}
+                              </span>
+                              <span style={{ fontFamily: SERIF, fontSize: 30, fontWeight: 400, letterSpacing: "-0.8px", color: BF.ink, lineHeight: 1.2 }}>
+                                {d.value}
+                              </span>
+                              <span style={{ fontFamily: SANS, fontSize: 14.5, lineHeight: 1.5, color: BF.muted }}>{d.note}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </div>
 
           <motion.p {...rise(0.2)} style={{ fontFamily: SANS, fontSize: 16, color: BF.muted, margin: "20px 0 0" }}>
@@ -199,6 +272,11 @@ export default function PricingClient() {
         /* Narrow screens: shrink the row rather than stacking it. A line item that
            stacks stops being a line item. "per month" contracts to "/mo" so the
            longest pair still fits one line on a 360px viewport. */
+        .cd-tier-row:hover .cd-tier-band { color: ${BF.accent}; }
+        .cd-tier-row:focus-visible { outline: 2px solid ${BF.accent}; outline-offset: 2px; border-radius: 6px; }
+        @media (max-width: 620px) {
+          .cd-tier-detail { grid-template-columns: 1fr !important; padding-left: 4px !important; }
+        }
         @media (max-width: 560px) {
           .cd-tier-row { padding: 20px 2px !important; gap: 12px !important; }
           .cd-tier-band { font-size: 16px !important; white-space: nowrap; }

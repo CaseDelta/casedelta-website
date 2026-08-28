@@ -41,15 +41,60 @@ export interface Tier {
   band: string;
   /** Formatted monthly price, thousands separated. */
   price: string;
+  /** The monthly price as a number, for the derived figures below. */
+  monthly: number;
   /** Plain-language band for prose and structured data. */
   accounts: number;
+  /** Recurring workflows Delta runs on its own, included in the tier. */
+  automations: number;
 }
 
 export const TIERS: Tier[] = [
-  { band: "Up to 5 accounts", price: "$599", accounts: 5 },
-  { band: "Up to 10 accounts", price: "$1,099", accounts: 10 },
-  { band: "Up to 20 accounts", price: "$2,099", accounts: 20 },
+  { band: "Up to 5 accounts", price: "$599", monthly: 599, accounts: 5, automations: 5 },
+  { band: "Up to 10 accounts", price: "$1,099", monthly: 1099, accounts: 10, automations: 10 },
+  { band: "Up to 20 accounts", price: "$2,099", monthly: 2099, accounts: 20, automations: 20 },
 ];
+
+/**
+ * The loaded annual cost of the paralegal a firm is trying to hire instead. This
+ * is the site's existing anchor, published in the comparison table on /pricing
+ * ("$50,000 to $65,000 a year, loaded"), and it is the ONLY outside figure the
+ * tier detail leans on.
+ *
+ * Everything the tier dropdown shows is arithmetic on this and on the tier price.
+ * That is deliberate. A pricing page is the wrong place to debut a productivity
+ * claim we cannot source, so there are no hours-saved numbers, no payback periods
+ * and no percentages here. If someone wants to add one, it needs a real source
+ * first, and it belongs in copy that can cite it.
+ */
+export const HIRE_LOW = 50000;
+export const HIRE_HIGH = 65000;
+
+/** Formats a whole-dollar figure with thousands separators. */
+const usd = (n: number) => "$" + Math.round(n).toLocaleString("en-US");
+
+/** What the tier costs over twelve months. */
+export const annualCost = (t: Tier) => usd(t.monthly * 12);
+
+/**
+ * The monthly price divided across a full band. Worth showing because it is the
+ * one number that IMPROVES as the tiers go up, which is the honest reason a firm
+ * near a boundary might size up rather than a manufactured "most popular" badge.
+ */
+export const perAccount = (t: Tier) =>
+  "$" + (t.monthly / t.accounts).toFixed(2);
+
+/**
+ * How many times the tier's annual cost fits into one loaded hire, as a range
+ * across HIRE_LOW to HIRE_HIGH. Rounded to one decimal and rendered lowest first.
+ */
+export const hireMultiple = (t: Tier) => {
+  const year = t.monthly * 12;
+  const low = HIRE_LOW / year;
+  const high = HIRE_HIGH / year;
+  const fmt = (n: number) => (n >= 10 ? n.toFixed(0) : n.toFixed(1));
+  return `${fmt(low)}x to ${fmt(high)}x`;
+};
 
 /** The lowest published price, for "starts at" phrasing. */
 export const STARTING_PRICE = TIERS[0].price;
