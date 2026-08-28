@@ -15,23 +15,26 @@ export const contentType = "image/png";
  * casedelta theme from components/v2/sasonix/theme.ts, written as literals
  * because Satori cannot read CSS custom properties.
  *
- * The photograph is app/og-ambient.jpg, a copy of the hero backdrop that the
- * bundler turns into a deployment asset, NOT a fetch of casedelta.com. A card that
- * reaches back out to its own site to draw itself adds a network round trip to
- * every scrape and breaks whenever the site is the thing that is down. A missing
- * file here fails the BUILD, which is where it should fail. If the hero backdrop is
- * ever swapped (BACKDROPS in Hero.tsx), copy the new one over this.
+ * BOTH the photograph and the webfont are fetched at render time, and neither is
+ * bundled. That is not a style choice. next/og carries Satori and a resvg wasm
+ * build, which puts this route at roughly 770 KB before it draws anything, against
+ * a 1 MB Vercel edge-function limit. Bundling the hero photograph took it to
+ * 1.16 MB and the deploy failed on 2026-08-28 AFTER a clean local `npm run build`,
+ * because the size ceiling exists only on Vercel. Do not import a binary here.
  *
- * The webfont is the one genuine runtime dependency: Archivo ships as woff2, which
- * Satori cannot parse, so it comes from Google at render time. That fetch is
- * allowed to fail. The card then renders in Satori's built-in sans with everything
- * else intact, which is much better than no preview at all. The gradient behind the
- * photograph is the same idea and should never be reached.
+ * Both fetches are therefore allowed to fail, and each falls back to something that
+ * still reads as the site: a blue gradient in the ink family for the photograph,
+ * and Satori's built-in sans for the type. A card in the wrong typeface is much
+ * better than no preview at all. (Archivo has to come from Google because it ships
+ * as woff2 and Satori cannot parse woff2.)
  *
- * The route is server-rendered on demand, so it carries its own cache headers.
- * Next appends a content hash to the og:image URL, so a deploy that changes this
- * file changes the URL; the image at any one URL never changes and can be held
- * forever.
+ * The self-fetch is close to free in practice. The route carries a one-year
+ * immutable cache header, and Next appends a content hash to the og:image URL, so a
+ * deploy that changes this file changes the URL. Each deploy renders roughly once
+ * per region and every scrape after that is a cache hit.
+ *
+ * If the hero backdrop is ever swapped (BACKDROPS in Hero.tsx), change the URL
+ * below to match.
  *
  * History: the previous card said "An AI associate that knows every case" on flat
  * white, three positionings behind the site, and the page title underneath it said
@@ -73,7 +76,7 @@ export default async function OGImage() {
         { name: "Archivo", data: regular, weight: 400 as const, style: "normal" as const },
       ])
       .catch(() => undefined),
-    fetch(new URL("./og-ambient.jpg", import.meta.url))
+    fetch("https://casedelta.com/v2/ambient/mountain.jpg")
       .then((r) => (r.ok ? r.arrayBuffer() : null))
       .catch(() => null),
   ]);
