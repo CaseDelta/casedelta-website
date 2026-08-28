@@ -56,19 +56,19 @@ export const TIERS: Tier[] = [
 ];
 
 /**
- * The loaded annual cost of the paralegal a firm is trying to hire instead. This
- * is the site's existing anchor, published in the comparison table on /pricing
- * ("$50,000 to $65,000 a year, loaded"), and it is the ONLY outside figure the
- * tier detail leans on.
+ * The two figures a tier row discloses are arithmetic on the tier price and
+ * nothing else. That is deliberate. A pricing page is the wrong place to debut a
+ * productivity claim we cannot source, so there are no hours-saved numbers, no
+ * payback periods and no percentages here. If someone wants to add one, it needs
+ * a real source first, and it belongs in copy that can cite it.
  *
- * Everything the tier dropdown shows is arithmetic on this and on the tier price.
- * That is deliberate. A pricing page is the wrong place to debut a productivity
- * claim we cannot source, so there are no hours-saved numbers, no payback periods
- * and no percentages here. If someone wants to add one, it needs a real source
- * first, and it belongs in copy that can cite it.
+ * A hireMultiple() helper lived here briefly, rendering "7.0x to 9.0x" against the
+ * published $50,000 to $65,000 loaded-paralegal range. It went with the crowded
+ * 2x2 disclosure it was built for: the number needs a sentence of explanation to
+ * mean anything, and a one-line disclosure has no room for one. The comparison to
+ * a hire is still made, by the "A fraction of another salary" heading and by the
+ * comparison table on /pricing, which are both places that can afford the words.
  */
-export const HIRE_LOW = 50000;
-export const HIRE_HIGH = 65000;
 
 /** Formats a whole-dollar figure with thousands separators. */
 const usd = (n: number) => "$" + Math.round(n).toLocaleString("en-US");
@@ -84,17 +84,6 @@ export const annualCost = (t: Tier) => usd(t.monthly * 12);
 export const perAccount = (t: Tier) =>
   "$" + (t.monthly / t.accounts).toFixed(2);
 
-/**
- * How many times the tier's annual cost fits into one loaded hire, as a range
- * across HIRE_LOW to HIRE_HIGH. Rounded to one decimal and rendered lowest first.
- */
-export const hireMultiple = (t: Tier) => {
-  const year = t.monthly * 12;
-  const low = HIRE_LOW / year;
-  const high = HIRE_HIGH / year;
-  const fmt = (n: number) => (n >= 10 ? n.toFixed(0) : n.toFixed(1));
-  return `${fmt(low)}x to ${fmt(high)}x`;
-};
 
 /** The lowest published price, for "starts at" phrasing. */
 export const STARTING_PRICE = TIERS[0].price;

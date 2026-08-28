@@ -25,46 +25,24 @@
  * says. What replaced them is per-tier detail behind a disclosure, so the section
  * reads as three prices at a glance and rewards a click with the arithmetic.
  *
- * EVERY NUMBER IN THE DISCLOSURE IS DERIVED, none is a claim. Annual cost, cost
- * per account and the multiple against a hire are all computed in lib/pricing.ts
- * from the tier price and the loaded-hire figure the site already publishes. There
- * are deliberately no hours-saved figures, payback periods or percentages: a
- * pricing page is the wrong place to debut a productivity number we cannot source.
+ * The disclosure is ONE LINE of three facts. It briefly was not: four metrics in a
+ * 2x2 grid, each with an uppercase label, a display-size number and a sentence
+ * explaining it, which is twelve text elements to answer "what do I get". Keep it
+ * to a line. If a fourth fact ever earns its place here, something has to leave.
+ *
+ * EVERY NUMBER IS DERIVED, none is a claim. Cost per account and annual cost are
+ * computed in lib/pricing.ts from the tier price alone. There are deliberately no
+ * hours-saved figures, payback periods or percentages: a pricing page is the wrong
+ * place to debut a productivity number we cannot source. The comparison against a
+ * hire is carried by the section heading and by the table on /pricing, so it does
+ * not need restating in every row.
  */
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
 import { Reveal, revealProps } from "./reveal";
-import { TIERS, TOP_BAND_ACCOUNTS, annualCost, perAccount, hireMultiple, HIRE_LOW, HIRE_HIGH, type Tier } from "@/lib/pricing";
-
-const usd = (n: number) => "$" + n.toLocaleString("en-US");
-
-/** The rows of arithmetic behind one tier. Label, value, and why it is here. */
-function detailRows(t: Tier) {
-  return [
-    {
-      label: "Automations included",
-      value: String(t.automations),
-      note: "Recurring workflows Delta runs on its own, without being asked.",
-    },
-    {
-      label: "Per account, per month",
-      value: perAccount(t),
-      note: "At the full band. This is the number that improves as the bands go up.",
-    },
-    {
-      label: "Per year",
-      value: annualCost(t),
-      note: "The whole firm, billed monthly.",
-    },
-    {
-      label: "Against one hire",
-      value: hireMultiple(t),
-      note: `A paralegal runs ${usd(HIRE_LOW)} to ${usd(HIRE_HIGH)} a year, loaded.`,
-    },
-  ];
-}
+import { TIERS, TOP_BAND_ACCOUNTS, annualCost, perAccount } from "@/lib/pricing";
 
 function Chevron({ open }: { open: boolean }) {
   return (
@@ -142,18 +120,10 @@ export function Pricing() {
                       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       style={{ overflow: "hidden" }}
                     >
-                      <div className="sx-price-detail" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "22px 40px", padding: "6px 4px 30px 46px" }}>
-                        {detailRows(t).map((d) => (
-                          <div key={d.label} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                            <span style={{ fontFamily: SX.mono, fontSize: 11.5, letterSpacing: "0.7px", textTransform: "uppercase", color: SX.ink3 }}>
-                              {d.label}
-                            </span>
-                            <span style={{ fontFamily: SX.display, fontSize: 26, fontWeight: 500, letterSpacing: "-0.5px", color: SX.ink, lineHeight: 1.2 }}>
-                              {d.value}
-                            </span>
-                            <span style={{ fontFamily: SX.body, fontSize: 14, lineHeight: "21px", color: SX.ink2 }}>{d.note}</span>
-                          </div>
-                        ))}
+                      <div className="sx-price-detail" style={{ display: "flex", flexWrap: "wrap", gap: "6px 22px", padding: "0 4px 28px 46px", fontFamily: SX.body, fontSize: 15.5, lineHeight: "24px", color: SX.ink2 }}>
+                        <span>{t.automations} automations included</span>
+                        <span>{perAccount(t)} per account</span>
+                        <span>{annualCost(t)} a year</span>
                       </div>
                     </motion.div>
                   )}
@@ -184,7 +154,7 @@ export function Pricing() {
            price belong on one line, which is the whole point of a line item, and at
            these sizes the longest pair still fits a 360px viewport. */
         @media (max-width: 620px) {
-          .sx-price-detail { grid-template-columns: 1fr !important; padding-left: 4px !important; }
+          .sx-price-detail { padding-left: 4px !important; }
         }
         @media (max-width: 560px) {
           .sx-price-row { padding: 20px 2px !important; gap: 12px !important; }

@@ -23,7 +23,7 @@ import {
   BF, BG, SERIF, SANS,
   useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero, FaqAccordion,
 } from "@/components/marketing/kit";
-import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED, PRICE_PARAGRAPH, STARTING_PRICE, annualCost, perAccount, hireMultiple, HIRE_LOW, HIRE_HIGH, type Tier } from "@/lib/pricing";
+import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED, PRICE_PARAGRAPH, STARTING_PRICE, annualCost, perAccount } from "@/lib/pricing";
 
 const COMPARE = [
   { k: "Cost", hire: "$50,000 to $65,000 a year, loaded", delta: `${STARTING_PRICE} to $2,099 a month for the firm, flat` },
@@ -54,23 +54,6 @@ const FAQ = [
     a: "See it on one of your real cases first. Bring a real file to a fifteen-minute demo and watch Delta do the work inside your own tools before you decide anything.",
   },
 ];
-
-const usd = (n: number) => "$" + n.toLocaleString("en-US");
-
-/**
- * The arithmetic behind one tier. Every value is derived in lib/pricing.ts from
- * the tier price and the loaded-hire figure this page already publishes in the
- * comparison table below. No hours-saved numbers, no payback periods, no
- * percentages: those would be claims, and this page cannot source them.
- */
-function detailRows(t: Tier) {
-  return [
-    { label: "Automations included", value: String(t.automations), note: "Recurring workflows Delta runs on its own, without being asked." },
-    { label: "Per account, per month", value: perAccount(t), note: "At the full band. This is the number that improves as the bands go up." },
-    { label: "Per year", value: annualCost(t), note: "The whole firm, billed monthly." },
-    { label: "Against one hire", value: hireMultiple(t), note: `A paralegal runs ${usd(HIRE_LOW)} to ${usd(HIRE_HIGH)} a year, loaded.` },
-  ];
-}
 
 function Chevron({ open }: { open: boolean }) {
   return (
@@ -166,18 +149,10 @@ export default function PricingClient() {
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                         style={{ overflow: "hidden" }}
                       >
-                        <div className="cd-tier-detail" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "22px 48px", padding: "4px 4px 32px 46px" }}>
-                          {detailRows(t).map((d) => (
-                            <div key={d.label} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                              <span style={{ fontFamily: SANS, fontSize: 12, fontWeight: 600, letterSpacing: "0.7px", textTransform: "uppercase", color: BF.faint }}>
-                                {d.label}
-                              </span>
-                              <span style={{ fontFamily: SERIF, fontSize: 30, fontWeight: 400, letterSpacing: "-0.8px", color: BF.ink, lineHeight: 1.2 }}>
-                                {d.value}
-                              </span>
-                              <span style={{ fontFamily: SANS, fontSize: 14.5, lineHeight: 1.5, color: BF.muted }}>{d.note}</span>
-                            </div>
-                          ))}
+                        <div className="cd-tier-detail" style={{ display: "flex", flexWrap: "wrap", gap: "6px 24px", padding: "0 4px 30px 46px", fontFamily: SANS, fontSize: 16, lineHeight: 1.5, color: BF.muted }}>
+                          <span>{t.automations} automations included</span>
+                          <span>{perAccount(t)} per account</span>
+                          <span>{annualCost(t)} a year</span>
                         </div>
                       </motion.div>
                     )}
@@ -275,7 +250,7 @@ export default function PricingClient() {
         .cd-tier-row:hover .cd-tier-band { color: ${BF.accent}; }
         .cd-tier-row:focus-visible { outline: 2px solid ${BF.accent}; outline-offset: 2px; border-radius: 6px; }
         @media (max-width: 620px) {
-          .cd-tier-detail { grid-template-columns: 1fr !important; padding-left: 4px !important; }
+          .cd-tier-detail { padding-left: 4px !important; }
         }
         @media (max-width: 560px) {
           .cd-tier-row { padding: 20px 2px !important; gap: 12px !important; }
