@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Pricing | CaseDelta",
   description:
-    "Flat $349 per user, per month. No tiers, no add-ons, no setup fees. Pays for itself in week one through recovered admin hours.",
+    "Priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20. No add-ons, no setup fees, no per-case metering.",
 };
 
 export default function PricingLayout({ children }: { children: React.ReactNode }) {

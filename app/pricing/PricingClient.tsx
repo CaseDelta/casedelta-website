@@ -3,12 +3,18 @@
 /**
  * Pricing page. Migrated to the marketing kit (components/marketing/kit.tsx).
  *
- * The site's live strategy is a PUBLISHED price used as a transparency wedge
- * against quote-gated competitors: "$349 per user, per month, flat, published,
- * self-serve" (mirrored in app/pricing metadata, lib/answers.ts, and every
- * lib/comparisons.ts page). Keep that number and framing consistent here. The
- * value anchor is a hire ($4-5k/mo paralegal), not another app. Honest claims
- * only, Delta is gender-neutral, no em dashes.
+ * The strategy is a PUBLISHED price used as a transparency wedge against
+ * quote-gated competitors, and the value anchor is a hire (a $4-5k/mo paralegal),
+ * not another app. Honest claims only, Delta is gender-neutral, no em dashes.
+ *
+ * Every number comes from lib/pricing.ts. Do not retype one here. Until
+ * 2026-08-28 this page said "$349 per user, per month, flat, no tiers" while the
+ * homepage said $499 / $999 / $1,999 by account band, because each surface had
+ * typed its own price. One prospect could read both in a single session.
+ *
+ * The three bands are shown as equivalent rows, not as cards with a highlighted
+ * middle tier. See the header of components/v2/sasonix/Pricing.tsx for why that
+ * is a correctness point and not a style one.
  */
 import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
@@ -16,17 +22,10 @@ import {
   BF, BG, SERIF, SANS,
   useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero, FaqAccordion,
 } from "@/components/marketing/kit";
-
-const INCLUDED = [
-  "Every attorney, paralegal, and admin who uses it",
-  "Every integration: your case manager, email, calendar, drive, and billing",
-  "The full job: records requests, drafting, file updates, deadline tracking, chronologies",
-  "Onboarding by login, with no migration and no implementation project",
-  "Your firm's learned playbook, which compounds the longer Delta works your cases",
-];
+import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED, PRICE_PARAGRAPH, STARTING_PRICE } from "@/lib/pricing";
 
 const COMPARE = [
-  { k: "Cost", hire: "$50,000 to $65,000 a year, loaded", delta: "$349 per user, per month, flat" },
+  { k: "Cost", hire: "$50,000 to $65,000 a year, loaded", delta: `${STARTING_PRICE} to $2,099 a month for the firm, flat` },
   { k: "Time to start", hire: "Months to recruit, interview, and train", delta: "Working your cases the same afternoon" },
   { k: "Capacity", hire: "One person, one desk, 40 hours a week", delta: "Every matter at once, around the clock" },
   { k: "Turnover", hire: "Often gone within 18 months, knowledge with them", delta: "Never quits, never forgets your firm" },
@@ -35,11 +34,15 @@ const COMPARE = [
 const FAQ = [
   {
     q: "How much does CaseDelta cost?",
-    a: "CaseDelta is $349 per user, per month, flat. No tiers, no add-ons, no per-case or per-demand metering, and no setup fees. The price is published and self-serve, so a firm knows its cost before the demo.",
+    a: PRICE_PARAGRAPH,
   },
   {
-    q: "Is it priced per user?",
-    a: "Yes. Every attorney, paralegal, and admin who uses it is a flat $349 per month, priced like an associate rather than a per-case bill. A heavy case with thousands of pages does not change the number.",
+    q: "Is it priced per seat?",
+    a: `No. The price is for the firm, by the number of accounts you provision, so it does not climb every time someone new needs to use it. A heavy case with thousands of pages does not change the number either. Firms above ${TOP_BAND_ACCOUNTS} accounts get a custom plan.`,
+  },
+  {
+    q: "Which tier is the right one?",
+    a: "Whichever band your account count falls into. The three tiers are the same product with the same integrations and the same work; none of them is the standard one and none is a stripped-down version of another. If you are on the line between two bands, the lower number includes its own bound, so exactly five accounts is the five-account price.",
   },
   {
     q: "Are there setup, migration, or add-on fees?",
@@ -59,35 +62,77 @@ export default function PricingClient() {
       <PageHero
         eyebrow="Pricing"
         title={<>Priced like a hire, <span style={{ color: BF.accent, fontStyle: "italic" }}>published like a promise.</span></>}
-        sub="$349 per user, per month. Flat, published, and self-serve, so you know your cost before the demo. Priced like an associate, not a per-case bill."
+        sub={`One flat monthly price for the firm, by account count, starting at ${STARTING_PRICE}. Published and self-serve, so you know your cost before the demo. Priced against a hire, not per seat.`}
         ctaHref="/demo"
         ctaLabel="Book a demo"
       />
 
       {/* PRICE + WHAT YOU GET */}
+      {/* Three equivalent bands as rows, then the included list once. The value is
+          identical across the tiers, so repeating it three times in three cards
+          would be three copies of the same paragraph and an implied ranking that
+          does not exist. */}
       <Section bg={BG.offWhite}>
         <Container>
-          <div className="cd-price-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
-            <motion.div {...rise(0)}>
-              <Eyebrow>One plan</Eyebrow>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginTop: 4 }}>
-                <span style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(64px, 8vw, 96px)", lineHeight: 1, letterSpacing: "-2.4px", color: BF.ink }}>$349</span>
-                <span style={{ fontFamily: SANS, fontSize: 18, fontWeight: 500, color: BF.muted }}>per user, per month</span>
-              </div>
-              <Sub>Flat and published. No tiers, no add-ons, no setup fees, and no per-case metering. Priced against a hire, not another app.</Sub>
-              <div style={{ marginTop: 32 }}>
-                <PillLink href="/demo" location="pricing_body">Book a demo</PillLink>
-              </div>
-            </motion.div>
-            <motion.ul {...rise(0.08)} style={{ listStyle: "none", margin: 0, background: BG.white, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "10px 28px" }}>
-              {INCLUDED.map((item, i, arr) => (
-                <li key={item} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "20px 0", borderBottom: i < arr.length - 1 ? `1px solid ${BF.hairline}` : "none" }}>
-                  <Check />
-                  <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 500, color: BF.ink, lineHeight: 1.5, letterSpacing: "-0.2px" }}>{item}</span>
-                </li>
-              ))}
-            </motion.ul>
+          <motion.div {...rise(0)} style={{ maxWidth: 720 }}>
+            <Eyebrow>Three bands, one product</Eyebrow>
+            <H>
+              Pick the band your <Accent>account count falls into.</Accent>
+            </H>
+            <Sub>
+              Every tier is the same Delta, with the same integrations and the same work. The only
+              variable is how many accounts your firm provisions. No add-ons, no setup fees, and no
+              per-case or per-demand metering.
+            </Sub>
+          </motion.div>
+
+          <div style={{ marginTop: 44, borderTop: `1px solid ${BF.hairlineStrong}` }}>
+            {TIERS.map((t, i) => (
+              <motion.div
+                key={t.band}
+                {...rise(0.05 * i)}
+                className="cd-tier-row"
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                  gap: 20,
+                  padding: "28px 4px",
+                  borderBottom: `1px solid ${BF.hairline}`,
+                }}
+              >
+                <span className="cd-tier-band" style={{ fontFamily: SANS, fontSize: 19, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>
+                  {t.band}
+                </span>
+                <span style={{ display: "flex", alignItems: "baseline", gap: 8, flex: "0 0 auto" }}>
+                  <span style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(40px, 5vw, 56px)", lineHeight: 1, letterSpacing: "-1.6px", color: BF.ink }}>
+                    {t.price}
+                  </span>
+                  <span className="cd-tier-per" style={{ fontFamily: SANS, fontSize: 17, fontWeight: 500, color: BF.muted }}>per month</span>
+                </span>
+              </motion.div>
+            ))}
           </div>
+
+          <motion.p {...rise(0.2)} style={{ fontFamily: SANS, fontSize: 16, color: BF.muted, margin: "20px 0 0" }}>
+            More than {TOP_BAND_ACCOUNTS} accounts?{" "}
+            <a href="/demo" style={{ color: BF.accent, fontWeight: 600, textDecoration: "none" }}>
+              Contact us for a custom plan.
+            </a>
+          </motion.p>
+
+          <motion.ul {...rise(0.24)} style={{ listStyle: "none", margin: "40px 0 0", background: BG.white, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "10px 28px" }}>
+            {INCLUDED.map((item, i, arr) => (
+              <li key={item} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "20px 0", borderBottom: i < arr.length - 1 ? `1px solid ${BF.hairline}` : "none" }}>
+                <Check />
+                <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 500, color: BF.ink, lineHeight: 1.5, letterSpacing: "-0.2px" }}>{item}</span>
+              </li>
+            ))}
+          </motion.ul>
+
+          <motion.div {...rise(0.28)} style={{ marginTop: 32 }}>
+            <PillLink href="/demo" location="pricing_body">Book a demo</PillLink>
+          </motion.div>
         </Container>
       </Section>
 
@@ -151,8 +196,16 @@ export default function PricingClient() {
       <FooterV2 />
 
       <style>{`
+        /* Narrow screens: shrink the row rather than stacking it. A line item that
+           stacks stops being a line item. "per month" contracts to "/mo" so the
+           longest pair still fits one line on a 360px viewport. */
+        @media (max-width: 560px) {
+          .cd-tier-row { padding: 20px 2px !important; gap: 12px !important; }
+          .cd-tier-band { font-size: 16px !important; white-space: nowrap; }
+          .cd-tier-per { font-size: 0 !important; }
+          .cd-tier-per::after { content: "/mo"; font-size: 14px; }
+        }
         @media (max-width: 880px) {
-          .cd-price-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
           .cd-cmp-head, .cd-cmp-row { grid-template-columns: 1fr !important; }
           .cd-cmp-head > div:first-child { display: none !important; }
           .cd-cmp-row > div:first-child { background: ${BG.offWhite}; font-weight: 700 !important; }

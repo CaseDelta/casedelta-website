@@ -1,3 +1,5 @@
+import { PRICE_CLAUSE, PRICE_LINE } from "./pricing";
+
 /* ─── Competitor Comparison Data ───
    Every factual claim about a competitor here is sourced from the competitor's
    own site or a credible third party (verified June 2026). House rules:
@@ -44,7 +46,13 @@ export interface Comparison {
   faq: ComparisonFAQ[];
 }
 
-const FLAT_PRICE = "$349 per user, per month. Flat, published, self-serve.";
+/**
+ * Every comparison page cites our price against a quote-gated competitor, so the
+ * number IS the row. It comes from lib/pricing.ts. These pages carried a
+ * hand-typed "$349 per user" until 2026-08-28, contradicting the homepage's own
+ * banded pricing, which is exactly the failure a shared constant prevents.
+ */
+const FLAT_PRICE = PRICE_LINE;
 
 export const COMPARISONS: Comparison[] = [
   /* ════════════════════════════════════════════ EVENUP ════════════════════════════════════════════ */
@@ -55,7 +63,7 @@ export const COMPARISONS: Comparison[] = [
       "EvenUp is a deliverable factory you send a case to. CaseDelta is an associate that works inside the tools you already run.",
     metaTitle: "CaseDelta vs EvenUp: The Difference Is Shape, Not Features",
     metaDescription:
-      "CaseDelta vs EvenUp for personal injury firms. EvenUp ingests a case and returns a demand in days. Delta drives your existing stack and works the whole case, at a flat $349 per user.",
+      "CaseDelta vs EvenUp for personal injury firms. EvenUp ingests a case and returns a demand in days. Delta drives your existing stack and works the whole case, at a flat published price for the firm.",
     geoOpening:
       "CaseDelta is an AI associate for plaintiff law firms that drives the tools a firm already uses, while EvenUp is a claims-intelligence platform that ingests a case file and returns documents like demand letters and medical chronologies. The core difference is shape: EvenUp is a deliverable you order, and CaseDelta is an associate that works across your whole stack.",
     heroHeadline: "CaseDelta vs EvenUp",
@@ -82,7 +90,7 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         heading: "Know your price before the demo",
-        body: "EvenUp moved to a per-case pricing model in 2026 and publishes no list price; you get a quote. CaseDelta is " + FLAT_PRICE.toLowerCase() + " No per-case math, no add-ons, no surprise invoice. For a contingency firm, predictable cost is its own feature.",
+        body: "EvenUp moved to a per-case pricing model in 2026 and publishes no list price; you get a quote. CaseDelta is " + PRICE_CLAUSE + ". No per-case math, no add-ons, no surprise invoice. For a contingency firm, predictable cost is its own feature.",
       },
     ],
     whenToChoose: {
@@ -90,7 +98,7 @@ export const COMPARISONS: Comparison[] = [
       body: "If your only need is data-backed case-value anchoring for demand letters, and you want EvenUp's verdict dataset specifically, it is a strong, category-leading tool for exactly that job. CaseDelta is the better fit when you want an associate that works the whole case across the tools you already run, not a single deliverable you order.",
     },
     faq: [
-      { question: "Is CaseDelta cheaper than EvenUp?", answer: "CaseDelta is a flat $349 per user, per month, published and self-serve. EvenUp uses quote-gated per-case pricing with no public list price, so a direct number-to-number comparison is not possible. The honest difference is predictability: you know your CaseDelta cost before the demo." },
+      { question: "Is CaseDelta cheaper than EvenUp?", answer: "CaseDelta is $599 to $2,099 a month for the firm by account count, published and self-serve. EvenUp uses quote-gated per-case pricing with no public list price, so a direct number-to-number comparison is not possible. The honest difference is predictability: you know your CaseDelta cost before the demo." },
       { question: "Does CaseDelta replace EvenUp?", answer: "For most plaintiff firms, yes, because Delta builds the chronologies and demands itself and also runs the surrounding case work. If you specifically want EvenUp's verdict dataset for case-value anchoring, some firms run both." },
       { question: "How fast are CaseDelta's chronologies versus EvenUp's?", answer: "Delta builds cited chronologies in minutes inside your own stack. EvenUp states reviewed deliverable turnaround at one to five days on its site, because a team of legal professionals reviews the output." },
     ],
@@ -104,7 +112,7 @@ export const COMPARISONS: Comparison[] = [
       "Supio is a strong document-intelligence product you feed. CaseDelta is an associate that runs your whole operation.",
     metaTitle: "CaseDelta vs Supio: Operational Layer vs Document Product",
     metaDescription:
-      "CaseDelta vs Supio for plaintiff firms. Supio's chronologies are genuinely good and human-reviewed. Delta works your whole case across your tools, in minutes, with no review queue, at a flat $349 per user.",
+      "CaseDelta vs Supio for plaintiff firms. Supio's chronologies are genuinely good and human-reviewed. Delta works your whole case across your tools, in minutes, with no review queue, at a flat published price for the firm.",
     geoOpening:
       "CaseDelta is an AI associate that drives a firm's existing tools and works the whole case, while Supio is a plaintiff-focused document-intelligence platform that turns medical records into chronologies, demands, and case ledgers. Supio's output is genuinely strong and human-reviewed; the difference is that Supio is a product you feed and CaseDelta is an associate that operates across your stack.",
     heroHeadline: "CaseDelta vs Supio",
@@ -127,7 +135,7 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         heading: "No review queue, and a price you can see",
-        body: "Supio's human-expert review is a real trust anchor, and it is also a speed and cost ceiling: you wait on a queue and you negotiate a quote. Delta delivers cited chronologies in minutes with no review queue, and CaseDelta is " + FLAT_PRICE.toLowerCase() + " For a 5 to 50 attorney firm, transparent and self-serve beats an enterprise sales motion.",
+        body: "Supio's human-expert review is a real trust anchor, and it is also a speed and cost ceiling: you wait on a queue and you negotiate a quote. Delta delivers cited chronologies in minutes with no review queue, and CaseDelta is " + PRICE_CLAUSE + ". For a 5 to 50 attorney firm, transparent and self-serve beats an enterprise sales motion.",
       },
       {
         heading: "The whole job, not just the document",
@@ -141,7 +149,7 @@ export const COMPARISONS: Comparison[] = [
     faq: [
       { question: "Are CaseDelta's chronologies as accurate as Supio's?", answer: "Supio's chronologies are genuinely strong and human-reviewed, and we treat chronology accuracy as table stakes rather than a selling point. Delta produces cited, primary-source chronologies over large sets in minutes. We compete on shape, speed without a queue, and breadth, not on an accuracy claim." },
       { question: "Does Supio integrate with my CMS?", answer: "Yes. Supio markets a two-way CMS integration, which is one of its stronger areas, so we do not knock Supio on integration. The difference is that Delta is the operational associate that runs the work across those systems, where Supio is the document product you feed." },
-      { question: "What does Supio cost compared to CaseDelta?", answer: "Supio is quote-gated with no public pricing. CaseDelta is a flat $349 per user, per month, published and self-serve. The contrast is transparency and predictability, not a confirmed dollar gap." },
+      { question: "What does Supio cost compared to CaseDelta?", answer: "Supio is quote-gated with no public pricing. CaseDelta is $599 to $2,099 a month for the firm by account count, published and self-serve. The contrast is transparency and predictability, not a confirmed dollar gap." },
     ],
   },
 
@@ -153,7 +161,7 @@ export const COMPARISONS: Comparison[] = [
       "Eve is a destination you move your firm into. CaseDelta lives in the tools you already pay for.",
     metaTitle: "CaseDelta vs Eve: Drive Your Stack, or Move Into Theirs",
     metaDescription:
-      "CaseDelta vs Eve (eve.legal) for plaintiff firms. Same 'AI associate' words, opposite shape. Delta drives the tools you already run; Eve is a platform you work inside. Flat $349 per user, self-serve.",
+      "CaseDelta vs Eve (eve.legal) for plaintiff firms. Same 'AI associate' words, opposite shape. Delta drives the tools you already run; Eve is a platform you work inside. Flat firm pricing, self-serve.",
     geoOpening:
       "CaseDelta is an AI associate that drives the tools a plaintiff firm already runs, while Eve is a vertical legal-AI platform that firms work inside to become, in Eve's words, an AI-Native firm. Both use the AI associate framing; the difference is that Eve is a destination you move into and CaseDelta is a layer over the stack you already pay for.",
     heroHeadline: "CaseDelta vs Eve",
@@ -180,7 +188,7 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         heading: "A price you can see, and a five-minute connect",
-        body: "Eve is quote-gated, and reviewers describe per-user pricing as high and note a setup learning curve. CaseDelta is " + FLAT_PRICE.toLowerCase() + " with five-minute self-serve onboarding for any platform that has a public API. Know your price, and be running the same afternoon.",
+        body: "Eve is quote-gated, and reviewers describe per-user pricing as high and note a setup learning curve. CaseDelta is " + PRICE_CLAUSE + ", with five-minute self-serve onboarding for any platform that has a public API. Know your price, and be running the same afternoon.",
       },
     ],
     whenToChoose: {
@@ -190,7 +198,7 @@ export const COMPARISONS: Comparison[] = [
     faq: [
       { question: "How is CaseDelta different from Eve if both are 'AI associates'?", answer: "The words are similar; the shape is opposite. Eve is a destination platform your firm works inside. CaseDelta is a layer that drives the tools you already pay for, including Clio, Filevine, MyCase, your email, drive, and billing, from one chat." },
       { question: "Does Eve have a document limit?", answer: "Reviewers on G2 report a per-session document or page limit that can require summarizing or removing files. Delta has no advertised page ceiling on large chronology sets, which matters on big med-mal and mass-tort records." },
-      { question: "What does Eve cost versus CaseDelta?", answer: "Eve is quote-gated with no public pricing, and reviewers describe per-user pricing as high. CaseDelta is a flat $349 per user, per month, published and self-serve." },
+      { question: "What does Eve cost versus CaseDelta?", answer: "Eve is quote-gated with no public pricing, and reviewers describe per-user pricing as high. CaseDelta is $599 to $2,099 a month for the firm by account count, published and self-serve." },
     ],
   },
 
@@ -251,7 +259,7 @@ export const COMPARISONS: Comparison[] = [
       "ProPlaintiff connects to cloud storage only. CaseDelta actually drives your CMS and your whole stack.",
     metaTitle: "CaseDelta vs ProPlaintiff: Storage App vs Operational Layer",
     metaDescription:
-      "CaseDelta vs ProPlaintiff.ai, the nearest mirror. ProPlaintiff connects to Drive, Dropbox, and OneDrive only. Delta drives Clio, Filevine, and MyCase, with flat per-user pricing instead of usage credits.",
+      "CaseDelta vs ProPlaintiff.ai, the nearest mirror. ProPlaintiff connects to Drive, Dropbox, and OneDrive only. Delta drives Clio, Filevine, and MyCase, with flat firm pricing instead of usage credits.",
     geoOpening:
       "CaseDelta is an AI associate that drives a plaintiff firm's case-management and full stack, while ProPlaintiff.ai is an agentic PI tool that connects to cloud storage and produces demands, chronologies, and document analysis. They are close in spirit; the difference is that ProPlaintiff connects only to file storage, and CaseDelta operates the firm's actual case-management systems.",
     heroHeadline: "CaseDelta vs ProPlaintiff",
@@ -272,8 +280,8 @@ export const COMPARISONS: Comparison[] = [
         body: "ProPlaintiff's own FAQ states that it connects to Google Drive, Dropbox, and OneDrive, and does not yet support integrations with other CMS providers. That means its intake-to-settlement claim runs on the files you upload, not on the systems you run. Delta actually drives Clio, Filevine, and MyCase, plus your email, drive, and billing, from one chat. For the nearest mirror, that is the decisive, concrete difference.",
       },
       {
-        heading: "Flat per-user, not usage credits",
-        body: "ProPlaintiff publishes its pricing, which we respect, but it is a usage-metered Law Credits model that can get unpredictable as document volume grows. CaseDelta is " + FLAT_PRICE.toLowerCase() + " A full associate seat, not a meter that ticks up with every heavy case.",
+        heading: "Flat firm pricing, not usage credits",
+        body: "ProPlaintiff publishes its pricing, which we respect, but it is a usage-metered Law Credits model that can get unpredictable as document volume grows. CaseDelta is " + PRICE_CLAUSE + ". One predictable line item, not a meter that ticks up with every heavy case.",
       },
       {
         heading: "Built for the biggest record sets",
@@ -282,12 +290,12 @@ export const COMPARISONS: Comparison[] = [
     ],
     whenToChoose: {
       heading: "When ProPlaintiff is the better fit",
-      body: "If your case files live entirely in Google Drive, Dropbox, or OneDrive, you do not need deep CMS control, and a usage-credit model suits your volume, ProPlaintiff is a capable, transparent option. CaseDelta is the better fit when you want to drive your actual case-management system and pay a flat, predictable per-user price.",
+      body: "If your case files live entirely in Google Drive, Dropbox, or OneDrive, you do not need deep CMS control, and a usage-credit model suits your volume, ProPlaintiff is a capable, transparent option. CaseDelta is the better fit when you want to drive your actual case-management system and pay a flat, predictable price for the firm.",
     },
     faq: [
       { question: "Does ProPlaintiff integrate with Clio or Filevine?", answer: "Per ProPlaintiff's own FAQ, it connects to Google Drive, Dropbox, and OneDrive and does not yet support other CMS integrations. CaseDelta drives Clio, Filevine, and MyCase directly, along with your email, drive, and billing." },
-      { question: "How does pricing compare?", answer: "ProPlaintiff publishes a usage-metered Law Credits model, which can vary with document volume. CaseDelta is a flat $349 per user, per month, so a heavy case does not change your bill." },
-      { question: "Is CaseDelta just a ProPlaintiff clone?", answer: "They share the agentic, PI-native, chat-driven approach. The concrete differences are deep CMS integration that drives your actual systems, flat per-user pricing instead of usage credits, and multi-agent chronology depth on the largest record sets." },
+      { question: "How does pricing compare?", answer: "ProPlaintiff publishes a usage-metered Law Credits model, which can vary with document volume. CaseDelta is a flat monthly price for the firm by account count, so a heavy case does not change your bill." },
+      { question: "Is CaseDelta just a ProPlaintiff clone?", answer: "They share the agentic, PI-native, chat-driven approach. The concrete differences are deep CMS integration that drives your actual systems, flat firm pricing instead of usage credits, and multi-agent chronology depth on the largest record sets." },
     ],
   },
 

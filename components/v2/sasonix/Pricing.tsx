@@ -1,46 +1,37 @@
 "use client";
 
 /**
- * Beat 6: Pricing. CaseDelta is priced per FIRM by account count, flat monthly,
- * regardless of staff size (the wedge against per-seat research tools). Three tiers:
- *   up to 5 accounts  -> $499/mo
- *   up to 10 accounts -> $999/mo   (highlighted)
- *   up to 20 accounts -> $1,999/mo
- * A contact line handles firms above 20. The value is identical across tiers, so the
- * feature list is shared once below the cards rather than repeated three times.
+ * Beat 6: Pricing. Priced per FIRM by account count, flat monthly, regardless of
+ * staff size. That is the wedge against per-seat research tools. The numbers and
+ * the bands live in lib/pricing.ts and are not to be retyped here; this file owns
+ * how they LOOK and nothing about what they are.
  *
- * The unit is ACCOUNTS, the thing a firm actually provisions. It counted attorneys
- * until 2026-08-19.
+ * This was three SaaS pricing cards with a highlighted middle tier until
+ * 2026-08-28. It is now three horizontal line items, by request, and the
+ * highlight is gone. Both changes matter and neither is decoration:
  *
- * The qualifier is "up to", and it is inclusive on purpose. A brief pass at "less
- * than" was reverted the same day: it frames the tier by what the firm lacks rather
- * than what it gets, and it pushed a firm sitting on exactly five accounts up into
- * the $999 band for no reason anyone would defend out loud. "Up to 5" includes 5.
- * Keep it that way, and keep the overflow line as "More than 20", which is only
- * correct while the top band includes 20.
+ *   - Cards invite comparison shopping between the tiers. There is nothing to
+ *     compare. The value is identical in all three and the only variable is how
+ *     many accounts the firm provisions, so a row that reads "band ......... price"
+ *     answers the actual question and a card full of repeated checkmarks does not.
+ *   - A featured middle tier tells a reader that one band is the normal choice and
+ *     the other two are the compromise. Account count is a fact about the firm, not
+ *     a preference, so steering is worse than useless here: it makes a five-person
+ *     firm feel like it is buying the cheap one. All three rows are styled
+ *     identically. Do not reintroduce a "most popular" badge.
  *
- * UNRESOLVED, and left as found rather than quietly rewritten: the page still says
- * "Your whole staff included" and "Flat monthly. Unlimited staff." Those read
- * cleanly against an ATTORNEY count, where the point was that paralegals and admins
- * cost nothing. Against an ACCOUNT count they only hold if an account is narrower
- * than a person, and a cold reader has no way to know that. Whether the two can
- * stand together depends on what an account IS, which is a pricing question, not a
- * copy one. Ask before editing either line.
+ * The included list sits once below the rows, because it is the same list for
+ * every tier.
  */
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
 import { Reveal, revealProps } from "./reveal";
-
-const TIERS = [
-  { band: "Up to 5 accounts", price: "$499", featured: false },
-  { band: "Up to 10 accounts", price: "$999", featured: true },
-  { band: "Up to 20 accounts", price: "$1,999", featured: false },
-];
+import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED } from "@/lib/pricing";
 
 function Check({ color }: { color: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto", marginTop: 3 }} aria-hidden>
       <path d="M20 6L9 17l-5-5" />
     </svg>
   );
@@ -54,72 +45,85 @@ export function Pricing() {
           <SectionHead
             eyebrow="Pricing"
             title="A fraction of another salary"
-            sub="One flat price by account count. Your whole staff included."
+            sub="One flat monthly price for the firm, by the number of accounts you provision."
             titleMaxW={560}
-            subMaxW={480}
+            subMaxW={520}
           />
         </Reveal>
 
-        {/* three account-count tiers */}
-        <div className="sx-price-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, maxWidth: 1120, margin: "56px auto 0", alignItems: "stretch" }}>
-          {/* The featured tier fills with accentDeep, not accent. It carries 15px body
-              text and a muted "/month", and white on the raw brand blue is 4.11:1, so
-              the muted variant of it lands near 3:1. The deeper fill takes white to
-              5.80:1 and the muted text back over AA, at a blue nobody reads as a
-              different colour. */}
-          {TIERS.map((t, i) => {
-            const on = t.featured;
-            const nameColor = on ? SX.onInk : SX.ink;
-            const subColor = on ? "color-mix(in srgb, var(--sx-on-ink) 82%, transparent)" : SX.ink2;
-            return (
-              <motion.div key={t.band} className="sx-tier" data-featured={on ? "true" : "false"} {...revealProps({ delay: i * 0.08, amount: 0.3 })} whileHover={{ y: -6 }} transition={{ type: "tween", duration: 0.28, ease: [0.22, 1, 0.36, 1] }} style={{ position: "relative", background: on ? SX.accentDeep : SX.bgAlt, borderRadius: 16, padding: "32px 30px", display: "flex", flexDirection: "column", boxShadow: "var(--sx-tier-shadow)" }}>
-                <div style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 600, color: nameColor }}>{t.band}</div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 6, margin: "20px 0 0" }}>
-                  <span style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, letterSpacing: "-1px", color: nameColor, lineHeight: 1 }}>{t.price}</span>
-                  <span style={{ fontFamily: SX.body, fontSize: 18, fontWeight: 400, color: subColor }}>/month</span>
-                </div>
-                <div style={{ fontFamily: SX.body, fontSize: 15, lineHeight: "22px", color: subColor, margin: "12px 0 28px" }}>Flat monthly. Unlimited staff.</div>
-                <a href="/demo" className="sx-btn" style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "14px 20px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>Book a demo</a>
-              </motion.div>
-            );
-          })}
+        {/* Three equivalent bands as rows. No cards, no featured tier. */}
+        <div style={{ maxWidth: 860, margin: "52px auto 0", borderTop: `1px solid ${SX.hairline}` }}>
+          {TIERS.map((t, i) => (
+            <motion.div
+              key={t.band}
+              className="sx-price-row"
+              {...revealProps({ delay: i * 0.06, amount: 0.3 })}
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                gap: 20,
+                padding: "26px 4px",
+                borderBottom: `1px solid ${SX.hairline}`,
+              }}
+            >
+              <span style={{ fontFamily: SX.body, fontSize: 19, fontWeight: 500, color: SX.ink }}>
+                {t.band}
+              </span>
+              <span style={{ display: "flex", alignItems: "baseline", gap: 6, flex: "0 0 auto" }}>
+                <span className="sx-price-amt" style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 40, letterSpacing: "-1px", color: SX.ink, lineHeight: 1 }}>
+                  {t.price}
+                </span>
+                <span className="sx-price-per" style={{ fontFamily: SX.body, fontSize: 17, fontWeight: 400, color: SX.ink2 }}>/month</span>
+              </span>
+            </motion.div>
+          ))}
         </div>
 
-        {/* firms above 20 accounts */}
+        {/* Included once, because it is the same for every band. */}
         <Reveal>
-          <p style={{ textAlign: "center", marginTop: 22, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-            More than 20 accounts? <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>Contact us for a custom plan.</a>
-          </p>
+          <ul style={{ listStyle: "none", maxWidth: 860, margin: "34px auto 0", padding: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 32px" }} className="sx-price-incl">
+            {INCLUDED.map((item) => (
+              <li key={item} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontFamily: SX.body, fontSize: 15, lineHeight: "23px", color: SX.ink2 }}>
+                <Check color={SX.accentText} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal>
+          <div style={{ maxWidth: 860, margin: "38px auto 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }} className="sx-price-foot">
+            <p style={{ margin: 0, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
+              More than {TOP_BAND_ACCOUNTS} accounts?{" "}
+              <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>
+                Contact us for a custom plan.
+              </a>
+            </p>
+            <a href="/demo" className="sx-btn" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "14px 26px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>
+              Book a demo
+            </a>
+          </div>
         </Reveal>
       </Container>
       <style>{`
-        /* Tier hover: the card lifts and its shadow deepens.
-           TWO THINGS TO KNOW BEFORE EDITING THIS.
-           1. The lift comes from framer's whileHover, not CSS. These are motion
-              components, so framer owns the inline transform and any stylesheet
-              :hover transform is simply overridden. A CSS-only version looked
-              correct in the file and did nothing in the browser.
-           2. The shadow routes through --sx-tier-shadow. The card sets
-              box-shadow inline, which beats any stylesheet rule at any
-              specificity, but the VARIABLE it references still cascades, so
-              :hover can change it. */
-        .sx-tier {
-          --sx-tier-shadow: 0 1px 2px rgba(var(--sx-shadow-rgb), 0.04);
-          transition: box-shadow 0.28s ease;
-          will-change: transform;
+        /* Narrow screens: shrink the row rather than stacking it. The band and the
+           price belong on one line, which is the whole point of a line item, and
+           at these sizes the longest pair ("Up to 20 accounts" / "$2,099") still
+           fits a 360px viewport. */
+        @media (max-width: 560px) {
+          .sx-price-row { padding: 20px 2px !important; gap: 12px !important; }
+          .sx-price-row > span:first-child { font-size: 16px !important; white-space: nowrap; }
+          .sx-price-row .sx-price-amt { font-size: 30px !important; }
+          /* "/month" contracts to "/mo" so the longest pair still holds one line. */
+          .sx-price-per { font-size: 0 !important; }
+          .sx-price-per::after { content: "/mo"; font-size: 14px; }
         }
-        .sx-tier:hover { --sx-tier-shadow: 0 26px 50px -28px rgba(var(--sx-shadow-rgb), 0.30); }
-        /* the featured tier keeps its accent glow, deepened rather than replaced */
-        .sx-tier[data-featured="true"] {
-          --sx-tier-shadow: 0 40px 80px -46px color-mix(in srgb, var(--sx-accent) 50%, transparent);
+        @media (max-width: 700px) {
+          .sx-price-incl { grid-template-columns: 1fr !important; }
+          .sx-price-foot { flex-direction: column !important; align-items: stretch !important; }
+          .sx-price-foot p { text-align: center; }
         }
-        .sx-tier[data-featured="true"]:hover {
-          --sx-tier-shadow: 0 52px 90px -44px color-mix(in srgb, var(--sx-accent) 66%, transparent);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .sx-tier { transition: none; }
-        }
-        @media (max-width: 860px){ .sx-price-grid { grid-template-columns: 1fr !important; } }
       `}</style>
     </section>
   );

@@ -186,7 +186,7 @@ const TASKS = [
 const STATS = [
   { n: "$4–5k", l: "What one paralegal costs a month, if you can find and keep one." },
   { n: "0", l: "Migrations, rip-outs, or new logins. It runs on your stack." },
-  { n: "$349", l: "Per user, per month. Flat, published, no tiers or add-ons." },
+  { n: "$599", l: "A month for the firm, up to 5 accounts. Flat, published, no add-ons." },
   { n: "24/7", l: "It works your files and never takes a day off." },
 ];
 

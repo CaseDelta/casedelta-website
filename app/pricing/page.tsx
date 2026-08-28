@@ -3,14 +3,14 @@ import PricingClient from "./PricingClient";
 import { BreadcrumbSchema } from "@/components/JsonLd";
 
 export const metadata: Metadata = {
-  title: "Pricing: $349 per User, per Month",
+  title: "Pricing: $599 to $2,099 a Month, per Firm",
   description:
-    "Flat $349 per user, per month. No tiers, no add-ons, no setup fees. Pays for itself in week one through recovered admin hours.",
+    "Priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20. No add-ons, no setup fees, no per-case metering.",
   alternates: { canonical: "https://casedelta.com/pricing" },
   openGraph: {
-    title: "Pricing: $349 per User, per Month",
+    title: "Pricing: $599 to $2,099 a Month, per Firm",
     description:
-      "Flat $349 per user, per month for every attorney, paralegal, and admin at the firm. Pays for itself in week one.",
+      "One flat monthly price for the whole firm, by account count. Three equivalent tiers from $599 to $2,099. Published and self-serve.",
     url: "https://casedelta.com/pricing",
   },
 };
