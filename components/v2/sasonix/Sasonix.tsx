@@ -49,7 +49,7 @@ export function Sasonix() {
       <Nav />
       {/* 1. Hero */}
       <Hero />
-      {/* 2. The stakes: the pain, and the evening they want back */}
+      {/* 2. The stakes: one sentence naming the headcount cap, and the question it sets up */}
       <Stakes />
       {/* 3. What Delta is */}
       <AutomationSection />
