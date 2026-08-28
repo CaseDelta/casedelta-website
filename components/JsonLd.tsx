@@ -31,7 +31,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     logo: `${BASE_URL}/assets/branding/casedelta-logo-full.png`,
     description:
-      "CaseDelta is an AI paralegal that works inside the tools small law firms already use, including Clio, MyCase, Filevine, Google, and Microsoft, and does the routine case work: requesting records, drafting, updating files, and tracking deadlines. Your team reviews and approves. Firms run more cases without hiring. Each firm's data is isolated and is never sold or used to train AI models.",
+      "CaseDelta is an AI paralegal that works inside the tools law firms already use, including Clio, MyCase, Filevine, Google, and Microsoft, and does the routine case work: requesting records, drafting, updating files, and tracking deadlines. Your team reviews and approves. Firms run more cases without hiring. Each firm's data is isolated and is never sold or used to train AI models.",
     founder: {
       "@type": "Person",
       name: "Camren Hall",
