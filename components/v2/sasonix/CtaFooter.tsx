@@ -16,7 +16,6 @@ import Image from "next/image";
 import { SX } from "./tokens";
 import { LOGO, logoWidth } from "./brand";
 import { Reveal } from "./reveal";
-import { CalendlyEmbed } from "./CalendlyEmbed";
 
 // Every link here is a real page. The nav carries the homepage anchors; the footer
 // carries the site map, so no route is reachable only by typing its URL.
@@ -126,11 +125,15 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
           An associate that knows the whole case, and does the work. The judgment stays yours.
         </h2>
         <p style={{ fontFamily: SX.body, fontSize: 18, lineHeight: "30.6px", color: SX.ink2, margin: "20px auto 0", maxWidth: 560 }}>
-          Pick a time below. Fifteen minutes, on your own cases, live.
+          Fifteen minutes, on your own cases, live.
         </p>
-        {/* Inline scheduler: ready buyers book here without leaving the homepage (lazy-loaded). */}
-        <div style={{ maxWidth: 720, margin: "40px auto 0", background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", overflow: "hidden", textAlign: "left" }}>
-          <CalendlyEmbed lazy />
+        {/* Was an inline Calendly scheduler until 2026-08-28. The booking flow lives on
+            /demo now, which is the page that carries the conversion tracking, so this
+            band sends people there rather than running a second scheduler of its own. */}
+        <div style={{ marginTop: 36, display: "flex", justifyContent: "center" }}>
+          <a href="/demo" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "16px 32px", fontFamily: SX.body, fontSize: 17, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>
+            Book a demo
+          </a>
         </div>
       </Reveal>
       )}
