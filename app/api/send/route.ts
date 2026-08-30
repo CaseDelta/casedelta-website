@@ -5,20 +5,25 @@ import { CONTACT_EMAILS } from '@/lib/constants/contact';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface ContactFormData {
-  name: string;
+  /**
+   * Optional since 2026-08-28. The homepage CTA asks for an email and nothing
+   * else, because every field added to a one-line capture costs completions.
+   * The pricing and demo forms still collect a name and still send one.
+   */
+  name?: string;
   email: string;
   firmSize?: string;
   message?: string;
-  source?: "pricing" | "demo";
+  source?: "pricing" | "demo" | "home";
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
 
-    if (!body.name || !body.email) {
+    if (!body.email) {
       return NextResponse.json(
-        { error: 'Name and email are required' },
+        { error: 'Email is required' },
         { status: 400 }
       );
     }
@@ -32,9 +37,16 @@ export async function POST(request: NextRequest) {
     }
 
     const source = body.source ?? "pricing";
-    const subjectPrefix = source === "demo" ? "Demo Booking" : "Enterprise Pricing Inquiry";
-    const headerLabel = source === "demo" ? "Demo Booking" : "Enterprise Pricing Inquiry";
-    const submittedFrom = source === "demo" ? "casedelta.com/demo" : "casedelta.com/pricing";
+    /* A map rather than nested ternaries: adding a fourth source used to mean
+       editing three separate conditionals and getting one of them wrong. */
+    const SOURCES = {
+      pricing: { label: "Enterprise Pricing Inquiry", from: "casedelta.com/pricing" },
+      demo: { label: "Demo Booking", from: "casedelta.com/demo" },
+      home: { label: "Homepage Email Capture", from: "casedelta.com" },
+    } as const;
+    const { label: headerLabel, from: submittedFrom } = SOURCES[source] ?? SOURCES.pricing;
+    const subjectPrefix = headerLabel;
+    const displayName = body.name?.trim() || "(not given)";
 
     const firmSizeBlock = body.firmSize
       ? `<div class="field"><div class="label">Firm Size:</div><div class="value">${body.firmSize}</div></div>`
@@ -45,7 +57,7 @@ export async function POST(request: NextRequest) {
       from: 'CaseDelta Leads <casedeltaleads@blueprintsw.com>',
       to: [CONTACT_EMAILS.SUPPORT],
       replyTo: body.email,
-      subject: `${subjectPrefix}: ${body.name}`,
+      subject: `${subjectPrefix}: ${body.name?.trim() || body.email}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -64,7 +76,7 @@ export async function POST(request: NextRequest) {
             </div>
             <div class="field">
               <div class="label">Name:</div>
-              <div class="value">${body.name}</div>
+              <div class="value">${displayName}</div>
             </div>
             <div class="field">
               <div class="label">Email:</div>
@@ -83,7 +95,7 @@ export async function POST(request: NextRequest) {
           </body>
         </html>
       `,
-      text: `${headerLabel}\n\nName: ${body.name}\nEmail: ${body.email}${firmSizeText}${body.message ? `\nMessage: ${body.message}` : ''}\n\nSubmitted from ${submittedFrom}`,
+      text: `${headerLabel}\n\nName: ${displayName}\nEmail: ${body.email}${firmSizeText}${body.message ? `\nMessage: ${body.message}` : ''}\n\nSubmitted from ${submittedFrom}`,
     });
 
     if (error) {

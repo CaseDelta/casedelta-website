@@ -26,14 +26,25 @@
  * reverted on 2026-08-19 for that reason. Keep the overflow line as "More than
  * 20", which is only correct while the top band includes 20.
  *
- * DELIBERATELY NOT CLAIMED HERE: the old copy said "Your whole staff included"
- * and "Flat monthly. Unlimited staff." Those read cleanly against an ATTORNEY
- * count, where the point was that paralegals and admins cost nothing. Against an
- * ACCOUNT count they only hold if an account is narrower than a person, and a
- * cold reader has no way to know that. The prior author flagged it as unresolved
- * and asked that nobody quietly rewrite it, so the claim is simply absent rather
- * than restated or invented. Add it back only once someone can say what an
- * account is.
+ * The BAND BOUNDARIES are confirmed, not inherited: 5, 10 and 20 accounts at
+ * $599, $1,099 and $2,099, settled with Camren on 2026-08-28. Worth knowing when
+ * you read them: every firm in production today sits at six accounts or fewer, so
+ * the top band is headroom rather than a band anyone has reached.
+ *
+ * "UNLIMITED STAFF" IS RETIRED. DO NOT BRING IT BACK IN ANY FORM. The old copy
+ * said "Your whole staff included" and "Flat monthly. Unlimited staff." Those
+ * read cleanly against an ATTORNEY count, where the point was that paralegals and
+ * admins cost nothing. They are simply false against an ACCOUNT count: an account
+ * is one login, a row in platform_users, and law_firms.max_users is enforced both
+ * when an operator provisions users and when someone self-registers against a
+ * firm access code. Every paralegal and admin who signs in consumes a band slot.
+ * Camren's call on 2026-08-28 was to drop the idea outright rather than restate
+ * it, so this is settled rather than pending: no "unlimited", no "your whole
+ * team", no "regardless of staff size", and nothing implying the number does not
+ * move when a firm grows.
+ *
+ * What IS true and may be said: there is no per-seat multiplier, and the price
+ * does not move as a firm adds people inside its own band. Say that instead.
  */
 
 export interface Tier {
@@ -117,10 +128,11 @@ export const PRICE_CLAUSE =
 export const PRICE_PARAGRAPH =
   "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, and $2,099 for up to 20. Firms above 20 accounts get a custom plan. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published and self-serve, so a firm knows its cost before the demo.";
 
-/** What every tier includes. Identical across all three, which is the point. */
-export const INCLUDED = [
-  "Every integration: your case manager, email, calendar, drive, and billing",
-  "The full job: records requests, drafting, file updates, deadline tracking, chronologies",
-  "Onboarding by login, with no migration and no implementation project",
-  "Your firm's learned playbook, which compounds the longer Delta works your cases",
-];
+/*
+ * An INCLUDED list lived here and rendered as a checklist under the tiers, first
+ * on the homepage and then only on /pricing. Both are gone as of 2026-08-28: the
+ * value is identical in all three bands, so a list under three equal rows answered
+ * a question nobody had asked. What a firm gets belongs to the sections that can
+ * show it. If a list like this comes back, it needs a surface of its own, not a
+ * card wedged under the prices.
+ */

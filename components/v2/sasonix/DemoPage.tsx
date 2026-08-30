@@ -18,7 +18,7 @@
  * to that same env var instead of hardcoding a vendor.
  */
 import { MotionConfig } from "framer-motion";
-import { SX } from "./tokens";
+import { SX, STAR_GOLD } from "./tokens";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { CtaFooter } from "./CtaFooter";
@@ -81,7 +81,7 @@ export function DemoPage() {
                         {[0, 1, 2, 3, 4].map((i) => <Star key={i} />)}
                       </div>
                       <div style={{ fontFamily: SX.body, fontSize: 14.5, lineHeight: "20px", color: SX.ink }}>
-                        &ldquo;Delta gives us back about five hours a week.&rdquo;
+                        &ldquo;Delta gives us back five hours a week per person, and we can handle more cases.&rdquo;
                       </div>
                       <div style={{ fontFamily: SX.body, fontSize: 13, lineHeight: "18px", color: SX.ink2, marginTop: 2 }}>
                         Kirschbaum &amp; Nowotny, LLC &middot; Overland Park, KS
@@ -125,7 +125,7 @@ function Check() {
 
 function Star() {
   return (
-    <svg width="15" height="15" viewBox="0 0 20 20" fill={SX.accent} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+    <svg width="15" height="15" viewBox="0 0 20 20" fill={STAR_GOLD} xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z" />
     </svg>
   );

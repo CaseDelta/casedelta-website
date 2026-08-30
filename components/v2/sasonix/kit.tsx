@@ -21,12 +21,15 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* Centered section header: eyebrow -> Archivo 500 48px / -1px / lh55.2 heading -> Geist sub. */
-export function SectionHead({ eyebrow, title, sub, titleMaxW = 640, subMaxW = 560 }: { eyebrow: string; title: React.ReactNode; sub?: React.ReactNode; titleMaxW?: number; subMaxW?: number }) {
+/* Centered section header: optional eyebrow -> Archivo 500 48px / -1px / lh55.2 heading -> Geist sub.
+   The eyebrow is OPTIONAL and the homepage passes none. Its 24px top margin on the
+   heading exists only to clear the pill, so with no eyebrow the heading starts the
+   block and takes margin 0; leaving the 24px in would open a gap under nothing. */
+export function SectionHead({ eyebrow, title, sub, titleMaxW = 640, subMaxW = 560 }: { eyebrow?: string; title: React.ReactNode; sub?: React.ReactNode; titleMaxW?: number; subMaxW?: number }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: "24px 0 0", maxWidth: titleMaxW }}>
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 48, lineHeight: "55.2px", letterSpacing: "-1px", color: SX.ink, margin: eyebrow ? "24px 0 0" : 0, maxWidth: titleMaxW }}>
         {title}
       </h2>
       {sub && (

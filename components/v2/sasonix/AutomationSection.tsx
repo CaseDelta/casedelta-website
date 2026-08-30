@@ -1,7 +1,9 @@
 "use client";
 
 /**
- * "What Delta is": the thesis line, then three stacked capability cards. Each card
+ * "What Delta is": the thesis line, then three stacked capability cards. The third
+ * one carries automations, moved up from the pricing section on 2026-08-28: pricing
+ * is where a reader works out what it costs, not where they find out what it does. Each card
  * is a 50/50 split: left is a 54px icon chip, an Archivo 32px heading, the claim in
  * prose and a three-item checklist; right is an ambient photograph with a product
  * panel floating over the seam between the halves.
@@ -48,42 +50,91 @@ const ICONS = [
   <><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" /></>,
 ];
 
+/**
+ * REAL AUTOMATIONS, FROM REAL FIRMS. Not one is illustrative, and the value of the
+ * card is that a reader can tell. "Automates your intake" is worth nothing to someone
+ * who has heard it from six vendors.
+ *
+ * EACH ONE NAMES ITS TRIGGER AND ITS SYSTEM, and that is a correction (Camren,
+ * 2026-08-28). The first pass was written in the shorthand the firms themselves use:
+ * "flag more than two claimants against a limited policy", "work the mailroom faxes
+ * at ten, one and four", "fill in the settlement row when the sheet lands". Every one
+ * of those is true and precise, and every one is opaque to a reader who has not sat
+ * in the firm. A line here has to say what starts it and where the work lands, or it
+ * is decoration. Keep the shape: trigger, then what Delta does, then where.
+ *
+ * NAMING FILEVINE AND OUTLOOK IS DELIBERATE and is not the vendor-logo rule being
+ * broken. That rule (see HowItWorks) bars a LOGO WALL, because a row of marks implies
+ * a fixed integration list when the claim is the opposite. A named system inside a
+ * concrete example does the reverse: it is evidence the work is real. Both names are
+ * grounded, not chosen for recognition.
+ *
+ * SOURCES, so nobody softens these back into marketing:
+ *   Holston & Huntley, from Camren's 2026-08-17 email to Sidney Howell offering to
+ *   build one before they paid a cent: scanned mail out of Outlook filed to the right
+ *   matter with the task opened, and surgery or an injection in the notes checked
+ *   against the limits while the file is still awaiting records and bills.
+ *
+ *   Auto Injury Firm, from the 2026-08-11 intake-handoff thread and the 2026-08-27
+ *   call summary to Jared Colcord: the new-client email that becomes a text to the
+ *   attorney's cell before they ring the client, and settlement sheets that fill the
+ *   matter's settlement figures with the totals reconciled against the client's net.
+ *
+ * FOUR, AND SHORT. The card is a FIXED 654px on desktop with overflow hidden, so a
+ * line too long does not push the card taller, it disappears. The first pass at these
+ * named the systems and ran to two lines each, which clipped the fourth example off
+ * the bottom of the card with no error anywhere. Keep each one to a single line at
+ * 1280px. If a fifth is ever added, one has to leave. Others that are real and could
+
+ * rotate in: police reports flagged when more than two
+ * claimants sit against a limited policy, the mailroom fax runs at ten, one and four,
+ * client texts nobody has answered drafted in the attorney's own voice from his sent
+ * messages, and a callback reminder texted ten minutes before the window the client
+ * asked for.
+ */
+const AUTOMATIONS = [
+  "A client signs: text the attorney a brief before they call",
+  "Read new records in Filevine, flag the file when it is demand-ready",
+  "File the mail from Outlook on the matter and open the task",
+  "Fill in a settlement sheet's figures and check they reconcile",
+];
+
 type Card = { heading: string; sub: string[]; checks: string[]; photo: string; panel: React.ReactNode };
 
 const CARDS: Card[] = [
   {
-    heading: "A computer of its own",
+    heading: "Run the firm like there are two of you",
     sub: [
-      "Delta has a computer of its own in the cloud, so work does not stall when you step away.",
-      "It can sign in and work across apps, tools, and websites, including the ones with no clean API, and come back with the work finished.",
+      "Ask about any part of the practice and get an answer, not a dashboard.",
+      "Financials, case status, and the state of every open matter.",
     ],
-    checks: ["Your case system", "Your inbox, calendar and files", "Even where there is no API"],
+    checks: ["Firm financials", "Case status", "Firm-wide overview", "Case management"],
     photo: "/v2/ambient/horizon-blue.webp",
     panel: <ComputerPanel />,
   },
   {
-    heading: "Message it like a teammate",
+    heading: "Every system, one place",
     sub: [
-      "You can message Delta the way you would text someone on your team.",
-      "Other legal AI tools may ask you to set up and build workflows first.",
-      "With Delta, simply message it to take on a task and it gets it done.",
+      "Intake and case management, whatever platform they live on.",
+      "Delta signs in and works there. A new system takes about five minutes and no engineer.",
     ],
-    checks: ["Nothing to set up", "Nothing new to learn", "Ask in plain English"],
+    checks: ["Intake and case management", "Any platform, even with no API", "Connected in five minutes"],
     photo: "/v2/ambient/valley-mist.webp",
     panel: <TeammatePanel />,
   },
   {
-    heading: "Trust it with more over time",
+    heading: "Set it running in the background",
     sub: [
-      "Delta is a teammate that gets sharper over time.",
-      "It keeps context on how you like work done.",
-      "After a few files it picks up your voice, your edge cases, and knows when to ask versus keep going.",
+      "Tell Delta what to watch for and what to do about it, in plain English. No builder, no rules engine.",
+      "It runs on your cases without being prompted again, and stops for your approval wherever you want it to.",
+      "Four that real firms asked us for:",
     ],
-    checks: ["Learns how your firm works", "Knows when to ask you", "That knowledge stays when people leave"],
+    checks: AUTOMATIONS,
     photo: "/v2/ambient/meadow-light.webp",
     panel: <MemoryPanel />,
   },
 ];
+
 
 export function AutomationSection() {
   return (
@@ -95,15 +146,17 @@ export function AutomationSection() {
             is deliberately larger than a section heading and carries no eyebrow. */}
         <Reveal>
           <h2 className="sx-thesis">
-            Delta is an AI paralegal with its own cloud computer. It signs into your tools, runs multi-step work
-            end-to-end like a human, and can even run tasks you approve without you prompting it.
+            Delta is the AI that does actual partner-level, paralegal, and staff work in the systems your firm
+            already uses.
           </h2>
-          {/* Who it is for. This line was lost when BrandStrip was deleted, and until it
-              came back the page said "AI paralegal" without ever naming the buyer. It sits
-              under the thesis rather than above it because the thesis is staged to land
-              alone, and it stays quiet because it qualifies the claim, it does not make one. */}
-          <p className="sx-thesis-icp">
-            Purpose-built for personal injury, mass tort, and medical malpractice firms.
+          {/* The rest of the same statement, set smaller. It is one thought with the
+              line above and reads as one, but at 44px the whole thing runs eight lines
+              and stops being a statement. The definition keeps display scale; the list
+              of what that means in practice supports it. */}
+          <p className="sx-thesis-sub">
+            Delta can review records, firm financials, run reports, handle case management and calendars, and keep on
+            top of client SOLs and communication. No matter what system it is, Delta logs in and doesn&rsquo;t stop
+            until the work is complete.
           </p>
         </Reveal>
         <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
@@ -187,17 +240,22 @@ export function AutomationSection() {
         @media (max-width: 460px) { .sx-panel-float { zoom: 0.72; } }
         @media (max-width: 400px) { .sx-panel-float { zoom: 0.64; } }
 
-        .sx-thesis-icp {
+        /* Was .sx-thesis-icp, a one-line "purpose-built for personal injury, mass
+           tort, and medical malpractice firms" qualifier. That line is gone as of
+           2026-08-28 and this slot now carries the back half of the thesis, so it is
+           wider and a size up: it is content, not a caption. */
+        .sx-thesis-sub {
           font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
           font-weight: 400;
-          font-size: 18px;
-          line-height: 28px;
+          font-size: 20px;
+          line-height: 32px;
           color: var(--sx-ink-2);
           text-align: center;
-          max-width: 620px;
-          margin: 22px auto 0;
+          max-width: 760px;
+          margin: 26px auto 0;
+          text-wrap: pretty;
         }
-        @media (max-width: 760px) { .sx-thesis-icp { font-size: 16px; line-height: 25px; margin-top: 18px; } }
+        @media (max-width: 760px) { .sx-thesis-sub { font-size: 17px; line-height: 27px; margin-top: 20px; } }
 
         .sx-thesis {
           max-width: 1000px;

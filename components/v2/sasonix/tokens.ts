@@ -53,6 +53,20 @@ export const SX = {
     `0 ${y}px ${blur}px rgba(var(--sx-shadow-rgb), ${alpha})`,
 } as const;
 
+/**
+ * Review stars are GOLD, not the brand accent (Camren, 2026-08-28). A five-star row
+ * is a borrowed convention and readers decode it pre-attentively; recolouring it to
+ * the brand turns a rating into decoration, and a blue star reads as a UI element
+ * rather than a review.
+ *
+ * NOT a palette token on purpose. Every other colour here swaps with the theme,
+ * because it belongs to us. This one belongs to the convention, so it is the same
+ * gold in every palette and on both light surfaces and scrimmed media. The value
+ * matches the gold already used by components/marketing/heroes/shared.tsx, so the
+ * two star treatments on the site agree.
+ */
+export const STAR_GOLD = "#f5b400";
+
 /* Sasonix's own resize-CDN images (hotlinked during the clone-fidelity phase so the
    pixel diff against the live site is exact). PRODUCTION MUST self-host / replace these
    with CaseDelta assets before launch. Base host: framerusercontent.com. */

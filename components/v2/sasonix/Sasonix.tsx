@@ -1,15 +1,32 @@
 "use client";
 
 /**
- * CaseDelta homepage (route /v2), composed to Camren's 7-beat progressive-disclosure
- * framework on top of the Sasonix primitive kit:
- *   1. Hero            -> what Delta is, and the ask
- *   2. AutomationSection -> "What Delta is" (three capability cards)
- *   3. HowItWorks      -> how it works + integrates + onboards in 5 minutes (combined)
- *   4. Testimonials    -> real, attributable quotes only; empty today, renders nothing
- *   5. WhySasonix      -> Delta vs a generic AI chatbot
- *   6. Pricing         -> three flat tiers priced by account count
- *   7. CtaFooter    -> reinforcement and the ask
+ * The CaseDelta homepage. Restructured 2026-08-28 (Camren) to argue in this order:
+ *   1. Hero              -> what Delta is, and the ask
+ *   2. Stakes            -> the problem, in one sentence
+ *   3. AutomationSection -> what Delta is, in three capability cards
+ *   4. Testimonials      -> proof, before any argument about why we are different
+ *   5. WhySasonix        -> why it is different: the Context Wedge, proved row by row
+ *   6. Trust             -> security, the objection a firm actually raises
+ *   7. Pricing           -> three flat tiers priced by account count
+ *   8. SecondProof       -> a second customer voice before the ask (empty today)
+ *   9. CtaFooter         -> the ask, an email address
+ *
+ * PROOF SITS BEFORE THE ARGUMENT, which is the reordering that matters most here.
+ * A reader who has just been told what Delta does wants evidence, not a comparison
+ * table; the table then lands on someone who already believes the thing works.
+ *
+ * THREE SECTIONS LEFT THE HOMEPAGE and are still in the repo, routed from nowhere.
+ * IntegrationClose carried the five-minute onboarding argument under the heading
+ * "Delta is working your cases this afternoon" and was replaced by SecondProof on
+ * 2026-08-28. Putting it back is better than a gap here if that quote never lands.
+ * Also:
+ * HowItWorks (the onboarding band, now condensed into IntegrationClose and carried
+ * in full on /features) and UseCases (the practice-area tabs, which live on
+ * /use-cases). Both were removed rather than reordered: HowItWorks was the page's
+ * second full-bleed dark band and cost the Trust band its impact, and UseCases sat
+ * between proof and pricing arguing capability the reader had already accepted.
+ * The nav's "The work" link now points at /use-cases rather than an anchor.
  *
  * SECTION SPACING CONVENTION: every section carries 60px top AND 60px bottom, so
  * the gap between any two is 120px and DELETING a section leaves its neighbours'
@@ -32,10 +49,10 @@ import { Nav } from "./Nav";
 import { Hero } from "./Hero";
 import { Stakes } from "./Stakes";
 import { AutomationSection } from "./AutomationSection";
-import { UseCases } from "./UseCases";
-import { HowItWorks } from "./HowItWorks";
 import { Testimonials } from "./Testimonials";
+import { WhySasonix } from "./WhySasonix";
 import { Trust } from "./Trust";
+import { SecondProof } from "./SecondProof";
 import { Pricing } from "./Pricing";
 import { CtaFooter } from "./CtaFooter";
 
@@ -51,20 +68,20 @@ export function Sasonix() {
       <Hero />
       {/* 2. The stakes: one sentence naming the headcount cap, and the question it sets up */}
       <Stakes />
-      {/* 3. What Delta is */}
+      {/* 3. What Delta is, in three capability cards */}
       <AutomationSection />
-      {/* 3. How it works, onboarding and the stack, in one banded section */}
-      <HowItWorks />
-      {/* 4. Testimonials: renders nothing until there are real, attributable quotes.
-             Kept mounted so that adding one to Testimonials.tsx is the only step. */}
+      {/* 4. Proof, before any argument about why we are different */}
       <Testimonials />
-      {/* 5. The work, cut by practice area */}
-      <UseCases />
-      {/* 6. Trust: the objection a firm actually raises */}
+      {/* 5. Why it is different: the Context Wedge, proved row by row */}
+      <WhySasonix />
+      {/* 6. Security: the objection a firm actually raises */}
       <Trust />
       {/* 7. Pricing */}
       <Pricing />
-      {/* 8. Reinforcement + CTA */}
+      {/* 8. A second, different voice before the ask. Renders nothing until there is
+             a real quote to put in it; see SecondProof.tsx. */}
+      <SecondProof />
+      {/* 9. The ask: an email address */}
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}
       <style>{`

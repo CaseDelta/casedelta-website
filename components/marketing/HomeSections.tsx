@@ -204,7 +204,7 @@ const SECURITY = [
    and honesty risk. */
 const TESTIMONIAL = {
   quote:
-    "Delta gives us back about five hours a week, and that time goes straight back into our cases.",
+    "Delta gives us back five hours a week per person, and we can handle more cases.",
   initials: "KN",
   name: "Kirschbaum & Nowotny, LLC",
   title: "Overland Park, KS",
