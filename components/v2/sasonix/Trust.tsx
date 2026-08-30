@@ -3,54 +3,84 @@
 /**
  * Trust, as the page's second full-bleed band.
  *
+ * THE HEADING IS "Security first." (Camren, 2026-08-28). It read "Safe to put a
+ * client file in", which named the objection but buried the category; a reader
+ * scanning for whether this is the security section had to parse a sentence first.
+ *
  * WHY IT IS A BAND: the objection a firm actually raises is not "how is this
  * different from ChatGPT", it is "can I put a client file in it". That question
  * deserves to interrupt the page rather than sit in three cream cards the eye
  * slides past. Camren answers it in every prospect thread with an analogy that does
  * more work than any spec sheet: a paralegal would never take client files home.
  *
- * WHY IT DOES NOT LOOK LIKE THE ONBOARDING BAND: two identical dark slides read as
- * a template repeating itself. The differences are deliberate and worth keeping:
- *   - forest-dark, near black with VERTICAL streaks, against the onboarding band's
- *     horizontal teal water. Different texture, much lower key.
- *   - No glass cards. The three statements sit directly on the image, divided by
- *     hairlines. Card chrome reads as UI; bare type on a dark field reads as a
- *     statement, which is the right register for a trust claim.
+ * THE BACKDROP IS horizon-blue (Camren, 2026-08-28), after forest-dark and then
+ * water-dark were both rejected. Worth knowing before the next swap: the ambient set
+ * has EIGHT images and only TWO of them are dark, and those two are the ones already
+ * turned down. This one is pale, so it only works because the scrim below is heavy
+ * (0.78 / 0.64 / 0.80). If the scrim is ever lightened, this section becomes
+ * unreadable white-on-white. Measured after the swap: the heading holds well above
+ * AA against the scrimmed image.
  *
- * WhySasonix.tsx (the old "Delta vs a generic AI chatbot" comparison) is still in
- * the repo, unmounted.
+ * IT ALSO APPEARS IN AutomationSection's first capability card, which is a duplicate
+ * on one page. It reads differently at that size and behind a floating panel, but
+ * the honest fix is a new dark asset in /public/v2/ambient rather than a ninth reuse
+ * of the same eight.
+ *
+ * NO GLASS CARDS. The three statements sit directly on the image, divided by
+ * hairlines. Card chrome reads as UI; bare type on a dark field reads as a
+ * statement, which is the right register for a trust claim.
+ *
+ * WHAT THE THREE POINTS MUST COVER (Camren, 2026-08-28): the paralegal metaphor,
+ * HIPAA and bar compliance including PHI, and what happens to the data once a
+ * request leaves the firm. In that order, because the metaphor earns the reader's
+ * attention for the two compliance claims that follow it.
+ *
+ * TWO CLAIMS WERE ASKED FOR AND ARE NOT WRITTEN HERE, both because they are false
+ * against our own systems and against casedelta.com/security. Do not add them.
+ *
+ *   "Delta never stores anything." Production stores case documents in S3 and PHI
+ *   arrives through that path today. Integration reads are cached as well. The true
+ *   version is the one below: Delta works where the records already live.
+ *
+ *   "No client data is sent to third-party providers or AI." Delta runs on
+ *   enterprise models from an outside provider. /security says so outright, in a
+ *   FAQ answer that begins "Yes, and we are direct about it, the same way Clio and
+ *   MyCase are." A homepage that denies it puts two contradictory answers on one
+ *   site, which is exactly the defect the pricing rewrite existed to fix. The
+ *   defensible claim, and the one used here and on /security, is what the provider
+ *   may DO with the data: never trained on, never retained, never sold or shared,
+ *   under an enterprise agreement, isolated per firm.
+ *
+ * THE "TRUST" PILL IS GONE, along with every other section eyebrow on this page.
  */
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container } from "./kit";
 import { Reveal, revealProps } from "./reveal";
 
-const BAND_IMAGE = "/v2/ambient/forest-dark.webp";
+const BAND_IMAGE = "/v2/ambient/horizon-blue.webp";
 
 const POINTS: { title: string; body: string[] }[] = [
   {
-    title: "Your files stay put",
+    title: "A paralegal does not take the records home",
     body: [
-          "Your files never leave your systems.",
-          "A paralegal would never take them home.",
-          "Neither does Delta.",
-        ],
+      "Neither does Delta.",
+      "It works inside your systems, where your records already live, and leaves them there.",
+    ],
   },
   {
-    title: "Every answer shows its source",
+    title: "Safe for protected health information",
     body: [
-          "Every answer shows the page it came from.",
-          "You check it yourself.",
-        ],
+      "HIPAA and bar compliant.",
+      "Medical records and identifiable health information are in scope, and we sign a BAA.",
+    ],
   },
   {
-    title: "Built for client data",
+    title: "Your client data is never the product",
     body: [
-          "Your data stays yours.",
-          "It is encrypted and kept apart from other firms.",
-          "It never trains a model.",
-          "HIPAA and bar compliant.",
-        ],
+      "It never trains a model, and it is never sold or shared.",
+      "The provider keeps nothing once a request completes, and your firm is walled off from every other firm.",
+    ],
   },
 ];
 
@@ -84,22 +114,6 @@ export function Trust() {
       <Container style={{ position: "relative", zIndex: 2 }}>
         <Reveal>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                fontFamily: SX.mono,
-                fontSize: 13,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: SX.onMediaMuted,
-                border: `1px solid ${SX.glassEdge}`,
-                borderRadius: 999,
-                padding: "7px 16px",
-              }}
-            >
-              Trust
-            </span>
             <h2
               style={{
                 fontFamily: SX.display,
@@ -108,11 +122,11 @@ export function Trust() {
                 lineHeight: "55.2px",
                 letterSpacing: "-1px",
                 color: SX.onMedia,
-                margin: "24px 0 0",
+                margin: 0,
                 maxWidth: 620,
               }}
             >
-              Safe to put a client file in
+              Security first.
             </h2>
           </div>
         </Reveal>

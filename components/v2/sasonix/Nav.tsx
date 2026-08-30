@@ -27,7 +27,9 @@ import { scrollToSection } from "./scrollToSection";
  */
 const LINKS: { label: string; id?: string; href?: string }[] = [
   { label: "What it does", id: "features" },
-  { label: "The work", id: "jobs" },
+  // A page, not an anchor: UseCases left the homepage on 2026-08-28 and #jobs no
+  // longer exists. An id that matches nothing scrolls nowhere and reports nothing.
+  { label: "The work", href: "/use-cases" },
   { label: "Pricing", id: "pricing" },
   { label: "Security", id: "security" },
   { label: "Blog", href: "/blog" },

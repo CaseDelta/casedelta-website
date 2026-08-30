@@ -7,7 +7,9 @@
  * (hotlinked; swapped on rebrand). Tile centers at 140/390/640/890/1140 in the 1280
  * container.
  */
+import Image from "next/image";
 import { SX } from "./tokens";
+import { LOGO, logoWidth } from "./brand";
 import { Container, SectionHead } from "./kit";
 
 const IMG = (f: string) => `https://framerusercontent.com/images/${f}`;
@@ -28,7 +30,12 @@ export function Integrations() {
         <div style={{ marginTop: 56, display: "flex", flexDirection: "column", alignItems: "center" }}>
           {/* central orange brand mark */}
           <span style={{ width: 116, height: 116, borderRadius: 28, background: `linear-gradient(150deg, color-mix(in srgb, var(--sx-accent) 78%, white), var(--sx-accent))`, display: "grid", placeItems: "center", boxShadow: `0 24px 50px -18px color-mix(in srgb, var(--sx-accent) 55%, transparent)` }} aria-hidden>
-            <svg width="52" height="52" viewBox="0 0 24 24" fill={SX.onAccent}><path d="M12 3l3.2 5.5H8.8L12 3zM6 10.5l3.2 5.5H2.8L6 10.5zm12 0l3.2 5.5h-6.4L18 10.5z" /></svg>
+            {/* The real mark. This was a hand-drawn three-triangle SVG inherited
+                from the Sasonix template: a fabricated CaseDelta logo. It never
+                shipped because this component is unmounted, but a fake logo sitting
+                in the repo is one import away from being live. Camren's rule is
+                always the real logo, never a faked one. */}
+            <Image src={LOGO.onDark} alt="CaseDelta" width={logoWidth(40)} height={40} style={{ display: "block", height: 40, width: "auto" }} />
           </span>
           {/* connector lines fanning from the mark down to the tiles */}
           <svg viewBox="0 0 1280 92" fill="none" aria-hidden style={{ width: "100%", height: 92, marginTop: 4 }} preserveAspectRatio="xMidYMid meet">

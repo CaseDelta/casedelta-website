@@ -12,6 +12,7 @@
  *    page's bottom edge; the section clips overflow so only the rising top half shows.
  *  - Socials: plain dark brand glyphs (X, Facebook, Instagram, LinkedIn), no background box.
  */
+import { useState } from "react";
 import Image from "next/image";
 import { SX } from "./tokens";
 import { LOGO, logoWidth } from "./brand";
@@ -108,6 +109,151 @@ function Socials() {
   );
 }
 
+/**
+ * The closing email capture. Posts to /api/send, the same Resend route the pricing
+ * and demo forms use, with source "home" so the notification says where it came from.
+ *
+ * The route required a name until 2026-08-28 and now does not, which is what lets
+ * this be a single field. If it starts rejecting email-only posts again, that
+ * requirement came back.
+ *
+ * Failure is shown in the form rather than in an alert(). The other form on the site
+ * still alerts; that is worth fixing there too.
+ */
+function EmailCapture() {
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [error, setError] = useState("");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (state === "sending") return;
+    setState("sending");
+    setError("");
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "home" }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setState("done");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setState("error");
+    }
+  };
+
+  if (state === "done") {
+    return (
+      <p className="sx-cta-done" role="status">
+        Thank you. We will be in touch at {email}.
+      </p>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="sx-cta-form">
+      <label htmlFor="sx-cta-email" className="sx-cta-label">Work email</label>
+      <div className="sx-cta-row">
+        <input
+          id="sx-cta-email"
+          className="sx-cta-input"
+          type="email"
+          name="email"
+          required
+          autoComplete="email"
+          placeholder="you@yourfirm.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-invalid={state === "error" || undefined}
+          aria-describedby={state === "error" ? "sx-cta-error" : undefined}
+        />
+        <button type="submit" className="sx-btn sx-cta-submit" disabled={state === "sending"}>
+          {state === "sending" ? "Sending" : "Get a walkthrough"}
+        </button>
+      </div>
+      {state === "error" && (
+        <p id="sx-cta-error" className="sx-cta-error" role="alert">{error}</p>
+      )}
+      <p className="sx-cta-alt">
+        Or <a href="/demo" className="sx-cta-alt-link">book a time</a> and see it on a real file.
+      </p>
+      <style>{`
+        .sx-cta-form { margin: 36px auto 0; max-width: 560px; text-align: left; }
+        /* The label is for assistive technology; the placeholder carries it visually,
+           and a placeholder alone leaves a screen reader with an unnamed field. */
+        .sx-cta-label {
+          position: absolute; width: 1px; height: 1px;
+          margin: -1px; padding: 0; border: 0;
+          overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+        }
+        .sx-cta-row { display: flex; gap: 10px; }
+        .sx-cta-input {
+          flex: 1 1 auto;
+          min-width: 0;
+          padding: 16px 18px;
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 17px;
+          color: var(--sx-ink);
+          background: var(--sx-surface);
+          border: 1px solid var(--sx-hairline);
+          border-radius: 12px;
+          outline: none;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .sx-cta-input::placeholder { color: var(--sx-ink-3); }
+        .sx-cta-input:focus-visible {
+          border-color: var(--sx-accent);
+          box-shadow: 0 0 0 3px var(--sx-accent-soft);
+        }
+        .sx-cta-submit {
+          flex: 0 0 auto;
+          border: 0;
+          cursor: pointer;
+          background: var(--sx-ink);
+          color: var(--sx-surface);
+          border-radius: 12px;
+          padding: 16px 26px;
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 17px;
+          font-weight: 500;
+          white-space: nowrap;
+        }
+        .sx-cta-submit:disabled { opacity: 0.6; cursor: default; }
+        .sx-cta-error {
+          margin: 12px 0 0;
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 15px;
+          color: var(--sx-accent-text);
+        }
+        .sx-cta-alt {
+          margin: 16px 0 0;
+          text-align: center;
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 16px;
+          color: var(--sx-ink-2);
+        }
+        .sx-cta-alt-link { color: var(--sx-accent-text); text-decoration: none; font-weight: 500; }
+        .sx-cta-alt-link:hover { text-decoration: underline; }
+        .sx-cta-done {
+          margin: 36px auto 0;
+          max-width: 560px;
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 18px;
+          line-height: 28px;
+          color: var(--sx-ink);
+        }
+        @media (max-width: 620px) {
+          .sx-cta-row { flex-direction: column; }
+          .sx-cta-submit { width: 100%; }
+        }
+      `}</style>
+    </form>
+  );
+}
+
 export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
   return (
     <div id={showCta ? "contact" : undefined} style={{ position: "relative", overflow: "hidden", background: SX.bgAlt }}>
@@ -125,16 +271,17 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
           An associate that knows the whole case, and does the work. The judgment stays yours.
         </h2>
         <p style={{ fontFamily: SX.body, fontSize: 18, lineHeight: "30.6px", color: SX.ink2, margin: "20px auto 0", maxWidth: 560 }}>
-          Fifteen minutes, on your own cases, live.
+          Leave your email and we will show you Delta on your own cases.
         </p>
-        {/* Was an inline Calendly scheduler until 2026-08-28. The booking flow lives on
-            /demo now, which is the page that carries the conversion tracking, so this
-            band sends people there rather than running a second scheduler of its own. */}
-        <div style={{ marginTop: 36, display: "flex", justifyContent: "center" }}>
-          <a href="/demo" className="sx-btn" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "16px 32px", fontFamily: SX.body, fontSize: 17, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>
-            Book a demo
-          </a>
-        </div>
+        {/* An email field, not a button, since 2026-08-28. This band was an inline
+            Calendly scheduler, then a link to /demo. Both asked for a calendar slot,
+            which is the largest commitment on the page, from the reader least ready
+            to make it. An address is the smallest useful thing someone can give, and
+            the demo link is still one line below for anyone who is ready.
+
+            ONE FIELD ONLY. The API accepts a name and does not require one; every
+            extra box on a closing capture costs completions. */}
+        <EmailCapture />
       </Reveal>
       )}
 

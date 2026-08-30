@@ -7,77 +7,126 @@
  * much work the people already on payroll can get through in a day. Say that, and
  * then ask the question the whole product answers. Nothing else belongs here.
  *
- * THE DEVICE: one word of the sentence cycles. "paralegals", "case managers" and
- * "intake specialists" name the roles a firm hires to lift the cap, and then it
- * lands on "you" and HOLDS there, roughly twice as long, because that is the one
- * the reader was not expecting and the one that actually stings. Keep "you" last
- * and keep it dwelling; reorder the list and the section stops making its point.
+ * THE DEVICE: the subject of the sentence dissolves and reforms. "your paralegals",
+ * "your case managers" and "your intake specialists" name the roles a firm hires to
+ * lift the cap, and then it lands on "you" and HOLDS there, roughly twice as long,
+ * because that is the one the reader was not expecting and the one that actually
+ * stings. Keep "you" last and keep it dwelling; reorder the list and the section
+ * stops making its point. "you" is the one entry that takes no "your", for the
+ * obvious reason, so do not "fix" it into the pattern of the other three.
  *
- * This replaced a two-track evening chart (a "tonight" bar running the full width
- * against a "with Delta" bar stopping after five) on 2026-08-28. The chart argued
- * about hours worked. This argues about headcount, which is the frame the closing
- * question and the pricing section both use.
+ * HOW THE CHANGE READS. Letters fade out one after another from the left, the
+ * sentence glides to the width of the next wording while nothing is showing, and
+ * the new letters fade in the same way. It is a wave passing through the word, not
+ * a swap, not a slide, and not typing. Everything about the timing serves that:
+ * the fades are long and heavily overlapped, so roughly half the word is always
+ * mid-fade and no single letter ever reads as a discrete event.
  *
- * TWO THINGS HOLD THE LAYOUT STILL, and both matter more than they look:
- *   - A hidden copy of the LONGEST variant sits in the same grid cell as the real
- *     sentence, so the heading's height is fixed to the longest word and the page
- *     below it never jumps as the word changes.
- *   - The word sits in a slot whose width is measured for all four words up front
- *     and animated between them, so the tail of the sentence slides instead of
- *     snapping. Measurement re-runs once webfonts land and on resize, because
- *     Archivo's metrics are not the fallback's.
+ * THE STAGGER IS NORMALISED, which matters more than it sounds. The delay between
+ * letters is SPREAD divided by the letter count, not a fixed per-letter figure, so
+ * "you" and "your intake specialists" take exactly the same time to dissolve and
+ * to reform. A fixed per-letter delay makes the long wording take seven times
+ * longer than the short one and the section loses its pulse.
  *
- * Reduced motion holds the word on "you" and animates nothing, which still reads
- * as a complete sentence.
+ * THE THREE PHASES NEVER OVERLAP, and that is a correctness point rather than a
+ * stylistic one. The width only moves while the slot is empty. Earlier versions
+ * animated the width underneath visible letters and painted a long wording
+ * straight through "can do." for about a fifth of a second on every change, which
+ * reads as a rendering fault rather than a transition.
+ *
+ * THE LINE STRUCTURE IS PINNED. The lede is its own block, so the word ALWAYS
+ * begins a line. Without that the word is an inline run whose width changes: on a
+ * desktop column "…by what you" fits on the first line while "…by what your intake
+ * specialists" does not, so the word would drop a line mid-change and the sentence
+ * would lurch. Pinning the break also fixes the height, because the lede and the
+ * word line are each a constant number of lines whichever wording is showing.
+ *
+ * On phones the word is a block of its own, so "can do." sits on the line below and
+ * nothing to the right of the word can move at all.
+ *
+ * Reduced motion renders "you" and never animates, which still reads as a complete
+ * sentence. The animated copy is aria-hidden and a complete sentence is exposed to
+ * assistive technology instead, so a half-faded word is never announced.
+ *
+ * EVERY CLASS HERE IS PREFIXED sx-stakes-. A plain .sx-caret in an earlier version
+ * collided with the product panels' own caret markup and restyled it, on a page
+ * where nothing reported an error. Keep the prefix.
  */
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { SX } from "./tokens";
-import { Container, Eyebrow } from "./kit";
-import { Reveal, REVEAL_EASE } from "./reveal";
+import { Container } from "./kit";
+import { Reveal } from "./reveal";
 
 /** The cycle. "you" is last and dwells; see the header comment. */
-const ROLES = ["paralegals", "case managers", "intake specialists", "you"] as const;
+const ROLES = ["your paralegals", "your case managers", "your intake specialists", "you"] as const;
+
+/** The two halves of the sentence, either side of the word. */
+const LEDE = "Your entire firm is bottlenecked by what";
+const TAIL = "can do.";
 
 /**
- * The widest variant, which is what the hidden ghost renders to lock the heading's
- * height. Derived rather than typed, so adding a role to ROLES cannot leave a
- * longer word than the ghost reserves room for.
+ * The longest wording, which the hidden ghost renders to reserve the heading's
+ * height. Derived rather than typed, so adding a role cannot leave a wording
+ * longer than the ghost makes room for.
  */
 const LONGEST = ROLES.reduce((a, b) => (b.length > a.length ? b : a));
 
-const HOLD_MS = 1750;
-const HOLD_YOU_MS = 3800;
+/* Milliseconds. FADE is one letter's own fade; SPREAD is how long the wave takes
+   to cross the whole word, shared out between however many letters there are. The
+   heavy overlap between the two is what makes it read as a dissolve. */
+const FADE_OUT = 240;
+const SPREAD_OUT = 280;
+const RESIZE = 360;
+const FADE_IN = 320;
+const SPREAD_IN = 380;
+const HOLD_MS = 1400;
+const HOLD_YOU_MS = 3000;
 
-function useCycle(paused: boolean) {
-  const [i, setI] = useState(0);
+const OUT_TOTAL = SPREAD_OUT + FADE_OUT;
+const IN_TOTAL = SPREAD_IN + FADE_IN;
+
+type Phase = "in" | "hold" | "out" | "resize";
+
+/**
+ * Server-renders the first wording settled, so hydration matches and the section
+ * is a finished sentence before any script runs.
+ */
+function useDissolve(paused: boolean) {
+  const [{ i, phase }, set] = useState<{ i: number; phase: Phase }>({ i: 0, phase: "hold" });
+
   useEffect(() => {
     if (paused) return;
-    const t = setTimeout(
-      () => setI((n) => (n + 1) % ROLES.length),
-      ROLES[i] === "you" ? HOLD_YOU_MS : HOLD_MS,
-    );
+    const next: Record<Phase, { ms: number; to: { i: number; phase: Phase } }> = {
+      in: { ms: IN_TOTAL, to: { i, phase: "hold" } },
+      hold: { ms: ROLES[i] === "you" ? HOLD_YOU_MS : HOLD_MS, to: { i, phase: "out" } },
+      out: { ms: OUT_TOTAL, to: { i, phase: "resize" } },
+      resize: { ms: RESIZE, to: { i: (i + 1) % ROLES.length, phase: "in" } },
+    };
+    const t = setTimeout(() => set(next[phase].to), next[phase].ms);
     return () => clearTimeout(t);
-  }, [i, paused]);
-  return paused ? ROLES.length - 1 : i;
+  }, [i, phase, paused]);
+
+  return { i, phase };
 }
 
 /**
- * Measures every word once at the heading's real typography, so the slot can
- * animate to a known width instead of snapping to whatever the content happens to
- * be. Returns [] until it has measured, and the slot falls back to auto width.
+ * Measures every wording at the heading's real typography, so the slot can glide
+ * to a known width. Returns [] until it has measured, and until then the slot
+ * takes the natural width of its own letters, which is correct, just not animated.
  */
 function useWordWidths(ref: React.RefObject<HTMLSpanElement | null>) {
   const [widths, setWidths] = useState<number[]>([]);
-  // useEffect, not useLayoutEffect: this prerenders on the server, and the slot
-  // falls back to its natural auto width until the measurement lands, so there is
-  // nothing to fix up before paint.
+  // useEffect, not useLayoutEffect: this prerenders on the server, where there is
+  // nothing to measure, and the natural width is right until the measurement lands.
   useEffect(() => {
     const measure = () => {
       const el = ref.current;
       if (!el) return;
       const next = Array.from(el.children).map((c) => c.getBoundingClientRect().width);
-      setWidths((prev) => (prev.length === next.length && prev.every((w, i) => Math.abs(w - next[i]) < 0.5) ? prev : next));
+      setWidths((prev) =>
+        prev.length === next.length && prev.every((w, k) => Math.abs(w - next[k]) < 0.5) ? prev : next,
+      );
     };
     measure();
     window.addEventListener("resize", measure);
@@ -90,51 +139,61 @@ function useWordWidths(ref: React.RefObject<HTMLSpanElement | null>) {
 
 export function Stakes() {
   const reduced = useReducedMotion();
-  const i = useCycle(!!reduced);
+  const { i, phase } = useDissolve(!!reduced);
   const sizerRef = useRef<HTMLSpanElement>(null);
   const widths = useWordWidths(sizerRef);
-  const width = widths[i];
+
+  const word = reduced ? "you" : ROLES[i];
+  // While the slot is empty the width is already travelling to the next wording.
+  const targetWidth = widths[phase === "resize" ? (i + 1) % ROLES.length : i];
+  const letters = reduced || phase !== "resize" ? word.split("") : [];
+  const spread = phase === "out" ? SPREAD_OUT : SPREAD_IN;
 
   return (
     <section id="stakes" style={{ background: SX.surface, padding: "120px 0 60px" }}>
       <Container>
         <Reveal>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-            <Eyebrow>The problem</Eyebrow>
-
+            {/* The section is the sentence. It closed on "Why not operate like you
+                had double the headcount?" until 2026-08-28; the heading makes the
+                point on its own and the answer belongs to the sections below. */}
             <h2 className="sx-stakes-h2">
-              {/* The hidden longest variant fixes the height; the real sentence overlays it.
-                  The word MUST sit in the same unbreakable inline-block the real one uses:
-                  as plain text the browser breaks "intake specialists" across two lines and
-                  the ghost measures a line shorter than the sentence it is supposed to be
-                  reserving room for, which is exactly the jump this ghost exists to stop. */}
+              {/* A complete sentence for assistive technology, so a half-faded word
+                  is never announced. The visible copy below is aria-hidden. */}
+              <span className="sx-stakes-sr-only">{`${LEDE} you ${TAIL}`}</span>
+
+              {/* Reserves the height of the longest wording. Mirrors the real
+                  structure exactly, or it reserves the wrong number of lines. */}
               <span className="sx-stakes-ghost" aria-hidden>
-                Your cases are bottlenecked by the work <span className="sx-slot">{LONGEST}</span> can do.
+                <span className="sx-stakes-lede">{LEDE}</span>
+                <span className="sx-stakes-word">{LONGEST}</span> {TAIL}
               </span>
 
-              <span className="sx-stakes-real">
-                Your cases are bottlenecked by the work{" "}
+              <span className="sx-stakes-real" aria-hidden>
+                <span className="sx-stakes-lede">{LEDE}</span>
                 <motion.span
-                  className="sx-slot"
-                  animate={width ? { width } : undefined}
-                  transition={{ duration: 0.42, ease: REVEAL_EASE }}
+                  className="sx-stakes-word"
+                  animate={targetWidth ? { width: targetWidth } : undefined}
+                  transition={{ duration: RESIZE / 1000, ease: [0.44, 0, 0.56, 1] }}
                 >
-                  {/* in flow, invisible: sets the slot's baseline and line box */}
-                  <span className="sx-slot-ghost" aria-hidden>{ROLES[i]}</span>
-                  <AnimatePresence initial={false} mode="wait">
-                    <motion.span
-                      key={ROLES[i]}
-                      className="sx-slot-word"
-                      initial={{ opacity: 0, y: reduced ? 0 : 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: reduced ? 0 : -8 }}
-                      transition={{ duration: 0.26, ease: REVEAL_EASE }}
+                  {/* Keyed by phase so the letters remount and replay their fade.
+                      Within a phase the key is the position, so a letter that is
+                      already on screen is never restarted by an unrelated render. */}
+                  {letters.map((c, n) => (
+                    <span
+                      key={`${phase}-${i}-${n}`}
+                      className={phase === "out" ? "sx-stakes-letter-out" : phase === "in" ? "sx-stakes-letter-in" : undefined}
+                      style={
+                        reduced || phase === "hold"
+                          ? undefined
+                          : { animationDelay: `${(letters.length > 1 ? n / (letters.length - 1) : 0) * spread}ms` }
+                      }
                     >
-                      {ROLES[i]}
-                    </motion.span>
-                  </AnimatePresence>
+                      {c}
+                    </span>
+                  ))}
                 </motion.span>{" "}
-                can do.
+                {TAIL}
               </span>
 
               {/* off-layout, for measurement only */}
@@ -145,7 +204,6 @@ export function Stakes() {
               </span>
             </h2>
 
-            <p className="sx-stakes-ask">Why not operate like you had double the headcount?</p>
           </div>
         </Reveal>
       </Container>
@@ -157,73 +215,103 @@ export function Stakes() {
           font-family: var(--sx-archivo), 'Archivo Placeholder', sans-serif;
           font-weight: 500;
           font-size: 48px;
-          line-height: 55.2px;
+          line-height: 1.15;
           letter-spacing: -1px;
           color: var(--sx-ink);
-          margin: 24px 0 0;
+          margin: 0;
           max-width: 880px;
         }
         /* both in the same cell: the ghost sets the box, the real sentence paints it */
         .sx-stakes-ghost, .sx-stakes-real { grid-area: 1 / 1; align-self: start; }
         .sx-stakes-ghost { visibility: hidden; }
 
-        /* The cycling word. accent-TEXT, never the raw accent: that token exists
-           because the brand accent is not legible as body copy in every palette. */
-        .sx-slot {
-          display: inline-block;
-          position: relative;
+        .sx-stakes-sr-only {
+          position: absolute;
+          width: 1px; height: 1px;
+          margin: -1px; padding: 0; border: 0;
+          overflow: hidden;
+          clip-path: inset(50%);
           white-space: nowrap;
+        }
+
+        /* The lede is a BLOCK so the word always begins a line. See the header: without
+           this the word jumps a line mid-change on wide columns. */
+        .sx-stakes-lede { display: block; }
+
+        /* white-space:pre keeps the spaces inside the word, which are their own
+           spans and would otherwise collapse, and stops the word breaking at one.
+           accent-TEXT, never the raw accent: that token exists because the brand
+           accent is not legible as body copy in every palette. */
+        .sx-stakes-word {
+          display: inline-block;
+          white-space: pre;
           color: var(--sx-accent-text);
         }
-        .sx-slot-ghost { visibility: hidden; }
-        .sx-slot-word { position: absolute; left: 0; top: 0; white-space: nowrap; }
+
+        /* Letters stay display:inline. As inline-blocks each letter becomes its own
+           box, kerning between them is lost and the word measures wider than the
+           width the slot was told to animate to, which shows up as a ragged right
+           edge. That also rules out transforms here, since they do not apply to
+           non-replaced inline elements: opacity and blur are the whole effect. */
+        .sx-stakes-letter-in {
+          animation: sx-stakes-fade-in ${FADE_IN}ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .sx-stakes-letter-out {
+          animation: sx-stakes-fade-out ${FADE_OUT}ms cubic-bezier(0.55, 0, 0.68, 0.4) both;
+        }
+        @keyframes sx-stakes-fade-in {
+          from { opacity: 0; filter: blur(6px); }
+          to   { opacity: 1; filter: blur(0); }
+        }
+        @keyframes sx-stakes-fade-out {
+          from { opacity: 1; filter: blur(0); }
+          to   { opacity: 0; filter: blur(6px); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .sx-stakes-letter-in, .sx-stakes-letter-out { animation: none; }
+        }
 
         .sx-stakes-measure {
           position: absolute;
           left: 0; top: 0;
           visibility: hidden;
           pointer-events: none;
-          white-space: nowrap;
+          white-space: pre;
         }
-        /* width:max-content, or each block child would inherit the absolutely
-           positioned parent's shrink-to-fit width and every word would measure the
-           same as the longest one. That silently pins the slot to one width. */
+        /* width:max-content, or each block child inherits the absolutely positioned
+           parent's shrink-to-fit width and every wording measures the same as the
+           longest, which silently pins the slot to one width. */
         .sx-stakes-measure > span { display: block; width: max-content; }
 
-        .sx-stakes-ask {
-          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-size: 20px;
-          line-height: 30px;
-          color: var(--sx-ink-2);
-          margin: 28px 0 0;
-          max-width: 560px;
-        }
 
-        /* Below the desktop breakpoint the heading is sized off the COLUMN, not off
-           a fixed breakpoint value, and the two bands below are measured rather than
-           chosen by eye.
+        /* Below the desktop breakpoint the heading is sized off the COLUMN rather
+           than off a breakpoint value.
 
-           WHY IT MATTERS: the cycling word is an unbreakable inline-block, so at most
-           sizes "intake specialists" needs one more line than "you". The ghost above
-           reserves the tallest variant, so that extra line does not move the page,
-           but it does show up as dead space under every shorter word. For any given
-           column width there are narrow bands of font size where all four variants
-           wrap to the SAME number of lines, and the two rules below stay inside them:
-           0.086 of the column lands in the three-line band on phones, 0.062 lands in
-           the two-line band on tablets. A single formula cannot span both, and a
-           clamp() ceiling is what breaks it: capping the phone rule drops the size
-           out of the three-line band without dropping it into the two-line one, which
-           is how 600px and 700px viewports each grew a blank line. Re-measure both
-           constants if this sentence or the word list changes. */
-        @media (max-width: 820px) {
-          .sx-stakes-h2 { line-height: 1.18; letter-spacing: -0.4px; }
-          .sx-stakes-ask { font-size: 18px; line-height: 28px; margin-top: 22px; }
+           WHERE 0.060 COMES FROM: the lede is 798px wide at 48px, and the heading
+           shrink-wraps to it, so the desktop column IS the lede's width. The fluid
+           rule has to keep the lede inside the column, which means
+           font <= column / 16.625, or 0.0601 of the column. 0.062 left the lede
+           wrapping to two lines between 861px and 879px. Do not raise it.
+
+           Under 600px the word becomes a block of its own, because at phone sizes
+           the longest wording plus "can do." cannot share a line at any type size
+           worth reading. Nothing then sits to the right of the word, so the width
+           animation is irrelevant there and is overridden. */
+        @media (min-width: 600px) and (max-width: 879px) {
+          .sx-stakes-h2 {
+            font-size: calc((100vw - 80px) * 0.060);
+            letter-spacing: -0.4px;
+          }
         }
-        @media (max-width: 560px) {
-          .sx-stakes-h2 { font-size: max(19px, calc((100vw - 80px) * 0.086)); }
-        }
-        @media (min-width: 561px) and (max-width: 820px) {
-          .sx-stakes-h2 { font-size: calc((100vw - 80px) * 0.062); }
+        @media (max-width: 599px) {
+          .sx-stakes-h2 {
+            font-size: max(18px, calc((100vw - 80px) * 0.08));
+            letter-spacing: -0.4px;
+          }
+          /* The measured width is an inline style from the animation, and a block
+             slot must ignore it and take the column. */
+          .sx-stakes-word { display: block; width: auto !important; }
         }
       `}</style>
     </section>

@@ -16,14 +16,13 @@
  * middle tier. See the header of components/v2/sasonix/Pricing.tsx for why that
  * is a correctness point and not a style one.
  */
-import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { FooterV2 } from "@/components/FooterV2";
 import {
   BF, BG, SERIF, SANS,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, Check, PageHero, FaqAccordion,
+  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, PageHero, FaqAccordion,
 } from "@/components/marketing/kit";
-import { TIERS, TOP_BAND_ACCOUNTS, INCLUDED, PRICE_PARAGRAPH, STARTING_PRICE, annualCost, perAccount } from "@/lib/pricing";
+import { TIERS, TOP_BAND_ACCOUNTS, PRICE_PARAGRAPH, STARTING_PRICE } from "@/lib/pricing";
 
 const COMPARE = [
   { k: "Cost", hire: "$50,000 to $65,000 a year, loaded", delta: `${STARTING_PRICE} to $2,099 a month for the firm, flat` },
@@ -39,7 +38,7 @@ const FAQ = [
   },
   {
     q: "Is it priced per seat?",
-    a: `No. The price is for the firm, by the number of accounts you provision, so it does not climb every time someone new needs to use it. A heavy case with thousands of pages does not change the number either. Firms above ${TOP_BAND_ACCOUNTS} accounts get a custom plan.`,
+    a: `No. There is no per-seat multiplier. The price is one number for the firm, set by the band your account count falls into, so it does not move as you add people inside your band. A heavy case with thousands of pages does not change it either. Firms above ${TOP_BAND_ACCOUNTS} accounts get a custom plan.`,
   },
   {
     q: "Which tier is the right one?",
@@ -55,19 +54,8 @@ const FAQ = [
   },
 ];
 
-function Chevron({ open }: { open: boolean }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BF.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ flex: "0 0 auto", transform: `rotate(${open ? 180 : 0}deg)`, transition: "transform 0.24s ease" }} aria-hidden>
-      <path d="M6 9l6 6 6-6" />
-    </svg>
-  );
-}
-
 export default function PricingClient() {
   const rise = useRise();
-  const [open, setOpen] = useState<string | null>(null);
-  const reduce = useReducedMotion();
 
   return (
     <main style={{ background: BG.white }}>
@@ -79,11 +67,15 @@ export default function PricingClient() {
         ctaLabel="Book a demo"
       />
 
-      {/* PRICE + WHAT YOU GET */}
-      {/* Three equivalent bands as rows, then the included list once. The value is
-          identical across the tiers, so repeating it three times in three cards
-          would be three copies of the same paragraph and an implied ranking that
-          does not exist. */}
+      {/* PRICE */}
+      {/* Three equivalent bands as rows. The value is identical across the tiers,
+          so repeating it three times in three cards would be three copies of the
+          same paragraph and an implied ranking that does not exist.
+
+          The shared "everything included" checklist that used to sit under the rows
+          was cut on 2026-08-28, after the homepage lost the same list. Each tier row
+          already expands to its own figures, and what a firm gets is the job of the
+          sections below and of /use-cases, not of a card repeating the tiers. */}
       <Section bg={BG.offWhite}>
         <Container>
           <motion.div {...rise(0)} style={{ maxWidth: 720 }}>
@@ -99,24 +91,12 @@ export default function PricingClient() {
           </motion.div>
 
           <div style={{ marginTop: 44, borderTop: `1px solid ${BF.hairlineStrong}` }}>
-            {TIERS.map((t, i) => {
-              const isOpen = open === t.band;
-              const panelId = `cd-tier-${t.accounts}`;
-              return (
+            {TIERS.map((t, i) => (
                 <motion.div key={t.band} {...rise(0.05 * i)} style={{ borderBottom: `1px solid ${BF.hairline}` }}>
-                  <button
-                    type="button"
+                  <div
                     className="cd-tier-row"
-                    aria-expanded={isOpen}
-                    aria-controls={panelId}
-                    onClick={() => setOpen(isOpen ? null : t.band)}
                     style={{
                       width: "100%",
-                      background: "none",
-                      border: "none",
-                      textAlign: "left",
-                      cursor: "pointer",
-                      font: "inherit",
                       display: "flex",
                       alignItems: "baseline",
                       justifyContent: "space-between",
@@ -125,7 +105,6 @@ export default function PricingClient() {
                     }}
                   >
                     <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <Chevron open={isOpen} />
                       <span className="cd-tier-band" style={{ fontFamily: SANS, fontSize: 19, fontWeight: 600, color: BF.ink, letterSpacing: "-0.2px" }}>
                         {t.band}
                       </span>
@@ -136,31 +115,31 @@ export default function PricingClient() {
                       </span>
                       <span className="cd-tier-per" style={{ fontFamily: SANS, fontSize: 17, fontWeight: 500, color: BF.muted }}>per month</span>
                     </span>
-                  </button>
-
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        id={panelId}
-                        key="panel"
-                        initial={reduce ? false : { height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        <div className="cd-tier-detail" style={{ display: "flex", flexWrap: "wrap", gap: "6px 24px", padding: "0 4px 30px 46px", fontFamily: SANS, fontSize: 16, lineHeight: 1.5, color: BF.muted }}>
-                          <span>{t.automations} automations included</span>
-                          <span>{perAccount(t)} per account</span>
-                          <span>{annualCost(t)} a year</span>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  </div>
                 </motion.div>
-              );
-            })}
+            ))}
           </div>
+
+          {/* The same promise the homepage makes. Both surfaces have to agree, for
+              the same reason the price itself lives in one constant. */}
+          <motion.p
+            {...rise(0.16)}
+            style={{
+              margin: "28px 0 0",
+              padding: "20px 24px",
+              border: `1px solid ${BF.accent}`,
+              borderRadius: 14,
+              background: BF.accentSoft,
+              fontFamily: SANS,
+              fontSize: 18,
+              lineHeight: "28px",
+              fontWeight: 500,
+              color: BF.ink,
+              textAlign: "center",
+            }}
+          >
+            Guaranteed hours back every week, for every person, or your money back.
+          </motion.p>
 
           <motion.p {...rise(0.2)} style={{ fontFamily: SANS, fontSize: 16, color: BF.muted, margin: "20px 0 0" }}>
             More than {TOP_BAND_ACCOUNTS} accounts?{" "}
@@ -169,16 +148,7 @@ export default function PricingClient() {
             </a>
           </motion.p>
 
-          <motion.ul {...rise(0.24)} style={{ listStyle: "none", margin: "40px 0 0", background: BG.white, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "10px 28px" }}>
-            {INCLUDED.map((item, i, arr) => (
-              <li key={item} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "20px 0", borderBottom: i < arr.length - 1 ? `1px solid ${BF.hairline}` : "none" }}>
-                <Check />
-                <span style={{ fontFamily: SANS, fontSize: 16, fontWeight: 500, color: BF.ink, lineHeight: 1.5, letterSpacing: "-0.2px" }}>{item}</span>
-              </li>
-            ))}
-          </motion.ul>
-
-          <motion.div {...rise(0.28)} style={{ marginTop: 32 }}>
+          <motion.div {...rise(0.24)} style={{ marginTop: 32 }}>
             <PillLink href="/demo" location="pricing_body">Book a demo</PillLink>
           </motion.div>
         </Container>
