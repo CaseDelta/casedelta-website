@@ -171,9 +171,18 @@ export function AutomationThesis() {
           <div className="sx-thesis-card">
             <span aria-hidden className="sx-thesis-ellipse" />
             <div className="sx-thesis-copy">
+          {/* ⚠️ "Y, or Z" ARE PLACEHOLDERS AND MUST NOT SHIP. Camren's new line,
+              2026-09-02, with two slots left open on purpose: the examples are
+              meant to be real jobs Rudin Law actually hands Delta, not invented
+              ones, and an agent is pulling them from production usage as this is
+              written. "SOL sweep" is the first and is real.
+
+              Fill the other two from that list before this reaches main. A
+              literal "Y, or Z" on casedelta.com is the most obviously unfinished
+              thing a homepage can say. */}
           <h2 className="sx-thesis">
-            Delta is the AI that does actual partner-level, paralegal, and staff work in the systems your firm
-            already uses.
+            Hand off work to Delta, like SOL sweep, Y, or Z. It does it across any &amp; all systems your firm
+            uses.
           </h2>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
