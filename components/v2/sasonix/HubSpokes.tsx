@@ -71,25 +71,9 @@ const NODES = [
 /** Not a product. Rendered differently on purpose; see CATEGORY_NODE below. */
 const CATEGORY = "Anything Else";
 
-/** Seconds between one spoke firing and the next. The full cycle is this times
- *  the node count, so adding a system slows the loop rather than crowding it. */
-const STEP = 0.5;
-
-/**
- * Cycle length and the keyframe stops, derived rather than typed.
- *
- * Every packet shares one keyframe set and differs only by animation-delay, so
- * the percentages have to be computed from the cycle: a packet must finish
- * travelling and fade out before its own next turn comes round, or two dots run
- * the same spoke at once.
- */
-const CYCLE = +(STEP * NODES.length).toFixed(2);
-const TRAVEL = 1.05; // seconds a packet spends in flight
-const HOLD = 0.35; // seconds it sits on the node before fading
-const pct = (sec: number) => +((sec / CYCLE) * 100).toFixed(2);
-const TRAVEL_END = pct(TRAVEL);
-const ARRIVE_MID = pct(TRAVEL + HOLD / 2);
-const ARRIVE_END = pct(TRAVEL + HOLD);
+/** One full ripple, hub to past the ring. Slow on purpose: this sits beside a
+ *  paragraph somebody is meant to read. */
+const RIPPLE = 5.4;
 
 const SIZE = 420;
 const R = 168; // node ring radius
@@ -111,6 +95,22 @@ export function HubSpokes() {
       <svg viewBox={`0 0 ${SIZE} ${SIZE}`} width="100%" height="100%" style={{ position: "absolute", inset: 0, overflow: "visible" }}>
         <circle cx={SIZE / 2} cy={SIZE / 2} r={R} fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="1" />
         <circle cx={SIZE / 2} cy={SIZE / 2} r={R * 0.62} fill="none" stroke="rgba(255,255,255,0.055)" strokeWidth="1" />
+        {/* The ripple: one ring leaving the hub and fading as it passes the
+            systems. Two of them, half a cycle apart, so the movement is
+            continuous without ever being fast. */}
+        {[0, 1].map((n) => (
+          <circle
+            key={n}
+            className="sx-hub-ripple"
+            cx={SIZE / 2}
+            cy={SIZE / 2}
+            r={R}
+            fill="none"
+            stroke={SX.accentOnMedia}
+            strokeWidth="1"
+            style={{ animationDelay: `${n * (RIPPLE / 2)}s` }}
+          />
+        ))}
         {NODES.map((name, i) => {
           const a = (i / NODES.length) * Math.PI * 2 - Math.PI / 2;
           // Start outside the hub and stop short of the node, so the line never
@@ -120,31 +120,13 @@ export function HubSpokes() {
           const x2 = SIZE / 2 + Math.cos(a) * (R - 20);
           const y2 = SIZE / 2 + Math.sin(a) * (R - 20);
           return (
-            <g key={name}>
-              <line
-                x1={x1} y1={y1} x2={x2} y2={y2}
-                stroke="rgba(255,255,255,0.16)"
-                strokeWidth="1"
-                strokeDasharray="3 4"
-              />
-              {/* The packet. Starts at the hub edge and is translated the length
-                  of its own spoke, so one keyframe serves all seven and only the
-                  two custom properties differ. transform-box: view-box puts the
-                  translation in viewBox units, which is what makes it survive the
-                  box being resized. */}
-              <circle
-                className="sx-hub-packet"
-                cx={x1}
-                cy={y1}
-                r="3.5"
-                fill={SX.accentOnMedia}
-                style={{
-                  ["--dx" as string]: `${x2 - x1}`,
-                  ["--dy" as string]: `${y2 - y1}`,
-                  animationDelay: `${i * STEP}s`,
-                }}
-              />
-            </g>
+            <line
+              key={name}
+              x1={x1} y1={y1} x2={x2} y2={y2}
+              stroke="rgba(255,255,255,0.16)"
+              strokeWidth="1"
+              strokeDasharray="3 4"
+            />
           );
         })}
       </svg>
@@ -193,9 +175,7 @@ export function HubSpokes() {
           <span
             key={name}
             className={name === CATEGORY ? "sx-hub-node sx-hub-node-any" : "sx-hub-node"}
-            /* Same delay as its own packet, so the pill brightens at the moment
-               the packet lands on it rather than on a rhythm of its own. */
-            style={{ position: "absolute", left: `${x}%`, top: `${y}%`, animationDelay: `${i * STEP}s` }}
+            style={{ position: "absolute", left: `${x}%`, top: `${y}%` }}
           >
             {name}
           </span>
@@ -229,50 +209,35 @@ export function HubSpokes() {
         }
 
         /* ── The animation ──
-           Every spoke used to fade its whole length up and down together. That
-           reads as blinking: it says something is happening, not WHAT. A packet
-           travelling out from the hub to one system at a time says the thing the
-           paragraph beside it says, which is that Delta goes to the systems.
+           A ring leaves the hub and fades as it passes the systems. That is all.
 
-           Outward, not inward, and that is the argument. Inward would mean the
-           systems feed Delta, which is the shape of every other tool. Outward is
-           Delta signing in and doing the work where the work lives.
+           IT WAS A TRAVELLING DOT PER SPOKE and Camren hated it, which is fair:
+           seven beads crawling outward is fussy, it draws the eye away from the
+           sentence next to it, and at any moment a reader is counting objects
+           rather than reading. Do not put them back.
 
-           One at a time, half a second apart, so the eye follows a single object
-           instead of watching seven things flicker. The full cycle is STEP times
-           the node count, so adding a system lengthens the loop rather than
-           crowding it. */
-        .sx-hub-packet {
+           The ripple keeps the one thing the dots got right, which is that the
+           motion goes OUTWARD from Delta. Inward would say the systems feed
+           Delta, the shape of every other tool in this market. Outward is Delta
+           going to the work.
+
+           Scale, not the r attribute: a transform runs on the compositor and
+           costs nothing, where animating r relayouts the circle every frame.
+           transform-box and transform-origin put the growth at the hub centre in
+           viewBox units, so it survives the diagram being resized on a phone. */
+        .sx-hub-ripple {
           transform-box: view-box;
-          opacity: 0;
-          animation: sx-hub-travel ${CYCLE}s linear infinite;
+          transform-origin: ${SIZE / 2}px ${SIZE / 2}px;
+          animation: sx-hub-ripple ${RIPPLE}s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
         }
-        @keyframes sx-hub-travel {
-          0%   { transform: translate(0, 0); opacity: 0; }
-          4%   { opacity: 1; }
-          ${TRAVEL_END}%  { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)); opacity: 1; }
-          ${ARRIVE_END}%  { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)); opacity: 0; }
-          100% { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)); opacity: 0; }
-        }
-
-        /* The pill brightens as its packet lands, then settles back. */
-        .sx-hub-node {
-          animation: sx-hub-arrive ${CYCLE}s ease-out infinite;
-        }
-        @keyframes sx-hub-arrive {
-          0%, ${TRAVEL_END}%, 100% {
-            border-color: rgba(255, 255, 255, 0.16);
-            background: rgba(255, 255, 255, 0.09);
-          }
-          ${ARRIVE_MID}% {
-            border-color: rgba(156, 176, 255, 0.75);
-            background: rgba(156, 176, 255, 0.18);
-          }
+        @keyframes sx-hub-ripple {
+          0%   { transform: scale(${(HUB / 2 / R).toFixed(3)}); stroke-opacity: 0; }
+          12%  { stroke-opacity: 0.42; }
+          100% { transform: scale(1.16); stroke-opacity: 0; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .sx-hub-packet { animation: none; opacity: 0; }
-          .sx-hub-node { animation: none; }
+          .sx-hub-ripple { animation: none; stroke-opacity: 0; }
         }
 
         /* THE BOX SHRINKS, IT DOES NOT SCALE. transform: scale() only changes

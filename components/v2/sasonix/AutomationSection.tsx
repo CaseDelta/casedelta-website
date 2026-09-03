@@ -261,7 +261,8 @@ export function AutomationThesis() {
               document outline however the two look on screen; the size makes them
               equal to the eye, and the markup keeps the outline honest. */}
           <p className="sx-thesis-close">
-            Whatever you need done, Delta does it in any system your firm uses.
+            Whatever you need done, <span className="sx-thesis-name">Delta</span> does it in any system your
+            firm uses.
           </p>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
@@ -440,6 +441,13 @@ export function AutomationCards() {
         @media (max-width: 1100px) { .sx-thesis-close { font-size: 32px; line-height: 42px; } }
         @media (max-width: 760px)  { .sx-thesis-close { font-size: 26px; line-height: 35px; letter-spacing: -0.6px; margin-top: 20px; } }
 
+        /* Both paragraphs name Delta, and both are set in the brand colour. The
+           span sets colour on itself, so it wins over the muted inherited colour
+           of the closing paragraph without needing a second rule.
+
+           accentOnMedia, never the raw accent: #5170FF measures 3.6:1 on this
+           card, which is legal at 38px and muddy against dark navy. This is the
+           role that exists for the accent over a dark surface. */
         .sx-thesis-name { color: var(--sx-accent-on-media); }
 
         .sx-thesis {
