@@ -171,18 +171,30 @@ export function AutomationThesis() {
           <div className="sx-thesis-card">
             <span aria-hidden className="sx-thesis-ellipse" />
             <div className="sx-thesis-copy">
-          {/* ⚠️ "Y, or Z" ARE PLACEHOLDERS AND MUST NOT SHIP. Camren's new line,
-              2026-09-02, with two slots left open on purpose: the examples are
-              meant to be real jobs Rudin Law actually hands Delta, not invented
-              ones, and an agent is pulling them from production usage as this is
-              written. "SOL sweep" is the first and is real.
+          {/* THE THREE EXAMPLES ARE MEASURED, not invented. They come from Rudin
+              Law's real production usage over 2026-08-19 to 09-02: 273 messages a
+              human typed, 66 threads, 4 daily automations, 35 morning briefs.
 
-              Fill the other two from that list before this reaches main. A
-              literal "Y, or Z" on casedelta.com is the most obviously unfinished
-              thing a homepage can say. */}
+              "Omissions report" is the firm's own word, used 9 times, and it is
+              the single dominant job: three of their four scheduled automations
+              are it in different cuts. "File review" is their exact phrase, 8
+              uses, and they taught Delta a stored template for it.
+
+              ⚠️ "SOL SWEEP" IS OUR PHRASE, NOT THEIRS. The job is real and Delta
+              does it against their `SOL Warning List` and `SOL Field Empty`
+              reports, but no lawyer at any firm has ever typed "SOL sweep": it
+              appears twice in all of production and both are Delta's own
+              narration at a different firm. Firms say "SOL" as a noun freely and
+              never "sweep". Their register would be "SOL warning list" or "cases
+              missing an SOL". Kept as Camren wrote it, flagged here so the next
+              person knows it is the one word on this line a customer did not say.
+
+              Do not add an example that is not in that dataset. The whole point
+              of these three is that a lawyer reading them recognises their own
+              week. */}
           <h2 className="sx-thesis">
-            Hand off work to Delta, like SOL sweep, Y, or Z. It does it across any &amp; all systems your firm
-            uses.
+            Hand off work to Delta, like SOL sweep, omissions report, or file review. It does it across any
+            &amp; all systems your firm uses.
           </h2>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
