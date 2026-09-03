@@ -56,7 +56,6 @@ import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
 import { Reveal, revealProps } from "./reveal";
 import { TIERS, TOP_BAND_ACCOUNTS } from "@/lib/pricing";
-import { PricingExtras } from "./PricingExtras";
 
 export function Pricing() {
   return (
@@ -70,16 +69,15 @@ export function Pricing() {
               spent two sentences setting up a comparison the prices underneath
               make on their own.
 
-              "A fraction of payroll" keeps the argument the deleted heading was
-              making and is the only anchor this section needs: the reader is
-              about to see $599 and has to weigh it against something, and the
-              thing is a salary, not another tool's price.
+              "A fraction of payroll." led that line for one revision and was cut
+              the same day. The salary comparison is still the argument this
+              section rests on, and it is now made by the prices themselves and
+              by the comparison table on the page, rather than announced.
 
-              It is the h2 now, so the section still has a heading and #pricing
-              still lands on one. No sub: the tiers are the next thing, and a
-              line between them and this would be a line about nothing. */}
+              No sub: the tiers are the next thing, and a line between them and
+              this would be a line about nothing. */}
           <SectionHead
-            title="A fraction of payroll. One flat price for the whole firm."
+            title="One flat price for the whole firm."
             titleMaxW={780}
           />
         </Reveal>
@@ -113,23 +111,57 @@ export function Pricing() {
                 </div>
               </motion.div>
           ))}
+
+          {/* THE OVERFLOW BAND IS A ROW, not a footnote (Camren, 2026-09-02). It
+              was a sentence under the table, "More than N accounts? Contact us
+              for a custom plan.", which put the largest firms outside the thing
+              they were reading. A firm at 25 accounts is a customer, not an
+              exception, and the table is the place that answers "what do I pay".
+
+              It is NOT a TIERS entry. TIERS carries a monthly number that
+              annualCost and perAccount do arithmetic on, and TOP_BAND_ACCOUNTS
+              is derived from its last element, so a fourth entry with no price
+              would either break those or need a fake one. The band label reads
+              off TOP_BAND_ACCOUNTS so it follows the table rather than repeating
+              a number that lives in lib/pricing.ts. */}
+          <motion.div {...revealProps({ delay: TIERS.length * 0.06, amount: 0.3 })} style={{ borderBottom: `1px solid ${SX.hairline}` }}>
+            <div
+              className="sx-price-row"
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+                gap: 20,
+                padding: "26px 4px",
+              }}
+            >
+              <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span className="sx-price-band" style={{ fontFamily: SX.body, fontSize: 19, fontWeight: 500, color: SX.ink }}>
+                  More than {TOP_BAND_ACCOUNTS} accounts
+                </span>
+              </span>
+              <span style={{ display: "flex", alignItems: "baseline", gap: 6, flex: "0 0 auto" }}>
+                {/* Set at the price size, not as body copy: it occupies the same
+                    slot as $599 and has to read as an answer to the same
+                    question, not as an apology for not having one. */}
+                <a
+                  href="/demo"
+                  className="sx-price-custom"
+                  style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 40, letterSpacing: "-1px", color: SX.accentText, lineHeight: 1, textDecoration: "none" }}
+                >
+                  Let&rsquo;s talk
+                </a>
+              </span>
+            </div>
+          </motion.div>
         </div>
 
       </Container>
 
-      {/* The guarantee and what automations actually are. Lives in its own file
-          because it is copy with sources behind it, not layout. */}
-      <PricingExtras />
-
       <Container>
         <Reveal>
-          <div style={{ maxWidth: 860, margin: "50px auto 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }} className="sx-price-foot">
-            <p style={{ margin: 0, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-              More than {TOP_BAND_ACCOUNTS} accounts?{" "}
-              <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>
-                Contact us for a custom plan.
-              </a>
-            </p>
+          <div style={{ maxWidth: 860, margin: "50px auto 0", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 20, flexWrap: "wrap" }} className="sx-price-foot">
             <a href="/demo" className="sx-btn" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "14px 26px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>
               Book a demo
             </a>
@@ -137,13 +169,16 @@ export function Pricing() {
         </Reveal>
       </Container>
       <style>{`
+        .sx-price-custom { transition: color 0.2s ease; }
+        .sx-price-custom:hover { color: var(--sx-accent); text-decoration: underline; }
+
         /* Narrow screens: shrink the row rather than stacking it. The band and the
            price belong on one line, which is the whole point of a line item, and at
            these sizes the longest pair still fits a 360px viewport. */
         @media (max-width: 560px) {
           .sx-price-row { padding: 20px 2px !important; gap: 12px !important; }
           .sx-price-band { font-size: 16px !important; white-space: nowrap; }
-          .sx-price-amt { font-size: 30px !important; }
+          .sx-price-amt, .sx-price-custom { font-size: 30px !important; }
           /* "/month" contracts to "/mo" so the longest pair still holds one line. */
           .sx-price-per { font-size: 0 !important; }
           .sx-price-per::after { content: "/mo"; font-size: 14px; }
