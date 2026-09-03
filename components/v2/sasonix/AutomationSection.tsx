@@ -171,55 +171,82 @@ export function AutomationThesis() {
           <div className="sx-thesis-card">
             <span aria-hidden className="sx-thesis-ellipse" />
             <div className="sx-thesis-copy">
-          {/* TWO READS AND ONE WRITE (Camren's structure, 2026-09-02). Every
-              legal AI can read. Writing back into the system of record is the
-              thing almost none of them do, and a homepage that only lists reads
-              is describing a chatbot, so the last example has to be unmistakably
-              a write.
+          {/* TWO READS AND ONE WRITE. Every legal AI can read. Writing back into
+              the system of record is the thing almost none of them do, and three
+              reads in a row describe a chatbot, so the last example is
+              unmistakably a write.
+
+              THE OPENING NAMES DELTA FIRST. "Hand off work to Delta, like ..."
+              led with the instruction; "Delta is the AI you can hand real work
+              to, like ..." leads with what it is, then earns the claim with three
+              examples. "REAL work" is the load-bearing word: it is the answer to
+              what every reader already assumes, which is that this is another
+              chatbot that drafts a paragraph.
+
+              THEY ARE VERBS, NOT NOUNS. This read "like the cases missing an SOL
+              date" until Camren caught it: you do not hand off a noun. You hand
+              off a job, and "the cases missing an SOL date" is the ANSWER to a
+              job, not the job. Gerunds fix it and keep the three parallel, so
+              each one is something a person could actually be asked to go do.
+
+              THEN CUT FOR LENGTH, also Camren. Four words went: "every case
+              missing an SOL date" to "a missing SOL", "chasing down" to
+              "chasing", and "a full file review straight into" to "a file review
+              into". Nothing load-bearing left with them. "The money" stays,
+              because it is the word that makes that example about money, and
+              "into Filevine" stays, because it is the word that makes the third
+              one a write. Trim around those two, never through them.
 
               Each also has to land as "that takes me hours", "that is how I get
               sued", or "that is my money". All three are Rudin Law's real
               production usage, 2026-08-19 to 09-02:
 
-                cases missing an SOL date   READ, and RISK. The malpractice one.
-                  Delta reads their `SOL Field Empty` report, and on 2026-09-02 it
-                  cross-checked the 351-row whole-docket report and found a
-                  litigation matter their own saved report had MISSED. A blank SOL
-                  field is how a firm loses a case it already won.
+                finding a missing SOL      READ, RISK. The malpractice one. Delta
+                                           reads their `SOL Field Empty` report,
+                  and on 2026-09-02 it cross-checked the 351-row whole-docket
+                  report and found a litigation matter their own saved report had
+                  MISSED. A blank SOL field is how a firm loses a case it won.
 
-                the money stuck in          READ, and MONEY. Josh's "reverse
-                disbursement                docket cashflow analysis": what is
-                  settled and pending disbursement and what is holding it up. Also
-                  what Poletti's testimonial further down this page is about, so
-                  the page argues it twice, once in the firm's words and once in a
+                chasing money stuck        READ, MONEY. Josh's "reverse docket
+                in disbursement            cashflow analysis": what is settled and
+                  pending disbursement and what is holding it up. Also what
+                  Poletti's testimonial further down this page is about, so the
+                  page argues it twice, once in the firm's words and once in a
                   customer's.
 
-                a file review written       WRITE, and TIME. "File review" is
-                straight into Filevine      their exact phrase, 14 threads, and
-                  Josh's version is a stored template Delta fills and then WRITES
-                  INTO THE CASE DESCRIPTION FIELD. That is why this is the write
-                  example rather than an invented one: the same job they already
-                  ask for ends in a write, verified.
+                writing a file review      WRITE, TIME. "File review" is their
+                into Filevine              exact phrase, 14 threads, and Josh's
+                                           version is a stored template Delta
+                  fills and then writes INTO THE CASE DESCRIPTION FIELD. The write
+                  example is a job they already ask for that already ends in a
+                  write, rather than one invented to have a write on the list.
 
               Filevine is named on purpose even though Delta reaches nine systems
               at this firm. A named system is a claim a reader can check; "your
-              case system" is a hedge. The hub beside this paragraph generalises
-              it, which is exactly the division of labour between the two.
+              case system" is a hedge. The second paragraph and the hub beside it
+              do the generalising, which is the division of labour between them.
 
-              THE SECOND PARAGRAPH IS GONE, Camren's call, including his own
-              closing line. The three examples are the argument. What went with it
-              was the approval clause, so nothing on this card now says Delta
-              stops for a human before it writes. That is the product's central
-              rule and it is worth a home somewhere on this page.
-
-              STILL UNSHIPPED: the pattern they call "dry run", typed 10 times.
-              Spreadsheet with nothing applied, they review it, then Delta writes
-              the approved rows back into Filevine. On 2026-09-01 it wrote 34
-              dates back and re-read every one to confirm. It deserves a section. */}
+              STILL UNSHIPPED, and it is the strongest thing in the data: the
+              pattern the firm calls "dry run", typed 10 times. Spreadsheet with
+              nothing applied, they review it, then Delta writes the approved rows
+              back into Filevine. On 2026-09-01 it wrote 34 dates back and re-read
+              every one to confirm. It is also where the approval promise belongs,
+              which nothing on this card currently makes. */}
           <h2 className="sx-thesis">
-            Hand off work to Delta, like the cases missing an SOL date, the money stuck in disbursement, or a
-            file review written straight into Filevine.
+            Delta is the AI you can hand real work to, like finding a missing SOL, chasing money stuck in
+            disbursement, or writing a file review into Filevine.
           </h2>
+          {/* Camren's line, verbatim, and at the SAME SIZE as the paragraph above
+              it. That is the point of it: the first paragraph is three specifics,
+              and this one says the specifics are not the limit. Set smaller it
+              would read as a caption on the examples, which is the opposite.
+
+              A <p> and not a second <h2>. Two h2s in a section is a broken
+              document outline however the two look on screen; the size makes them
+              equal to the eye, and the markup keeps the outline honest. */}
+          <p className="sx-thesis-close">
+            Whatever you need done, Delta does it in any system your firm uses.
+          </p>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
               and stops being a statement. The definition keeps display scale; the list
@@ -361,6 +388,24 @@ export function AutomationCards() {
           .sx-thesis-card { padding: 34px 22px; border-radius: 18px; }
         }
 
+
+        /* Deliberately the same scale as .sx-thesis. If one changes, change both:
+           they are one statement in two beats and a size gap turns the second into
+           a caption. */
+        .sx-thesis-close {
+          max-width: 640px;
+          margin: 26px 0 0;
+          text-align: left;
+          font-family: var(--sx-archivo), sans-serif;
+          font-weight: 500;
+          font-size: 38px;
+          line-height: 48px;
+          letter-spacing: -1px;
+          color: var(--sx-on-media-muted);
+          text-wrap: balance;
+        }
+        @media (max-width: 1100px) { .sx-thesis-close { font-size: 32px; line-height: 42px; } }
+        @media (max-width: 760px)  { .sx-thesis-close { font-size: 26px; line-height: 35px; letter-spacing: -0.6px; margin-top: 20px; } }
 
         .sx-thesis {
           max-width: 640px;
