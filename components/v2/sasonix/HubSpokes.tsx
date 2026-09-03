@@ -17,28 +17,44 @@
  * careful about here: a name on this diagram is a claim a firm will test by
  * asking "do you connect to X". Camren's list when he asked for this included
  * Lexis, which is left out because nothing in the repo shows Delta reaching it,
- * unlike the eight below. Add a name when the connection exists, not before.
+ * unlike the six below. Add a name when the connection exists, not before.
  * (The invented names in FirmMarquee.tsx are a separate, explicitly authorised
  * placeholder; this file is not that.)
  *
- * The ring is deliberately not exhaustive. Delta's onboarding is meant to reach
- * a platform it has never seen in about five minutes, so eight named systems and
- * the "and whatever else you run" line under the sentence carry more than a
- * complete list would.
+ * The ring is deliberately not exhaustive, and the paragraph beside it says so
+ * outright: "whatever you need done, Delta does it in any system your firm uses".
+ * Delta's onboarding is meant to reach a platform it has never seen in about five
+ * minutes, so six named systems plus that sentence carry more than a complete
+ * list would. Adding names to look comprehensive works against the claim.
  */
 import { SX } from "./tokens";
 
-/** Ordered clockwise from the top. Longest labels go left and right, where there
- *  is horizontal room; the short ones take top and bottom. */
+/**
+ * Ordered clockwise from twelve o'clock, and the order is not arbitrary.
+ *
+ * The longest labels take TOP and BOTTOM, where a pill is centred horizontally
+ * and has the whole box to spread into. The sides are where a pill runs outward
+ * from the ring and is the first thing to cross the card edge on a narrow screen,
+ * so the short ones go there. Reorder these and check a 390px phone.
+ *
+ * Six, not eight. Dropbox and Clio came off on 2026-09-02 (Camren), and the ring
+ * redistributes on its own because every angle is derived from NODES.length.
+ * Worth knowing: neither was in the nine systems Rudin Law actually has
+ * connected, and this diagram sits beside a paragraph whose three examples all
+ * come from that firm. The six here are closer to a real stack than the eight
+ * were.
+ *
+ * "Gmail/Outlook" is one node rather than two because they are the same job to a
+ * reader: it is where the firm's mail lives. Two nodes would spend a sixth of the
+ * ring making a distinction nobody is asking about.
+ */
 const NODES = [
-  "Filevine",
-  "Outlook",
+  "Gmail/Outlook",
   "QuickBooks",
-  "Dropbox",
-  "Clio",
   "SharePoint",
   "Google Drive",
   "Lead Docket",
+  "Filevine",
 ];
 
 const SIZE = 420;
