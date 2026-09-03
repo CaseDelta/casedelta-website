@@ -157,22 +157,34 @@ export function WhySasonix() {
       </Container>
 
       <style>{`
+        /* SAME SIZE AS THE h2 UNDER IT (Camren, 2026-09-02). Every value here is
+           SectionHead's heading, copied deliberately: 48px on a 55.2px line at
+           -1px, weight 500. The two blocks are meant to read as one heading in
+           two beats, the question and then the answer, so neither may be set
+           smaller than the other. If SectionHead's scale changes in kit.tsx,
+           change this with it; there is no shared token for it yet.
+
+           It stays a <p> and not an <h2>. It is a lead-in to the heading, not a
+           second heading, and a section with two h2s is a broken outline no
+           matter how the two look on screen. */
         .sx-why-setup {
-          max-width: 740px;
-          margin: 0 auto 26px;
+          max-width: 900px;
+          margin: 0 auto 22px;
           text-align: center;
           font-family: var(--sx-archivo), 'Archivo Placeholder', sans-serif;
           /* 500, never 400: app/fonts/archivo-400.woff2 is a slanted cut. */
           font-weight: 500;
-          font-size: 25px;
-          line-height: 34px;
-          letter-spacing: -0.5px;
+          font-size: 48px;
+          line-height: 55.2px;
+          letter-spacing: -1px;
           color: var(--sx-ink-3);
         }
-        /* The question carries the weight; the statement in front of it is setup. */
+        /* Same size, different ink. With the size hierarchy gone this is the only
+           thing left separating the setup from the question inside it, and the
+           question is the half the reader is meant to carry into the claim. */
         .sx-why-setup span { color: var(--sx-ink); }
         @media (max-width: 760px) {
-          .sx-why-setup { font-size: 20px; line-height: 28px; }
+          .sx-why-setup { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }
         }
 
         .sx-why-card {

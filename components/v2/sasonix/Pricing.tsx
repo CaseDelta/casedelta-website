@@ -63,11 +63,24 @@ export function Pricing() {
     <section id="pricing" style={{ background: SX.surface, padding: "60px 0 60px" }}>
       <Container>
         <Reveal>
+          {/* ONE LINE, NOT TWO (Camren, 2026-09-02). This was a heading, "Delta
+              does the work of multiple staff members. You pay a fraction of
+              one.", over a bolded sub, "One flat price for the whole firm."
+              Both said the same thing at different volumes, and the heading
+              spent two sentences setting up a comparison the prices underneath
+              make on their own.
+
+              "A fraction of payroll" keeps the argument the deleted heading was
+              making and is the only anchor this section needs: the reader is
+              about to see $599 and has to weigh it against something, and the
+              thing is a salary, not another tool's price.
+
+              It is the h2 now, so the section still has a heading and #pricing
+              still lands on one. No sub: the tiers are the next thing, and a
+              line between them and this would be a line about nothing. */}
           <SectionHead
-            title="Delta does the work of multiple staff members. You pay a fraction of one."
+            title="A fraction of payroll. One flat price for the whole firm."
             titleMaxW={780}
-            sub={<strong style={{ fontWeight: 600, color: SX.ink }}>One flat price for the whole firm.</strong>}
-            subMaxW={620}
           />
         </Reveal>
 
