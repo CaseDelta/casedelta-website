@@ -26,6 +26,8 @@
  *  list is a legal question before it is a design one.
  * ══════════════════════════════════════════════════════════════════════════
  *
+ * It never pauses. Hovering does nothing, deliberately; see the styles below.
+ *
  * The marquee itself: one track, rendered twice, translated by exactly -50% so
  * the seam lands where the second copy's first item sits under the first
  * copy's, which is what makes the loop invisible. Duration scales with the
@@ -166,7 +168,11 @@ export function FirmMarquee({ overlay = true }: { overlay?: boolean } = {}) {
           from { transform: translateX(0); }
           to   { transform: translateX(-50%); }
         }
-        .sx-marquee-belt:hover { animation-play-state: paused; }
+        /* NO PAUSE ON HOVER (Camren, 2026-09-02). The belt sits over the hero, so
+           a pointer resting anywhere near the bottom of the fold froze it, and a
+           marquee that stops for no reason the reader can see looks broken rather
+           than considerate. It also stalled exactly when someone was reading it.
+           Do not add animation-play-state: paused back. */
         /* Short windows: the belt would eat the hero's proof line, so drop the
            caption first and the whole belt second. The headline and the ask
            always win the fold. */

@@ -31,7 +31,9 @@
  * minutes, so six named systems plus that sentence carry more than a complete
  * list would. Adding names to look comprehensive works against the claim.
  */
+import Image from "next/image";
 import { SX } from "./tokens";
+import { LOGO } from "./brand";
 
 /**
  * Ordered clockwise from twelve o'clock, and the order is not arbitrary.
@@ -111,7 +113,16 @@ export function HubSpokes() {
         })}
       </svg>
 
-      {/* The hub. Brand fill, so the centre is the one coloured thing in the card. */}
+      {/* The hub: brand fill, the mark on it, and the one coloured thing in the
+          card. It carried the word "Delta" until 2026-09-02; the mark says the
+          same thing without repeating a word the paragraph beside it has already
+          used twice, and a logo at the centre of a hub is the whole point of
+          drawing a hub.
+
+          LOGO.mark, not LOGO.onDark. onDark is the full lockup at 1860x567 and
+          would have to shrink to about 12px tall to fit a 74px circle, which is
+          unreadable. The mark is square and made for this. It is white with no
+          swoosh, which is why it needs the accent fill under it. */}
       <div
         className="sx-hub-core"
         style={{
@@ -126,14 +137,18 @@ export function HubSpokes() {
           background: SX.accent,
           display: "grid",
           placeItems: "center",
-          fontFamily: SX.display,
-          fontWeight: 500,
-          fontSize: 19,
-          letterSpacing: "-0.3px",
-          color: SX.onAccent,
         }}
       >
-        Delta
+        <Image
+          src={LOGO.mark}
+          alt=""
+          width={LOGO.markSize}
+          height={LOGO.markSize}
+          /* 46 of 74 leaves the mark breathing inside the circle. The delta is a
+             wide triangle, so it optically fills more than a square glyph would
+             at the same box size; sized up it crowds the edge. */
+          style={{ width: 46, height: 46, objectFit: "contain", display: "block" }}
+        />
       </div>
 
       {NODES.map((name, i) => {

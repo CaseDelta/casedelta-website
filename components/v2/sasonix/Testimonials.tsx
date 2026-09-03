@@ -29,6 +29,17 @@
  *
  * CARRIES JAMES RECKER since 2026-08-28.
  *
+ * IT OPENS "IT", NOT "DELTA" (Camren, 2026-09-02). The card sits under a heading
+ * that has just named Delta twice, so the third naming in three lines read as
+ * branding rather than as a person talking. "It" is also how a customer actually
+ * refers to a tool they use daily, and it keeps the house rule that Delta is
+ * always "it" and never gendered.
+ *
+ * Worth stating plainly, since this is inside quotation marks attributed to a
+ * named person: this is a one-word substitution that changes no meaning, made on
+ * the founder's instruction. Anything beyond that class of edit needs the source's
+ * sign-off. Never tighten a quote to make it land better.
+ *
  * THREE WORDS ARE DOING ALL THE WORK IN THIS QUOTE and none of them is decoration:
  *   "signed into"    -> the database is behind a paid login. That is the whole
  *                       differentiator. Every other legal AI researches the public
@@ -90,7 +101,7 @@ export type Testimonial = { quote: string; name: string; title?: string; bg: str
 const CARDS: Testimonial[] = [
   {
     quote:
-      "Delta signed into the verdict database we pay for and pulled the five biggest results in my circuit for a two-level lumbar with no fusion, in today's dollars.",
+      "It signed into the verdict database we pay for and pulled the five biggest results in my circuit for a two-level lumbar with no fusion, in today's dollars.",
     name: "James Recker",
     // No `title`: nobody has given us his firm or city, and the caption renders the
     // name alone rather than inventing one. Fill it in when we have it.
