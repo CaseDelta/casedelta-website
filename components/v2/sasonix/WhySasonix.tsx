@@ -97,7 +97,22 @@ export function WhySasonix() {
   return (
     <section id="why" style={{ background: SX.surface, padding: "60px 0 60px" }}>
       <Container>
+        {/* THE SETUP, THEN THE ANSWER. Camren's line, 2026-09-02, kept verbatim.
+            It poses the question this whole section exists to answer, so it sits
+            above the claim rather than below it: the reader arrives at "no other
+            legal AI signs in to your systems" already asking why that matters.
+
+            It is deliberately NOT the h2. The question is the better hook, but
+            the claim underneath it is the differentiator and the thing worth
+            being a heading. Setting the question smaller and lighter makes the
+            claim land as the answer instead of competing with it. */}
         <Reveal>
+          <p className="sx-why-setup">
+            Your case info doesn&rsquo;t just live in one system.{" "}
+            <span>So why would you use an AI that only sees one part of the entire picture?</span>
+          </p>
+        </Reveal>
+        <Reveal delay={0.06}>
           <SectionHead
             title="No other legal AI signs in to your systems, can work without being prompted, and is working your case in five minutes."
             titleMaxW={900}
@@ -136,6 +151,24 @@ export function WhySasonix() {
       </Container>
 
       <style>{`
+        .sx-why-setup {
+          max-width: 740px;
+          margin: 0 auto 26px;
+          text-align: center;
+          font-family: var(--sx-archivo), 'Archivo Placeholder', sans-serif;
+          /* 500, never 400: app/fonts/archivo-400.woff2 is a slanted cut. */
+          font-weight: 500;
+          font-size: 25px;
+          line-height: 34px;
+          letter-spacing: -0.5px;
+          color: var(--sx-ink-3);
+        }
+        /* The question carries the weight; the statement in front of it is setup. */
+        .sx-why-setup span { color: var(--sx-ink); }
+        @media (max-width: 760px) {
+          .sx-why-setup { font-size: 20px; line-height: 28px; }
+        }
+
         .sx-why-card {
           max-width: 940px;
           margin: 56px auto 0;

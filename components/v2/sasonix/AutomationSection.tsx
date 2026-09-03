@@ -136,10 +136,22 @@ const CARDS: Card[] = [
 ];
 
 
-export function AutomationSection() {
+/**
+ * SPLIT IN TWO on 2026-09-02 (Camren): the thesis and the capability cards used to
+ * be one section, and a testimonial now sits between them. Recker's quote answers
+ * "does it really do that" while the claim is still on screen, before the reader has
+ * been walked through the three things it does.
+ *
+ * They are two exported sections rather than one section with a quote rendered
+ * inside it, so Sasonix.tsx stays the page's table of contents. A section that
+ * secretly contains another page beat is a section you cannot reorder.
+ *
+ * The anchor stays on the THESIS. "What it does" in the nav should land on the
+ * claim, not on the first card.
+ */
+export function AutomationThesis() {
   return (
     <section id="features" style={{ background: SX.surface, padding: "60px 0 60px" }}>
-      <ProductPanelStyles />
       <Container>
         {/* The plain-language definition, set at hero scale and centered. It is the
             one place on the page that states the whole product in a breath, so it
@@ -159,7 +171,18 @@ export function AutomationSection() {
             until the work is complete.
           </p>
         </Reveal>
-        <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
+      </Container>
+    </section>
+  );
+}
+
+/** The three capability cards. The "value props", in Camren's words. */
+export function AutomationCards() {
+  return (
+    <section style={{ background: SX.surface, padding: "60px 0 60px" }}>
+      <ProductPanelStyles />
+      <Container>
+        <div style={{ display: "flex", flexDirection: "column", gap: 60 }}>
           {CARDS.map((c, i) => (
             <Reveal key={c.heading} amount={0.2} className="sx-cap-card" style={{ position: "relative", background: SX.surfaceAlt, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", overflow: "hidden" }}>
               {/* left text */}

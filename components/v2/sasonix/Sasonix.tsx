@@ -6,13 +6,14 @@
  *                           overlaid on the photograph along the bottom of the
  *                           fold (PLACEHOLDER NAMES, see FirmMarquee.tsx)
  *   2. Stakes            -> the problem, in one sentence
- *   3. AutomationSection -> what Delta is, in three capability cards
- *   4. Testimonials      -> proof, before any argument about why we are different
- *   5. WhySasonix        -> why it is different: the Context Wedge, proved row by row
- *   6. Trust             -> security, the objection a firm actually raises
- *   7. Pricing           -> three flat tiers priced by account count
- *   8. SecondProof       -> a second voice, the last word before the ask
- *   9. CtaFooter         -> the ask, an email address
+ *   3. AutomationThesis  -> what Delta is, in one sentence
+ *   4. Testimonials      -> Recker, proving that sentence before the props argue it
+ *   5. AutomationCards   -> the value props, three capability cards
+ *   6. WhySasonix        -> why it is different: the Context Wedge, proved row by row
+ *   7. Trust             -> security, the objection a firm actually raises
+ *   8. Pricing           -> three flat tiers priced by account count
+ *   9. SecondProof       -> a second voice, the last word before the ask
+ *  10. CtaFooter         -> the ask, an email address
  *
  * THE TWO PROOF SECTIONS STAY TWO. They were merged into a single two-card marquee
  * on 2026-09-02 and Camren reverted it the same day. The quotes do different jobs in
@@ -57,7 +58,7 @@ import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
 import { Stakes } from "./Stakes";
-import { AutomationSection } from "./AutomationSection";
+import { AutomationThesis, AutomationCards } from "./AutomationSection";
 import { Testimonials } from "./Testimonials";
 import { SecondProof } from "./SecondProof";
 import { WhySasonix } from "./WhySasonix";
@@ -77,21 +78,24 @@ export function Sasonix() {
       <Hero />
       {/* 2. The stakes: one sentence naming the headcount cap, and the question it sets up */}
       <Stakes />
-      {/* 3. What Delta is, in three capability cards */}
-      <AutomationSection />
-      {/* 4. Proof, straight after the capability claim it is evidence for. Recker
-             answers "does it really do that" while the claim is still on screen. */}
+      {/* 3. The thesis: what Delta is, in one sentence */}
+      <AutomationThesis />
+      {/* 4. Proof, straight after the claim and BEFORE the value props. Recker
+             answers "does it really do that" while the claim is still on screen,
+             so the reader meets the three capabilities already believing them. */}
       <Testimonials />
-      {/* 5. Why it is different: the Context Wedge, proved row by row */}
+      {/* 5. The value props: the three capability cards */}
+      <AutomationCards />
+      {/* 6. Why it is different: the Context Wedge, proved row by row */}
       <WhySasonix />
-      {/* 6. Security: the objection a firm actually raises */}
+      {/* 7. Security: the objection a firm actually raises */}
       <Trust />
-      {/* 7. Pricing */}
+      {/* 8. Pricing */}
       <Pricing />
-      {/* 8. A second, different voice: the last word before the ask. Renders nothing
+      {/* 9. A second, different voice: the last word before the ask. Renders nothing
              until there is a real quote in it; see SecondProof.tsx. */}
       <SecondProof />
-      {/* 9. The ask: an email address */}
+      {/* 10. The ask: an email address */}
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}
       <style>{`
