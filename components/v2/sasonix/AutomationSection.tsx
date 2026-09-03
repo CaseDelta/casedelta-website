@@ -171,30 +171,46 @@ export function AutomationThesis() {
           <div className="sx-thesis-card">
             <span aria-hidden className="sx-thesis-ellipse" />
             <div className="sx-thesis-copy">
-          {/* THE THREE EXAMPLES ARE MEASURED, not invented. They come from Rudin
-              Law's real production usage over 2026-08-19 to 09-02: 273 messages a
-              human typed, 66 threads, 4 daily automations, 35 morning briefs.
+          {/* THE THREE EXAMPLES ARE THE THREE MOST-USED JOBS, measured. They come
+              from Rudin Law's production history, 2026-08-19 to 09-02: 273
+              messages a human typed across 66 threads, 4 daily automations, 35
+              delivered morning briefs, 5 job formats the firm taught Delta as
+              stored schemas.
 
-              "Omissions report" is the firm's own word, used 9 times, and it is
-              the single dominant job: three of their four scheduled automations
-              are it in different cuts. "File review" is their exact phrase, 8
-              uses, and they taught Delta a stored template for it.
+              Chosen on three tests, in this order:
 
-              ⚠️ "SOL SWEEP" IS OUR PHRASE, NOT THEIRS. The job is real and Delta
-              does it against their `SOL Warning List` and `SOL Field Empty`
-              reports, but no lawyer at any firm has ever typed "SOL sweep": it
-              appears twice in all of production and both are Delta's own
-              narration at a different firm. Firms say "SOL" as a noun freely and
-              never "sweep". Their register would be "SOL warning list" or "cases
-              missing an SOL". Kept as Camren wrote it, flagged here so the next
-              person knows it is the one word on this line a customer did not say.
+              FREQUENCY. Omissions report is 18 threads and THREE of their four
+              scheduled automations. Morning brief is 35 delivered and runs daily
+              for three people. File review is 14 threads. SOL, which seeded the
+              first draft of this line, is 4 to 5 threads: near the bottom, not
+              the top, which is why it is no longer here.
 
-              Do not add an example that is not in that dataset. The whole point
-              of these three is that a lawyer reading them recognises their own
-              week. */}
+              THEIR WORDS, NOT OURS. All three are what the firm actually types.
+              "Omissions" appears 9 times, "file review" 8, "morning brief" is
+              Josh Henderson's own section-ordered format. Rejected for the
+              opposite reason: "SOL sweep" (nobody has ever typed it, it is
+              Delta's own narration at another firm) and "reverse docket cashflow
+              analysis" (real, and private coinage that reads as jargon to anyone
+              else).
+
+              SPREAD. Three flavours of the same job would waste the slot, so
+              these cover three different shapes of work: across the whole docket,
+              inside one file, and every morning. A reader recognises at least one.
+
+              Do not add a fourth or swap one for an example that is not in that
+              dataset. These work because a lawyer reads them and recognises their
+              own week.
+
+              STILL MISSING, and it is the strongest thing in the data: the firm
+              calls it "dry run", typed 10 times, always the same shape. They ask
+              for a spreadsheet with no changes applied, review it, then tell
+              Delta to write the approved rows back into Filevine. On 2026-09-01
+              it wrote 34 dates back and re-read every one to confirm. Nothing
+              else in the dataset is as differentiated and it is nowhere on this
+              site. It needs its own line, not a slot in this one. */}
           <h2 className="sx-thesis">
-            Hand off work to Delta, like SOL sweep, omissions report, or file review. It does it across any
-            &amp; all systems your firm uses.
+            Hand off work to Delta, like an omissions report, a file review, or your morning brief. It does it
+            across any &amp; all systems your firm uses.
           </h2>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
