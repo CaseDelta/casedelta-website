@@ -185,13 +185,22 @@ export function Stakes() {
   const spread = phase === "out" ? SPREAD_OUT : SPREAD_IN;
 
   return (
-    /* 180 on top, not the page's usual 60 and not the 120 it carried before
-       (Camren, 2026-09-02). The hero is full bleed and ends in the firm belt, so
-       there is no half-gap above this the way there is between two ordinary
-       sections. The statement wants air between it and the fold: it is the first
-       thing after the hero and the only thing in its section, and at 120 it read
-       as attached to the belt rather than as its own beat. */
-    <section id="stakes" style={{ position: "relative", background: SX.surface, padding: "180px 0 60px" }}>
+    /* 180 TOP AND BOTTOM, and the symmetry is the point once the ruler lines are
+       drawn (Camren, 2026-09-02). The rules turn this section into a visible box,
+       and a sentence sitting 180 from the top rule and 60 from the bottom one
+       reads as misaligned inside its own frame. It is the only thing in this
+       section, so it belongs in the middle of it.
+
+       180 rather than the page's usual 60: the hero is full bleed and ends in the
+       firm belt, so there is no half-gap above this the way there is between two
+       ordinary sections, and at 120 the statement read as attached to the belt
+       instead of as its own beat.
+
+       This is a deliberate exception to the 60-top-and-60-bottom convention in
+       Sasonix.tsx. That rule exists so deleting a section leaves its neighbours'
+       spacing intact, which still holds here; what changes is that this section is
+       a framed box with one thing in it, and a framed box centres its contents. */
+    <section id="stakes" style={{ position: "relative", background: SX.surface, padding: "180px 0" }}>
       <Rules />
       <Container>
         <Reveal>
