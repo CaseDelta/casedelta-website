@@ -140,8 +140,14 @@ export function Prose({ children, style }: { children: React.ReactNode; style?: 
         }
         .sx-prose h2:first-child, .sx-prose h3:first-child { margin-top: 0; }
         .sx-prose p { margin: 0 0 20px; }
+        /* Markers are off globally (globals.css) because every other list on the site
+           is a layout. Prose is the exception: a bulleted list in a blog post that
+           renders without bullets reads as a formatting bug. */
+        .sx-prose ul { list-style: disc; }
+        .sx-prose ol { list-style: decimal; }
         .sx-prose ul, .sx-prose ol { margin: 0 0 20px; padding-left: 24px; }
         .sx-prose li { margin: 0 0 10px; }
+        .sx-prose li::marker { color: ${SX.ink3}; }
         .sx-prose strong { color: ${SX.ink}; font-weight: 600; }
         .sx-prose a { color: ${SX.accentText}; text-decoration: none; }
         .sx-prose a:hover { text-decoration: underline; }

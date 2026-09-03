@@ -166,8 +166,8 @@ export const PALETTES: Record<ThemeName, Palette> = {
   },
 
   /**
-   * The achromatic direction, from design-tokens.json: no chromatic accent at
-   * all, near-black in its place, colour carried entirely by the product media.
+   * The achromatic direction: no chromatic accent at all, near-black in its
+   * place, colour carried entirely by the product media.
    * The Granola and Linear register. This was called "casedelta" until the brand
    * blue landed; it is kept because swapping to it is the cheapest contrast test
    * available and it has caught four separate invisible-element bugs.

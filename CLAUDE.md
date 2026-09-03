@@ -1,648 +1,286 @@
-# CaseDelta Landing Page - AI Assistant Guide
+# CaseDelta marketing site
 
-## Project Overview
-CaseDelta's public marketing site (`casedelta.com`) — a single multi-page Next.js app: home, `/features`, `/use-cases`, `/blog`, `/pricing`, `/demo`, `/about`, `/security`, `/answers` (knowledge-base / GEO hub), `/compare/[slug]` (competitor comparisons), plus legal pages (`/privacy`, `/terms`). The current focus is the cold paid-Meta-traffic → `/demo` booking funnel.
+`casedelta.com`. Next.js 16 App Router, deployed on Vercel, **`main` is production and
+there is no CI**, so a merge is live in a minute or two.
 
-**Core Value Proposition:** Delta is an AI paralegal that works inside the tools the firm already uses (Clio, Filevine, MyCase, Dropbox, Gmail, Microsoft 365, QuickBooks) and does the routine case work — chronologies, demand letters, record chasing, follow-ups — that eats billable time. Live positioning source of truth: `lib/variants/copy.ts` (hero) + `components/marketing/HomeSections.tsx` (below the fold).
+Working memory and a lookup table, not documentation. Traps, hard rules, and facts you
+cannot recover by reading the code. Anything descriptive of how a component works was
+cut: read the component.
 
-> **History:** This started as a 5-variant A/B landing-page experiment (light/dark × hero layouts). Those variant *routes* were removed — `next.config.ts` permanently redirects `/light/*` and `/dark/*` → `/`. The old route-rewrite machinery still exists in `proxy.ts` but is gated off (`NEXT_PUBLIC_ENABLE_AB_TESTING`, default false) and its target routes no longer exist, so it is vestigial. Don't re-enable it. Variant testing is now done **in-page** via `lib/variants/*` + PostHog flags (see "Design Variants & Split Testing"), which is a different, live system.
+---
 
-## Tech Stack
-- **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
-- **Styling:** Tailwind CSS v3.4 + CSS variables, but the marketing surface is mostly **inline styles driven by `components/marketing/kit.tsx`** (see Design System)
-- **Animation:** Framer Motion v11.15 (scroll-triggered effects)
-- **Analytics:** PostHog v1.311 (product analytics, conversion attribution, variant flags)
-- **Email:** Resend (contact / demo-booking notifications via `app/api/send`)
-- **Content:** DB-backed blog (Supabase `marketing_blog_posts` via `pg`), with legacy MDX files in `content/blog/` as fallback. See `docs/BLOG_CMS.md`.
-- **Deploy:** Vercel (project `casedelta-website`). `main` is production — pushes/merges auto-deploy. No GitHub Actions CI; `npm run build` is the only gate.
+## Rule zero: get sign-off before merging anything visual
 
-> **`npm run lint` is broken** and has been since the Next 16 upgrade: `next lint` was removed from the CLI, so the script errors out. Use `npx tsc --noEmit` for type checking and `npm run build` as the real gate.
+There is no staging environment and no review gate. `npm run dev`, look at it in a real
+browser, screenshot it, show Camren, then merge. Never ship-and-look.
 
-## Project Structure
-```
-app/
-├── layout.tsx              # Root layout: PostHog provider, MetaPixel, LinkedIn tag
-├── page.tsx                # Home (server: resolves variant, emits JSON-LD) -> HomeClient.tsx
-├── HomeClient.tsx          # Client home shell: <Hero/> + <HomeSections/> + footer
-├── about/ features/ pricing/ demo/ security/ privacy/ terms/
-├── use-cases/              # Index + dynamic [slug] pages
-├── answers/                # Knowledge-base hub (GEO/AI-search FAQPage schema)
-├── compare/                # Competitor comparison index + [slug]
-├── blog/                   # Index + [slug] + tag/[tag]  (ISR, DB-backed)
-├── api/send/route.ts       # Resend contact/demo email handler
-├── api/revalidate/route.ts # On-demand ISR revalidation webhook (blog publish)
-├── providers/              # PostHogProvider
-├── sitemap.ts robots.ts opengraph-image.tsx
-└── globals.css
+`npm run dev -- -p 3100` if 3000 is busy, which it often is. Verify the page `<title>`
+before believing what answers on a port, and never kill a server you did not start:
+other Claude Code sessions run on this machine.
 
-components/
-├── marketing/              # THE live marketing surface
-│   ├── kit.tsx            # Design system: tokens, Container/Section, H/Sub/Eyebrow, PillLink, FaqAccordion, PageHero
-│   ├── Hero.tsx           # Dispatches to one of the three hero variants
-│   ├── HomeSections.tsx   # Entire below-the-fold homepage
-│   └── heroes/            # HeroLegora, HeroHarveyLight, HeroHarveyDark, HeroHeader, shared.tsx
-├── VariantProvider.tsx     # Client PostHog flag assignment + exposure event
-├── NavbarV2.tsx FooterV2.tsx LegalPageLayoutV2.tsx
-├── ContactModal.tsx        # Demo / pricing inquiry form
-├── MetaPixel.tsx LinkedInInsightTag.tsx JsonLd.tsx
-└── demo/                   # /demo booking flow components
+---
 
-lib/
-├── variants/               # Design/copy variant system (constants, resolve, themes, copy, types)
-├── home-content.ts         # HOME_FAQ: single source for visible FAQ + FAQPage JSON-LD
-├── blog.ts answers.ts comparisons.ts use-cases.ts   # content data + DB reads
-├── db.ts                   # Server-only Postgres pool (returns null if DATABASE_URL unset)
-├── posthog.ts meta-pixel.ts linkedin.ts
-└── meta/                   # Marketing API client/insights/mutations/creatives/safety
+## The routes
 
-scripts/                    # meta-*.ts (Marketing API CLI)
-content/blog/               # Legacy MDX posts (fallback; DB wins on slug collision)
-sql/                        # 001_marketing_blog.sql, 002_seed_topics.sql
-docs/BLOG_CMS.md            # Blog CMS architecture + runbook
-proxy.ts                    # Next 16 middleware (renamed from middleware.ts): EU pixel geo-suppression
-```
+Nine pages exist. Everything else 308s.
 
-### Dead code (do not re-mount, prefer deleting)
-- `components/SocialProof.tsx` + `lib/socialProof.ts` — unimported, and they contain **fictional firm names** ("Whitfield & Hayes LLP", "The Brennan Firm") from an early generation. Never render these.
-- `lib/theme.ts` — unimported and its tokens have drifted from `kit.tsx`. Not a source of truth.
-- `heroes/shared.tsx`: `HeroSocialProof`, `HeroLogoWall` (and therefore `LOGOS` / `LOGO_CAP` in `lib/variants/copy.ts`) — unmounted.
-- `components/HeroV2.tsx`, `BelowFold.tsx` — superseded by `components/marketing/*`.
+| Route | What it is |
+|---|---|
+| `/` | the homepage, `components/v2/sasonix/Sasonix.tsx` |
+| `/about` | mission, the problem, four beliefs, founder, early-stage honesty |
+| `/blog`, `/blog/[slug]`, `/blog/tag/[tag]` | DB-backed, ISR, auto-published by an agent |
+| `/answers` | knowledge-base hub, renders FAQPage JSON-LD for AI search |
+| `/demo` | the only conversion surface on the site. noindex |
+| `/privacy`, `/terms` | legal. Google's OAuth consent screen links to these |
+| `/setup`, `/install.sh`, `/install.ps1`, `/outreach-kit.zip` | internal rep onboarding, noindex, key-gated |
 
-## Key Features
+**Five marketing pages were folded into the homepage on 2026-09-02** and now redirect to
+the section carrying their argument:
 
-### Edge Proxy & Geo-Suppression (`proxy.ts`)
-In Next.js 16 the `middleware.ts` convention was renamed to `proxy.ts` (exports `proxy()` + `config.matcher`). It runs on every page entry and:
-- **EU/EEA/UK/CH pixel suppression (live, compliance):** reads `x-vercel-ip-country`, sets a `cd_pixel_blocked=1` cookie for those jurisdictions; `MetaPixel.tsx` refuses to render when the cookie is present. **Do not weaken.**
-- **A/B variant rewrite (vestigial):** gated behind `NEXT_PUBLIC_ENABLE_AB_TESTING=true` (default off). The `/light/*` `/dark/*` target routes were removed, so this path no longer renders anything — leave it disabled.
+| was | now | section |
+|---|---|---|
+| `/features` | `/#features` | AutomationSection, what Delta does |
+| `/use-cases`, `/use-cases/:slug` | `/#features` | same section |
+| `/compare`, `/compare/:slug` | `/#why` | WhySasonix, the competitive argument |
+| `/security` | `/#security` | Trust |
+| `/pricing` | `/#pricing` | Pricing |
 
-### Design System
+Do not recreate any of them. Five pages restating what the homepage already says is how
+the site came to publish two different prices at the same time.
 
-**`components/marketing/kit.tsx` is the source of truth** for the below-the-fold homepage and every subpage. Import from it rather than hand-rolling styles, so the site reads as one system.
+- **A `:slug` redirect must sit ABOVE its parent** in `next.config.ts`. Next matches in
+  array order and `/compare` does not match `/compare/casedelta-vs-clio`.
+- **A fragment survives a 308.** The hash rides in the `Location` header and the browser
+  applies it after following. Search engines drop it and consolidate into `/`.
+- **Anchor landings need `scroll-margin-top`.** The nav is fixed, so without it the
+  browser puts the heading under the bar. The rule is in `app/globals.css` and the
+  number matches `NAV_OFFSET` in `scrollToSection.ts`. Change one, change the other.
 
-- **Typography:** Newsreader (serif display, headings) + Hanken Grotesk (sans, body). Loaded via `next/font` as `--font-newsreader` / `--font-hanken`.
-- **Palette:** ink on white with ONE blue accent (`BF.accent` `#2f6fe0`) and two dark bands (`BG.statBand` `#0e1420`, `BG.ctaBand` `#1f3a5f`). Grayscale-first, color only for meaning.
-- **Primitives:** `Container` / `Section` (layout), `Eyebrow` / `H` / `Sub` / `Accent` (type, all take `light` for dark bands), `PillLink` (CTA, auto-fires `cta_click`), `TextLink`, `Check`, `FaqAccordion`, `PageHero` (standard subpage header).
-- **Motion:** `useRise(delay)` for the standard scroll-in. Respects `prefers-reduced-motion` via framer's `useReducedMotion`. **Raw CSS `@keyframes` do NOT get that for free** — add an explicit `@media (prefers-reduced-motion: reduce)` opt-out.
-- **Animation:** `initial` / `whileInView` / `viewport={{ once: true }}` pattern.
+## The homepage
 
-**Two systems coexist deliberately, do not merge them:**
-1. `kit.tsx` — fixed LIGHT design, below-the-fold + all subpages. Never themed.
-2. `lib/variants/themes.ts` + `components/marketing/heroes/shared.tsx` — themed, hero only, changes per design variant.
+`Sasonix.tsx` composes nine sections and the order is the argument:
 
-`HomeClient.tsx` bridges them by syncing `html`/`body` background + `color-scheme` to the active hero theme (so the overscroll area matches the hero) and restoring on unmount.
+1. Hero, 2. Stakes (the problem in one sentence), 3. AutomationSection (`#features`),
+4. Testimonials, 5. WhySasonix (`#why`), 6. Trust (`#security`), 7. Pricing (`#pricing`),
+8. SecondProof, 9. CtaFooter.
 
-### Design Variants & Split Testing (live, in-page)
+**Proof sits before the argument**, deliberately. A reader who has just been told what
+Delta does wants evidence, not a comparison table.
 
-Two independent axes, resolved server-side then re-synced client-side from PostHog flags:
+**Section spacing: 60px top AND 60px bottom on every section**, so the gap between any
+two is 120px and deleting one leaves its neighbours intact. Bottom-only padding is how
+removing a section once silently collapsed a gap to zero.
 
-| Axis | Flag key | Variants | Default |
-|---|---|---|---|
-| Design (whole hero look) | `design-variant` | `control` (= harvey-light), `harvey-dark`, `legora` | **`legora`** |
-| Hero headline copy | `hero-copy` | `control`, `teammate`, `problem` | `control` |
+The nav and the footer's Product column list sections in the page's own top-to-bottom
+order. Reorder the sections and reorder both with them.
 
-- Defaults live in `lib/variants/constants.ts`. **`DEFAULT_DESIGN` is `legora`, NOT `control`.** The name "control" is a PostHog-experiment convention (experiments require a variant named control), it is not what ships by default. Several docstrings used to claim otherwise; if you change the default, fix them together.
-- **Server** (`app/page.tsx` → `lib/variants/resolve.ts`): `?variant=` / `?hero=` override (preview only, gated on `VERCEL_ENV !== "production"`) → else the defaults. Googlebot gets the same default every visitor gets, so there is no cloaking.
-- **Client** (`components/VariantProvider.tsx`): dynamically imports posthog-js, reads both flags, and adopts them per-axis. This means a *configured* flag swaps the hero after hydration. Fires `design_variant_exposed`. A `?variant=` override pins PostHog and skips the client swap so QA sees exactly the server markup.
-- QA aliases accepted by `?variant=`: `harvey-light`/`light` → `control`, `dark` → `harvey-dark`.
-- To graduate to no-flicker server-decided variants: install `posthog-node`, set a stable id cookie in `proxy.ts`, insert a flag-eval step in `resolve.ts` between the override and the default. Everything downstream already consumes the result.
+## One design system
 
-### Analytics Integration
-- PostHog lazy-loads after page render (zero Core Web Vitals impact)
-- Conversion tracking + first-touch UTM attribution (the `demo_booked` funnel is the conversion source of truth — see "Paid Meta Ads")
-- Optional: disabled if `NEXT_PUBLIC_POSTHOG_KEY` not set
+`components/v2/sasonix/`. There is exactly one, and the repo carried four until
+2026-09-02. Do not start a second.
 
-## Environment Variables
-```bash
-NEXT_PUBLIC_POSTHOG_KEY=phc_...                # PostHog API key (optional)
-NEXT_PUBLIC_POSTHOG_HOST=https://...           # PostHog endpoint
-NEXT_PUBLIC_ENABLE_AB_TESTING=false            # Vestigial A/B rewrite in proxy.ts — leave false (variant routes removed)
-NEXT_PUBLIC_POSTHOG_DEBUG=false                # Console logging
-NEXT_PUBLIC_META_PIXEL_ID=957094783732140      # Active Meta Pixel ID (see "Paid Meta Ads" section)
-NEXT_PUBLIC_LINKEDIN_PARTNER_ID=...            # LinkedIn Insight Tag partner ID
-NEXT_PUBLIC_DEMO_BOOKING_URL=...               # Google appointment scheduler URL used by /demo CTA
-DATABASE_URL=postgres://...                    # Supabase pool for the blog CMS (no sslmode; the pool sets SSL). Unset = file-only blog fallback.
-REVALIDATE_SECRET=...                          # Authorizes POST /api/revalidate (blog publish webhook)
-# NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID=  # Optional: LinkedIn Campaign Manager conversion ID for demo_page_viewed. Deferred until LinkedIn paid ads launch.
-# NEXT_PUBLIC_LINKEDIN_DEMO_BOOKED_CONVERSION_ID=   # Optional: LinkedIn Campaign Manager conversion ID for demo_booked. Deferred until LinkedIn paid ads launch.
-```
+- **`theme.ts`** is the brand. One `Palette` object per direction, emitted as CSS custom
+  properties. Preview live with `/?theme=sasonix|achromatic|dark`, no rebuild. Roles are
+  semantic, never named after a colour.
+- **`tokens.ts`** is what components read. **Never write a colour literal in a
+  component.** Add a role to `theme.ts` and reference it here.
+- **`accent` is not `accentText`.** CaseDelta blue `#5170FF` is 4.11:1 on white: fine for
+  a button fill or an icon, a FAIL for body text. Text gets `accentText`. A link painted
+  in the raw brand colour is the standard way a palette ships an accessibility bug.
+- **`STAR_GOLD` is not a palette token, on purpose.** A five-star row is a borrowed
+  convention readers decode pre-attentively; a blue star reads as a UI element.
+- **`kit.tsx`**: `Container`, `Eyebrow`, `SectionHead`, `PageHero`, `Prose`.
+- **`PageShell`** is the chrome every non-homepage page wears. It mounts `ThemeVars`,
+  which is not optional: each page is its own React tree, so a page that skips it renders
+  every `var(--sx-*)` as nothing. If a new page looks unstyled, that is why.
+- **Motion** goes through `Reveal` / `revealProps`. `MotionConfig reducedMotion="user"`
+  at each page root handles the preference. Raw CSS `@keyframes` do NOT get that for
+  free; add an explicit `@media (prefers-reduced-motion: reduce)`.
 
-## Important Files
-- `components/marketing/kit.tsx` - Design system, single source of truth for the look
-- `components/marketing/HomeSections.tsx` - The whole below-the-fold homepage
-- `lib/variants/copy.ts` - Live hero positioning (headlines, subhead, CTAs, social proof)
-- `lib/variants/constants.ts` - Variant flags + which design actually ships by default
-- `lib/home-content.ts` - HOME_FAQ, must stay in sync with the FAQPage JSON-LD
-- `docs/BLOG_CMS.md` - Blog CMS architecture + publish runbook
-- `SEO_STRATEGY_2026.md` - SEO strategy / content plan
-- `design-tokens.json` - Machine-readable design tokens (documentation only; `kit.tsx` is what renders)
-- `proxy.ts` - Next 16 edge middleware (EU pixel geo-suppression)
+**The four faces are mounted in `app/layout.tsx`, for every page.** They used to live in
+a `(home)` route group, which meant the homepage had them and nothing else. Archivo is
+self-hosted from the exact Fontshare static masters: Google Fonts' Archivo is variable
+and its interpolated 400 and 700 measurably diverge (500 matched).
 
-## House Rules (copy + honesty)
+**No global nav or footer in the root layout.** Every page carries its own through
+`PageShell`. A global navbar there stacks a second header on all of them.
 
-These are enforced across the marketing surface and the `blog_writer` agent. Violating them is a real risk, not a style nit.
+## House rules: copy and honesty
 
-- **No em dashes anywhere.** Also avoid dashes generally in customer-facing copy.
-- **Delta is never gendered.** Never "she"/"her". Delta is "it".
-- **Never invent social proof.** No fabricated testimonials, firm names, ratings, or metrics. The 4.9 hero rating and the Kirschbaum & Nowotny testimonial are REAL and attributable, **do not remove them as "fabricated"** (this happened on 2026-06-29 and had to be reverted). If something looks placeholder-y, ask.
-- **Never claim "no third-party LLM" or "client data never leaves our infrastructure."** That is false: prod runs on enterprise AI under zero-retention/BAA terms. Use the defensible data-handling framing instead (encrypted, zero retention by the provider, never used to train, BAA available).
-- **Security is PARITY vs competitors, not an advantage.** Never claim a competitor "sends your data to OpenAI" and never name a competitor's subprocessor. See the house rules at the top of `lib/comparisons.ts`.
-- **Never imply autonomy.** Delta drafts and acts on instruction; a human on the firm's team reviews and approves before anything leaves the firm.
+Violating these is a real risk, not a style nit.
+
+- **No em dashes anywhere.** Avoid dashes generally in customer-facing copy.
+- **Delta is never gendered.** Never she or her. Delta is "it".
+- **Never invent social proof.** No fabricated testimonials, firm names, ratings or
+  metrics. The 4.9 rating and the Kirschbaum & Nowotny quote are REAL and attributable.
+  **Do not remove them as "fabricated"**; that happened on 2026-06-29 and was reverted.
+  If something looks placeholder-y, ask.
+- **Never claim "no third-party LLM" or "client data never leaves our infrastructure."**
+  Both are false: production runs on enterprise AI under zero-retention and BAA terms.
+  Use the defensible framing (encrypted, zero retention by the provider, never used to
+  train, BAA available).
+- **Security is PARITY, not an advantage.** Never claim a competitor sends data to
+  OpenAI, and never name a competitor's subprocessor.
+- **Never imply autonomy.** Delta drafts and acts on instruction; a human on the firm's
+  team reviews and approves before anything leaves the firm.
 - **Positioning:** teammate not tool, anchor to a salary, sell leverage not layoff.
+  Never lead with "AI". Never "virtual paralegal" or "document analysis platform".
 
-## Working On This Repo
+## The price is written down once
 
-**`main` is production and there is no CI.** A merge to `main` is live on casedelta.com within a minute or two.
+`lib/pricing.ts`. `$599 / $1,099 / $2,099` per firm for up to 5 / 10 / 20 accounts,
+settled with Camren on 2026-08-28. Import `PRICE_LINE`, `PRICE_CLAUSE` or
+`PRICE_PARAGRAPH`. **Never retype a price** into a component, a metadata string or an
+FAQ answer. The file exists because the site published two different pricing *models* at
+once and a prospect could read both in one session.
 
-- **Iterate locally for any visual change.** `npm run dev`, look at it in a real browser, THEN commit. Do not ship-and-look.
-- **Port 3000 is often taken** by another project's dev server on this machine. `next dev` may print "Local: http://localhost:3000" while a different app actually answers there. Verify with the page `<title>`, and use `npm run dev -- -p 3100` if it's occupied. Don't kill a server you didn't start; other Claude Code sessions run here.
-- **Get sign-off before merging creative/visual changes.** Show a screenshot first. Camren's call, not yours.
-- Gate before pushing: `npx tsc --noEmit` + `npm run build` (`npm run lint` is broken, see Tech Stack).
+- The unit is ACCOUNTS, the thing a firm provisions, and the price is per FIRM. That is
+  the wedge against per-seat tools.
+- The three tiers are equivalent. No featured tier, no "most popular".
+- **"Unlimited staff" is retired. Do not bring it back in any form.** It was true against
+  an attorney count and is false against an account count: `law_firms.max_users` is
+  enforced, so every paralegal who signs in consumes a band slot. What may be said is
+  that there is no per-seat multiplier and the price does not move inside a band.
 
-## Development Commands
+## The blog
+
+DB-backed. Posts ship without a code push. Full detail in `docs/BLOG_CMS.md`.
+
+1. `INSERT` into Supabase `public.marketing_blog_posts` with `status='published'`.
+2. `POST /api/revalidate?secret=$REVALIDATE_SECRET` with the paths to refresh.
+
+- Generation is autonomous: the `blog_writer` skill in the GTM engine researches, writes
+  and **auto-publishes with no human review**. It lives in `openclaw-vps/engine/skills/`,
+  not here.
+- `content/blog/*.mdx` still render and merge by slug, **DB wins**. They are the fallback
+  when the DB is unreachable, so the site never breaks.
+- `lib/blog-format.ts` holds `formatDate` and `readingTime` because the post page is a
+  server component and calls them. **A plain function exported from a `"use client"`
+  module cannot be called from the server**; React treats it as a client reference and
+  throws.
+- `formatDate` appends `T12:00:00`. A bare date parses as UTC midnight and renders as the
+  previous day for anyone west of Greenwich.
+
+## proxy.ts
+
+Next 16 renamed the `middleware.ts` convention to `proxy.ts`. It does **one** thing:
+sets `cd_pixel_blocked=1` for EU/EEA/UK/CH visitors, read from `x-vercel-ip-country`, and
+`MetaPixel.tsx` refuses to render when the cookie is present. Legal compliance. **Do not
+weaken, and do not add unrelated work here**: it runs before every page render.
+
+## Gates
+
 ```bash
-npm install          # Install dependencies
-npm run dev          # Start dev server (localhost:3000)
-npm run build        # Production build (the only pre-deploy gate — no CI)
-npm start            # Start production server
+npm run dev          # localhost:3000
+npm run lint         # tsc --noEmit
+npm run build        # the only real pre-deploy gate
 ```
 
-## Code Style Guidelines
+`npm run lint` used to be `next lint`, which Next 16 removed from the CLI, so it had
+only ever errored. It is `tsc --noEmit` now.
 
-### TypeScript
-- Strict mode enabled
-- Use explicit types for props and function returns
-- Path alias: `@/` for root imports
+## Environment variables
 
-### React Components
-- Use "use client" directive for client-side interactivity
-- Prefer function components with TypeScript interfaces
-- Props interfaces named with component name + "Props"
-
-### Tailwind CSS
-- Use CSS variables for colors (defined in `globals.css`)
-- 4px grid spacing: `space-y-4`, `mt-8`, `p-12` etc.
-- Responsive: Mobile-first breakpoints
-
-### Animation
-- Use Framer Motion for scroll effects
-- `initial`, `whileInView`, `viewport` pattern
-- Keep `once: true` to prevent re-triggering
-
-## Paid Meta Ads (Live)
-
-CaseDelta runs paid Meta (Facebook/Instagram) ads to law firm partners across all litigation practice areas (wide-funnel; ad set name says "PI_Partners" for historical reasons but the test is NOT PI-specific). The browser pixel is fully wired and verified end-to-end. First ads launched 2026-05-16. On 2026-05-19 the creative was rebuilt with corrected CTAs + cross-dimensional headlines (see `PBC Test Framework` section below) and is currently live.
-
-### Account & Asset IDs (canonical)
-- **Ad account ID:** `238417253` (internal asset ID `6003016522801`, claimed into CaseDelta BP on 2026-05-19)
-- **Business Portfolio ID (CaseDelta):** `1523525049382179` — the BM that owns ad account, pages, app, pixel
-- **Other Meta ID `785362152836832`:** appeared in earlier docs as "Meta Business ID" — not the BP; likely a verified-domain artifact. Don't use it for BP scoping.
-- **Marketing API App:** `casedelta-marketing-api`, App ID `1871334880162905` (created 2026-05-19, App Secret in `.env.local`)
-- **System User:** `casedelta-admin`, ID `122094616863338311`, role Admin, scoped to ad account `238417253` with **"Manage campaigns (ads)"** permission (upgraded from "View performance" on 2026-05-19 to enable budget/pause/resume/create-ad mutations and inline creative writes)
-- **Active pixel (Dataset):** `957094783732140`, named `my_fb_pixel` in Events Manager
-- **Deprecated pixel (do NOT use):** `1112090197804629`. Replaced 2026-05-15. May still appear in Events Manager until manually deleted.
-- **Verified FB domain:** `casedelta.com` (verification meta tag in `app/layout.tsx`)
-
-### Campaign Structure
-- **Campaign:** `PBC1_PainTest` (PBC Week 1 = pain test)
-- **Active ad set:** `PBC_Partners_ADSET` (ID `52531549521005`, renamed from `PI_Partners - Copy` on 2026-05-19), $20/day, 6 ads, `ACTIVE`.
-  - **PBC-AD-1** (52533986406805) — Fear/Risk dimension — "How Partners Go From Missing Key Evidence To Winning Bigger Cases"
-  - **PBC-AD-2** (52531549521805) — Lifestyle dimension — "How Partners Go From Working Through Every Weekend To Winning Bigger Cases"
-  - **PBC-AD-3** (52531549521405) — Identity dimension — "How Partners Go From Doing Associate Work To Winning Bigger Cases"
-  - **PBC-AD-4** (52531549521605) — Tech/Stack dimension — "How Partners Go From Juggling Six Platforms To Winning Bigger Cases"
-  - **PBC-AD-5** (52531549520805) — Functional/Doc-burden dimension — "How Partners Go From Building Chronologies By Hand To Winning Bigger Cases"
-  - **PBC-AD-6** (52531549521205) — Social/Competitive dimension — "How Partners Go From Watching Competitors Adopt AI To Winning Bigger Cases"
-- All 6 ads use inline creatives (object_story_spec) with CTA `LEARN_MORE`, shared image hash `68353eb71ed2c3dd32cb7ad5bcb83b56`, FB Page ID `1160399907138144`, Instagram user ID `17841421772868520`.
-- Shared landing URL: `https://casedelta.com/?utm_source=fb&utm_medium=paid&utm_campaign={{campaign.id}}&utm_content={{ad.id}}&utm_term={{adset.id}}` (template params substituted by Meta at click time).
-- **Draft ad sets:** None. `PI_Partners` (52524384751205) and `PI_ManagingPartners` (52523820017805) referenced in earlier docs no longer exist via API as of 2026-05-19 — already cleaned up.
-
-### Conversion Event
-- **Standard event:** `CompleteRegistration` (renamed from `Lead` on 2026-05-16, commit `99dfb42`)
-- **Fires on:** demo booking completion via `/demo` or `/book-demo`
-- **Helper:** `trackMetaCompleteRegistration(params, options)` in `lib/meta-pixel.ts`
-- **Call site:** `components/demo/DemoBody.tsx` `handleBooked()`
-- **event_id:** UUID generated at booking source (FallbackForm before `/api/send`, SchedulerEmbed in the Calendly postMessage handler), threaded through `onBooked(eventId)` so a future CAPI implementation can dedupe without restructuring
-
-### Pixel Code Paths
-- `components/MetaPixel.tsx`: base pixel loader, mounted in `app/layout.tsx`. Fires `PageView` on every client-side route change (the inline init script does NOT fire its own PageView, so the React effect is the single source of truth).
-- `lib/meta-pixel.ts`: typed helpers (`trackMetaCompleteRegistration`, `setMetaUserData`, `newEventId`). `setMetaUserData` calls `fbq('init', PIXEL_ID, userData)` to update Automatic Advanced Matching with the user's email/name.
-- `next.config.ts`: CSP allowlist for `connect.facebook.net` (script-src) and `www.facebook.com` (connect-src).
-- `proxy.ts`: Next 16 edge middleware (formerly `middleware.ts`) reads `x-vercel-ip-country`, sets `cd_pixel_blocked=1` cookie for EU/EEA/UK/CH visitors. The pixel refuses to render when this cookie is present. Legal compliance, do not weaken.
-
-### Environment Variables (Meta)
-- `NEXT_PUBLIC_META_PIXEL_ID`: currently `957094783732140` in Vercel production. Required. Inlined at build time, so a swap needs a redeploy.
-
-### Marketing API (server-side, read-only)
-Used for programmatic ad performance audits. Server-side only — never expose tokens to client.
-- `META_APP_ID=1871334880162905`
-- `META_APP_SECRET=<32-char secret>` — Sensitive. In `.env.local` only. App Secret Proof is required on every call (toggle enabled in App → Advanced → Security).
-- `META_SYSTEM_USER_TOKEN=<EAAa...>` — 60-day expiring token. Refresh at day 50. Token has scopes: `ads_read`, `ads_management`, `business_management`, plus bonus pages/Threads scopes from default System User generation.
-- `META_AD_ACCOUNT_ID=238417253`
-- `META_GRAPH_API_VERSION=v25.0` — Current stable. Released 2026-02-18. v20 dies 2026-09-24.
-
-CLI: `npx tsx scripts/meta-insights.ts --level=ad --date-preset=yesterday` (see `lib/meta/client.ts`, `lib/meta/insights.ts`).
-
-Every call includes `appsecret_proof = HMAC-SHA256(token, app_secret)`. The proof is computed in `lib/meta/client.ts` — if you swap the App Secret OR the token, both must be in sync.
-
-**Account status note**: claiming the ad account into CaseDelta BP on 2026-05-19 initially disabled the payment method (`account_status: 3` DISABLED). Resolved same day by re-authorizing the Visa *8569 funding source. Account is now `account_status: 1` (ACTIVE). If the account ever flips back to disabled, check Billing Hub: `business.facebook.com/billing_hub/payment_methods?business_id=1523525049382179&asset_id=238417253`.
-
-### Marketing API Operations (KPI audits)
-
-**Files:**
-- `lib/meta/client.ts` — fetch wrapper with `appsecret_proof`, pagination, typed errors (`MetaApiError`)
-- `lib/meta/insights.ts` — `getInsights(args)` + `getActionCount(row, type)` helpers, typed Insights rows
-- `lib/meta/mutations.ts` — `updateAdSetBudget`, `setAdStatus`, `setAdSetStatus`, `setCampaignStatus`, `createAd`, `updateAdCreative`, `updateAdName`
-- `lib/meta/creatives.ts` — `dumpAllCreatives`, `getCreative`, `createAdCreative`, `listAdsWithCreatives`, types `AdRef` + `AdCreative`
-- `lib/meta/safety.ts` — `PROTECTED_ADSETS` list, `LIVE_ADS` list, `checkBudgetChange`, `checkPauseAdSet`, `formatDollars`. **Add new live ad sets to `PROTECTED_ADSETS` here when launching them.**
-- `scripts/meta-insights.ts` — read KPIs. Flags: `--level`, `--date-preset`, `--since`/`--until`, `--breakdowns`, `--conversion-event`, `--json`
-- `scripts/meta-creatives.ts` — dump all current ad creatives (body, title, image, CTA). `--json` for raw
-- `scripts/meta-budget.ts` — change ad set daily budget. `--adset --daily`, `--confirm` to execute, `--force` to bypass 10x ceiling
-- `scripts/meta-pause.ts` — pause `--ad` or `--adset`. `--confirm` to execute, `--force` for protected ad sets
-- `scripts/meta-resume.ts` — resume `--ad` or `--adset`. `--confirm` to execute
-- `scripts/meta-create-ad.ts` — create new ad from JSON `--spec`. New ads default to PAUSED; `--activate --force` to publish immediately
-- `scripts/meta-refresh-token.ts` — token refresh; run at day ~50
-- `scripts/meta-rewrite-pi-partners.ts` — **one-off rewrite template used 2026-05-19**: built 6 new inline creatives + swapped refs on 5 existing ads + created the 6th ad. Use as a copy-paste template for any future "rewrite the whole ad set's creative" operation. Each operation should live in its own dated script so the history is auditable.
-
-**Mutation safety contract (all mutation scripts):**
-- Default dry-run. Mutations require explicit `--confirm`.
-- Budget floor: refuses `< $1/day` always (hard rule).
-- Budget ceiling: refuses `> 10× current` without `--force`.
-- Pause refuses `PROTECTED_ADSETS` entries without `--force`.
-- `meta:create-ad --activate` requires `--force` (publishes the ad immediately, real spend).
-- Token only has "Manage campaigns (ads)" permission on the ad account — cannot change account settings, finances, or permissions. Cannot delete the ad account or modify Page settings.
-
-**CLI quick reference:**
 ```bash
-# Yesterday at the ad level (CSV out)
-npm run meta:insights -- --level=ad --date-preset=yesterday
-
-# Last 7 days at campaign level
-npm run meta:insights -- --level=campaign --date-preset=last_7d
-
-# Custom date range, JSON for piping
-npm run meta:insights -- --level=ad --since=2026-05-16 --until=2026-05-22 --json
-
-# Breakdowns (each one multiplies row count)
-npm run meta:insights -- --level=ad --date-preset=last_7d --breakdowns=publisher_platform,device_platform
-
-# Refresh the 60-day token (do at ~day 50)
-npm run meta:refresh-token
-
-# === MUTATIONS (all dry-run by default; pass --confirm to execute) ===
-
-# Dump all current ad creatives (read-only, no --confirm needed)
-npm run meta:creatives
-npm run meta:creatives -- --json   # raw output
-
-# Change ad set daily budget (cents internally, dollars in CLI)
-npm run meta:budget -- --adset=52531549521005 --daily=25 --confirm
-npm run meta:budget -- --adset=52531549521005 --daily=250 --confirm --force  # >10x current
-
-# Pause an ad
-npm run meta:pause -- --ad=52531549521605 --confirm
-# Pause whole ad set (live ones require --force)
-npm run meta:pause -- --adset=52531549521005 --confirm --force
-
-# Resume
-npm run meta:resume -- --ad=52531549521605 --confirm
-npm run meta:resume -- --adset=52531549521005 --confirm
-
-# Create a new ad from a JSON spec (defaults to PAUSED for safety)
-npm run meta:create-ad -- --spec=./scripts/specs/new-ad.json --confirm
-npm run meta:create-ad -- --spec=./scripts/specs/new-ad.json --confirm --activate --force  # publish immediately
+NEXT_PUBLIC_POSTHOG_KEY=phc_...            # optional; analytics disabled without it
+NEXT_PUBLIC_POSTHOG_HOST=https://...
+NEXT_PUBLIC_META_PIXEL_ID=957094783732140  # inlined at build time, a swap needs a redeploy
+NEXT_PUBLIC_LINKEDIN_PARTNER_ID=...
+NEXT_PUBLIC_DEMO_BOOKING_URL=...           # Google appointment scheduler the /demo button opens
+DATABASE_URL=postgres://...                # blog CMS. No sslmode; the pool sets SSL. Unset = file-only blog
+REVALIDATE_SECRET=...                      # authorizes POST /api/revalidate
+# NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID / _BOOKED_  optional, deferred until LinkedIn ads launch
 ```
 
-**JSON spec for `meta:create-ad` (inline creative version):**
-```json
-{
-  "name": "Partners_Pain-NewAngle_v1",
-  "adset_id": "52531549521005",
-  "creative": {
-    "name": "NewAngle_v1 creative",
-    "object_story_spec": {
-      "page_id": "<your-fb-page-id>",
-      "link_data": {
-        "message": "Primary text here...",
-        "name": "Headline here",
-        "description": "News feed link description",
-        "link": "https://casedelta.com/?utm_source=fb&utm_medium=paid&utm_campaign={{campaign.id}}&utm_content={{ad.id}}&utm_term={{adset.id}}",
-        "call_to_action": { "type": "LEARN_MORE", "value": { "link": "https://casedelta.com/" } },
-        "image_hash": "<image-hash-from-meta-upload>"
-      }
-    }
-  }
-}
-```
-Note: image uploads need `POST /act_{id}/adimages` first (not yet built into the CLI; use Meta UI or curl directly).
+---
 
-**Or reference an existing FB Page post (simpler):**
-```json
-{
-  "name": "...",
-  "adset_id": "52531549521005",
-  "creative": { "name": "...", "object_story_id": "<page_id>_<post_id>" }
-}
-```
+## Paid Meta ads (live, real spend)
 
-**Output columns (CSV mode):** name, impressions, reach, clicks, ctr (%), cpc ($), spend ($), complete_registration
+Wide-funnel to litigation partners across practice areas. The ad set name says
+"PBC_Partners" for historical reasons and the test is **not** PI-specific.
 
-**Library use (e.g. in a Node script):**
-```typescript
-import { getInsights, getActionCount } from '@/lib/meta/insights';
-const rows = await getInsights({ level: 'ad', datePreset: 'last_7d' });
-for (const r of rows) {
-  const conv = getActionCount(r, 'complete_registration');
-  console.log(r.ad_name, r.spend, conv);
-}
-```
+**Canonical ids**
 
-**Error codes the CLI surfaces:**
-- `190` → token expired or invalidated. Run `npm run meta:refresh-token` or regenerate via BM.
-- `200` → ad account permission missing. System User must be assigned to the ad account in BM with at least "View performance".
-- `17`/`4` → rate limited. For large date ranges at ad-level, use async report runs (not yet implemented).
+- Ad account `238417253`, Business Portfolio `1523525049382179`
+- Marketing API app `1871334880162905`, System User `casedelta-admin` `122094616863338311`
+- Active pixel (Dataset) `957094783732140`. **Deprecated, do not use: `1112090197804629`**
+- Ad set `PBC_Partners_ADSET` `52531549521005`, $20/day, 6 ads
+- FB Page `1160399907138144`, Instagram `17841421772868520`
+- `META_GRAPH_API_VERSION=v25.0`
 
-**Cross-referencing Meta clicks with PostHog:**
+**The conversion event is `CompleteRegistration`**, fired in `app/demo/DemoClient.tsx`
+`handleBook()`. Change the name in code and the ad set stops finding conversions; both
+sides must agree.
 
-Meta's ad click count and PostHog's `fbclid` pageview count should be 1:1 on the same day. To find Meta-attributed visitors in PostHog:
+**PostHog is the conversion source of truth**, not Meta. The pixel undercounts on iOS
+Safari, in the Facebook in-app browser and behind ad blockers.
 
-```sql
--- All Meta clicks yesterday (PostHog SQL)
-SELECT timestamp, properties.fbclid, properties.$current_url, properties.$geoip_country_code,
-       properties.$browser, properties.$device_type, properties.utm_term AS adset_id,
-       properties.utm_content AS ad_id, properties.utm_campaign AS campaign_id, person_id
-FROM events
-WHERE event = '$pageview'
-  AND timestamp >= toDate('YYYY-MM-DD') AND timestamp < toDate('YYYY-MM-DD' + 1)
-  AND properties.fbclid IS NOT NULL
-ORDER BY timestamp;
-```
+### Mutation safety contract
 
-**Live URL UTM scheme (set on the ad's Website URL in Meta UI):**
-- `utm_source=fb`, `utm_medium=paid`
-- `utm_campaign={{campaign.id}}` → resolves to the campaign ID at click time
-- `utm_term={{adset.id}}` → resolves to the ad set ID
-- `utm_content={{ad.id}}` → resolves to the ad ID
-- `utm_id={{campaign.id}}` (duplicate of campaign for convenience)
-- Custom: `utm=fb&set=partner&ad=N` (legacy fields, can be cleaned up later)
+Every `scripts/meta-*.ts` is dry-run by default and needs `--confirm`. Budget floor $1/day
+always; ceiling 10x current without `--force`; pause refuses `PROTECTED_ADSETS` without
+`--force`; `create-ad --activate` requires `--force`. **Add a new live ad set to
+`PROTECTED_ADSETS` in `lib/meta/safety.ts` when you launch it.**
 
-This means `properties.utm_term` in PostHog = Meta ad set ID, which you can join back to Meta's Insights API results.
-
-**PostHog gotcha — `$initial_utm_source`:** This is a *person-level* property captured on the person's FIRST ever touch. If a visitor's first touch was direct/organic, `$initial_utm_source` is `None` even on a later paid-Meta pageview. **Do not use `$initial_utm_*` to identify paid Meta sessions.** Use per-event `properties.utm_source` / `properties.fbclid` instead. If you need a "first paid touch" attribution model, build a derived property explicitly.
-
-### PBC Test Framework (active 2026-05-19 onward)
-
-**PBC** = Pain / Benefit / Challenge, a disciplined paid-media iteration framework. **Vary one variable at a time, hold the rest constant.** Each variable is fine-grained in its own week.
-
-**Headline format (all weeks):** `How [Common Bond] go from [Pain] to [Benefit]` (with optional `without [Challenge]` added in Week 3).
-
-**Common Bond (CB):** Partners. Wide-funnel — not PI-specific despite the ad set name. Targets litigators across all practice areas. The body copy filters out transactional/corporate practice through litigation-specific language (depositions, discovery, opposing counsel) — the headline does NOT need to filter again.
-
-**Week 1 (LIVE) — vary pain, hold benefit constant.** Benefit = "winning bigger cases". 6 pain dimensions across distinct psychological mechanisms:
-
-| Dimension | Pain phrase | Headline | Ad |
-|---|---|---|---|
-| Functional / doc-burden | building chronologies by hand | "...Building Chronologies By Hand..." | PBC-AD-5 |
-| Identity | doing associate work | "...Doing Associate Work..." | PBC-AD-3 |
-| Tech / stack | juggling six platforms | "...Juggling Six Platforms..." | PBC-AD-4 |
-| Lifestyle | working through every weekend | "...Working Through Every Weekend..." | PBC-AD-2 |
-| Social / competitive | watching competitors adopt AI | "...Watching Competitors Adopt AI..." | PBC-AD-6 |
-| Fear / risk | missing key evidence | "...Missing Key Evidence..." | PBC-AD-1 |
-
-**Body is CONSTANT across all 6 ads** (per PBC purity). The body's anecdote section name-checks all 6 dimensions in balanced weight (~one line per dimension) so each headline finds a body echo without skewing the test.
-
-**Why these 6 dimensions specifically:** Each activates a different psychological mechanism (effort frustration, status mismatch, operational friction, sacrifice aversion, peer competition, loss aversion). Testing cross-dimensional in Week 1 — rather than fine-graining within one dimension as strict PBC would say — is intentional because CaseDelta hasn't done prior dimension-level testing. Once a winning dimension emerges, Week 2 fine-grains the benefit within it.
-
-**Anti-patterns the framework forbids (learned the hard way):**
-- **Don't vary multiple variables at once.** A creative redesign that changes hook + benefit + frame produces no clean learning.
-- **Don't reach for tired metaphors.** "Drowning in X" / "X slogs" / "X marathons" / "buried in X" all read as marketing copy and fail to land with senior partners. Concrete > metaphorical. The one functional pain we kept (chronologies) used the partner's actual term, not a metaphor.
-- **Don't name pain at the artifact level when the experience is the work itself.** "Manual case timelines" (artifact) → "building chronologies by hand" (the work). The verb-form matters.
-- **Don't test 3 framings of the same underlying pain.** Original Week 1 had "drowning in records" + "buried case facts" + "manual case timelines" — all the same doc-burden archetype with synonyms. That wastes test slots.
-- **Don't make the body dimension-specific in a cross-dimensional test.** Body must be universal-enough that each headline lands with its echo somewhere in the body, balanced.
-
-**Week 2 plan (gated on Week 1 results):** Hold winning pain constant. Vary benefit. Format: `How partners go from [winning P] to [B]`. Candidate benefits include "winning bigger cases" (Week 1 default), "higher win rates", "career-defining wins", "stronger case strategy", "faster case wins". Do NOT draft Week 2 variations until Week 1 has a clear winner — locking in pain that didn't actually win destroys the test.
-
-**Week 3 plan (gated on Week 2):** Hold winning P+B constant. Vary challenge. Format: `How partners go from [P] to [B] without [C]`. Candidate challenges: "mountains of discovery", "caseload bandwidth", "tight prep timelines", "junior team capacity", "tool-switching fatigue", "AI security risks".
-
-**Daily audit during a test week:**
 ```bash
 npm run meta:insights -- --level=ad --date-preset=yesterday
+npm run meta:creatives                                        # read-only
+npm run meta:budget  -- --adset=52531549521005 --daily=25 --confirm
+npm run meta:pause   -- --ad=52531549521605 --confirm
+npm run meta:refresh-token                                    # 60-day token, refresh at day ~50
 ```
-The CLI surfaces both `clicks` (Meta's all-engagement counter — text-expand, image-tap, profile click) and `link_clicks` (actual outbound clicks). Use **`link_clicks`/`link_ctr`/`link_cpc` as the source of truth** for site-driving performance. A row with `clicks >> link_clicks` triggers a "phantom-click warning" automatically — the in-feed engagement isn't reaching the site (see GitHub issue #34 for the diagnostic that established this).
 
-Cross-check with the saved PostHog funnel **"Meta Paid → Demo Booked (per ad)"** ([insight sk3TDNy7](https://us.posthog.com/project/275515/insights/sk3TDNy7)) for independent ground-truth conversion attribution per ad — `$pageview where utm_source=fb → demo_booked`, broken down by `utm_content` (Meta ad ID). PostHog is the conversion source of truth because Meta's pixel undercounts on iOS Safari / FBIA / ad-blocked users.
+### Traps that cost a day each
 
-**Sample-size rule (stopping criteria for a test week):**
-Don't pick a winner until BOTH thresholds are met. Volumes below these are statistical noise.
-- **CTR-based winner**: ≥30 link_clicks per ad. Below this, link_ctr swings wildly on N=1-3 effects.
-- **Conversion-based winner**: ≥5 demo_booked events on the leading ad. Below this, a 1-event gap is noise, not signal.
-- **Under-tested ads**: if any ad has <10 link_clicks after 14 days, treat it as undertested (Meta's algorithm never gave it a fair shake) — exclude it from the dimension read rather than declaring it lost.
-- **If after 14 days no ad reaches 30 link_clicks**: the audience size or daily budget is too small to test this many dimensions in parallel. Drop to 3 ads max for the next iteration, or scale daily budget.
-- Current pace at $20/day produces ~3-8 link_clicks per ad per day across 6 ads. Plan a test week to last 10-14 days, not 7.
+- **`link_clicks` is the truth, not `clicks`.** `clicks` counts every engagement,
+  including text-expand and image-tap. `clicks >> link_clicks` means the in-feed
+  engagement is not reaching the site, and the CLI prints a phantom-click warning.
+- **Always use inline creatives (`object_story_spec`), never page-post-backed
+  (`object_story_id`).** A page-post-backed creative keeps its CTA on the Page post, and
+  editing that needs `pages_manage_posts`, which we do not have.
+- **An app in development mode silently blocks ad creation.** Error subcode `1885183`.
+  Fix at `developers.facebook.com/apps/1871334880162905/go_live/`.
+- **`url_tags` is not a field on the Ad object.** UTM template variables go directly in
+  `link_data.link`; Meta substitutes at delivery.
+- **Drafts made in the Meta UI are invisible to the API** until published, so a script
+  will create a redundant ad. Discard with the row-level Delete, never the toolbar
+  "Discard drafts", which is account-wide.
+- **PostHog `$initial_utm_source` is person-level, captured on first ever touch.** Do not
+  use it to identify paid Meta sessions; use per-event `properties.utm_source` or
+  `fbclid`.
+- **Token scope and per-asset permission are two different layers**, and both must
+  agree. `ads_management` scope with only "View performance" on the ad account fails
+  with code 200.
+- Graph error `190` means the token expired. It is a 60-day token generated 2026-05-19,
+  so assume it is dead until proven otherwise.
 
-**Picking a winner at end of a test week:** Don't pick on link_ctr alone. The winning ad is the one with the best **link_ctr × downstream conversion rate** (PostHog demo_booked / link_clicks). High-link-CTR hooks that bounce on the landing page are still false signals — they win the click but lose the lead.
+### Sample size before you call a winner
 
-### Creative Rewrite Workflow (rewrite all ads in an ad set)
+Both thresholds, not either: **30 link_clicks per ad** and **5 demo_booked on the
+leader**. Under 10 link_clicks after 14 days means the ad was undertested, so exclude it
+rather than declare it lost. At $20/day across 6 ads a test week runs 10 to 14 days, not
+7. Pick on `link_ctr × downstream conversion rate`: a hook that wins the click and
+bounces on the landing page is a false signal.
 
-Use this when you want to swap creative content across an entire ad set (titles, body, CTA, etc.). The pattern:
+### Do not change without asking
 
-**Preconditions:**
-1. **App must be in Live mode.** Dev-mode apps can't produce ad-eligible posts (Meta blocks with error subcode 1885183, message "Ads creative post was created by an app that is in development mode"). Our app went Live on 2026-05-19. If it ever reverts, flip back at `developers.facebook.com/apps/<app_id>/go_live/` — needs a valid Privacy Policy URL (we use `https://casedelta.com/privacy`).
-2. **System User permission on the ad account must be "Manage campaigns (ads)" or higher.** Read-only "View performance" can't create or update creatives.
-3. **Ad set should be PAUSED** before swapping creative on running ads, to avoid mid-flight delivery anomalies. Use `npm run meta:pause -- --adset=<id> --confirm --force`.
+`NEXT_PUBLIC_META_PIXEL_ID` in Vercel, the `MetaPixel` mount in `app/layout.tsx`, the CSP
+allowlist for `connect.facebook.net` and `www.facebook.com`, the geo-suppression in
+`proxy.ts`, the FB domain verification meta tag, and the live ad set's configuration.
 
-**Why we use inline creatives (`object_story_spec`) NOT page-post-backed (`object_story_id`):**
-The original 5 BOOK_TRAVEL ads were page-post-backed — the CTA lived on the underlying FB Page post, not the creative. Editing CTA required `pages_manage_posts` permission (we don't have it). New creatives use inline `object_story_spec` with the CTA defined inline, fully controllable via API. **Always prefer inline going forward.**
+---
 
-**Step-by-step:**
+## Watch items
 
-1. **Pull the shared image hash** from any existing creative (all ads in our set share one image):
-   ```bash
-   curl -sS "https://graph.facebook.com/v25.0/<existing-creative-id>?fields=image_hash,object_story_spec&..."
-   # extract object_story_spec.link_data.image_hash
-   ```
-
-2. **Copy `scripts/meta-rewrite-pi-partners.ts` as a starting template.** Update:
-   - `ADSET_ID`, `PAGE_ID`, `INSTAGRAM_USER_ID`, `IMAGE_HASH` constants
-   - `BODY` constant (the universal body, identical across all ads in this test)
-   - `LINK` constant (UTM template URL)
-   - `PLAN` array — one entry per ad with: `adName`, `title`, `existingAdId` (null = create new)
-
-3. **Run the script.** It will:
-   - Create N new inline creatives via `POST /act_{id}/adcreatives`
-   - For each entry with `existingAdId`, swap that ad's creative reference via `POST /{ad-id}` with `creative={creative_id:...}`
-   - For each entry with `existingAdId: null`, create a brand-new ad via `POST /act_{id}/ads`
-   - All operations preserve ad IDs and learning history for the existing 5 ads
-   - All new ads default to `PAUSED` status
-
-4. **Verify via API** that all ads have the new creatives and CTAs:
-   ```bash
-   curl -sS -G "https://graph.facebook.com/v25.0/<adset_id>/ads" \
-     --data-urlencode "fields=name,effective_status,creative{object_story_spec}" ...
-   ```
-
-5. **Wait for Meta to approve new creatives.** Each creative goes through `IN_PROCESS` → `ACTIVE`/`PAUSED` depending on parent state. Typical 1-24h.
-
-6. **Resume the ad set** when ready:
-   ```bash
-   npm run meta:resume -- --adset=<id> --confirm
-   ```
-
-**One trap to avoid:** if you (or the user) manually create a draft ad in the Meta UI alongside the API rewrite, the UI draft won't be visible via the API until it's published. The script may then create a redundant ad. If this happens, discard the UI draft via the row-level "Delete (Ctrl+Backspace)" action in Ads Manager (NOT the top-toolbar "Discard drafts" — that's account-wide and will kill all pending changes).
-
-### Marketing API setup history (one-time, completed 2026-05-19)
-
-For reference only — re-running these is unnecessary.
-
-1. Created Meta dev account (camren2468@gmail.com), registered as developer
-2. Created Business app `casedelta-marketing-api` (ID `1871334880162905`) under CaseDelta BP
-3. Selected use case: "Create & manage ads with Marketing API" (no separate "add product" step — this is the new app flow)
-4. Enabled "Require app secret" in App → Advanced → Security (forces appsecret_proof on every call)
-5. Created System User `casedelta-admin` (ID `122094616863338311`), Admin role, under CaseDelta BP
-6. Generated 60-day refreshable token with scopes `ads_read` + `ads_management` + `business_management` (+ default Pages/Threads scopes)
-7. **Claimed ad account `238417253` into CaseDelta BP** (it was a personal ad account before; this is irreversible per Meta)
-8. Assigned System User to ad account, initially with "View performance" permission, then **upgraded to "Manage campaigns (ads)" later same day** when mutation/creative-write capability was needed
-9. **Set Privacy Policy URL** in App settings → Basic to `https://casedelta.com/privacy`, then **flipped app to Live mode** at `developers.facebook.com/apps/1871334880162905/go_live/`. Required before inline creative writes work via API.
-10. Stored `META_APP_ID`, `META_APP_SECRET`, `META_SYSTEM_USER_TOKEN`, `META_AD_ACCOUNT_ID`, `META_GRAPH_API_VERSION` in `.env.local`
-11. Vercel prod env: NOT YET ADDED (only needed when `/api/meta-insights` route is built)
-12. **Rewrote 6 ad creatives on 2026-05-19** via `scripts/meta-rewrite-pi-partners.ts` — replaced BOOK_TRAVEL CTAs with LEARN_MORE, swapped to inline creatives (was page-post-backed), and installed the PBC Week 1 cross-dimensional headlines. See "Creative Rewrite Workflow" above.
-
-### Meta UI Gotchas (Marketing API setup, discovered 2026-05-19)
-
-- **App creation use cases vs. classic products:** the new app creation flow asks for a "use case" (Marketing API, Threads, etc.) instead of adding products post-creation. Marketing API as a use case grants access automatically; no separate App Review for own-account use.
-- **System User name policies:**
-  - No more than 1-2 hyphens (e.g., `casedelta-api-admin` was rejected, `casedelta-admin` accepted)
-  - Reserved-ish words like "API", "Admin" trigger "invalid System User name" silently. If a name fails, simplify until accepted.
-- **Claiming an ad account is irreversible.** Meta's dialog says it plainly. Once an ad account joins a BP, it can only move between BPs, never back to personal.
-- **Claiming resets payment method state.** Even if a card stays attached, Meta needs the BP to re-authorize charging. Expect `account_status: 3` (DISABLED) until the owner fixes payment in `business.facebook.com/billing_hub/payment_methods?business_id=...&asset_id=<ad_account>`.
-- **App in development mode silently blocks ad creation.** Error subcode `1885183`, message "Ads creative post was created by an app that is in development mode. It must be in public to create this ad." Affects ALL inline creative creation (`POST /act_{id}/adcreatives` with `object_story_spec`). Fix by flipping to Live mode (needs Privacy Policy URL + maybe Business Verification).
-- **Inline creatives vs page-post-backed creatives:** an inline creative (`object_story_spec`) puts all content (body, title, image, CTA) on the creative itself, fully API-controllable. A page-post-backed creative (`object_story_id` or `effective_object_story_id`) points to an existing FB Page post; the content lives on the post and editing it requires `pages_manage_posts` permission (we don't have it). The 5 original BOOK_TRAVEL ads were page-post-backed which is why fixing their CTA required creating new inline creatives from scratch. **Always prefer inline going forward.**
-- **`url_tags` is not a field on the Ad object.** Dynamic UTM template variables (`{{campaign.id}}`, `{{ad.id}}`, `{{adset.id}}`) go directly in the creative's `link_data.link` URL, and Meta substitutes them at delivery time. No separate "tags" field needed.
-- **Drafts in Meta UI don't surface via API.** If a user manually duplicates an ad in Ads Manager and doesn't publish, the draft has a temporary client-side ID (visible in the URL) but no real API-side ad ID. `GET /<temp-id>` returns "Ad with this id cannot be found." You must publish via UI first OR discard the draft. The row-level "Delete (Ctrl+Backspace)" action discards a single selected draft; the top-toolbar "Discard drafts" is account-wide and will kill ALL pending changes.
-- **`/me/permissions` shows token scopes, but actual capability also depends on the System User's per-asset permission level** on the ad account ("View performance" vs "Manage campaigns" vs "Manage ad accounts"). Token might have `ads_management` scope while the SU only has read access — calls will fail with code 200 ("Ad account owner has NOT grant ads_management or ads_read permission"). Both layers must agree.
-- **System User has no "businesses" reachable via `/me/businesses`.** That endpoint returns `data: []` for System Users — they belong to ONE BP by creation, not multi-business identities. Use the parent BP ID directly.
-
-### Verification & Debugging
-- **Events Manager Test Events:** https://eventsmanager.facebook.com/events_manager2/list/pixel/957094783732140/test_events?act=238417253
-- **Meta Pixel Helper** Chrome extension: inspects fbq calls on any page
-- **Console smoke test:** `typeof window.fbq` should be `'function'`; `_fbp` cookie present means pixel fired
-- **Fire a manual test event:** `fbq('track', 'CompleteRegistration', {}, { eventID: 'test-' + Date.now() })`. Appears in Test Events tab within seconds when the browser session is registered with that tool.
-- **Vercel deploys are authoritative:** env var changes only take effect after a fresh production build. Use `vercel redeploy <prod-url>` to re-build with the current env without shipping new code.
-
-### Common Operations
-
-**Adding a new standard conversion event:**
-1. Add a helper in `lib/meta-pixel.ts` mirroring `trackMetaCompleteRegistration`
-2. Call it at the right user action
-3. Deploy
-4. The event appears automatically in Events Manager once it fires. No separate "registration" step in Meta UI unless creating a new ad set to optimize for it.
-
-**Swapping the active pixel ID:**
-1. `vercel env rm NEXT_PUBLIC_META_PIXEL_ID production -y`
-2. `printf "<new-id>" | vercel env add NEXT_PUBLIC_META_PIXEL_ID production`
-3. Redeploy (`vercel redeploy <latest-prod-url>` for env-only change, or push to main for code+env)
-4. Verify via Test Events with the new pixel ID
-
-**Scoping a Meta publish to one ad set's child ads (when other ad sets are also in draft):**
-This is a non-obvious Meta UI quirk discovered 2026-05-16.
-1. Open the Review draft items dialog (toolbar Publish or "Review and publish (N)" top-right)
-2. Switch to the "Ad sets N" tab. This lists only currently-unpublished ad sets.
-3. Uncheck the ad sets you do NOT want to publish. Meta cascades the uncheck to their child ads.
-4. Switch to "Ads N of M" tab. Only the children of still-checked or already-published ad sets remain selected.
-5. Click Publish. Scope is now correct.
-
-### Meta UI Gotchas
-- "In draft" status = ad set/ad has never been published, OR existing one with unpublished pending changes
-- "No ads" status on a published ad set = the ad set itself published, but its child ads failed (often WEB001)
-- WEB001 error ("Please authenticate your account") = Meta security challenge. Only the account holder can complete it. Blocks all publishing until cleared.
-- The toolbar Publish always opens the account-wide Review dialog. There is no truly per-row publish action. The "inline Publish" on hover is just a shortcut to the same dialog. Use the cascade trick above to scope.
-- Duplicating an ad set does NOT rename its child ads, so two ad sets can have identical ad names (e.g., `Partners_Pain-DrowningInRecords-2` exists in both `PI_Partners` and `PI_Partners - Copy`). Name-only identification is unreliable. Use ad set membership.
-- Dialog row DOM does not expose ad/adset IDs, so programmatic scoping by ID via Playwright is not possible. Use the cascade trick instead.
-
-### Ad Set Optimization & Triage Levers
-All of these are set in Meta Ads Manager UI, not in code:
-- **Budget:** Daily, currently $20/day per ad set. Increase incrementally (Meta recommends max 20% / 24h to avoid learning-phase reset).
-- **Targeting:** Audience size 42.7M to 50.3M for current `PBC_Partners_ADSET`. Tightening (geographic, job title) usually improves cost-per-result but slows learning.
-- **Performance goal:** `Maximize number of leads` currently. Could switch to "Maximize value of conversion events" if revenue per CompleteRegistration becomes known.
-- **Attribution:** Standard model, 7-day click + 1-day engaged-view. Don't change without explicit ask.
-- **Cost per result goal:** None (let Meta optimize). Set a bid cap only when CAC discipline matters more than volume.
-- **Conversion event:** `CompleteRegistration`. To switch, both update the code (fire a different standard event) AND change the ad set's selection in Meta UI. They must match.
-- **Advantage+ creative enhancements:** Currently off. Enabling can lower CPR but reduces creative control.
-
-### Designing a New Ad Set (Playbook)
-1. Duplicate `PBC_Partners_ADSET` as a template. Rename it descriptively (e.g., `PI_SoloPractitioner_Test` or `PBC_ManagingPartners_ADSET`).
-2. Adjust targeting (job title / interest / lookalike).
-3. Confirm Dataset is `my_fb_pixel` and Conversion event is `Complete registration`.
-4. Replace creative variants. Keep the pain-point framing structure since that's the active test.
-5. Start at $20/day to match. Compare cost-per-CompleteRegistration after 50-100 events before scaling.
-6. Publish via the cascade trick to avoid pulling in unrelated drafts.
-
-### Daily KPI audit workflow
-
-When asked to "audit yesterday's ads" or similar:
-
-1. `npm run meta:insights -- --level=ad --date-preset=yesterday` → grab volume, CTR, spend, conversions per ad
-2. Run the PostHog SQL above with yesterday's date to enumerate fbclid pageviews
-3. Counts should match within 1-2 (Meta's click count may include duplicate same-person clicks Meta dedupes differently)
-4. For each Meta-clicked person, query their event timeline: `SELECT timestamp, event, properties.$pathname FROM events WHERE person_id = '<id>' AND timestamp >= toDate('YYYY-MM-DD') AND timestamp < toDate('YYYY-MM-DD' + 1) ORDER BY timestamp`
-5. Bounce signals: only `$pageview` + `$web_vitals` within a few seconds, no scroll/click. If most paid clicks are sub-10-second bounces, the issue is creative-LP match or FB In-App Browser performance.
-6. Reporting lag: Meta's last 24h numbers are directional, not final. T+3 to T+4 days is "settled."
-
-**Throttle headers** (logged to stderr by client.ts when high): watch `app_id_util_pct`, `acc_id_util_pct` in `x-fb-ads-insights-throttle`. Backoff if either >75%.
-
-### Phase 2: Server-side Conversions API (CAPI) (NOT YET BUILT)
-- Status: pre-wired (`event_id` UUID plumbing) but no server route yet
-- When to build: better attribution under iOS tracking restrictions and ad blockers
-- Estimated effort: ~1 day. Add `/api/meta-capi` POST handler that hashes PII (em, ph, fn, ln) and calls `https://graph.facebook.com/v{...}/{pixel_id}/events` with the `eventID` from the browser event for dedupe. Trigger alongside `trackMetaCompleteRegistration`.
-
-### What NOT to change without explicit ask
-- `NEXT_PUBLIC_META_PIXEL_ID` in Vercel env vars (this is the live pixel)
-- `MetaPixel` mount in `app/layout.tsx`
-- CSP allowlist for `connect.facebook.net` / `www.facebook.com` in `next.config.ts`
-- EU geo-suppression in `proxy.ts` + the `cd_pixel_blocked` check in `MetaPixel`
-- FB domain verification meta tag in `app/layout.tsx`
-- Live ad set `PBC_Partners_ADSET` (52531549521005) configuration (real spend is attached)
-- The 5 live ad creatives in Processing (Meta may reject re-edits during review)
-
-## Common Tasks
-
-### Adding a Page
-1. Create `app/<route>/page.tsx` (App Router). Add `metadata` for SEO.
-2. Register it in `app/sitemap.ts` and add any old-URL redirects in `next.config.ts`.
-
-### Adding a Blog Post
-The blog is **database-backed** — posts ship without a code push. Full detail in `docs/BLOG_CMS.md`.
-1. `INSERT` a row into Supabase `public.marketing_blog_posts` with `status='published'`.
-2. `POST /api/revalidate?secret=$REVALIDATE_SECRET` with the paths to refresh (`/blog`, `/blog/<slug>`, `/sitemap.xml`).
-3. Posts are rendered via ISR (`revalidate = 600`), so revalidation makes them live immediately with no rebuild.
-- Generation is autonomous: the `blog_writer` Codex skill in the GTM engine researches, writes, and **auto-publishes with no human review**. It lives in `openclaw-vps/engine/skills/blog_writer.md`, not here.
-- Legacy `content/blog/*.mdx` files still render and are merged by slug (**DB wins**). They are the fallback if the DB is unreachable, so the site never breaks.
-
-### Modifying the Look
-1. Edit tokens in `components/marketing/kit.tsx` (`BF`, `BG`, `SERIF`, `SANS`) — this is what actually renders.
-2. `app/globals.css` holds the CSS variables + the `.cd-*` interaction/hover rules.
-3. `design-tokens.json` is documentation only; update it to keep docs honest.
-
-### Tracking Conversions
-- PostHog captures pageviews + UTM first-touch automatically (see `lib/posthog.ts`).
-- The demo-booking conversion fires `trackMetaCompleteRegistration` (`lib/meta-pixel.ts`) from `components/demo/DemoBody.tsx` `handleBooked()`, and a `demo_booked` PostHog event.
-
-## Design Philosophy
-- **Minimalist & Professional:** Legora / Harvey / Filevine synthesis
-- **Grayscale-First:** Color only for semantic meaning, one blue accent
-- **Accessibility:** WCAG 2.1 AA compliant
-- **Performance:** Lazy-loaded analytics, zero Core Web Vitals impact
-- **Mobile-First:** Responsive design from smallest screens up
-
-## Current State (as of 2026-07-15)
-- Multi-page marketing site (home, features, use-cases, blog, answers, compare, pricing, demo, security, legal) live in production on Vercel
-- Default homepage hero: **legora** (full-bleed, dark, video-led). Variant + copy split-test machinery is wired but the PostHog flags are not driving a live experiment yet.
-- Homepage below-the-fold: "what it is → how → what it does → why different → proof → price → safe → stack → FAQ → ask"
-- Blog: DB-backed via Supabase + ISR, auto-published by the `blog_writer` Codex agent
-- PostHog analytics: integrated but optional. LinkedIn Insight Tag + Meta Pixel (`957094783732140`) live.
-- Paid Meta ad set `PBC_Partners_ADSET` (52531549521005), $20/day, 6 ads testing 6 cross-dimensional pain hooks per the PBC Week 1 framework (rewrite shipped 2026-05-19)
-- A/B variant *routing*: removed (vestigial machinery only). In-page variants replaced it.
-
-### Known drift / watch items
-- **`META_SYSTEM_USER_TOKEN` is a 60-day token generated 2026-05-19** and the refresh guidance is day ~50. It is very likely expired. Symptom: Graph error code `190`. Fix: `npm run meta:refresh-token`.
-- **The legora hero ships a 10.2 MB `legora.mp4` above the fold** with no `preload` hint, to every visitor including cold paid-Meta clicks. This is the LCP-relevant fact for the funnel; nobody has measured it yet.
-- `npm run lint` is broken (Next 16 removed `next lint`).
-- `_backup/` and `.playwright-mcp/` are stale local scratch, not part of the app.
+- **This repo is PUBLIC.** `meetings/` (customer discovery and sales notes naming real
+  firms), `casedelta_documents_new/` (internal docs plus the investor deck) and
+  `_backup/` were removed from HEAD on 2026-09-02, and copies are preserved outside the
+  repo. **Removing them from HEAD does not remove them from history.** Never commit
+  customer notes, internal strategy or credentials here.
+- **`META_SYSTEM_USER_TOKEN` is a 60-day token from 2026-05-19.** Almost certainly
+  expired.
+- **The hero has no video.** `HERO_MEDIA.src` in `Hero.tsx` is undefined, so the hero
+  runs copy-only over the ambient photograph. Setting `src` and a real `poster` brings
+  the two-column layout back on its own; the frame and its motion are still tuned.
+- **`SecondProof` renders nothing when `QUOTES` is empty.** Never fill it to close a gap.
+- `_ref/` and `.playwright-mcp/` are untracked local scratch, not part of the app.
