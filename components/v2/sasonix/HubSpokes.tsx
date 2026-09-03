@@ -15,9 +15,13 @@
  *
  * EVERY NAME IS A PLATFORM DELTA ACTUALLY REACHES. This is the one thing to be
  * careful about here: a name on this diagram is a claim a firm will test by
- * asking "do you connect to X". Camren's list when he asked for this included
- * Lexis, which is left out because nothing in the repo shows Delta reaching it,
- * unlike the six below. Add a name when the connection exists, not before.
+ * asking "do you connect to X".
+ *
+ * Lexis was held off this diagram when it was first drawn, because nothing in the
+ * repo showed Delta reaching it. It is on now, and the evidence is what changed:
+ * the Rudin Law usage sweep of 2026-09-02 found Lexis AI among the nine platforms
+ * that firm has connected in production. That is the bar. Add a name when the
+ * connection exists, not when someone asks for it.
  * (The invented names in FirmMarquee.tsx are a separate, explicitly authorised
  * placeholder; this file is not that.)
  *
@@ -33,16 +37,20 @@ import { SX } from "./tokens";
  * Ordered clockwise from twelve o'clock, and the order is not arbitrary.
  *
  * The longest labels take TOP and BOTTOM, where a pill is centred horizontally
- * and has the whole box to spread into. The sides are where a pill runs outward
- * from the ring and is the first thing to cross the card edge on a narrow screen,
- * so the short ones go there. Reorder these and check a 390px phone.
+ * and has the whole box to spread into. Indices 2 and 5 land nearest the
+ * horizontal extremes, where a pill runs outward from the ring and is first to
+ * cross the card edge on a narrow screen, so the two SHORTEST go there: "Lexis"
+ * and "Filevine". Reorder these and check a 390px phone.
  *
- * Six, not eight. Dropbox and Clio came off on 2026-09-02 (Camren), and the ring
- * redistributes on its own because every angle is derived from NODES.length.
- * Worth knowing: neither was in the nine systems Rudin Law actually has
- * connected, and this diagram sits beside a paragraph whose three examples all
- * come from that firm. The six here are closer to a real stack than the eight
- * were.
+ * Seven. Dropbox and Clio came off on 2026-09-02, and neither was in the nine
+ * systems Rudin Law actually has connected, which is the firm all three examples
+ * in the paragraph beside this come from. The ring redistributes on its own
+ * because every angle is derived from NODES.length.
+ *
+ * "ANYTHING ELSE" IS NOT A PRODUCT and does not get to look like one. It is the
+ * five-minute-onboarding claim made visible: the ring is a sample, not an
+ * inventory. It renders with a dashed edge so a reader does not scan it as a
+ * platform they have not heard of.
  *
  * "Gmail/Outlook" is one node rather than two because they are the same job to a
  * reader: it is where the firm's mail lives. Two nodes would spend a sixth of the
@@ -51,11 +59,15 @@ import { SX } from "./tokens";
 const NODES = [
   "Gmail/Outlook",
   "QuickBooks",
-  "SharePoint",
+  "Lexis",
+  "Anything Else",
   "Google Drive",
-  "Lead Docket",
   "Filevine",
+  "Lead Docket",
 ];
+
+/** Not a product. Rendered differently on purpose; see CATEGORY_NODE below. */
+const CATEGORY = "Anything Else";
 
 const SIZE = 420;
 const R = 168; // node ring radius
@@ -129,7 +141,7 @@ export function HubSpokes() {
         return (
           <span
             key={name}
-            className="sx-hub-node"
+            className={name === CATEGORY ? "sx-hub-node sx-hub-node-any" : "sx-hub-node"}
             style={{ position: "absolute", left: `${x}%`, top: `${y}%`, animationDelay: `${0.15 + i * 0.07}s` }}
           >
             {name}
@@ -151,6 +163,16 @@ export function HubSpokes() {
           border-radius: 999px;
           padding: 8px 13px;
           backdrop-filter: blur(2px);
+        }
+
+        /* The category node is a promise, not a product, so it reads as an open
+           slot: dashed edge, no fill. Same size and position logic as the rest,
+           because it is still one of the seven. */
+        .sx-hub-node-any {
+          background: transparent;
+          border-style: dashed;
+          border-color: rgba(255, 255, 255, 0.30);
+          color: var(--sx-on-media-muted);
         }
 
         /* The spokes pulse outward one after another, slowly. It reads as traffic
