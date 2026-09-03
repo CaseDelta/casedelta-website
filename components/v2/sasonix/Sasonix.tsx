@@ -1,16 +1,21 @@
 "use client";
 
 /**
- * The CaseDelta homepage. Restructured 2026-08-28 (Camren) to argue in this order:
+ * The CaseDelta homepage. Restructured 2026-08-28 (Camren), and again 2026-09-02:
  *   1. Hero              -> what Delta is, and the ask
- *   2. Stakes            -> the problem, in one sentence
- *   3. AutomationSection -> what Delta is, in three capability cards
- *   4. Testimonials      -> proof, before any argument about why we are different
- *   5. WhySasonix        -> why it is different: the Context Wedge, proved row by row
- *   6. Trust             -> security, the objection a firm actually raises
- *   7. Pricing           -> three flat tiers priced by account count
- *   8. SecondProof       -> a second customer voice before the ask (empty today)
+ *   2. FirmMarquee       -> who else uses it (PLACEHOLDER NAMES, see that file)
+ *   3. Stakes            -> the problem, in one sentence
+ *   4. AutomationSection -> what Delta is, in three capability cards
+ *   5. Testimonials      -> proof, before any argument about why we are different
+ *   6. WhySasonix        -> why it is different: the Context Wedge, proved row by row
+ *   7. Trust             -> security, the objection a firm actually raises
+ *   8. Pricing           -> three flat tiers priced by account count
  *   9. CtaFooter         -> the ask, an email address
+ *
+ * THE TWO PROOF SECTIONS ARE NOW ONE (2026-09-02). A SecondProof section carried the
+ * Poletti quote between pricing and the ask, four sections below the first quote.
+ * Both quotes are in Testimonials now, which already renders a marquee at two or
+ * more, so the page argues its proof once instead of twice.
  *
  * PROOF SITS BEFORE THE ARGUMENT, which is the reordering that matters most here.
  * A reader who has just been told what Delta does wants evidence, not a comparison
@@ -47,12 +52,12 @@ import { ThemeVars, useThemeOverride } from "./ThemeVars";
 import { SmoothScroll } from "./SmoothScroll";
 import { Nav } from "./Nav";
 import { Hero } from "./Hero";
+import { FirmMarquee } from "./FirmMarquee";
 import { Stakes } from "./Stakes";
 import { AutomationSection } from "./AutomationSection";
 import { Testimonials } from "./Testimonials";
 import { WhySasonix } from "./WhySasonix";
 import { Trust } from "./Trust";
-import { SecondProof } from "./SecondProof";
 import { Pricing } from "./Pricing";
 import { CtaFooter } from "./CtaFooter";
 
@@ -66,21 +71,23 @@ export function Sasonix() {
       <Nav />
       {/* 1. Hero */}
       <Hero />
-      {/* 2. The stakes: one sentence naming the headcount cap, and the question it sets up */}
+      {/* 2. The firm belt. Directly under the fold, where a reader who has just
+             been told what Delta is asks who else uses it.
+             ⚠️ THE NAMES ARE PLACEHOLDERS. See the banner in FirmMarquee.tsx. */}
+      <FirmMarquee />
+      {/* 3. The stakes: one sentence naming the headcount cap, and the question it sets up */}
       <Stakes />
-      {/* 3. What Delta is, in three capability cards */}
+      {/* 4. What Delta is, in three capability cards */}
       <AutomationSection />
-      {/* 4. Proof, before any argument about why we are different */}
+      {/* 5. Proof, before any argument about why we are different. BOTH real quotes
+             now, in one row; there is no second proof section further down. */}
       <Testimonials />
-      {/* 5. Why it is different: the Context Wedge, proved row by row */}
+      {/* 6. Why it is different: the Context Wedge, proved row by row */}
       <WhySasonix />
-      {/* 6. Security: the objection a firm actually raises */}
+      {/* 7. Security: the objection a firm actually raises */}
       <Trust />
-      {/* 7. Pricing */}
+      {/* 8. Pricing */}
       <Pricing />
-      {/* 8. A second, different voice before the ask. Renders nothing until there is
-             a real quote to put in it; see SecondProof.tsx. */}
-      <SecondProof />
       {/* 9. The ask: an email address */}
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}
