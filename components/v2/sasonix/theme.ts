@@ -67,6 +67,16 @@ export interface Palette {
   surface: string;
   /** Card surface, alternate depth. */
   surfaceAlt: string;
+  /** A card that inverts: dark fill carrying light type, on a light page.
+   *
+   *  NOT the same as `ink`. `ink` is the primary TEXT colour and doubles as the
+   *  dark button fill, and it is near-black by design. A near-black panel the
+   *  width of the container reads as a hole in the page; the reference this was
+   *  measured from uses a lifted grey (#313131, L*20) for exactly that reason.
+   *  Its value is warm, so ours is not a copy of it: warm neutrals under a blue
+   *  accent read as a mistake, which is the same reason the rest of this
+   *  palette went cool. */
+  surfaceInverse: string;
 
   /** Hairline borders and dividers. */
   hairline: string;
@@ -124,6 +134,8 @@ export const PALETTES: Record<ThemeName, Palette> = {
     bgAlt: "#f5f7fc",
     surface: "#ffffff",
     surfaceAlt: "#f9fafe",
+    // L*20, matching the reference's lift off black, in this palette's cool cast.
+    surfaceInverse: "#272B34",
     hairline: "rgba(15,23,42,0.10)",
     shadowRgb: "15,23,42",
     // The brand blue over photography is a real risk on this page: the hero
@@ -155,6 +167,7 @@ export const PALETTES: Record<ThemeName, Palette> = {
     bgAlt: "#fcf8f4",
     surface: "#ffffff",
     surfaceAlt: "#fefaf6",
+    surfaceInverse: "#313131",
     hairline: "rgba(44,24,11,0.10)",
     shadowRgb: "26,23,18",
     accentOnMedia: "#ff7029",
@@ -186,6 +199,7 @@ export const PALETTES: Record<ThemeName, Palette> = {
     bgAlt: "#f3f3f3",
     surface: "#ffffff",
     surfaceAlt: "#f8f8f8",
+    surfaceInverse: "#2b2b2b",
     hairline: "#ededed",
     shadowRgb: "24,24,24",
     accentOnMedia: "#ffffff",
@@ -214,6 +228,8 @@ export const PALETTES: Record<ThemeName, Palette> = {
     bgAlt: "#121214",
     surface: "#161618",
     surfaceAlt: "#1c1c1f",
+    // Inverts the other way in a dark theme: the card lifts OFF the page.
+    surfaceInverse: "#2a2a2e",
     hairline: "rgba(255,255,255,0.10)",
     shadowRgb: "0,0,0",
     accentOnMedia: "#9db0ff",
@@ -240,6 +256,7 @@ const VAR: Record<keyof Palette, string> = {
   bgAlt: "--sx-bg-alt",
   surface: "--sx-surface",
   surfaceAlt: "--sx-surface-alt",
+  surfaceInverse: "--sx-surface-inverse",
   hairline: "--sx-hairline",
   shadowRgb: "--sx-shadow-rgb",
   accentOnMedia: "--sx-accent-on-media",

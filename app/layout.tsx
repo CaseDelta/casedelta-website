@@ -17,11 +17,15 @@ import { OrganizationSchema, WebAppSchema } from "@/components/JsonLd";
  * tokens.ts resolves through var(--sx-*), so the page renders in the metric-fallback
  * face and looks broken rather than plain.
  *
- * Archivo is self-hosted from the EXACT static masters (Fontshare cuts: 400=Book,
- * 500=Medium, 700=Bold). Google Fonts' Archivo is a variable font whose interpolated
- * 400 and 700 measurably diverge from those masters. 500 matched; 400 and 700 did not.
- * Geist and JetBrains Mono measured identical to the originals (same upstream), so
- * they stay on next/font/google.
+ * Archivo is self-hosted from static masters rather than Google Fonts, whose Archivo
+ * is a variable font whose interpolated 400 and 700 measurably diverge from them.
+ *
+ * ⚠️ archivo-400.woff2 IS A SLANTED CUT. The file was checked in as Fontshare "Book"
+ * and it is not: anything that sets font-weight 400 on --sx-archivo renders oblique.
+ * The browser reports font-style "normal" and the 400 face as "loaded", so nothing
+ * signals the problem; it is only visible on screen. Found 2026-09-02, when the
+ * statement card became the first thing on the site to ask for 400 on the display
+ * face. Until the file is replaced, use 500 for display type and never 400.
  *
  *   Archivo        display and headings
  *   Geist          body and buttons

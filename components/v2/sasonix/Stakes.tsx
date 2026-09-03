@@ -153,7 +153,22 @@ export function Stakes() {
     <section id="stakes" style={{ background: SX.surface, padding: "120px 0 60px" }}>
       <Container>
         <Reveal>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          {/* The dark statement card. Geometry measured from corgi.insure with
+              Playwright rather than eyeballed, because "looks about right" is how
+              a copy ends up a copy of nothing:
+                card     radius 24, padding 64, overflow hidden, position relative
+                heading  32px on a 32px line, tracking -1.024px, weight 400
+                accent   one phrase, in the brand colour
+                media    bleeds off the right edge and is clipped by the card
+                ellipse  a single huge faint circle, mostly outside the card
+              Their fill is #313131. Ours is the surfaceInverse role, which sits
+              at the same lightness in this palette's cool cast; see theme.ts for
+              why it is not simply their value. */}
+          <div className="sx-stakes-card">
+            {/* The ellipse. Corgi ship it as a 1053px SVG; a border-radius div is
+                the same picture with no asset and no request. */}
+            <span aria-hidden className="sx-stakes-ellipse" />
+            <div className="sx-stakes-copy">
             {/* The section is the sentence. It closed on "Why not operate like you
                 had double the headcount?" until 2026-08-28; the heading makes the
                 point on its own and the answer belongs to the sections below. */}
@@ -203,23 +218,99 @@ export function Stakes() {
                 ))}
               </span>
             </h2>
-
+            </div>
+            <StatementMedia />
           </div>
         </Reveal>
       </Container>
 
       <style>{`
+        .sx-stakes-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 24px;
+          padding: 64px;
+          background: var(--sx-surface-inverse);
+          min-height: 256px;
+          display: flex;
+          align-items: center;
+        }
+        /* Sits above the ellipse and the media, so nothing crosses the sentence. */
+        .sx-stakes-copy { position: relative; z-index: 2; }
+
+        /* Overflows the card on the right and the bottom, and is cut by the
+           card's overflow:hidden. The overflow is the effect: a stack that ends
+           inside the frame reads as a thumbnail. */
+        .sx-stakes-media {
+          position: absolute;
+          right: -34px;
+          top: 38px;
+          z-index: 1;
+          transform: rotate(-7deg);
+          transform-origin: top right;
+          pointer-events: none;
+        }
+        .sx-stakes-label {
+          position: absolute;
+          left: -108px;
+          top: 22px;
+          z-index: 2;
+          display: inline-block;
+          transform: rotate(7deg);
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 12.5px;
+          font-weight: 500;
+          line-height: 1;
+          color: var(--sx-on-accent);
+          background: var(--sx-accent-deep);
+          border-radius: 999px;
+          padding: 7px 12px;
+          white-space: nowrap;
+        }
+
+        /* Below the two-column width the media would sit on top of the sentence.
+           The words are the section; the picture is decoration. */
+        @media (max-width: 1080px) {
+          .sx-stakes-media { display: none; }
+          .sx-stakes-h2 { max-width: none; }
+        }
+        @media (max-width: 620px) {
+          .sx-stakes-card { padding: 36px 24px; border-radius: 18px; }
+        }
+
+        .sx-stakes-ellipse {
+          position: absolute;
+          left: 10%;
+          top: -270px;
+          width: 1053px;
+          height: 1053px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          pointer-events: none;
+          z-index: 0;
+        }
+
         .sx-stakes-h2 {
           display: grid;
           position: relative;
           font-family: var(--sx-archivo), 'Archivo Placeholder', sans-serif;
+          /* 500, NOT the reference's 400.
+             app/fonts/archivo-400.woff2 is a SLANTED cut, despite the comment in
+             app/layout.tsx calling it Fontshare "Book". Setting weight 400 on the
+             display face renders the whole heading oblique, with computed
+             font-style still reporting "normal" and the 400 face reporting
+             "loaded", so nothing in the browser says anything is wrong. Nothing
+             else on this site sets 400 on SX.display, which is why it took until
+             2026-09-02 to find. Do not set it here or anywhere until that file is
+             replaced. */
           font-weight: 500;
-          font-size: 48px;
-          line-height: 1.15;
-          letter-spacing: -1px;
-          color: var(--sx-ink);
+          font-size: 32px;
+          line-height: 32px;
+          letter-spacing: -1.024px;
+          color: var(--sx-on-media);
           margin: 0;
-          max-width: 880px;
+          max-width: 720px;
+          text-align: left;
         }
         /* both in the same cell: the ghost sets the box, the real sentence paints it */
         .sx-stakes-ghost, .sx-stakes-real { grid-area: 1 / 1; align-self: start; }
@@ -242,10 +333,14 @@ export function Stakes() {
            spans and would otherwise collapse, and stops the word breaking at one.
            accent-TEXT, never the raw accent: that token exists because the brand
            accent is not legible as body copy in every palette. */
+        /* accent-ON-MEDIA, not accent-text. accentText is tuned for contrast on a
+           WHITE page and is the deeper value, which sinks into a dark card. This
+           role is the one meant for the accent over a dark surface, and it has to
+           carry a word that spends half its life mid-fade at low opacity. */
         .sx-stakes-word {
           display: inline-block;
           white-space: pre;
-          color: var(--sx-accent-text);
+          color: var(--sx-accent-on-media);
         }
 
         /* Letters stay display:inline. As inline-blocks each letter becomes its own
@@ -300,13 +395,13 @@ export function Stakes() {
            animation is irrelevant there and is overridden. */
         @media (min-width: 600px) and (max-width: 879px) {
           .sx-stakes-h2 {
-            font-size: calc((100vw - 80px) * 0.060);
+            font-size: calc((100vw - 80px) * 0.040);
             letter-spacing: -0.4px;
           }
         }
         @media (max-width: 599px) {
           .sx-stakes-h2 {
-            font-size: max(18px, calc((100vw - 80px) * 0.08));
+            font-size: max(20px, calc((100vw - 80px) * 0.055));
             letter-spacing: -0.4px;
           }
           /* The measured width is an inline style from the animation, and a block
@@ -315,5 +410,64 @@ export function Stakes() {
         }
       `}</style>
     </section>
+  );
+}
+
+/**
+ * The media that bleeds off the right edge of the statement card.
+ *
+ * Corgi put a screenshot of their own application form there, plus a floating
+ * label pointing at it. We have no product screenshot to use and inventing a UI
+ * that does not exist would be worse than none, so this is the object the
+ * sentence is actually about: a stack of records, tilted, running off the edge.
+ * Drawn in code rather than shipped as an image, so it costs no request and
+ * recolours with the palette.
+ *
+ * MEASURED FROM THE REFERENCE: their document sits at x1030 y38 in a 1312-wide
+ * 256-tall card at 323x348, so it overflows the card on the right AND the
+ * bottom and is cut by the card's overflow:hidden. That overflow is the effect.
+ * A document that fits inside the card reads as a thumbnail; one that runs out
+ * of the frame reads as a stack that does not end.
+ *
+ * The label says "Medical records" and nothing more. It is descriptive, not a
+ * claim, and there is no number in it: a specific page count here would be a
+ * fabricated statistic on the homepage.
+ */
+function StatementMedia() {
+  const page = (i: number) => (
+    <div
+      key={i}
+      aria-hidden
+      className="sx-stakes-page"
+      style={{
+        position: "absolute",
+        top: i * 14,
+        left: i * 18,
+        width: 250,
+        height: 320,
+        borderRadius: 12,
+        background: SX.surface,
+        border: `1px solid ${SX.hairline}`,
+        boxShadow: "0 24px 60px -30px rgba(0,0,0,0.55)",
+        padding: "22px 20px",
+        opacity: 1 - i * 0.06,
+      }}
+    >
+      {/* Ruled lines, not lorem text: at this size real words would be
+          unreadable noise and a reader would try to read them anyway. */}
+      <div style={{ height: 8, width: "52%", borderRadius: 4, background: SX.accentSoft, marginBottom: 16 }} />
+      {[92, 78, 86, 64, 88, 71, 80, 58].map((w, n) => (
+        <div key={n} style={{ height: 6, width: `${w}%`, borderRadius: 3, background: SX.hairline, marginBottom: 11 }} />
+      ))}
+    </div>
+  );
+
+  return (
+    <div aria-hidden className="sx-stakes-media">
+      <span className="sx-stakes-label">Medical records</span>
+      <div style={{ position: "relative", width: 290, height: 348 }}>
+        {[2, 1, 0].map(page)}
+      </div>
+    </div>
   );
 }

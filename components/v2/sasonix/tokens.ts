@@ -41,6 +41,7 @@ export const SX = {
   bgAlt: "var(--sx-bg-alt)",
   surface: "var(--sx-surface)",
   surfaceAlt: "var(--sx-surface-alt)",
+  surfaceInverse: "var(--sx-surface-inverse)", // dark card on a light page
   hairline: "var(--sx-hairline)",
   accentOnMedia: "var(--sx-accent-on-media)", // the accent, kept legible over media
   onMedia: "var(--sx-on-media)", // text over photography or video
