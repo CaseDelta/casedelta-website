@@ -171,47 +171,66 @@ export function AutomationThesis() {
           <div className="sx-thesis-card">
             <span aria-hidden className="sx-thesis-ellipse" />
             <div className="sx-thesis-copy">
-          {/* THE THREE EXAMPLES ARE THE THREE MOST-USED JOBS, measured. They come
-              from Rudin Law's production history, 2026-08-19 to 09-02: 273
-              messages a human typed across 66 threads, 4 daily automations, 35
-              delivered morning briefs, 5 job formats the firm taught Delta as
-              stored schemas.
+          {/* THE THREE EXAMPLES ARE CHOSEN FOR WEIGHT, not for frequency alone.
+              Each one has to land as "that takes me hours", "that is how I get
+              sued", or "that is my money", because those are the three things a
+              plaintiff lawyer actually feels. One of each:
 
-              Chosen on three tests, in this order:
+                file review          TIME. Their exact phrase, 14 threads, and
+                                     they taught Delta a stored template for it.
+                                     Lee's own version is liability, damages,
+                                     medical expenses, lost wages and coverage,
+                                     which is an afternoon per file by hand.
 
-              FREQUENCY. Omissions report is 18 threads and THREE of their four
-              scheduled automations. Morning brief is 35 delivered and runs daily
-              for three people. File review is 14 threads. SOL, which seeded the
-              first draft of this line, is 4 to 5 threads: near the bottom, not
-              the top, which is why it is no longer here.
+                cases missing an SOL RISK. This is the malpractice one. Delta
+                                     reads their `SOL Field Empty` report, and on
+                                     2026-09-02 it cross-checked the 351-row
+                                     whole-docket report and found a litigation
+                                     matter the firm's own saved report had
+                                     MISSED. A blank SOL field is how a firm
+                                     loses a case it already won.
 
-              THEIR WORDS, NOT OURS. All three are what the firm actually types.
-              "Omissions" appears 9 times, "file review" 8, "morning brief" is
-              Josh Henderson's own section-ordered format. Rejected for the
-              opposite reason: "SOL sweep" (nobody has ever typed it, it is
-              Delta's own narration at another firm) and "reverse docket cashflow
-              analysis" (real, and private coinage that reads as jargon to anyone
-              else).
+                money stuck in       MONEY. Josh's "reverse docket cashflow
+                disbursement         analysis": what is settled and pending
+                                     disbursement and what is holding it up. Also
+                                     what Poletti's testimonial on this same page
+                                     is about, $400,000 sitting in already-settled
+                                     cases, so the page argues it twice.
 
-              SPREAD. Three flavours of the same job would waste the slot, so
-              these cover three different shapes of work: across the whole docket,
-              inside one file, and every morning. A reader recognises at least one.
+              WHAT LOST, and why, because the temptation is to put them back.
+              "Omissions report" is the single most frequent job in the dataset,
+              18 threads and three of four automations, and it means nothing to a
+              lawyer who does not already work there. "Morning brief" is 35
+              delivered and daily for three people, and it reads as a digest: no
+              hours, no risk, no money. Frequency told us these jobs are real; it
+              does not tell us which ones sell.
 
-              Do not add a fourth or swap one for an example that is not in that
-              dataset. These work because a lawyer reads them and recognises their
-              own week.
+              "SOL" survives here where "SOL sweep" did not: firms say SOL as a
+              noun constantly, they never say sweep.
 
-              STILL MISSING, and it is the strongest thing in the data: the firm
-              calls it "dry run", typed 10 times, always the same shape. They ask
-              for a spreadsheet with no changes applied, review it, then tell
-              Delta to write the approved rows back into Filevine. On 2026-09-01
-              it wrote 34 dates back and re-read every one to confirm. Nothing
-              else in the dataset is as differentiated and it is nowhere on this
-              site. It needs its own line, not a slot in this one. */}
+              Every one of these is in Rudin Law's production history,
+              2026-08-19 to 09-02. Do not add a fourth from imagination.
+
+              STILL UNSHIPPED, and still the strongest thing in the data: they
+              call it "dry run", typed 10 times. Spreadsheet with nothing applied,
+              they review it, then Delta writes the approved rows back into
+              Filevine. On 2026-09-01 it wrote 34 dates back and re-read every one
+              to confirm. The second paragraph gestures at it; it deserves a
+              section. */}
           <h2 className="sx-thesis">
-            Hand off work to Delta, like an omissions report, a file review, or your morning brief. It does it
-            across any &amp; all systems your firm uses.
+            Hand off work to Delta, like a full file review, the cases missing an SOL date, or the money stuck
+            in disbursement.
           </h2>
+          {/* The closing line is Camren's, verbatim. The sentence in front of it
+              earns the "whatever": a reader who has just been given three
+              specifics needs to know the list is not the limit, and the approval
+              clause is what makes handing over that much work thinkable. It is
+              also true, and it is the rule the whole product is built on: Delta
+              stops for a human before anything leaves or changes. */}
+          <p className="sx-thesis-sub">
+            It reads the whole file and stops for your approval before anything is written back. Whatever you
+            need done, Delta does it in any system your firm uses.
+          </p>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
               and stops being a statement. The definition keeps display scale; the list
@@ -352,6 +371,19 @@ export function AutomationCards() {
         @media (max-width: 620px) {
           .sx-thesis-card { padding: 34px 22px; border-radius: 18px; }
         }
+
+        .sx-thesis-sub {
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 29px;
+          color: var(--sx-on-media-muted);
+          text-align: left;
+          max-width: 600px;
+          margin: 24px 0 0;
+          text-wrap: pretty;
+        }
+        @media (max-width: 760px) { .sx-thesis-sub { font-size: 16px; line-height: 26px; margin-top: 20px; } }
 
         .sx-thesis {
           max-width: 640px;
