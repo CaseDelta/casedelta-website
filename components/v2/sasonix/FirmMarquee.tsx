@@ -1,7 +1,9 @@
 "use client";
 
 /**
- * The firm logo scroller, directly under the hero.
+ * The firm belt. It sits INSIDE the hero, laid over the ambient photograph along
+ * the bottom of the fold (Camren, 2026-09-02), rather than in a band beneath it.
+ * Above the fold it is seen by everyone; below it, only by whoever scrolls.
  *
  * ══════════════════════════════════════════════════════════════════════════
  *  ⚠️  THE NAMES IN `FIRMS` BELOW ARE INVENTED. THEY ARE NOT CUSTOMERS.
@@ -30,10 +32,20 @@
  * item count so adding firms does not speed the belt up.
  *
  * It stops dead under prefers-reduced-motion. An infinite horizontal crawl is
- * a vestibular trigger, and this one sits above the fold where it cannot be
- * scrolled away from. The static state shows the first copy, so nothing is
- * lost, and aria-hidden on the duplicate keeps a screen reader from reading
- * every name twice.
+ * a vestibular trigger, and over the hero it cannot be scrolled away from, so
+ * this matters more here than it would in a band. The static state shows the
+ * first copy, so nothing is lost, and aria-hidden on the duplicate keeps a
+ * screen reader from reading every name twice.
+ *
+ * OVER MEDIA IT USES ITS OWN COLOUR ROLES. `onMedia` and `onMediaMuted`, never
+ * `ink`, and it carries its own upward gradient rather than leaning on the
+ * hero's scrim: that scrim is a left-to-right wash sized to hold the headline,
+ * and it has cleared almost entirely by the right edge, which is exactly where
+ * the belt still has names to keep legible.
+ *
+ * `overlay={false}` renders it as a standalone band on the page surface, which
+ * is what it was before the move. Kept because it is two lines and it is the
+ * obvious thing to want on a subpage.
  */
 import { SX } from "./tokens";
 
@@ -56,7 +68,7 @@ const CAPTION = "Trusted by plaintiff firms across the country";
 /** Seconds per item, so the belt speed is constant as the list grows. */
 const SECONDS_PER_ITEM = 4.5;
 
-function Track({ ariaHidden }: { ariaHidden?: boolean }) {
+function Track({ ariaHidden, overlay }: { ariaHidden?: boolean; overlay: boolean }) {
   return (
     <div aria-hidden={ariaHidden} style={{ display: "flex", alignItems: "center", flex: "0 0 auto" }}>
       {FIRMS.map((name) => (
@@ -70,8 +82,9 @@ function Track({ ariaHidden }: { ariaHidden?: boolean }) {
             fontSize: 21,
             letterSpacing: "-0.4px",
             lineHeight: 1,
-            color: SX.ink2,
+            color: overlay ? SX.onMedia : SX.ink2,
             whiteSpace: "nowrap",
+            textShadow: overlay ? "0 1px 16px rgba(var(--sx-scrim-rgb),0.45)" : undefined,
           }}
         >
           {name}
@@ -81,22 +94,44 @@ function Track({ ariaHidden }: { ariaHidden?: boolean }) {
   );
 }
 
-export function FirmMarquee() {
+export function FirmMarquee({ overlay = true }: { overlay?: boolean } = {}) {
   const duration = FIRMS.length * SECONDS_PER_ITEM;
   return (
     <section
       aria-label={CAPTION}
-      style={{ background: SX.bg, borderBottom: `1px solid ${SX.hairline}`, padding: "34px 0 38px", overflow: "hidden" }}
+      className={overlay ? "sx-marquee sx-marquee-overlay" : "sx-marquee"}
+      style={
+        overlay
+          ? {
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 10,
+              padding: "26px 0 30px",
+              overflow: "hidden",
+              // Its own scrim. The hero's is a left-to-right wash that has
+              // cleared by the right edge, where names still need to be read.
+              background:
+                "linear-gradient(to top, rgba(var(--sx-scrim-rgb),0.58) 0%, rgba(var(--sx-scrim-rgb),0.40) 55%, rgba(var(--sx-scrim-rgb),0) 100%)",
+            }
+          : {
+              background: SX.bg,
+              borderBottom: `1px solid ${SX.hairline}`,
+              padding: "34px 0 38px",
+              overflow: "hidden",
+            }
+      }
     >
       <p
         style={{
           fontFamily: SX.mono,
-          fontSize: 12,
-          letterSpacing: "0.12em",
+          fontSize: 11.5,
+          letterSpacing: "0.14em",
           textTransform: "uppercase",
-          color: SX.ink3,
+          color: overlay ? SX.onMediaMuted : SX.ink3,
           textAlign: "center",
-          margin: "0 0 26px",
+          margin: overlay ? "0 0 18px" : "0 0 26px",
         }}
       >
         {CAPTION}
@@ -113,8 +148,8 @@ export function FirmMarquee() {
         }}
       >
         <div className="sx-marquee-belt" style={{ display: "flex", width: "max-content", animationDuration: `${duration}s` }}>
-          <Track />
-          <Track ariaHidden />
+          <Track overlay={overlay} />
+          <Track ariaHidden overlay={overlay} />
         </div>
       </div>
 
@@ -132,6 +167,25 @@ export function FirmMarquee() {
           to   { transform: translateX(-50%); }
         }
         .sx-marquee-belt:hover { animation-play-state: paused; }
+        /* Short windows: the belt would eat the hero's proof line, so drop the
+           caption first and the whole belt second. The headline and the ask
+           always win the fold. */
+        @media (max-height: 720px) {
+          .sx-marquee-overlay p { display: none; }
+          .sx-marquee-overlay { padding: 16px 0 18px !important; }
+        }
+        @media (max-height: 600px) {
+          .sx-marquee-overlay { display: none; }
+        }
+        /* On a phone the caption is wider than the screen and gets clipped at
+           both ends, which reads as a broken element rather than a quiet label. */
+        @media (max-width: 560px) {
+          .sx-marquee-overlay p {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            padding: 0 16px;
+          }
+        }
         @media (prefers-reduced-motion: reduce) {
           .sx-marquee-belt { animation: none; }
         }

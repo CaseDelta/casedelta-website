@@ -24,13 +24,18 @@
  * settle on cubic-bezier(0.12, 0.23, 0.5, 1). prefers-reduced-motion drops all
  * of it.
  *
- * The background image is still the Sasonix placeholder, hotlinked from Framer's
- * CDN. It MUST be replaced with a CaseDelta asset and self-hosted before launch.
+ * THE FIRM BELT lives inside this section, absolutely positioned along the
+ * bottom edge and laid over the photograph (Camren, 2026-09-02). It costs the
+ * grid no height, so the grid carries a bottom padding to keep the copy and the
+ * proof line clear of it. Change one and check the other, at a tall viewport and
+ * a 13-inch laptop both.
  */
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SX, STAR_GOLD } from "./tokens";
+import { FirmMarquee } from "./FirmMarquee";
+import { NAV_ACTIONS } from "./navConfig";
 
 const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
 const EASE_SOFT = [0.12, 0.23, 0.5, 1] as [number, number, number, number];
@@ -204,6 +209,10 @@ export function Hero() {
           align-items: center;
           gap: 56px;
           height: 100%;
+          /* Room for the firm belt, which is absolutely positioned and so
+             contributes no height of its own. Without this the proof line sits
+             underneath it. */
+          padding-bottom: 118px;
         }
 
         /* No video asset: one column, copy left over the photograph. The scrim is
@@ -214,6 +223,7 @@ export function Hero() {
         /* Short laptop windows: pull the type down so the whole argument still
            fits inside one viewport instead of pushing the proof off the fold. */
         @media (min-width: 1101px) and (max-height: 800px) {
+          .sx-hero-grid { padding-bottom: 92px; }
           .sx-hero-title { font-size: 54px !important; line-height: 58px !important; }
           .sx-hero-subhead { font-size: 19px !important; line-height: 30px !important; margin-top: 18px !important; }
           .sx-hero-actions { margin-top: 24px !important; }
@@ -221,6 +231,7 @@ export function Hero() {
         }
 
         @media (min-width: 1101px) and (max-height: 680px) {
+          .sx-hero-grid { padding-bottom: 24px; }
           .sx-hero-title { font-size: 44px !important; line-height: 48px !important; }
           .sx-hero-proof { display: none !important; }
         }
@@ -237,7 +248,7 @@ export function Hero() {
             gap: 44px;
             height: auto !important;
             align-content: start;
-            padding: 132px 0 72px;
+            padding: 132px 0 150px;
           }
           .sx-hero-copy { max-width: 680px !important; }
           .sx-hero-media { max-width: 620px; }
@@ -248,7 +259,7 @@ export function Hero() {
           .sx-hero-grid {
             height: auto !important;
             align-content: start;
-            padding: 112px 0 64px !important;
+            padding: 112px 0 140px !important;
           }
           .sx-hero-copy { max-width: 100% !important; }
           .sx-hero-title { font-size: 46px !important; line-height: 50px !important; }
@@ -348,8 +359,26 @@ export function Hero() {
               className="sx-hero-actions"
               style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 32 }}
             >
+              {/* THE HERO'S ONE BUTTON IS THE SELF-SERVE DOOR, not the demo
+                  booking (Camren, 2026-09-02, matching corgi.insure's shape:
+                  their hero carries "Get insured now" and puts "Book a demo" in
+                  the nav). One button above the fold is the whole point; adding
+                  a second here would hand the reader a decision instead of an
+                  action, and the demo is still one click away in the nav.
+
+                  ⚠️ IT DEPENDS ON A GATE THAT IS NOT OPEN EVERYWHERE. The
+                  destination is the app's signup tab, refused server-side by
+                  SELF_SERVE_AUTH_ENABLED on authentication_service, which is
+                  still 'false' in prod as this is written. While that is shut
+                  the app forces the tab back to login, so this button lands on
+                  a sign-in page. Do not ship this to casedelta.com before
+                  casedelta-cloud#5575 reaches prod AND
+                  /casedelta/prod/features/self_serve_auth_enabled is 'true'.
+
+                  Href comes from navConfig so the nav's "Get started" and this
+                  one can never drift to different destinations. */}
               <a
-                href="/demo"
+                href={NAV_ACTIONS.start.href}
                 className="sx-btn"
                 style={{
                   display: "inline-flex",
@@ -365,7 +394,7 @@ export function Hero() {
                   textDecoration: "none",
                 }}
               >
-                Book a demo
+                {NAV_ACTIONS.start.label}
                 <span
                   aria-hidden
                   style={{
@@ -417,6 +446,11 @@ export function Hero() {
           {HAS_MEDIA ? <HeroMedia reduce={!!reduce} /> : null}
         </div>
       </div>
+
+      {/* The firm belt, laid over the photograph along the bottom of the fold.
+          Absolutely positioned, so it costs the grid no height; the grid's own
+          bottom padding is what keeps the copy clear of it. */}
+      <FirmMarquee />
     </section>
   );
 }
