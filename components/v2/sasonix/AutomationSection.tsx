@@ -171,66 +171,55 @@ export function AutomationThesis() {
           <div className="sx-thesis-card">
             <span aria-hidden className="sx-thesis-ellipse" />
             <div className="sx-thesis-copy">
-          {/* THE THREE EXAMPLES ARE CHOSEN FOR WEIGHT, not for frequency alone.
-              Each one has to land as "that takes me hours", "that is how I get
-              sued", or "that is my money", because those are the three things a
-              plaintiff lawyer actually feels. One of each:
+          {/* TWO READS AND ONE WRITE (Camren's structure, 2026-09-02). Every
+              legal AI can read. Writing back into the system of record is the
+              thing almost none of them do, and a homepage that only lists reads
+              is describing a chatbot, so the last example has to be unmistakably
+              a write.
 
-                file review          TIME. Their exact phrase, 14 threads, and
-                                     they taught Delta a stored template for it.
-                                     Lee's own version is liability, damages,
-                                     medical expenses, lost wages and coverage,
-                                     which is an afternoon per file by hand.
+              Each also has to land as "that takes me hours", "that is how I get
+              sued", or "that is my money". All three are Rudin Law's real
+              production usage, 2026-08-19 to 09-02:
 
-                cases missing an SOL RISK. This is the malpractice one. Delta
-                                     reads their `SOL Field Empty` report, and on
-                                     2026-09-02 it cross-checked the 351-row
-                                     whole-docket report and found a litigation
-                                     matter the firm's own saved report had
-                                     MISSED. A blank SOL field is how a firm
-                                     loses a case it already won.
+                cases missing an SOL date   READ, and RISK. The malpractice one.
+                  Delta reads their `SOL Field Empty` report, and on 2026-09-02 it
+                  cross-checked the 351-row whole-docket report and found a
+                  litigation matter their own saved report had MISSED. A blank SOL
+                  field is how a firm loses a case it already won.
 
-                money stuck in       MONEY. Josh's "reverse docket cashflow
-                disbursement         analysis": what is settled and pending
-                                     disbursement and what is holding it up. Also
-                                     what Poletti's testimonial on this same page
-                                     is about, $400,000 sitting in already-settled
-                                     cases, so the page argues it twice.
+                the money stuck in          READ, and MONEY. Josh's "reverse
+                disbursement                docket cashflow analysis": what is
+                  settled and pending disbursement and what is holding it up. Also
+                  what Poletti's testimonial further down this page is about, so
+                  the page argues it twice, once in the firm's words and once in a
+                  customer's.
 
-              WHAT LOST, and why, because the temptation is to put them back.
-              "Omissions report" is the single most frequent job in the dataset,
-              18 threads and three of four automations, and it means nothing to a
-              lawyer who does not already work there. "Morning brief" is 35
-              delivered and daily for three people, and it reads as a digest: no
-              hours, no risk, no money. Frequency told us these jobs are real; it
-              does not tell us which ones sell.
+                a file review written       WRITE, and TIME. "File review" is
+                straight into Filevine      their exact phrase, 14 threads, and
+                  Josh's version is a stored template Delta fills and then WRITES
+                  INTO THE CASE DESCRIPTION FIELD. That is why this is the write
+                  example rather than an invented one: the same job they already
+                  ask for ends in a write, verified.
 
-              "SOL" survives here where "SOL sweep" did not: firms say SOL as a
-              noun constantly, they never say sweep.
+              Filevine is named on purpose even though Delta reaches nine systems
+              at this firm. A named system is a claim a reader can check; "your
+              case system" is a hedge. The hub beside this paragraph generalises
+              it, which is exactly the division of labour between the two.
 
-              Every one of these is in Rudin Law's production history,
-              2026-08-19 to 09-02. Do not add a fourth from imagination.
+              THE SECOND PARAGRAPH IS GONE, Camren's call, including his own
+              closing line. The three examples are the argument. What went with it
+              was the approval clause, so nothing on this card now says Delta
+              stops for a human before it writes. That is the product's central
+              rule and it is worth a home somewhere on this page.
 
-              STILL UNSHIPPED, and still the strongest thing in the data: they
-              call it "dry run", typed 10 times. Spreadsheet with nothing applied,
-              they review it, then Delta writes the approved rows back into
-              Filevine. On 2026-09-01 it wrote 34 dates back and re-read every one
-              to confirm. The second paragraph gestures at it; it deserves a
-              section. */}
+              STILL UNSHIPPED: the pattern they call "dry run", typed 10 times.
+              Spreadsheet with nothing applied, they review it, then Delta writes
+              the approved rows back into Filevine. On 2026-09-01 it wrote 34
+              dates back and re-read every one to confirm. It deserves a section. */}
           <h2 className="sx-thesis">
-            Hand off work to Delta, like a full file review, the cases missing an SOL date, or the money stuck
-            in disbursement.
+            Hand off work to Delta, like the cases missing an SOL date, the money stuck in disbursement, or a
+            file review written straight into Filevine.
           </h2>
-          {/* The closing line is Camren's, verbatim. The sentence in front of it
-              earns the "whatever": a reader who has just been given three
-              specifics needs to know the list is not the limit, and the approval
-              clause is what makes handing over that much work thinkable. It is
-              also true, and it is the rule the whole product is built on: Delta
-              stops for a human before anything leaves or changes. */}
-          <p className="sx-thesis-sub">
-            It reads the whole file and stops for your approval before anything is written back. Whatever you
-            need done, Delta does it in any system your firm uses.
-          </p>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
               and stops being a statement. The definition keeps display scale; the list
@@ -372,18 +361,6 @@ export function AutomationCards() {
           .sx-thesis-card { padding: 34px 22px; border-radius: 18px; }
         }
 
-        .sx-thesis-sub {
-          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-weight: 400;
-          font-size: 18px;
-          line-height: 29px;
-          color: var(--sx-on-media-muted);
-          text-align: left;
-          max-width: 600px;
-          margin: 24px 0 0;
-          text-wrap: pretty;
-        }
-        @media (max-width: 760px) { .sx-thesis-sub { font-size: 16px; line-height: 26px; margin-top: 20px; } }
 
         .sx-thesis {
           max-width: 640px;
