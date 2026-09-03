@@ -36,7 +36,7 @@
  * THE THREE PHASES NEVER OVERLAP, and that is a correctness point rather than a
  * stylistic one. The width only moves while the slot is empty. Earlier versions
  * animated the width underneath visible letters and painted a long wording
- * straight through "can do." for about a fifth of a second on every change, which
+ * straight through "can handle." for about a fifth of a second on every change, which
  * reads as a rendering fault rather than a transition.
  *
  * THE LINE STRUCTURE IS PINNED. The lede is its own block, so the word ALWAYS
@@ -46,7 +46,7 @@
  * would lurch. Pinning the break also fixes the height, because the lede and the
  * word line are each a constant number of lines whichever wording is showing.
  *
- * On phones the word is a block of its own, so "can do." sits on the line below and
+ * On phones the word is a block of its own, so "can handle." sits on the line below and
  * nothing to the right of the word can move at all.
  *
  * Reduced motion renders "you" and never animates, which still reads as a complete
@@ -97,7 +97,7 @@ const ROLES = ["your paralegals", "your case managers", "your legal assistants",
 
 /** The two halves of the sentence, either side of the word. */
 const LEDE = "Your entire firm is bottlenecked by what";
-const TAIL = "can do.";
+const TAIL = "can handle.";
 
 /**
  * The longest wording, which the hidden ghost renders to reserve the heading's
@@ -350,7 +350,7 @@ export function Stakes() {
            wrapping to two lines between 861px and 879px. Do not raise it.
 
            Under 600px the word becomes a block of its own, because at phone sizes
-           the longest wording plus "can do." cannot share a line at any type size
+           the longest wording plus "can handle." cannot share a line at any type size
            worth reading. Nothing then sits to the right of the word, so the width
            animation is irrelevant there and is overridden. */
         @media (min-width: 600px) and (max-width: 879px) {
