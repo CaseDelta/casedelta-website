@@ -17,18 +17,28 @@ import Image from "next/image";
 import { SX } from "./tokens";
 import { LOGO, logoWidth } from "./brand";
 import { Reveal } from "./reveal";
+import { scrollToSection } from "./scrollToSection";
 
-// Every link here is a real page. The nav carries the homepage anchors; the footer
-// carries the site map, so no route is reachable only by typing its URL.
-const COLS: { head: string; links: { label: string; href: string }[] }[] = [
+/**
+ * The site map. `id` is a homepage section, `href` a real route.
+ *
+ * The Product column used to list five pages: /features, /use-cases, /pricing,
+ * /security and /compare. All five were folded into the homepage on 2026-09-02 and
+ * redirect to the sections named here, so linking the anchor directly saves the
+ * reader a redirect and keeps the footer honest about what exists.
+ *
+ * An `id` link still renders a real href ("/#features"), so it is a working link
+ * with the middle button, on another page, and with JavaScript off. The click
+ * handler only upgrades a same-page jump into the eased scroll.
+ */
+const COLS: { head: string; links: { label: string; href?: string; id?: string }[] }[] = [
   {
     head: "Product",
     links: [
-      { label: "Features", href: "/features" },
-      { label: "Use cases", href: "/use-cases" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Security", href: "/security" },
-      { label: "Compare", href: "/compare" },
+      { label: "What it does", id: "features" },
+      { label: "Why Delta", id: "why" },
+      { label: "Pricing", id: "pricing" },
+      { label: "Security", id: "security" },
       { label: "Book a demo", href: "/demo" },
     ],
   },
@@ -299,7 +309,13 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
               <div style={{ fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink, marginBottom: 16 }}>{col.head}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {col.links.map((l) => (
-                  <a key={l.label} href={l.href} className="sx-navlink" style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2, textDecoration: "none" }}>
+                  <a
+                    key={l.label}
+                    href={l.href ?? `/#${l.id}`}
+                    onClick={l.id ? (e) => { e.preventDefault(); scrollToSection(l.id as string); } : undefined}
+                    className="sx-navlink"
+                    style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2, textDecoration: "none" }}
+                  >
                     {l.label}
                   </a>
                 ))}

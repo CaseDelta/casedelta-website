@@ -27,9 +27,11 @@ import { scrollToSection } from "./scrollToSection";
  */
 const LINKS: { label: string; id?: string; href?: string }[] = [
   { label: "What it does", id: "features" },
-  // A page, not an anchor: UseCases left the homepage on 2026-08-28 and #jobs no
-  // longer exists. An id that matches nothing scrolls nowhere and reports nothing.
-  { label: "The work", href: "/use-cases" },
+  // Was "The work", pointing at /use-cases. That page was deleted on 2026-09-02 and
+  // now redirects to #features, which this nav already links to, so the slot would
+  // have been a duplicate. It carries #why instead: the comparison section is the one
+  // homepage band with no other way in.
+  { label: "Why Delta", id: "why" },
   { label: "Pricing", id: "pricing" },
   { label: "Security", id: "security" },
   { label: "Blog", href: "/blog" },

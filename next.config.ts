@@ -64,9 +64,32 @@ const nextConfig: NextConfig = {
       // Old hero variant pages
       { source: "/heroes/:path*", destination: "/", permanent: true },
 
-      // Removed use-case verticals outside current ICP
-      { source: "/use-cases/commercial-litigation", destination: "/use-cases", permanent: true },
-      { source: "/use-cases/insurance-defense", destination: "/use-cases", permanent: true },
+      // The five marketing pages that were folded into the homepage on 2026-09-02.
+      //
+      // Each one now redirects to the homepage SECTION that carries its argument, so an
+      // inbound link, an old sitemap entry or a bookmark still lands on the content it
+      // was promised rather than at the top of an unrelated page.
+      //
+      //   /features   -> #features  AutomationSection, what Delta does
+      //   /use-cases  -> #features  same section; the practice-area pages argued capability
+      //   /compare    -> #why       WhySasonix, the row-by-row competitive argument
+      //   /security   -> #security  Trust
+      //   /pricing    -> #pricing   Pricing
+      //
+      // A fragment survives a 308: the hash rides in the Location header and the browser
+      // applies it after following the redirect. Search engines drop it and consolidate
+      // all five into "/", which is the accepted cost of collapsing them.
+      //
+      // The :slug forms must come FIRST. Next matches redirects in array order, and a bare
+      // "/compare" source does not match "/compare/casedelta-vs-clio", so a child left
+      // below its parent would simply 404 instead.
+      { source: "/features", destination: "/#features", permanent: true },
+      { source: "/use-cases/:slug", destination: "/#features", permanent: true },
+      { source: "/use-cases", destination: "/#features", permanent: true },
+      { source: "/compare/:slug", destination: "/#why", permanent: true },
+      { source: "/compare", destination: "/#why", permanent: true },
+      { source: "/security", destination: "/#security", permanent: true },
+      { source: "/pricing", destination: "/#pricing", permanent: true },
 
       // Old legal page path → current path. The /legal/* paths are also what
       // Google's OAuth consent screen links to for Privacy Policy and Terms of
