@@ -26,6 +26,7 @@
 import { SX } from "./tokens";
 import { Container } from "./kit";
 import { Reveal } from "./reveal";
+import { HubSpokes } from "./HubSpokes";
 import { ComputerPanel, MemoryPanel, ProductPanelStyles, TeammatePanel } from "./ProductPanels";
 
 function Check() {
@@ -153,10 +154,23 @@ export function AutomationThesis() {
   return (
     <section id="features" style={{ background: SX.surface, padding: "60px 0 60px" }}>
       <Container>
-        {/* The plain-language definition, set at hero scale and centered. It is the
-            one place on the page that states the whole product in a breath, so it
-            is deliberately larger than a section heading and carries no eyebrow. */}
+        {/* THE DARK CARD LIVES HERE NOW (Camren, 2026-09-02). It was around the
+            Stakes sentence with a stack of records beside it. Both moved: this is
+            the sentence a picture can actually illustrate, because "in the systems
+            your firm already uses" is a claim about SHAPE, and a hub is that shape.
+            The problem statement went back to standing on its own.
+
+            Taller than the card it came from, 256 to 520, because it now holds a
+            heading, four capabilities, a closing line and a 420px diagram rather
+            than two lines of type.
+
+            The definition is still the one place on the page that states the whole
+            product in a breath. It is left-aligned rather than centred now, because
+            it shares the card with the diagram. */}
         <Reveal>
+          <div className="sx-thesis-card">
+            <span aria-hidden className="sx-thesis-ellipse" />
+            <div className="sx-thesis-copy">
           <h2 className="sx-thesis">
             Delta is the AI that does actual partner-level, paralegal, and staff work in the systems your firm
             already uses.
@@ -165,11 +179,9 @@ export function AutomationThesis() {
               line above and reads as one, but at 44px the whole thing runs eight lines
               and stops being a statement. The definition keeps display scale; the list
               of what that means in practice supports it. */}
-          <p className="sx-thesis-sub">
-            Delta can review records, firm financials, run reports, handle case management and calendars, and keep on
-            top of client SOLs and communication. No matter what system it is, Delta logs in and doesn&rsquo;t stop
-            until the work is complete.
-          </p>
+            </div>
+            <HubSpokes />
+          </div>
         </Reveal>
       </Container>
     </section>
@@ -267,33 +279,57 @@ export function AutomationCards() {
            tort, and medical malpractice firms" qualifier. That line is gone as of
            2026-08-28 and this slot now carries the back half of the thesis, so it is
            wider and a size up: it is content, not a caption. */
-        .sx-thesis-sub {
-          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-weight: 400;
-          font-size: 20px;
-          line-height: 32px;
-          color: var(--sx-ink-2);
-          text-align: center;
-          max-width: 760px;
-          margin: 26px auto 0;
-          text-wrap: pretty;
+
+
+
+
+        /* The card. Same geometry language as the one it replaced: radius 24,
+           overflow hidden so the ellipse is cut by the frame, and surfaceInverse
+           rather than a colour literal so it follows the palette. */
+        .sx-thesis-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 24px;
+          padding: 64px;
+          background: var(--sx-surface-inverse);
+          min-height: 520px;
+          display: flex;
+          align-items: center;
+          gap: 48px;
         }
-        @media (max-width: 760px) { .sx-thesis-sub { font-size: 17px; line-height: 27px; margin-top: 20px; } }
+        .sx-thesis-copy { position: relative; z-index: 2; flex: 1 1 auto; }
+        .sx-thesis-ellipse {
+          position: absolute;
+          left: -18%;
+          top: -320px;
+          width: 1053px;
+          height: 1053px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          pointer-events: none;
+          z-index: 0;
+        }
+        @media (max-width: 980px) {
+          .sx-thesis-card { flex-direction: column; align-items: stretch; padding: 44px 32px; gap: 24px; min-height: 0; }
+        }
+        @media (max-width: 620px) {
+          .sx-thesis-card { padding: 34px 22px; border-radius: 18px; }
+        }
 
         .sx-thesis {
-          max-width: 1000px;
-          margin: 0 auto;
-          text-align: center;
+          max-width: 640px;
+          margin: 0;
+          text-align: left;
           font-family: var(--sx-archivo), sans-serif;
           font-weight: 500;
-          font-size: 44px;
-          line-height: 56px;
-          letter-spacing: -1.2px;
-          color: var(--sx-ink);
+          font-size: 38px;
+          line-height: 48px;
+          letter-spacing: -1px;
+          color: var(--sx-on-media);
           text-wrap: balance;
         }
-        @media (max-width: 1100px) { .sx-thesis { font-size: 36px; line-height: 46px; } }
-        @media (max-width: 760px)  { .sx-thesis { font-size: 28px; line-height: 37px; letter-spacing: -0.6px; } }
+        @media (max-width: 1100px) { .sx-thesis { font-size: 32px; line-height: 42px; } }
+        @media (max-width: 760px)  { .sx-thesis { font-size: 26px; line-height: 35px; letter-spacing: -0.6px; } }
       `}</style>
     </section>
   );
