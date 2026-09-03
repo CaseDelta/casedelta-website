@@ -8,9 +8,8 @@
  *
  * A third clause, "can work without being prompted", sat between them until
  * 2026-09-02, when Camren cut it. Two claims land; three is a list, and the reader
- * stops counting. The capability itself is not gone: it is still a bullet in the
- * claims card below and still described in AutomationSection. It just stopped being
- * one of the two things this heading exists to say.
+ * stops counting. AutomationSection still describes the capability, so it is not
+ * gone from the page; it stopped being one of the two things this heading says.
  *
  * Three earlier wordings and why each moved: "live in five minutes" is a claim about
  * our onboarding rather than about the firm's day, and being live is our milestone
@@ -19,14 +18,21 @@
  * that and said nothing, because all work is real. Naming the CASE is what makes the
  * claim concrete.
  *
- * IF THE CLAUSE EVER COMES BACK, it comes back as "CAN work without being prompted"
- * and never as "works without being prompted" (Camren, 2026-08-28). An assistant
- * that simply acts on its own reads as a liability to a lawyer who is personally
- * responsible for the file; capability the firm switches on is the selling point.
- * And PROMPTED, never "asked": "asked" is what you do to a person and makes it sound
- * like Delta is being managed, where "prompted" is what you do to software and names
- * the thing every other tool requires. The same two rules govern the bullet in
- * CLAIMS below, which still carries the claim today.
+ * IF THE CLAUSE EVER COMES BACK, anywhere, it comes back as "CAN work without being
+ * prompted" and never as "works without being prompted" (Camren, 2026-08-28). An
+ * assistant that simply acts on its own reads as a liability to a lawyer who is
+ * personally responsible for the file; capability the firm switches on is the
+ * selling point. And PROMPTED, never "asked": "asked" is what you do to a person and
+ * makes it sound like Delta is being managed, where "prompted" is what you do to
+ * software and names the thing every other tool requires.
+ *
+ * THE CLAIMS CARD IS GONE (Camren, 2026-09-02). An accent-ringed panel sat under the
+ * heading with the CaseDelta mark and four ticks: signs in to any platform, can work
+ * without being prompted, working your case in five minutes, cites every answer. It
+ * restated the heading directly above it and then answered the comparison before the
+ * comparison had been made, so the section said the same thing three times. The
+ * heading makes the claim and the named rivals prove it; the card was the middle
+ * step that did neither.
  *
  * THERE IS NO "OTHER LEGAL AI" COLUMN ANY MORE. It used to be a generic third
  * column of crosses, which is the weakest form this section can take: a reader
@@ -61,19 +67,9 @@
  * which collided with the Trust band the moment it was mounted again and would have
  * stolen the nav's Security link.
  */
-import Image from "next/image";
 import { SX } from "./tokens";
-import { LOGO, logoWidth } from "./brand";
 import { Container, SectionHead } from "./kit";
 import { Reveal } from "./reveal";
-
-/** What Delta does. The three the heading claims, plus the context they are for. */
-const CLAIMS = [
-  "Signs in to any platform your firm runs, even ones with no API",
-  "Can work without being prompted, on a schedule you set",
-  "Working your case in five minutes. No IT team, no migration",
-  "Cites every answer back to the source",
-];
 
 /**
  * The named field. `what` is what the product is, in its own framing; `diff` is the
@@ -86,18 +82,6 @@ const RIVALS: { name: string; what: string; diff: string }[] = [
   { name: "Filevine", what: "Your case system. Its AI sees what is inside Filevine.", diff: "Delta signs in to Filevine and works across everything else too." },
   { name: "Claude", what: "Knows the law in general.", diff: "Delta knows your client, your file, and what you decided last week." },
 ];
-
-function Check() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto", marginTop: 3 }} aria-hidden>
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
-  );
-}
-
-/** Bigger and centred (Camren, 2026-08-28). At 26px it read as a footnote on the
- *  card it is supposed to be heading. */
-const MARK_H = 44;
 
 export function WhySasonix() {
   return (
@@ -123,23 +107,6 @@ export function WhySasonix() {
             title="No other legal AI signs in to your systems and is working your case in five minutes."
             titleMaxW={900}
           />
-        </Reveal>
-
-        {/* What Delta does, stated once and on its own, rather than as a column
-            fighting a strawman. The accent ring is the only highlight in the
-            section, so the eye starts here and reads down into the names. */}
-        <Reveal amount={0.2} className="sx-why-card">
-          <div className="sx-why-mark">
-            <Image src={LOGO.onLight} alt="CaseDelta" width={logoWidth(MARK_H)} height={MARK_H} style={{ display: "block", height: MARK_H, width: "auto" }} />
-          </div>
-          <ul className="sx-why-claims">
-            {CLAIMS.map((c) => (
-              <li key={c}>
-                <Check />
-                <span>{c}</span>
-              </li>
-            ))}
-          </ul>
         </Reveal>
 
         <Reveal amount={0.15} delay={0.05}>
@@ -187,33 +154,6 @@ export function WhySasonix() {
           .sx-why-setup { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }
         }
 
-        .sx-why-card {
-          max-width: 940px;
-          margin: 56px auto 0;
-          border: 2px solid var(--sx-accent);
-          background: var(--sx-accent-soft);
-          border-radius: 20px;
-          padding: 34px 38px 30px;
-        }
-        .sx-why-mark { display: flex; justify-content: center; margin-bottom: 30px; }
-
-        .sx-why-claims {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px 40px;
-        }
-        .sx-why-claims li {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-size: 17px;
-          line-height: 26px;
-          color: var(--sx-ink);
-        }
 
         .sx-why-lead {
           max-width: 940px;
@@ -264,14 +204,10 @@ export function WhySasonix() {
         }
 
         @media (max-width: 860px) {
-          .sx-why-claims { grid-template-columns: minmax(0, 1fr); gap: 14px; }
           .sx-rival { grid-template-columns: 116px minmax(0, 1fr); gap: 6px 22px; }
           .sx-rival-name { grid-row: span 2; }
         }
         @media (max-width: 639px) {
-          .sx-why-card { padding: 26px 22px 24px; margin-top: 40px; }
-          .sx-why-mark img { height: 34px !important; }
-          .sx-why-claims li { font-size: 16px; line-height: 25px; }
           .sx-why-lead { margin-top: 40px; }
           .sx-rival { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 20px 2px; }
           .sx-rival-name { grid-row: auto; }
