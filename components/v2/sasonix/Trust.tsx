@@ -53,9 +53,9 @@
  *
  * THE "TRUST" PILL IS GONE, along with every other section eyebrow on this page.
  */
-import { ShieldCheck, EyeOff } from "lucide-react";
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { SealCheck, LockKey } from "./icons";
 import { Reveal } from "./reveal";
 
 const BAND_IMAGE = "/v2/ambient/horizon-blue.webp";
@@ -97,17 +97,22 @@ const LEAD =
  * Each one now carries an icon, because at two items the row needed to read as
  * deliberate rather than as leftovers.
  *
- * ShieldCheck for compliance: the shield is the one piece of iconography that
- * means "held to a standard" without needing a caption. EyeOff for training:
- * the claim is about something NOT happening, and a crossed eye is the only
- * common glyph that says a negative without a red slash, which would read as an
- * error state on a page that is supposed to reassure.
+ * The glyphs are Phosphor's FILLED weight, inlined in icons.tsx, not lucide's
+ * outlines. Lucide is a 24px outline set with a uniform 2px stroke; at this size
+ * that goes spindly and generic, which is how the first pass looked. A filled
+ * glyph holds its shape and reads as a mark.
+ *
+ * A scalloped SEAL for compliance, not a shield: the seal is the shape a reader
+ * already associates with "somebody verified this", which is exactly what a
+ * compliance claim asks them to accept. A LOCK for training, not a crossed-out
+ * eye: a slashed glyph reads as an error state, and this band's whole job is to
+ * reassure. The lock says the data stays shut without stating a negative.
  *
  * Short enough to scan, specific enough to check. No sentence should join these.
  */
 const BADGES = [
-  { Icon: ShieldCheck, label: "HIPAA and bar compliant" },
-  { Icon: EyeOff, label: "Never used to train a model" },
+  { Icon: SealCheck, label: "HIPAA and bar compliant" },
+  { Icon: LockKey, label: "Never used to train a model" },
 ];
 
 export function Trust() {
@@ -181,7 +186,7 @@ export function Trust() {
           <div className="sx-trust-badges">
             {BADGES.map(({ Icon, label }) => (
               <span key={label} className="sx-trust-badge">
-                <Icon size={19} strokeWidth={1.9} aria-hidden className="sx-trust-icon" />
+                <Icon size={26} className="sx-trust-icon" />
                 {label}
               </span>
             ))}
@@ -196,42 +201,56 @@ export function Trust() {
            doing the work the copy used to: this is the one place on the page that
            should feel unhurried, because it is where a reader is deciding whether
            they trust us with medical records. */
+        /* NO PILL. The frosted chips made two facts look like two buttons, and a
+           button on a band with nothing to click is a small lie. The mark and the
+           words, with air around them, is the whole treatment. */
         .sx-trust-badges {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          gap: 16px;
-          margin-top: 76px;
+          align-items: center;
+          gap: 0;
+          margin-top: 80px;
         }
-        /* Frosted glass, not a solid chip: a solid fill would punch two holes in
-           the photograph. The blur is what makes these read as sitting ON the
-           image rather than pasted over it. */
         .sx-trust-badge {
           display: inline-flex;
           align-items: center;
-          gap: 11px;
-          padding: 13px 22px;
-          border-radius: 999px;
-          background: var(--sx-glass);
-          border: 1px solid var(--sx-glass-edge);
-          backdrop-filter: blur(10px) saturate(1.1);
-          -webkit-backdrop-filter: blur(10px) saturate(1.1);
+          gap: 13px;
+          padding: 0 40px;
+          position: relative;
           font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 500;
-          line-height: 20px;
+          line-height: 22px;
           color: var(--sx-on-media);
           white-space: nowrap;
         }
-        /* The icon takes the accent, so the two badges are the only colour in a
-           band that is otherwise a photograph and white type. */
-        .sx-trust-icon { color: var(--sx-accent-on-media); flex: 0 0 auto; }
+        .sx-trust-badge:first-child { padding-left: 0; }
+        .sx-trust-badge:last-child { padding-right: 0; }
+        /* A hairline between the two, not a border around each. */
+        .sx-trust-badge + .sx-trust-badge::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 2px;
+          bottom: 2px;
+          width: 1px;
+          background: var(--sx-glass-edge);
+        }
+        /* The marks are the only colour in a band that is otherwise a photograph
+           and white type, which is what makes the eye land on them. */
+        .sx-trust-icon {
+          color: var(--sx-accent-on-media);
+          flex: 0 0 auto;
+          filter: drop-shadow(0 1px 10px rgba(var(--sx-scrim-rgb), 0.45));
+        }
 
         @media (max-width: 900px) {
           .sx-trust-band { padding: 112px 0 120px !important; margin: 44px 0 !important; }
           .sx-trust-lead { font-size: 19px !important; line-height: 30px !important; }
-          .sx-trust-badges { flex-direction: column; align-items: center; gap: 14px; margin-top: 52px; }
-          .sx-trust-badge { font-size: 14px; padding: 12px 20px; white-space: normal; text-align: left; }
+          .sx-trust-badges { flex-direction: column; align-items: center; gap: 22px; margin-top: 56px; }
+          .sx-trust-badge { font-size: 15px; padding: 0; white-space: normal; }
+          .sx-trust-badge + .sx-trust-badge::before { display: none; }
         }
       `}</style>
     </section>
