@@ -25,7 +25,9 @@
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal } from "./reveal";
+import { HubSpokes } from "./HubSpokes";
 import { ComputerPanel, MemoryPanel, ProductPanelStyles, TeammatePanel } from "./ProductPanels";
 
 function Check() {
@@ -136,30 +138,153 @@ const CARDS: Card[] = [
 ];
 
 
-export function AutomationSection() {
+/**
+ * SPLIT IN TWO on 2026-09-02 (Camren): the thesis and the capability cards used to
+ * be one section, and a testimonial now sits between them. Recker's quote answers
+ * "does it really do that" while the claim is still on screen, before the reader has
+ * been walked through the three things it does.
+ *
+ * They are two exported sections rather than one section with a quote rendered
+ * inside it, so Sasonix.tsx stays the page's table of contents. A section that
+ * secretly contains another page beat is a section you cannot reorder.
+ *
+ * The anchor stays on the THESIS. "What it does" in the nav should land on the
+ * claim, not on the first card.
+ */
+export function AutomationThesis() {
   return (
-    <section id="features" style={{ background: SX.surface, padding: "60px 0 60px" }}>
-      <ProductPanelStyles />
+    <section id="features" style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules />
       <Container>
-        {/* The plain-language definition, set at hero scale and centered. It is the
-            one place on the page that states the whole product in a breath, so it
-            is deliberately larger than a section heading and carries no eyebrow. */}
+        {/* THE DARK CARD LIVES HERE NOW (Camren, 2026-09-02). It was around the
+            Stakes sentence with a stack of records beside it. Both moved: this is
+            the sentence a picture can actually illustrate, because "in the systems
+            your firm already uses" is a claim about SHAPE, and a hub is that shape.
+            The problem statement went back to standing on its own.
+
+            Taller than the card it came from, 256 to 520, because it now holds a
+            heading, four capabilities, a closing line and a 420px diagram rather
+            than two lines of type.
+
+            The definition is still the one place on the page that states the whole
+            product in a breath. It is left-aligned rather than centred now, because
+            it shares the card with the diagram. */}
         <Reveal>
+          <div className="sx-thesis-card">
+            <span aria-hidden className="sx-thesis-ellipse" />
+            <div className="sx-thesis-copy">
+          {/* TWO READS AND ONE WRITE. Every legal AI can read. Writing back into
+              the system of record is the thing almost none of them do, and three
+              reads in a row describe a chatbot, so the last example is
+              unmistakably a write.
+
+              THE OPENING NAMES DELTA FIRST. "Hand off work to Delta, like ..."
+              led with the instruction; "Delta is the AI you can hand real work
+              to, like ..." leads with what it is, then earns the claim with three
+              examples. "REAL work" is the load-bearing word: it is the answer to
+              what every reader already assumes, which is that this is another
+              chatbot that drafts a paragraph.
+
+              THEY ARE VERBS, NOT NOUNS. This read "like the cases missing an SOL
+              date" until Camren caught it: you do not hand off a noun. You hand
+              off a job, and "the cases missing an SOL date" is the ANSWER to a
+              job, not the job. Gerunds fix it and keep the three parallel, so
+              each one is something a person could actually be asked to go do.
+
+              THEN CUT FOR LENGTH, also Camren. Four words went: "every case
+              missing an SOL date" to "a missing SOL", "chasing down" to
+              "chasing", and "a full file review straight into" to "a file review
+              into". Nothing load-bearing left with them. "The money" stays,
+              because it is the word that makes that example about money, and
+              "into Filevine" stays, because it is the word that makes the third
+              one a write. Trim around those two, never through them.
+
+              Each also has to land as "that takes me hours", "that is how I get
+              sued", or "that is my money". All three are Rudin Law's real
+              production usage, 2026-08-19 to 09-02:
+
+                finding a missing SOL      READ, RISK. The malpractice one. Delta
+                                           reads their `SOL Field Empty` report,
+                  and on 2026-09-02 it cross-checked the 351-row whole-docket
+                  report and found a litigation matter their own saved report had
+                  MISSED. A blank SOL field is how a firm loses a case it won.
+
+                chasing money stuck        READ, MONEY. Josh's "reverse docket
+                in disbursement            cashflow analysis": what is settled and
+                  pending disbursement and what is holding it up. Also what
+                  Poletti's testimonial further down this page is about, so the
+                  page argues it twice, once in the firm's words and once in a
+                  customer's.
+
+                writing a file review      WRITE, TIME. "File review" is their
+                into Filevine              exact phrase, 14 threads, and Josh's
+                                           version is a stored template Delta
+                  fills and then writes INTO THE CASE DESCRIPTION FIELD. The write
+                  example is a job they already ask for that already ends in a
+                  write, rather than one invented to have a write on the list.
+
+              Filevine is named on purpose even though Delta reaches nine systems
+              at this firm. A named system is a claim a reader can check; "your
+              case system" is a hedge. The second paragraph and the hub beside it
+              do the generalising, which is the division of labour between them.
+
+              STILL UNSHIPPED, and it is the strongest thing in the data: the
+              pattern the firm calls "dry run", typed 10 times. Spreadsheet with
+              nothing applied, they review it, then Delta writes the approved rows
+              back into Filevine. On 2026-09-01 it wrote 34 dates back and re-read
+              every one to confirm. It is also where the approval promise belongs,
+              which nothing on this card currently makes. */}
+          {/* The name is in the brand colour, the way corgi.insure sets "Corgi" in
+              their orange in the equivalent sentence. It does real work beyond
+              decoration: the paragraph opens by naming the product, and the colour
+              is what makes a reader register that as a name rather than a word.
+
+              accentOnMedia, NOT accent. The raw brand blue is #5170FF, which is
+              3.6:1 on this card: legal for 38px type and muddy against a dark
+              navy. accentOnMedia is the role that exists for exactly this, the
+              accent as used over a dark surface, and it is far brighter.
+
+              It differs on purpose from the accent-FILLED hub core beside it,
+              which carries the same word. Fill and text are different problems:
+              the circle is a solid brand shape with white on it, this is brand
+              colour AS text. Matching them would make one of the two wrong. */}
           <h2 className="sx-thesis">
-            Delta is the AI that does actual partner-level, paralegal, and staff work in the systems your firm
-            already uses.
+            <span className="sx-thesis-name">Delta</span> is the AI you can hand real work to, like finding a
+            missing SOL, chasing money stuck in disbursement, or writing a file review into Filevine.
           </h2>
+          {/* Camren's line, verbatim, and at the SAME SIZE as the paragraph above
+              it. That is the point of it: the first paragraph is three specifics,
+              and this one says the specifics are not the limit. Set smaller it
+              would read as a caption on the examples, which is the opposite.
+
+              A <p> and not a second <h2>. Two h2s in a section is a broken
+              document outline however the two look on screen; the size makes them
+              equal to the eye, and the markup keeps the outline honest. */}
+          <p className="sx-thesis-close">
+            Whatever you need done, <span className="sx-thesis-name">Delta</span> does it in any system your
+            firm uses.
+          </p>
           {/* The rest of the same statement, set smaller. It is one thought with the
               line above and reads as one, but at 44px the whole thing runs eight lines
               and stops being a statement. The definition keeps display scale; the list
               of what that means in practice supports it. */}
-          <p className="sx-thesis-sub">
-            Delta can review records, firm financials, run reports, handle case management and calendars, and keep on
-            top of client SOLs and communication. No matter what system it is, Delta logs in and doesn&rsquo;t stop
-            until the work is complete.
-          </p>
+            </div>
+            <HubSpokes />
+          </div>
         </Reveal>
-        <div style={{ display: "flex", flexDirection: "column", gap: 60, marginTop: 60 }}>
+      </Container>
+    </section>
+  );
+}
+
+/** The three capability cards. The "value props", in Camren's words. */
+export function AutomationCards() {
+  return (
+    <section style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules />
+      <ProductPanelStyles />
+      <Container>
+        <div style={{ display: "flex", flexDirection: "column", gap: 60 }}>
           {CARDS.map((c, i) => (
             <Reveal key={c.heading} amount={0.2} className="sx-cap-card" style={{ position: "relative", background: SX.surfaceAlt, borderRadius: 22, border: "1px solid rgba(var(--sx-shadow-rgb), 0.10)", boxShadow: "0 1px 3px rgba(var(--sx-shadow-rgb), 0.04)", overflow: "hidden" }}>
               {/* left text */}
@@ -244,33 +369,101 @@ export function AutomationSection() {
            tort, and medical malpractice firms" qualifier. That line is gone as of
            2026-08-28 and this slot now carries the back half of the thesis, so it is
            wider and a size up: it is content, not a caption. */
-        .sx-thesis-sub {
-          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-weight: 400;
-          font-size: 20px;
-          line-height: 32px;
-          color: var(--sx-ink-2);
-          text-align: center;
-          max-width: 760px;
-          margin: 26px auto 0;
-          text-wrap: pretty;
-        }
-        @media (max-width: 760px) { .sx-thesis-sub { font-size: 17px; line-height: 27px; margin-top: 20px; } }
 
-        .sx-thesis {
-          max-width: 1000px;
-          margin: 0 auto;
-          text-align: center;
+
+
+
+        /* The card. Same geometry language as the one it replaced: radius 24,
+           overflow hidden so the ellipse is cut by the frame, and surfaceInverse
+           rather than a colour literal so it follows the palette. */
+        .sx-thesis-card {
+          position: relative;
+          overflow: hidden;
+          border-radius: 24px;
+          padding: 64px;
+          background: var(--sx-surface-inverse);
+          min-height: 520px;
+          display: flex;
+          align-items: center;
+          gap: 48px;
+        }
+        .sx-thesis-copy { position: relative; z-index: 2; flex: 1 1 auto; }
+        /* THE ARC STAYS ON THE COPY SIDE. It was pinned from the left and its
+           right edge swept straight through the hub, where it collided with the
+           diagram's own two rings: three faint circles crossing each other, and
+           the eye cannot tell which belongs to the picture. Anchored from the
+           RIGHT at 58%, its rightmost point lands around 42% of the card, well
+           clear of the diagram, and it does what it is for, which is to keep a
+           1280px slab of flat colour from reading as a rectangle.
+
+           Crossing the copy is fine and is what the reference does: at 6% white
+           it is a gesture, not a line. Crossing the diagram was not fine, because
+           the diagram is made of lines. */
+        .sx-thesis-ellipse {
+          position: absolute;
+          right: 58%;
+          top: -300px;
+          width: 1053px;
+          height: 1053px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          pointer-events: none;
+          z-index: 0;
+        }
+        /* Stacked layout: the copy is full width, so the arc would run through
+           all of it. Pull it off the left edge entirely. */
+        @media (max-width: 980px) {
+          .sx-thesis-ellipse { right: auto; left: -70%; top: -420px; }
+        }
+        @media (max-width: 980px) {
+          .sx-thesis-card { flex-direction: column; align-items: stretch; padding: 44px 32px; gap: 24px; min-height: 0; }
+        }
+        @media (max-width: 620px) {
+          .sx-thesis-card { padding: 34px 22px; border-radius: 18px; }
+        }
+
+
+        /* Deliberately the same scale as .sx-thesis. If one changes, change both:
+           they are one statement in two beats and a size gap turns the second into
+           a caption. */
+        .sx-thesis-close {
+          max-width: 640px;
+          margin: 26px 0 0;
+          text-align: left;
           font-family: var(--sx-archivo), sans-serif;
           font-weight: 500;
-          font-size: 44px;
-          line-height: 56px;
-          letter-spacing: -1.2px;
-          color: var(--sx-ink);
+          font-size: 38px;
+          line-height: 48px;
+          letter-spacing: -1px;
+          color: var(--sx-on-media-muted);
           text-wrap: balance;
         }
-        @media (max-width: 1100px) { .sx-thesis { font-size: 36px; line-height: 46px; } }
-        @media (max-width: 760px)  { .sx-thesis { font-size: 28px; line-height: 37px; letter-spacing: -0.6px; } }
+        @media (max-width: 1100px) { .sx-thesis-close { font-size: 32px; line-height: 42px; } }
+        @media (max-width: 760px)  { .sx-thesis-close { font-size: 26px; line-height: 35px; letter-spacing: -0.6px; margin-top: 20px; } }
+
+        /* Both paragraphs name Delta, and both are set in the brand colour. The
+           span sets colour on itself, so it wins over the muted inherited colour
+           of the closing paragraph without needing a second rule.
+
+           accentOnMedia, never the raw accent: #5170FF measures 3.6:1 on this
+           card, which is legal at 38px and muddy against dark navy. This is the
+           role that exists for the accent over a dark surface. */
+        .sx-thesis-name { color: var(--sx-accent-on-media); }
+
+        .sx-thesis {
+          max-width: 640px;
+          margin: 0;
+          text-align: left;
+          font-family: var(--sx-archivo), sans-serif;
+          font-weight: 500;
+          font-size: 38px;
+          line-height: 48px;
+          letter-spacing: -1px;
+          color: var(--sx-on-media);
+          text-wrap: balance;
+        }
+        @media (max-width: 1100px) { .sx-thesis { font-size: 32px; line-height: 42px; } }
+        @media (max-width: 760px)  { .sx-thesis { font-size: 26px; line-height: 35px; letter-spacing: -0.6px; } }
       `}</style>
     </section>
   );

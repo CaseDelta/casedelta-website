@@ -23,13 +23,23 @@
  *
  * "Up to" is inclusive on purpose. A firm sitting on exactly five accounts is in
  * the $599 band, not pushed up into the next one. A brief pass at "less than" was
- * reverted on 2026-08-19 for that reason. Keep the overflow line as "More than
- * 20", which is only correct while the top band includes 20.
+ * reverted on 2026-08-19 for that reason.
  *
- * The BAND BOUNDARIES are confirmed, not inherited: 5, 10 and 20 accounts at
- * $599, $1,099 and $2,099, settled with Camren on 2026-08-28. Worth knowing when
- * you read them: every firm in production today sits at six accounts or fewer, so
- * the top band is headroom rather than a band anyone has reached.
+ * THERE IS NO OVERFLOW LINE ANY MORE. Firms above the top band used to get "More
+ * than N accounts? Contact us for a custom plan." under the table. Every published
+ * band now carries a published price, and anything past 40 accounts is well outside
+ * the 3-to-15-attorney ICP, so it is a conversation rather than a row.
+ *
+ * The BAND BOUNDARIES are confirmed, not inherited: 5, 10, 20 and 40 accounts at
+ * $599, $1,099, $2,099 and $4,099. The first three were settled with Camren on
+ * 2026-08-28 and the fourth on 2026-09-02, when the published table replaced the
+ * "contact us" overflow: a firm above the old top band was being sent to a sales
+ * conversation to learn a number, which is the opposite of the published,
+ * self-serve pricing this page exists to offer.
+ *
+ * Worth knowing when you read them: every firm in production today sits at six
+ * accounts or fewer, so everything above the first band is headroom rather than a
+ * band anyone has reached.
  *
  * "UNLIMITED STAFF" IS RETIRED. DO NOT BRING IT BACK IN ANY FORM. The old copy
  * said "Your whole staff included" and "Flat monthly. Unlimited staff." Those
@@ -64,6 +74,7 @@ export const TIERS: Tier[] = [
   { band: "Up to 5 accounts", price: "$599", monthly: 599, accounts: 5, automations: 5 },
   { band: "Up to 10 accounts", price: "$1,099", monthly: 1099, accounts: 10, automations: 10 },
   { band: "Up to 20 accounts", price: "$2,099", monthly: 2099, accounts: 20, automations: 20 },
+  { band: "Up to 40 accounts", price: "$4,099", monthly: 4099, accounts: 40, automations: 40 },
 ];
 
 /**
@@ -106,7 +117,7 @@ export const TOP_BAND_ACCOUNTS = TIERS[TIERS.length - 1].accounts;
  * The canonical one-line price, for a comparison table cell. A complete sentence.
  */
 export const PRICE_LINE =
-  "$599 to $2,099 a month per firm by account count. Flat, published, self-serve.";
+  "$599 to $4,099 a month per firm by account count. Flat, published, self-serve.";
 
 /**
  * The same fact as a CLAUSE, with no internal sentence break, for dropping into
@@ -119,14 +130,14 @@ export const PRICE_LINE =
  * see. Never lowercase a sentence to make it fit a slot. Use this instead.
  */
 export const PRICE_CLAUSE =
-  "$599 to $2,099 a month for the firm by account count, flat, published, and self-serve";
+  "$599 to $4,099 a month for the firm by account count, flat, published, and self-serve";
 
 /**
  * The canonical paragraph, for FAQ answers and page descriptions where there is
  * room to say what the bands are.
  */
 export const PRICE_PARAGRAPH =
-  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, and $2,099 for up to 20. Firms above 20 accounts get a custom plan. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published and self-serve, so a firm knows its cost before the demo.";
+  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20, and $4,099 for up to 40. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published and self-serve, so a firm knows its cost before the demo.";
 
 /*
  * An INCLUDED list lived here and rendered as a checklist under the tiers, first

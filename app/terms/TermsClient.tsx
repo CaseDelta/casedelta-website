@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  LegalPageLayoutV2,
-  LegalSectionV2,
-  LegalClosingV2,
+  LegalPage,
+  LegalSection,
+  LegalClosing,
   LEGAL_LINK_STYLE,
-} from "@/components/LegalPageLayoutV2";
+} from "@/components/v2/sasonix/LegalPage";
 
 export default function TermsClient() {
   return (
-    <LegalPageLayoutV2 title="Terms of Service">
-      <LegalSectionV2 title="Using CaseDelta">
+    <LegalPage title="Terms of Service">
+      <LegalSection title="Using CaseDelta">
         <p>
           By using CaseDelta, you agree to these Terms and our{" "}
           <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>.
@@ -19,18 +19,18 @@ export default function TermsClient() {
         <p style={{ marginTop: 12 }}>
           <strong>Delta is a productivity tool, not a lawyer.</strong> CaseDelta does not provide legal advice and does not create an attorney-client relationship between CaseDelta and you or your clients. Delta generates analyses, chronologies, and reports to assist your professional judgment. You remain fully responsible for all legal work, professional obligations, and the accuracy of any work product you deliver to clients or courts.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="AI-Generated Output">
+      <LegalSection title="AI-Generated Output">
         <p>
           Delta generates analyses, chronologies, anomaly reports, case briefs, and other work product based on the documents you provide. These outputs are tools to assist your professional judgment &mdash; not substitutes for it.
         </p>
         <p style={{ marginTop: 12 }}>
           <strong>CaseDelta does not guarantee the accuracy, completeness, or legal sufficiency of any AI-generated output.</strong> You must independently verify all findings, conclusions, and recommendations before relying on them in any legal matter. Delta may miss relevant information, misinterpret documents, or produce errors. Professional review of all output is required.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Acceptable Use">
+      <LegalSection title="Acceptable Use">
         <p>You agree to use CaseDelta only for lawful purposes and in accordance with these Terms. You will not:</p>
         <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
           <li style={{ marginBottom: 8 }}>
@@ -46,9 +46,9 @@ export default function TermsClient() {
             Use the service in any way that violates applicable laws, regulations, or professional conduct rules.
           </li>
         </ul>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Subscription and Billing">
+      <LegalSection title="Subscription and Billing">
         <p>
           CaseDelta operates on a subscription basis. Current pricing is available on our website or through our sales team. Either party may cancel at any time.
         </p>
@@ -57,9 +57,9 @@ export default function TermsClient() {
           <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>{" "}
           for data retention details.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Limitation of Liability">
+      <LegalSection title="Limitation of Liability">
         <p>
           CaseDelta is provided &ldquo;as is&rdquo; without warranties of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement.
         </p>
@@ -69,18 +69,18 @@ export default function TermsClient() {
         <p style={{ marginTop: 12 }}>
           If you integrate CaseDelta with third-party services (such as Clio, Google Drive, or Outlook), those integrations are subject to their respective terms and conditions. CaseDelta is not responsible for the availability or functionality of third-party services.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Termination">
+      <LegalSection title="Termination">
         <p>
           Either party may terminate this agreement at any time. CaseDelta may suspend or terminate your access if you violate these Terms or engage in conduct that harms the service or other users.
         </p>
         <p style={{ marginTop: 12 }}>
           Upon termination, your right to use CaseDelta ceases immediately (or at the end of your billing period for voluntary cancellation). You will have 30 days to export your data before permanent deletion.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Changes and Governing Law">
+      <LegalSection title="Changes and Governing Law">
         <p>
           We may update these Terms from time to time. When we make material changes, we&apos;ll notify you via email or through the CaseDelta interface. Continued use of the service after changes constitutes acceptance of the updated Terms.
         </p>
@@ -91,11 +91,11 @@ export default function TermsClient() {
           </a>
           .
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalClosingV2>
+      <LegalClosing>
         By using CaseDelta, you acknowledge understanding and agreeing to these Terms of Service.
-      </LegalClosingV2>
-    </LegalPageLayoutV2>
+      </LegalClosing>
+    </LegalPage>
   );
 }

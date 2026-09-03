@@ -7,8 +7,13 @@
  * much work the people already on payroll can get through in a day. Say that, and
  * then ask the question the whole product answers. Nothing else belongs here.
  *
+ * IT STANDS ALONE. It spent a few hours inside a dark card with a document graphic
+ * beside it; both moved to AutomationThesis on 2026-09-02, where the picture
+ * illustrates the sentence it sits next to. Nothing belongs between a reader and a
+ * problem statement.
+ *
  * THE DEVICE: the subject of the sentence dissolves and reforms. "your paralegals",
- * "your case managers" and "your intake specialists" name the roles a firm hires to
+ * "your case managers" and "your legal assistants" name the roles a firm hires to
  * lift the cap, and then it lands on "you" and HOLDS there, roughly twice as long,
  * because that is the one the reader was not expecting and the one that actually
  * stings. Keep "you" last and keep it dwelling; reorder the list and the section
@@ -31,7 +36,7 @@
  * THE THREE PHASES NEVER OVERLAP, and that is a correctness point rather than a
  * stylistic one. The width only moves while the slot is empty. Earlier versions
  * animated the width underneath visible letters and painted a long wording
- * straight through "can do." for about a fifth of a second on every change, which
+ * straight through "can handle." for about a fifth of a second on every change, which
  * reads as a rendering fault rather than a transition.
  *
  * THE LINE STRUCTURE IS PINNED. The lede is its own block, so the word ALWAYS
@@ -41,7 +46,7 @@
  * would lurch. Pinning the break also fixes the height, because the lede and the
  * word line are each a constant number of lines whichever wording is showing.
  *
- * On phones the word is a block of its own, so "can do." sits on the line below and
+ * On phones the word is a block of its own, so "can handle." sits on the line below and
  * nothing to the right of the word can move at all.
  *
  * Reduced motion renders "you" and never animates, which still reads as a complete
@@ -56,14 +61,44 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal } from "./reveal";
 
 /** The cycle. "you" is last and dwells; see the header comment. */
-const ROLES = ["your paralegals", "your case managers", "your intake specialists", "you"] as const;
+/**
+ * The three roles, then "you".
+ *
+ * THESE ARE MEASURED, NOT GUESSED, as of 2026-09-02. The first draft said
+ * paralegals, case managers and INTAKE SPECIALISTS. A sweep of live plaintiff-firm
+ * postings put intake specialist at roughly a fifth of the others and legal
+ * assistant well above it, on the same query shape:
+ *
+ *   paralegal        1,520
+ *   case manager       764
+ *   legal assistant    612
+ *   intake specialist  149
+ *
+ * So intake specialist is out and legal assistant is in. Two caveats worth keeping,
+ * because the next person to edit this list will want them:
+ *
+ * "Intake specialist" was the right WORDS, just the smallest role. Never change it to
+ * "intake coordinator": in a law firm that phrase means BigLaw conflicts and
+ * new-business intake, which is a different job at a different kind of firm.
+ *
+ * CASE MANAGER IS A PI WORD. It is weak in med mal and all but absent in mass tort,
+ * where firms say case coordinator or docket specialist. The list leans plaintiff PI
+ * because that is the primary outbound ICP, but it does undersell the other two
+ * practice areas, and that is a known trade rather than an oversight.
+ *
+ * The counts come from one job board; the boards that would have corroborated them
+ * refused the request, and every plaintiff-bar job board was gated. Treat the
+ * ordering as well-evidenced and the exact numbers as one source.
+ */
+const ROLES = ["your paralegals", "your case managers", "your legal assistants", "you"] as const;
 
 /** The two halves of the sentence, either side of the word. */
 const LEDE = "Your entire firm is bottlenecked by what";
-const TAIL = "can do.";
+const TAIL = "can handle.";
 
 /**
  * The longest wording, which the hidden ghost renders to reserve the heading's
@@ -150,10 +185,32 @@ export function Stakes() {
   const spread = phase === "out" ? SPREAD_OUT : SPREAD_IN;
 
   return (
-    <section id="stakes" style={{ background: SX.surface, padding: "120px 0 60px" }}>
+    /* 180 TOP AND BOTTOM, and the symmetry is the point once the ruler lines are
+       drawn (Camren, 2026-09-02). The rules turn this section into a visible box,
+       and a sentence sitting 180 from the top rule and 60 from the bottom one
+       reads as misaligned inside its own frame. It is the only thing in this
+       section, so it belongs in the middle of it.
+
+       180 rather than the page's usual 60: the hero is full bleed and ends in the
+       firm belt, so there is no half-gap above this the way there is between two
+       ordinary sections, and at 120 the statement read as attached to the belt
+       instead of as its own beat.
+
+       This is a deliberate exception to the 60-top-and-60-bottom convention in
+       Sasonix.tsx. That rule exists so deleting a section leaves its neighbours'
+       spacing intact, which still holds here; what changes is that this section is
+       a framed box with one thing in it, and a framed box centres its contents. */
+    <section id="stakes" style={{ position: "relative", background: SX.surface, padding: "180px 0" }}>
+      <Rules />
       <Container>
         <Reveal>
+          {/* THE PROBLEM, ON ITS OWN (Camren, 2026-09-02). This was inside a dark
+              card with a document graphic beside it. The card and the graphic moved
+              to AutomationThesis, where the hub-and-spoke picture actually
+              illustrates the sentence next to it. A problem statement does not need
+              a picture: it needs nothing between the reader and the sentence. */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+            <div>
             {/* The section is the sentence. It closed on "Why not operate like you
                 had double the headcount?" until 2026-08-28; the heading makes the
                 point on its own and the answer belongs to the sections below. */}
@@ -203,12 +260,17 @@ export function Stakes() {
                 ))}
               </span>
             </h2>
-
+            </div>
           </div>
         </Reveal>
       </Container>
 
       <style>{`
+        /* Standalone again, so it takes the page's own heading scale rather than
+           the compact one it used inside the card.
+           500 and never 400: app/fonts/archivo-400.woff2 is a slanted cut despite
+           being checked in as Fontshare "Book", and computed font-style still
+           reports "normal", so a 400 here renders oblique with nothing to warn you. */
         .sx-stakes-h2 {
           display: grid;
           position: relative;
@@ -240,8 +302,12 @@ export function Stakes() {
 
         /* white-space:pre keeps the spaces inside the word, which are their own
            spans and would otherwise collapse, and stops the word breaking at one.
-           accent-TEXT, never the raw accent: that token exists because the brand
-           accent is not legible as body copy in every palette. */
+
+           accent-TEXT, never the raw accent and never accent-on-media. This is dark
+           type on the page surface: accentText is the value tuned for contrast on
+           white, which is exactly what that role exists for. It was briefly
+           accent-on-media while this sentence lived inside a dark card, and that is
+           the only condition under which it should be. */
         .sx-stakes-word {
           display: inline-block;
           white-space: pre;
@@ -295,7 +361,7 @@ export function Stakes() {
            wrapping to two lines between 861px and 879px. Do not raise it.
 
            Under 600px the word becomes a block of its own, because at phone sizes
-           the longest wording plus "can do." cannot share a line at any type size
+           the longest wording plus "can handle." cannot share a line at any type size
            worth reading. Nothing then sits to the right of the word, so the width
            animation is irrelevant there and is overridden. */
         @media (min-width: 600px) and (max-width: 879px) {

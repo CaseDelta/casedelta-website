@@ -3,9 +3,14 @@
 /**
  * Why Delta is different, said by naming the field rather than gesturing at it.
  *
- * THE HEADING MAKES THREE CLAIMS AT ONCE, and they are the three no competitor can
- * make together: it signs in to the systems the firm already runs, it CAN work
- * without being prompted, and it is working the firm's case five minutes later.
+ * THE HEADING MAKES TWO CLAIMS, not three. It signs in to the systems the firm
+ * already runs, and it is working the firm's case five minutes later.
+ *
+ * A third clause, "can work without being prompted", sat between them until
+ * 2026-09-02, when Camren cut it. Two claims land; three is a list, and the reader
+ * stops counting. AutomationSection still describes the capability, so it is not
+ * gone from the page; it stopped being one of the two things this heading says.
+ *
  * Three earlier wordings and why each moved: "live in five minutes" is a claim about
  * our onboarding rather than about the firm's day, and being live is our milestone
  * while work coming back is theirs; "paralegal work" boxed Delta into one job title,
@@ -13,14 +18,21 @@
  * that and said nothing, because all work is real. Naming the CASE is what makes the
  * claim concrete.
  *
- * "CAN work" is deliberate and was a correction (Camren, 2026-08-28): an assistant
- * that simply acts on its own reads as a liability to a lawyer who is personally
- * responsible for the file. Capability the firm switches on is the selling point.
- * Do not shorten it back to "works without being prompted".
+ * IF THE CLAUSE EVER COMES BACK, anywhere, it comes back as "CAN work without being
+ * prompted" and never as "works without being prompted" (Camren, 2026-08-28). An
+ * assistant that simply acts on its own reads as a liability to a lawyer who is
+ * personally responsible for the file; capability the firm switches on is the
+ * selling point. And PROMPTED, never "asked": "asked" is what you do to a person and
+ * makes it sound like Delta is being managed, where "prompted" is what you do to
+ * software and names the thing every other tool requires.
  *
- * PROMPTED, NOT ASKED. Same correction, same day. "Asked" is what you do to a
- * person and it makes the sentence sound like Delta is being managed; "prompted" is
- * what you do to software, and it names the thing every other tool requires.
+ * THE CLAIMS CARD IS GONE (Camren, 2026-09-02). An accent-ringed panel sat under the
+ * heading with the CaseDelta mark and four ticks: signs in to any platform, can work
+ * without being prompted, working your case in five minutes, cites every answer. It
+ * restated the heading directly above it and then answered the comparison before the
+ * comparison had been made, so the section said the same thing three times. The
+ * heading makes the claim and the named rivals prove it; the card was the middle
+ * step that did neither.
  *
  * THERE IS NO "OTHER LEGAL AI" COLUMN ANY MORE. It used to be a generic third
  * column of crosses, which is the weakest form this section can take: a reader
@@ -55,19 +67,10 @@
  * which collided with the Trust band the moment it was mounted again and would have
  * stolen the nav's Security link.
  */
-import Image from "next/image";
 import { SX } from "./tokens";
-import { LOGO, logoWidth } from "./brand";
 import { Container, SectionHead } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal } from "./reveal";
-
-/** What Delta does. The three the heading claims, plus the context they are for. */
-const CLAIMS = [
-  "Signs in to any platform your firm runs, even ones with no API",
-  "Can work without being prompted, on a schedule you set",
-  "Working your case in five minutes. No IT team, no migration",
-  "Cites every answer back to the source",
-];
 
 /**
  * The named field. `what` is what the product is, in its own framing; `diff` is the
@@ -81,44 +84,31 @@ const RIVALS: { name: string; what: string; diff: string }[] = [
   { name: "Claude", what: "Knows the law in general.", diff: "Delta knows your client, your file, and what you decided last week." },
 ];
 
-function Check() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto", marginTop: 3 }} aria-hidden>
-      <path d="M20 6L9 17l-5-5" />
-    </svg>
-  );
-}
-
-/** Bigger and centred (Camren, 2026-08-28). At 26px it read as a footnote on the
- *  card it is supposed to be heading. */
-const MARK_H = 44;
-
 export function WhySasonix() {
   return (
-    <section id="why" style={{ background: SX.surface, padding: "60px 0 60px" }}>
+    <section id="why" style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules />
       <Container>
+        {/* THE SETUP, THEN THE ANSWER. Camren's line, 2026-09-02, kept verbatim.
+            It poses the question this whole section exists to answer, so it sits
+            above the claim rather than below it: the reader arrives at "no other
+            legal AI signs in to your systems" already asking why that matters.
+
+            It is deliberately NOT the h2. The question is the better hook, but
+            the claim underneath it is the differentiator and the thing worth
+            being a heading. Setting the question smaller and lighter makes the
+            claim land as the answer instead of competing with it. */}
         <Reveal>
+          <p className="sx-why-setup">
+            Your case info doesn&rsquo;t just live in one system.{" "}
+            <span>So why would you use an AI that only sees one part of the entire picture?</span>
+          </p>
+        </Reveal>
+        <Reveal delay={0.06}>
           <SectionHead
-            title="No other legal AI signs in to your systems, can work without being prompted, and is working your case in five minutes."
+            title="No other legal AI signs in to your systems and is working your case in five minutes."
             titleMaxW={900}
           />
-        </Reveal>
-
-        {/* What Delta does, stated once and on its own, rather than as a column
-            fighting a strawman. The accent ring is the only highlight in the
-            section, so the eye starts here and reads down into the names. */}
-        <Reveal amount={0.2} className="sx-why-card">
-          <div className="sx-why-mark">
-            <Image src={LOGO.onLight} alt="CaseDelta" width={logoWidth(MARK_H)} height={MARK_H} style={{ display: "block", height: MARK_H, width: "auto" }} />
-          </div>
-          <ul className="sx-why-claims">
-            {CLAIMS.map((c) => (
-              <li key={c}>
-                <Check />
-                <span>{c}</span>
-              </li>
-            ))}
-          </ul>
         </Reveal>
 
         <Reveal amount={0.15} delay={0.05}>
@@ -136,33 +126,36 @@ export function WhySasonix() {
       </Container>
 
       <style>{`
-        .sx-why-card {
-          max-width: 940px;
-          margin: 56px auto 0;
-          border: 2px solid var(--sx-accent);
-          background: var(--sx-accent-soft);
-          border-radius: 20px;
-          padding: 34px 38px 30px;
-        }
-        .sx-why-mark { display: flex; justify-content: center; margin-bottom: 30px; }
+        /* SAME SIZE AS THE h2 UNDER IT (Camren, 2026-09-02). Every value here is
+           SectionHead's heading, copied deliberately: 48px on a 55.2px line at
+           -1px, weight 500. The two blocks are meant to read as one heading in
+           two beats, the question and then the answer, so neither may be set
+           smaller than the other. If SectionHead's scale changes in kit.tsx,
+           change this with it; there is no shared token for it yet.
 
-        .sx-why-claims {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px 40px;
+           It stays a <p> and not an <h2>. It is a lead-in to the heading, not a
+           second heading, and a section with two h2s is a broken outline no
+           matter how the two look on screen. */
+        .sx-why-setup {
+          max-width: 900px;
+          margin: 0 auto 22px;
+          text-align: center;
+          font-family: var(--sx-archivo), 'Archivo Placeholder', sans-serif;
+          /* 500, never 400: app/fonts/archivo-400.woff2 is a slanted cut. */
+          font-weight: 500;
+          font-size: 48px;
+          line-height: 55.2px;
+          letter-spacing: -1px;
+          color: var(--sx-ink-3);
         }
-        .sx-why-claims li {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
-          font-size: 17px;
-          line-height: 26px;
-          color: var(--sx-ink);
+        /* Same size, different ink. With the size hierarchy gone this is the only
+           thing left separating the setup from the question inside it, and the
+           question is the half the reader is meant to carry into the claim. */
+        .sx-why-setup span { color: var(--sx-ink); }
+        @media (max-width: 760px) {
+          .sx-why-setup { font-size: 32px; line-height: 38px; letter-spacing: -0.6px; }
         }
+
 
         .sx-why-lead {
           max-width: 940px;
@@ -213,14 +206,10 @@ export function WhySasonix() {
         }
 
         @media (max-width: 860px) {
-          .sx-why-claims { grid-template-columns: minmax(0, 1fr); gap: 14px; }
           .sx-rival { grid-template-columns: 116px minmax(0, 1fr); gap: 6px 22px; }
           .sx-rival-name { grid-row: span 2; }
         }
         @media (max-width: 639px) {
-          .sx-why-card { padding: 26px 22px 24px; margin-top: 40px; }
-          .sx-why-mark img { height: 34px !important; }
-          .sx-why-claims li { font-size: 16px; line-height: 25px; }
           .sx-why-lead { margin-top: 40px; }
           .sx-rival { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 20px 2px; }
           .sx-rival-name { grid-row: auto; }

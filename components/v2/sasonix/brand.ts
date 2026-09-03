@@ -19,6 +19,22 @@
 export const LOGO = {
   onLight: "/assets/branding/trimmed-logo.png",
   onDark: "/assets/branding/trimmed-logo-white.png",
+  /**
+   * The MARK ALONE, white, no wordmark. 800x800 square with the delta filling
+   * most of it and transparent everywhere else.
+   *
+   * Use it where the lockup will not fit and the word is redundant: inside a
+   * circle, a favicon-sized chip, the hub core on the homepage. It is white with
+   * no blue swoosh, unlike both cuts above, so it needs a coloured or dark fill
+   * behind it. On white it is invisible.
+   *
+   * Do NOT reach for this as a small version of the logo. It is a different mark:
+   * the lockup says who we are to someone who does not know, this says which
+   * thing is ours to someone who already does.
+   */
+  mark: "/assets/branding/white-logo-transparent.png",
+  /** The mark is square, unlike the 1860x567 lockup. */
+  markSize: 800,
   /** Intrinsic size of both cuts. Width for a given height is height * RATIO. */
   width: 1860,
   height: 567,

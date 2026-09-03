@@ -1,3 +1,11 @@
+/**
+ * PostHog typing and a thin capture helper.
+ *
+ * NOTHING IMPORTS THIS FILE, and it is still load-bearing. The `declare global` block
+ * below is an ambient declaration: TypeScript picks it up from anywhere in the project,
+ * and it is what types `window.posthog` for the call sites that use it directly
+ * (app/demo/DemoClient.tsx). Delete the file and those stop type-checking.
+ */
 type PostHogLike = {
   capture: (event: string, props?: Record<string, unknown>) => void;
 };

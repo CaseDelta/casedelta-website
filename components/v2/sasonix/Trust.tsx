@@ -53,35 +53,66 @@
  *
  * THE "TRUST" PILL IS GONE, along with every other section eyebrow on this page.
  */
-import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container } from "./kit";
-import { Reveal, revealProps } from "./reveal";
+import { SealCheck, LockKey } from "./icons";
+import { Reveal } from "./reveal";
 
 const BAND_IMAGE = "/v2/ambient/horizon-blue.webp";
 
-const POINTS: { title: string; body: string[] }[] = [
-  {
-    title: "A paralegal does not take the records home",
-    body: [
-      "Neither does Delta.",
-      "It works inside your systems, where your records already live, and leaves them there.",
-    ],
-  },
-  {
-    title: "Safe for protected health information",
-    body: [
-      "HIPAA and bar compliant.",
-      "Medical records and identifiable health information are in scope, and we sign a BAA.",
-    ],
-  },
-  {
-    title: "Your client data is never the product",
-    body: [
-      "It never trains a model, and it is never sold or shared.",
-      "The provider keeps nothing once a request completes, and your firm is walled off from every other firm.",
-    ],
-  },
+/**
+ * ONE SENTENCE AND THREE LABELS. This band used to carry three headed columns
+ * with two body lines each: nine lines of prose about security, on a page where
+ * the reader has already decided they want the thing and is checking it will not
+ * get them disbarred. Nobody reads nine lines of that. They scan for whether the
+ * words they were told to look for are present.
+ *
+ * So the argument is one sentence and the compliance answer is three labels a
+ * reader can find in under a second. Cut, not compressed: what went was the
+ * explanation, not a claim.
+ *
+ * EVERY WORD HERE IS BOUND BY THE HOUSE RULES and this is the section where
+ * breaking them costs most:
+ *   - Never "no third-party LLM", never "your data never leaves our
+ *     infrastructure". Both are false. Production runs on enterprise AI under
+ *     zero-retention and BAA terms, and the defensible framing is what is here.
+ *   - Security is PARITY with the serious competitors, not an advantage. There is
+ *     no comparison in this band on purpose, and no competitor is named.
+ *   - "We sign a BAA" is a commitment the company honours, not a marketing line.
+ *
+ * The sentence is the one genuinely differentiated thing and it is the one kept:
+ * Delta works where the records already are rather than pulling them somewhere
+ * else to be processed.
+ */
+const LEAD =
+  "Delta works inside the systems your records already live in, and leaves them there.";
+
+/**
+ * TWO, not three. "We sign a BAA" came off on 2026-09-02 (Camren). It is still
+ * true and still something the company does; it is a term you negotiate, not a
+ * property of the product, and it was the one of the three a reader could not
+ * check at a glance. The BAA belongs in a conversation with a firm's compliance
+ * lead, not on a homepage between two facts.
+ *
+ * Each one now carries an icon, because at two items the row needed to read as
+ * deliberate rather than as leftovers.
+ *
+ * The glyphs are Phosphor's FILLED weight, inlined in icons.tsx, not lucide's
+ * outlines. Lucide is a 24px outline set with a uniform 2px stroke; at this size
+ * that goes spindly and generic, which is how the first pass looked. A filled
+ * glyph holds its shape and reads as a mark.
+ *
+ * A scalloped SEAL for compliance, not a shield: the seal is the shape a reader
+ * already associates with "somebody verified this", which is exactly what a
+ * compliance claim asks them to accept. A LOCK for training, not a crossed-out
+ * eye: a slashed glyph reads as an error state, and this band's whole job is to
+ * reassure. The lock says the data stays shut without stating a negative.
+ *
+ * Short enough to scan, specific enough to check. No sentence should join these.
+ */
+const BADGES = [
+  { Icon: SealCheck, label: "HIPAA and bar compliant" },
+  { Icon: LockKey, label: "Never used to train a model" },
 ];
 
 export function Trust() {
@@ -89,7 +120,7 @@ export function Trust() {
     <section
       id="security"
       className="sx-trust-band"
-      style={{ position: "relative", overflow: "hidden", padding: "112px 0 120px", margin: "60px 0" }}
+      style={{ position: "relative", overflow: "hidden", padding: "180px 0 190px", margin: "60px 0" }}
     >
       {/* full-width ambient backdrop */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -123,66 +154,103 @@ export function Trust() {
                 letterSpacing: "-1px",
                 color: SX.onMedia,
                 margin: 0,
-                maxWidth: 620,
               }}
             >
               Security first.
             </h2>
+            <p
+              className="sx-trust-lead"
+              style={{
+                fontFamily: SX.body,
+                fontWeight: 400,
+                fontSize: 22,
+                lineHeight: "34px",
+                color: SX.onMediaMuted,
+                margin: "26px 0 0",
+                maxWidth: 640,
+                textWrap: "pretty",
+              }}
+            >
+              {LEAD}
+            </p>
           </div>
         </Reveal>
 
-        {/* three statements on the image, divided by hairlines. No card chrome. */}
-        <div className="sx-trust-row">
-          {POINTS.map((p, i) => (
-            <motion.div key={p.title} {...revealProps({ delay: i * 0.09, amount: 0.3 })} className="sx-trust-col">
-              <h3
-                style={{
-                  fontFamily: SX.display,
-                  fontWeight: 500,
-                  fontSize: 22,
-                  lineHeight: "28px",
-                  letterSpacing: "-0.3px",
-                  color: SX.onMedia,
-                  margin: 0,
-                }}
-              >
-                {p.title}
-              </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, margin: "12px 0 0" }}>
-                {p.body.map((line) => (
-                  <p
-                    key={line}
-                    style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "26px", color: SX.onMediaMuted, margin: 0 }}
-                  >
-                    {line}
-                  </p>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* The compliance answer, as two badges rather than paragraphs. A reader
+            here is checking for words, not reading an argument.
+
+            Frosted glass over the photograph, using the glass roles that exist
+            for exactly this: a solid fill would punch two holes in the image, and
+            a bare label would disappear into it. */}
+        <Reveal delay={0.08}>
+          <div className="sx-trust-badges">
+            {BADGES.map(({ Icon, label }) => (
+              <span key={label} className="sx-trust-badge">
+                <Icon size={26} className="sx-trust-icon" />
+                {label}
+              </span>
+            ))}
+          </div>
+        </Reveal>
       </Container>
 
       <style>{`
-        .sx-trust-row {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          margin-top: 64px;
+        /* TALLER AND EMPTIER (Camren, 2026-09-02). 112/120 held three columns of
+           prose. With one sentence and three labels in it, the same padding made
+           the band look like a section that had lost its content. The height is
+           doing the work the copy used to: this is the one place on the page that
+           should feel unhurried, because it is where a reader is deciding whether
+           they trust us with medical records. */
+        /* NO PILL. The frosted chips made two facts look like two buttons, and a
+           button on a band with nothing to click is a small lie. The mark and the
+           words, with air around them, is the whole treatment. */
+        .sx-trust-badges {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 0;
+          margin-top: 80px;
         }
-        .sx-trust-col { padding: 0 36px; }
-        .sx-trust-col:first-child { padding-left: 0; }
-        .sx-trust-col:last-child { padding-right: 0; }
-        .sx-trust-col + .sx-trust-col { border-left: 1px solid var(--sx-glass-edge); }
+        .sx-trust-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 13px;
+          padding: 0 40px;
+          position: relative;
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 22px;
+          color: var(--sx-on-media);
+          white-space: nowrap;
+        }
+        .sx-trust-badge:first-child { padding-left: 0; }
+        .sx-trust-badge:last-child { padding-right: 0; }
+        /* A hairline between the two, not a border around each. */
+        .sx-trust-badge + .sx-trust-badge::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 2px;
+          bottom: 2px;
+          width: 1px;
+          background: var(--sx-glass-edge);
+        }
+        /* The marks are the only colour in a band that is otherwise a photograph
+           and white type, which is what makes the eye land on them. */
+        .sx-trust-icon {
+          color: var(--sx-accent-on-media);
+          flex: 0 0 auto;
+          filter: drop-shadow(0 1px 10px rgba(var(--sx-scrim-rgb), 0.45));
+        }
 
         @media (max-width: 900px) {
-          .sx-trust-band { padding: 80px 0 88px !important; margin: 44px 0 !important; }
-          .sx-trust-row { grid-template-columns: minmax(0, 1fr); gap: 34px; margin-top: 44px; }
-          .sx-trust-col { padding: 0; }
-          .sx-trust-col + .sx-trust-col {
-            border-left: 0;
-            border-top: 1px solid var(--sx-glass-edge);
-            padding-top: 34px;
-          }
+          .sx-trust-band { padding: 112px 0 120px !important; margin: 44px 0 !important; }
+          .sx-trust-lead { font-size: 19px !important; line-height: 30px !important; }
+          .sx-trust-badges { flex-direction: column; align-items: center; gap: 22px; margin-top: 56px; }
+          .sx-trust-badge { font-size: 15px; padding: 0; white-space: normal; }
+          .sx-trust-badge + .sx-trust-badge::before { display: none; }
         }
       `}</style>
     </section>

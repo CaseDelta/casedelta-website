@@ -54,24 +54,41 @@
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal, revealProps } from "./reveal";
-import { TIERS, TOP_BAND_ACCOUNTS } from "@/lib/pricing";
-import { PricingExtras } from "./PricingExtras";
+import { TIERS } from "@/lib/pricing";
 
 export function Pricing() {
   return (
-    <section id="pricing" style={{ background: SX.surface, padding: "60px 0 60px" }}>
+    <section id="pricing" style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules bottom />
       <Container>
         <Reveal>
+          {/* ONE LINE, NOT TWO (Camren, 2026-09-02). This was a heading, "Delta
+              does the work of multiple staff members. You pay a fraction of
+              one.", over a bolded sub, "One flat price for the whole firm."
+              Both said the same thing at different volumes, and the heading
+              spent two sentences setting up a comparison the prices underneath
+              make on their own.
+
+              "A fraction of payroll." led that line for one revision and was cut
+              the same day. The salary comparison is still the argument this
+              section rests on, and it is now made by the prices themselves and
+              by the comparison table on the page, rather than announced.
+
+              No sub: the tiers are the next thing, and a line between them and
+              this would be a line about nothing. */}
           <SectionHead
-            title="Delta does the work of multiple staff members. You pay a fraction of one."
+            title="One flat price for the whole firm."
             titleMaxW={780}
-            sub={<strong style={{ fontWeight: 600, color: SX.ink }}>One flat price for the whole firm.</strong>}
-            subMaxW={620}
           />
         </Reveal>
 
-        {/* Three equivalent bands as rows. No cards, no featured tier. */}
+        {/* Every published band as a row. No cards, no featured tier, and no
+            "contact us" line under the table: the fourth band is a real tier
+            with a real price in lib/pricing.ts, which is why this renders TIERS
+            and nothing else. A row that answers a different question than the
+            rows above it is not a row, it is a footnote in a table's clothing. */}
         <div style={{ maxWidth: 860, margin: "52px auto 0", borderTop: `1px solid ${SX.hairline}` }}>
           {TIERS.map((t, i) => (
               <motion.div key={t.band} {...revealProps({ delay: i * 0.06, amount: 0.3 })} style={{ borderBottom: `1px solid ${SX.hairline}` }}>
@@ -87,36 +104,27 @@ export function Pricing() {
                   }}
                 >
                   <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <span className="sx-price-band" style={{ fontFamily: SX.body, fontSize: 19, fontWeight: 500, color: SX.ink }}>
+                    <span className="sx-price-band" style={{ fontFamily: SX.body, fontSize: 19, fontWeight: 500 }}>
                       {t.band}
                     </span>
                   </span>
                   <span style={{ display: "flex", alignItems: "baseline", gap: 6, flex: "0 0 auto" }}>
-                    <span className="sx-price-amt" style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 40, letterSpacing: "-1px", color: SX.ink, lineHeight: 1 }}>
+                    <span className="sx-price-amt" style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 40, letterSpacing: "-1px", lineHeight: 1 }}>
                       {t.price}
                     </span>
-                    <span className="sx-price-per" style={{ fontFamily: SX.body, fontSize: 17, fontWeight: 400, color: SX.ink2 }}>/month</span>
+                    <span className="sx-price-per" style={{ fontFamily: SX.body, fontSize: 17, fontWeight: 400 }}>/month</span>
                   </span>
                 </div>
               </motion.div>
           ))}
+
         </div>
 
       </Container>
 
-      {/* The guarantee and what automations actually are. Lives in its own file
-          because it is copy with sources behind it, not layout. */}
-      <PricingExtras />
-
       <Container>
         <Reveal>
-          <div style={{ maxWidth: 860, margin: "50px auto 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }} className="sx-price-foot">
-            <p style={{ margin: 0, fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>
-              More than {TOP_BAND_ACCOUNTS} accounts?{" "}
-              <a href="/demo" style={{ color: SX.accentText, fontWeight: 500, textDecoration: "none" }}>
-                Contact us for a custom plan.
-              </a>
-            </p>
+          <div style={{ maxWidth: 860, margin: "50px auto 0", display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 20, flexWrap: "wrap" }} className="sx-price-foot">
             <a href="/demo" className="sx-btn" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: SX.ink, color: SX.surface, borderRadius: 12, padding: "14px 26px", fontFamily: SX.body, fontSize: 16, fontWeight: 500, textDecoration: "none", ["--v2-btn-hover" as string]: SX.accentDeep }}>
               Book a demo
             </a>
@@ -124,11 +132,82 @@ export function Pricing() {
         </Reveal>
       </Container>
       <style>{`
+        /* ── Row hover ──
+           COLOURS LIVE HERE, NOT INLINE, and that is the load-bearing part. An
+           inline style attribute beats a class selector no matter how specific
+           the selector is, so a :hover rule cannot recolour text that carries
+           style={{ color }}. The three spans lost their inline colour so these
+           rules can win without a single !important.
+
+           The rows are NOT links and take no cursor:pointer. Nothing here should
+           promise a click that does not happen; the effect is there to let the
+           eye settle on one band while comparing four, which is the only thing a
+           reader is doing on this table.
+
+           The tint is a pseudo-element inset by -20px rather than padding on the
+           row, so it bleeds into the gutter and reads as a highlighted band
+           instead of a box that snaps wider on hover and shoves the price. */
+        .sx-price-row { position: relative; }
+        .sx-price-row > * { position: relative; z-index: 1; }
+
+        .sx-price-row::before {
+          content: "";
+          position: absolute;
+          inset: 0 -20px;
+          border-radius: 14px;
+          background: var(--sx-bg-alt);
+          opacity: 0;
+          transition: opacity 0.24s ease;
+          z-index: 0;
+        }
+        .sx-price-row:hover::before { opacity: 1; }
+
+        /* An accent rule that grows from the middle of the left edge. Scale, not
+           height, so it animates on the compositor and never reflows the row. */
+        .sx-price-row::after {
+          content: "";
+          position: absolute;
+          left: -20px;
+          top: 14px;
+          bottom: 14px;
+          width: 3px;
+          border-radius: 3px;
+          background: var(--sx-accent);
+          transform: scaleY(0);
+          transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+          z-index: 1;
+        }
+        .sx-price-row:hover::after { transform: scaleY(1); }
+
+        .sx-price-band { color: var(--sx-ink); transition: color 0.22s ease; }
+        .sx-price-amt {
+          color: var(--sx-ink);
+          transition: color 0.22s ease, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .sx-price-per { color: var(--sx-ink-2); transition: color 0.22s ease; }
+
+        /* The price picks up the accent and leans a hair further right. The band
+           stays put: the eye is going to the number. */
+        .sx-price-row:hover .sx-price-amt {
+          color: var(--sx-accent-text);
+          transform: translateX(3px);
+        }
+        .sx-price-row:hover .sx-price-per { color: var(--sx-ink); }
+
+        @media (prefers-reduced-motion: reduce) {
+          .sx-price-row::after { transition: none; }
+          .sx-price-row:hover .sx-price-amt { transform: none; }
+          .sx-price-amt { transition: color 0.22s ease; }
+        }
+
         /* Narrow screens: shrink the row rather than stacking it. The band and the
            price belong on one line, which is the whole point of a line item, and at
            these sizes the longest pair still fits a 360px viewport. */
         @media (max-width: 560px) {
           .sx-price-row { padding: 20px 2px !important; gap: 12px !important; }
+          /* The gutter bleed would run off a phone screen. */
+          .sx-price-row::before { inset: 0 -8px; }
+          .sx-price-row::after { left: -8px; }
           .sx-price-band { font-size: 16px !important; white-space: nowrap; }
           .sx-price-amt { font-size: 30px !important; }
           /* "/month" contracts to "/mo" so the longest pair still holds one line. */

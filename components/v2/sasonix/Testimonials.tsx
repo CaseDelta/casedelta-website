@@ -15,7 +15,30 @@
  * the same voice appears twice on the homepage. Worth fixing when a second real quote
  * arrives.
  *
+ * ONE EXCEPTION EXISTS ON THIS PAGE AND IT IS NOT THIS FILE. The firm names in
+ * FirmMarquee.tsx ARE invented, on Camren's explicit instruction of 2026-09-02, as a
+ * placeholder until real logos are cleared. That file opens with a banner saying so.
+ * Nothing here is a placeholder, and the rule above still governs this file.
+ *
+ * THIS SECTION AND SecondProof ARE DELIBERATELY TWO SECTIONS. They were briefly
+ * merged into one two-card marquee on 2026-09-02 and Camren reverted it the same day:
+ * the quotes do different jobs in different places. Recker lands immediately after
+ * AutomationSection, as evidence for the capability claim just made. Poletti lands
+ * after pricing, as the last word before the ask. Merging them puts both arguments in
+ * one place and leaves the back half of the page with no voice in it.
+ *
  * CARRIES JAMES RECKER since 2026-08-28.
+ *
+ * IT OPENS "IT", NOT "DELTA" (Camren, 2026-09-02). The card sits under a heading
+ * that has just named Delta twice, so the third naming in three lines read as
+ * branding rather than as a person talking. "It" is also how a customer actually
+ * refers to a tool they use daily, and it keeps the house rule that Delta is
+ * always "it" and never gendered.
+ *
+ * Worth stating plainly, since this is inside quotation marks attributed to a
+ * named person: this is a one-word substitution that changes no meaning, made on
+ * the founder's instruction. Anything beyond that class of edit needs the source's
+ * sign-off. Never tighten a quote to make it land better.
  *
  * THREE WORDS ARE DOING ALL THE WORK IN THIS QUOTE and none of them is decoration:
  *   "signed into"    -> the database is behind a paid login. That is the whole
@@ -78,7 +101,7 @@ export type Testimonial = { quote: string; name: string; title?: string; bg: str
 const CARDS: Testimonial[] = [
   {
     quote:
-      "Delta signed into the verdict database we pay for and pulled the five biggest results in my circuit for a two-level lumbar with no fusion, in today's dollars.",
+      "It signed into the verdict database we pay for and pulled the five biggest results in my circuit for a two-level lumbar with no fusion, in today's dollars.",
     name: "James Recker",
     // No `title`: nobody has given us his firm or city, and the caption renders the
     // name alone rather than inventing one. Fill it in when we have it.
