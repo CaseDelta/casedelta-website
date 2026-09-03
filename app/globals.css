@@ -284,22 +284,22 @@ a:hover {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Marketing design-system kit (components/marketing/kit.tsx).
-   Shared hover/interaction styles for the below-the-fold + subpages.
-   ───────────────────────────────────────────────────────────── */
-.cd-pill2 { will-change: transform; }
-.cd-pill2:hover { background: #284b78; box-shadow: 0 10px 26px rgba(31, 58, 95, 0.22); transform: translateY(-1px); }
-.cd-pill-d:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22); }
-.cd-tlink { transition: gap 0.2s ease; }
-.cd-tlink:hover { gap: 11px; }
-.cd-card { transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; }
-.cd-card:hover { border-color: rgba(47, 111, 224, 0.4); transform: translateY(-4px); box-shadow: 0 24px 50px -28px rgba(20, 23, 31, 0.16); }
-.cd-logo { transition: opacity 0.3s ease, filter 0.3s ease; }
-.cd-logo:hover { opacity: 1 !important; }
+   Homepage section anchors.
 
-/* FAQ drawers (kit FaqAccordion) */
-.cd-faq > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 0; transition: color 0.2s ease; }
-.cd-faq > summary::-webkit-details-marker { display: none; }
-.cd-faq > summary:hover { color: #2f6fe0; }
-.cd-faq .cd-faq-chev { flex: 0 0 auto; transition: transform 0.25s ease; }
-.cd-faq[open] > summary .cd-faq-chev { transform: rotate(180deg); }
+   Every one of these is a redirect target: /features, /use-cases, /compare,
+   /security and /pricing all land on a fragment here. The nav is fixed, so without
+   a scroll-margin the browser puts the section heading underneath the bar and the
+   reader arrives at a page that looks like it did not move.
+
+   156px is the nav (67px) plus breathing room, and it matches NAV_OFFSET in
+   components/v2/sasonix/scrollToSection.ts, which does the same job for an in-page
+   click. Change one and change the other.
+   ───────────────────────────────────────────────────────────── */
+#stakes,
+#features,
+#why,
+#security,
+#pricing,
+#contact {
+  scroll-margin-top: 156px;
+}

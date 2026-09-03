@@ -1,30 +1,25 @@
 "use client";
 
 /**
- * About page. Migrated to the marketing kit (components/marketing/kit.tsx).
+ * /about — on the v2 kit (components/v2/sasonix/*).
  *
- * Mission-driven: give a small, growing firm the capacity of a bigger team
- * without the hire. Honest claims only (POSITIONING.md): teammate not tool,
- * a human keeps a hand on the wheel, never "no third-party LLM / data never
- * leaves our infrastructure." Delta is gender-neutral (never she/her). No em
- * dashes. Founder facts (Camren Hall) are real and mirrored in the PersonSchema
- * JSON-LD on app/about/page.tsx, keep them in sync.
+ * Copy is carried over verbatim from the previous version. It is the only page that
+ * states the mission and the founder's background in full, and the founder facts are
+ * mirrored in the PersonSchema JSON-LD in page.tsx, so the two must stay in step.
+ *
+ * House rules that bite on this page specifically: Delta is "it", never she or her;
+ * no em dashes; a human on the firm's team reviews before anything leaves the firm,
+ * so nothing here may imply autonomy; and no claim that data never reaches a third
+ * party, because prod runs on enterprise AI under zero-retention and BAA terms.
+ *
+ * The early-stage section stays. Saying plainly that the product is early is what
+ * makes the founding-firm offer credible, and dressing it up would cost more than
+ * it buys.
  */
-import { motion } from "framer-motion";
-import { FooterV2 } from "@/components/FooterV2";
-import {
-  BF, BG, SERIF, SANS,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, PillLink, TextLink, Check, PageHero,
-} from "@/components/marketing/kit";
-
-const para: React.CSSProperties = {
-  fontFamily: SANS,
-  fontSize: 17,
-  lineHeight: 1.65,
-  letterSpacing: "-0.2px",
-  color: BF.muted,
-  margin: 0,
-};
+import { SX } from "@/components/v2/sasonix/tokens";
+import { PageShell } from "@/components/v2/sasonix/PageShell";
+import { PageHero, Container, SectionHead, Prose } from "@/components/v2/sasonix/kit";
+import { Reveal } from "@/components/v2/sasonix/reveal";
 
 const MISSION_PARAS = [
   "A growing firm does not lose cases because the lawyers are not good enough. It loses them because there are not enough hours, and not enough people, to keep every matter moving at once. The next hire is months away and expensive. The work does not wait.",
@@ -75,158 +70,139 @@ const EARLY_PARAS = [
 ];
 
 export function AboutContent() {
-  const rise = useRise();
-
   return (
-    <main style={{ background: BG.white }}>
+    <PageShell>
       <PageHero
         eyebrow="About CaseDelta"
-        title={<>The capacity of a bigger team, <Accent>without the hire.</Accent></>}
+        title="The capacity of a bigger team, without the hire"
         sub="We build Delta, an AI teammate that works inside the tools a firm already uses and handles the routine case work, so a growing firm can run more matters without adding headcount and nothing slips."
-        ctaHref="/demo"
-        ctaLabel="Book a demo"
       />
 
       {/* MISSION */}
-      <Section bg={BG.offWhite}>
-        <Container narrow>
-          <motion.div {...rise(0)}>
-            <Eyebrow>Our mission</Eyebrow>
-            <H>
-              Give a small firm the reach of a <Accent>much bigger one.</Accent>
-            </H>
-          </motion.div>
-          <motion.div {...rise(0.08)} style={{ display: "flex", flexDirection: "column", gap: 22, marginTop: 28 }}>
-            {MISSION_PARAS.map((p, i) => (
-              <p key={i} style={para}>{p}</p>
-            ))}
-          </motion.div>
-        </Container>
-      </Section>
-
-      {/* WHY WE EXIST / THE PROBLEM */}
-      <Section bg={BG.white}>
+      <section style={{ background: SX.bg, padding: "60px 0" }}>
         <Container>
-          <div className="cd-two-col" style={{ display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: 56, alignItems: "start" }}>
-            <motion.div {...rise(0)}>
-              <Eyebrow>Why we exist</Eyebrow>
-              <H>
-                A firm's work lives across <Accent>five systems.</Accent>
-              </H>
-              <Sub>The stitching-together falls on people you cannot hire fast enough, and every gap between the tools is a chance for something to slip.</Sub>
-            </motion.div>
-            <motion.div {...rise(0.1)} style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-              {PROBLEM_PARAS.map((p, i) => (
-                <p key={i} style={para}>{p}</p>
-              ))}
-            </motion.div>
+          <Reveal>
+            <SectionHead
+              title="Give a small firm the reach of a much bigger one"
+              titleMaxW={720}
+            />
+          </Reveal>
+          <Reveal delay={0.08} style={{ marginTop: 36 }}>
+            <Prose>
+              {MISSION_PARAS.map((p) => <p key={p}>{p}</p>)}
+            </Prose>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* WHY WE EXIST */}
+      <section style={{ background: SX.bgAlt, padding: "80px 0" }}>
+        <Container>
+          <div className="sx-about-two" style={{ display: "grid", gridTemplateColumns: "0.85fr 1.15fr", gap: 56, alignItems: "start" }}>
+            <Reveal>
+              <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 38, lineHeight: "44px", letterSpacing: "-1px", color: SX.ink, margin: 0 }}>
+                A firm&rsquo;s work lives across five systems
+              </h2>
+              <p style={{ fontFamily: SX.body, fontSize: 17, lineHeight: "28px", color: SX.ink2, margin: "18px 0 0" }}>
+                The stitching-together falls on people you cannot hire fast enough, and every gap between the tools is a chance for something to slip.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Prose style={{ maxWidth: "none", margin: 0 }}>
+                {PROBLEM_PARAS.map((p) => <p key={p}>{p}</p>)}
+              </Prose>
+            </Reveal>
           </div>
         </Container>
-      </Section>
+      </section>
 
       {/* WHAT WE BELIEVE */}
-      <Section bg={BG.offWhite}>
+      <section style={{ background: SX.bg, padding: "80px 0" }}>
         <Container>
-          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>What we believe</Eyebrow>
-            <H>How we build Delta.</H>
-            <Sub>Four convictions shape every decision, from how Delta connects to a firm's tools to how it handles a client's most sensitive files.</Sub>
-          </motion.div>
-          <div className="cd-belief-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 48 }}>
+          <Reveal>
+            <SectionHead
+              title="How we build Delta"
+              sub="Four convictions shape every decision, from how Delta connects to a firm's tools to how it handles a client's most sensitive files."
+            />
+          </Reveal>
+          <div className="sx-belief-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginTop: 48 }}>
             {BELIEFS.map((b, i) => (
-              <motion.article
-                key={i}
-                {...rise(0.05 * i)}
-                style={{ background: BF.card, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "28px 26px 30px" }}
+              <Reveal
+                key={b.t}
+                delay={0.05 * i}
+                style={{ background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 16, padding: "30px 28px 32px" }}
               >
-                <span style={{ display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: 10, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, marginBottom: 16 }}>
+                <span style={{ display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: 10, background: SX.accentSoft, marginBottom: 18 }}>
                   <Check />
                 </span>
-                <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: 22, lineHeight: 1.16, letterSpacing: "-0.4px", color: BF.ink, margin: 0 }}>{b.t}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 15, lineHeight: 1.5, color: BF.muted, marginTop: 10 }}>{b.d}</p>
-              </motion.article>
+                <h3 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 21, lineHeight: 1.24, letterSpacing: "-0.4px", color: SX.ink, margin: 0 }}>{b.t}</h3>
+                <p style={{ fontFamily: SX.body, fontSize: 15.5, lineHeight: "25px", color: SX.ink2, margin: "12px 0 0" }}>{b.d}</p>
+              </Reveal>
             ))}
           </div>
         </Container>
-      </Section>
+      </section>
 
       {/* FOUNDER */}
-      <Section bg={BG.white}>
+      <section style={{ background: SX.bgAlt, padding: "80px 0" }}>
         <Container>
-          <motion.div {...rise(0)} style={{ marginBottom: 44 }}>
-            <Eyebrow>Founder</Eyebrow>
-          </motion.div>
-          <div className="cd-founder-grid" style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 56, alignItems: "start" }}>
-            <motion.div {...rise(0.05)}>
-              <div style={{ width: 84, height: 84, borderRadius: "50%", background: "linear-gradient(150deg,#3a78e0,#1f3a5f)", display: "grid", placeItems: "center", marginBottom: 22 }}>
-                <span style={{ fontFamily: SANS, fontSize: 25, fontWeight: 600, color: "#fff", letterSpacing: "0.02em" }}>CH</span>
+          <div className="sx-founder-grid" style={{ display: "grid", gridTemplateColumns: "320px 1fr", gap: 56, alignItems: "start" }}>
+            <Reveal>
+              <div style={{ width: 84, height: 84, borderRadius: "50%", background: `linear-gradient(150deg, ${SX.accent}, ${SX.accentDeep})`, display: "grid", placeItems: "center", marginBottom: 22 }}>
+                <span style={{ fontFamily: SX.body, fontSize: 25, fontWeight: 600, color: SX.onAccent, letterSpacing: "0.02em" }}>CH</span>
               </div>
-              <h3 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(26px, 2.6vw, 34px)", lineHeight: 1.1, letterSpacing: "-0.6px", color: BF.ink, margin: 0 }}>Camren Hall</h3>
-              <p style={{ fontFamily: SANS, fontSize: 14.5, fontWeight: 600, letterSpacing: "0.2px", color: BF.faint, margin: "8px 0 26px" }}>Founder &amp; CEO</p>
+              <h2 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 32, lineHeight: 1.14, letterSpacing: "-0.8px", color: SX.ink, margin: 0 }}>Camren Hall</h2>
+              <p style={{ fontFamily: SX.body, fontSize: 14.5, fontWeight: 500, letterSpacing: "0.2px", color: SX.ink3, margin: "8px 0 26px" }}>Founder &amp; CEO</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
-                {FOUNDER_CREDS.map((c, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 11 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: BF.accent, flex: "0 0 auto" }} />
-                    <span style={{ fontFamily: SANS, fontSize: 14.5, color: BF.muted, lineHeight: 1.5 }}>{c}</span>
+                {FOUNDER_CREDS.map((c) => (
+                  <div key={c} style={{ display: "flex", alignItems: "center", gap: 11 }}>
+                    <span aria-hidden style={{ width: 5, height: 5, borderRadius: "50%", background: SX.accent, flex: "0 0 auto" }} />
+                    <span style={{ fontFamily: SX.body, fontSize: 14.5, color: SX.ink2, lineHeight: 1.5 }}>{c}</span>
                   </div>
                 ))}
               </div>
-            </motion.div>
-            <motion.div {...rise(0.12)} style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-              {FOUNDER_PARAS.map((p, i) => (
-                <p key={i} style={para}>{p}</p>
-              ))}
-            </motion.div>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <Prose style={{ maxWidth: "none", margin: 0 }}>
+                {FOUNDER_PARAS.map((p) => <p key={p}>{p}</p>)}
+              </Prose>
+            </Reveal>
           </div>
         </Container>
-      </Section>
+      </section>
 
-      {/* EARLY-STAGE HONESTY */}
-      <Section bg={BG.offWhite}>
-        <Container narrow>
-          <motion.div {...rise(0)}>
-            <Eyebrow>Where we are</Eyebrow>
-            <H>
-              We are early, and that is <Accent>the offer.</Accent>
-            </H>
-          </motion.div>
-          <motion.div {...rise(0.08)} style={{ display: "flex", flexDirection: "column", gap: 22, marginTop: 28 }}>
-            {EARLY_PARAS.map((p, i) => (
-              <p key={i} style={para}>{p}</p>
-            ))}
-          </motion.div>
-          <motion.div {...rise(0.14)}>
-            <TextLink href="/demo">Become a founding firm</TextLink>
-          </motion.div>
+      {/* WHERE WE ARE */}
+      <section style={{ background: SX.bg, padding: "80px 0 60px" }}>
+        <Container>
+          <Reveal>
+            <SectionHead title="We are early, and that is the offer" titleMaxW={640} />
+          </Reveal>
+          <Reveal delay={0.08} style={{ marginTop: 36 }}>
+            <Prose>
+              {EARLY_PARAS.map((p) => <p key={p}>{p}</p>)}
+              <p>
+                <a href="/demo">Become a founding firm</a>
+              </p>
+            </Prose>
+          </Reveal>
         </Container>
-      </Section>
-
-      {/* FINAL CTA */}
-      <Section bg={BG.ctaBand}>
-        <Container narrow center>
-          <motion.div {...rise(0)} style={{ textAlign: "center" }}>
-            <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
-              See Delta work one of your real cases.
-            </h2>
-            <p style={{ fontFamily: SANS, fontSize: 18, lineHeight: 1.5, color: "rgba(255,255,255,0.72)", margin: "20px auto 0", maxWidth: 540 }}>
-              Bring one real file to a fifteen-minute demo. Watch Delta do the job inside your own tools, then decide if it belongs on the team.
-            </p>
-            <div style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
-              <PillLink href="/demo" location="about_final" onDark>Book a 15-minute demo</PillLink>
-            </div>
-          </motion.div>
-        </Container>
-      </Section>
-
-      <FooterV2 />
+      </section>
 
       <style>{`
         @media (max-width: 880px) {
-          .cd-two-col { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .cd-belief-grid { grid-template-columns: 1fr !important; }
-          .cd-founder-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .sx-about-two { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .sx-belief-grid { grid-template-columns: 1fr !important; }
+          .sx-founder-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
         }
       `}</style>
-    </main>
+    </PageShell>
+  );
+}
+
+function Check() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
   );
 }

@@ -1,30 +1,44 @@
 "use client";
 
 /**
- * Demo page. Migrated to the marketing kit (components/marketing/kit.tsx).
+ * /demo — book a demo. On the v2 kit (components/v2/sasonix/*), so it reads as the
+ * same site as the homepage: shared Nav in its solid variant (there is no dark hero
+ * behind it here), the same Archivo display type and tokens, and CtaFooter with the
+ * big CTA band suppressed, because this page IS the call to action.
  *
- * Low-friction "book a demo" surface: a real file, your actual stack, fifteen
- * minutes, no slides. The booking + conversion logic (LinkedIn, PostHog, Meta
- * pixel, then open the booking URL) is preserved from the old demo body and only
- * restyled. Honest claims only, human-in-the-loop, Delta is gender-neutral, no
- * em dashes.
+ * THE TRACKING IS THE PART THAT MATTERS. This page is the only conversion surface
+ * on the site, and three separate systems count it:
+ *   - PostHog `demo_booked`, which is the conversion source of truth. Meta's pixel
+ *     undercounts on iOS Safari, in the Facebook in-app browser and behind ad
+ *     blockers, so the funnel is read from PostHog and reconciled against Meta.
+ *   - Meta `CompleteRegistration`, which is the event the live ad set optimises for.
+ *     Change the event name here and the ad set stops finding conversions.
+ *   - LinkedIn conversion ids, which are optional and unset until LinkedIn paid ads
+ *     launch. `fireConversion` no-ops cleanly when the id is undefined.
+ *
+ * A previous version of this page carried an inline Calendly embed. Calendly is gone
+ * from the site; booking opens NEXT_PUBLIC_DEMO_BOOKING_URL, a Google appointment
+ * scheduler, in a new tab. Never hardcode a scheduler vendor here, read the env var.
+ *
+ * `newEventId()` threads a UUID through the Meta event so a future server-side
+ * Conversions API call can dedupe against the browser event without restructuring.
  */
 import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { FooterV2 } from "@/components/FooterV2";
+import { SX, STAR_GOLD } from "@/components/v2/sasonix/tokens";
+import { PageShell } from "@/components/v2/sasonix/PageShell";
+import { Container, Eyebrow } from "@/components/v2/sasonix/kit";
+import { Reveal } from "@/components/v2/sasonix/reveal";
 import { newEventId, trackMetaCompleteRegistration } from "@/lib/meta-pixel";
-import {
-  BF, BG, SERIF, SANS,
-  useRise, Container, Section, H, Sub, Eyebrow, Accent, Check, PageHero,
-} from "@/components/marketing/kit";
 
 const CONVERSION_SOURCE = "lp_demo";
 const BOOKING_URL = process.env.NEXT_PUBLIC_DEMO_BOOKING_URL || "";
 const LINKEDIN_DEMO_BOOKED_ID = process.env.NEXT_PUBLIC_LINKEDIN_DEMO_BOOKED_CONVERSION_ID;
 const LINKEDIN_DEMO_STARTED_ID = process.env.NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID;
 
-// PostHog loads lazily, so window.posthog can be undefined when an on-mount
-// effect fires. Retry briefly (~3s) instead of dropping the event.
+/**
+ * PostHog loads lazily, so window.posthog can still be undefined when an on-mount
+ * effect fires. Retry for ~3s rather than dropping the event on the floor.
+ */
 function capturePosthog(eventName: string, props?: Record<string, unknown>, attempt = 0) {
   if (typeof window === "undefined") return;
   if (window.posthog) {
@@ -46,54 +60,15 @@ function fireConversion(id: string | undefined, eventName: string, props?: Recor
   capturePosthog(eventName, props);
 }
 
+/** What the fifteen minutes actually contains. Concrete, and all four are true. */
 const EXPECT = [
-  {
-    t: "One of your real cases",
-    d: "Bring an actual file from your firm, records and all. We work it live, never a canned demo dataset.",
-  },
-  {
-    t: "Your actual stack",
-    d: "Delta runs against the tools your firm already uses, so you see the work happen in your case manager, your email, and your drive.",
-  },
-  {
-    t: "About fifteen minutes",
-    d: "Short and focused. You hand Delta a job in plain English, then watch it do the work end to end.",
-  },
-  {
-    t: "No slides, no stock demo",
-    d: "No deck and no pre-baked script. Just Delta doing real work on your case, with a person on your team approving every step.",
-  },
+  "One of your real cases, records and all",
+  "Delta driving the tools your firm already uses",
+  "About fifteen minutes, live over video",
+  "No deck, no stock demo, nothing to set up first",
 ];
 
-function BookButton({ label, onClick, onDark = false }: { label: string; onClick: () => void; onDark?: boolean }) {
-  const bg = onDark ? "#ffffff" : BF.pillBg;
-  const fg = onDark ? "#1f3a5f" : "#ffffff";
-  const dot = onDark ? "#1f3a5f" : "#ffffff";
-  const arrow = onDark ? "#ffffff" : "#1f3a5f";
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={onDark ? "cd-pill-d" : "cd-pill2"}
-      style={{
-        display: "inline-flex", alignItems: "center", gap: 10, background: bg, color: fg,
-        border: "none", cursor: "pointer",
-        borderRadius: 48, padding: "12px 12px 12px 26px", fontFamily: SANS, fontSize: 15.5, fontWeight: 600,
-        letterSpacing: "-0.2px", lineHeight: 1, whiteSpace: "nowrap",
-        transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
-      }}
-    >
-      {label}
-      <span style={{ width: 26, height: 26, borderRadius: "50%", background: dot, display: "grid", placeItems: "center" }}>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={arrow} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
-      </span>
-    </button>
-  );
-}
-
 export function DemoClient() {
-  const rise = useRise();
-
   useEffect(() => {
     fireConversion(LINKEDIN_DEMO_STARTED_ID, "demo_page_viewed", { source: CONVERSION_SOURCE });
   }, []);
@@ -111,67 +86,119 @@ export function DemoClient() {
   };
 
   return (
-    <main style={{ background: BG.white }}>
-      <PageHero
-        eyebrow="Book a demo"
-        title={<>See it work on <Accent>one of your real cases.</Accent></>}
-        sub="Bring one real file from your firm and watch Delta do the job inside the tools you already use, in about fifteen minutes. No slides, and no stock demo."
-      >
-        <div style={{ marginTop: 36 }}>
-          <BookButton label="Pick a time" onClick={() => handleBook("hero")} />
-        </div>
-      </PageHero>
-
-      {/* WHAT TO EXPECT */}
-      <Section bg={BG.offWhite}>
+    /* No CTA band: this page is the call to action, so asking twice is asking worse. */
+    <PageShell showCta={false}>
+      <section style={{ background: SX.bg, padding: "148px 0 112px" }}>
         <Container>
-          <motion.div {...rise(0)} style={{ maxWidth: 820 }}>
-            <Eyebrow>What to expect</Eyebrow>
-            <H>A working session, <Accent>not a sales pitch.</Accent></H>
-            <Sub>You will not sit through a deck. You bring one real case, and Delta does the work in front of you, in your own tools.</Sub>
-          </motion.div>
-          <div className="cd-expect-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20, marginTop: 48 }}>
-            {EXPECT.map((item, i) => (
-              <motion.article key={item.t} {...rise(0.05 * i)} className="cd-card" style={{ background: BF.card, border: `1px solid ${BF.hairlineStrong}`, borderRadius: 16, padding: "28px 26px 30px" }}>
-                <span style={{ display: "grid", placeItems: "center", width: 40, height: 40, borderRadius: 10, background: BF.accentSoft, border: `1px solid ${BF.accentBorderHover}`, marginBottom: 16 }}>
-                  <Check />
-                </span>
-                <h3 style={{ fontFamily: SANS, fontSize: 18.5, fontWeight: 600, letterSpacing: "-0.3px", color: BF.ink, lineHeight: 1.25, margin: 0 }}>{item.t}</h3>
-                <p style={{ fontFamily: SANS, fontSize: 15.5, lineHeight: 1.55, color: BF.muted, marginTop: 10 }}>{item.d}</p>
-              </motion.article>
-            ))}
+          <div className="sx-demo-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "start" }}>
+            {/* LEFT: the pitch */}
+            <Reveal>
+              <div style={{ maxWidth: 520 }}>
+                <Eyebrow>Book a demo</Eyebrow>
+                <h1 style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 54, lineHeight: "60px", letterSpacing: "-2px", color: SX.ink, margin: "24px 0 0", maxWidth: 480 }}>
+                  See it work on one of your real cases
+                </h1>
+                <p style={{ fontFamily: SX.body, fontWeight: 400, fontSize: 18, lineHeight: "30px", color: SX.ink2, margin: "20px 0 0", maxWidth: 460 }}>
+                  Bring one real file from your firm. We connect Delta to the tools you already use, then work that matter in front of you, so you see the work rather than a slideshow.
+                </p>
+
+                <div style={{ marginTop: 34 }}>
+                  <div style={{ fontFamily: SX.mono, fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: SX.ink2, marginBottom: 16 }}>
+                    What to expect
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {EXPECT.map((t) => (
+                      <span key={t} style={{ display: "flex", alignItems: "center", gap: 12, fontFamily: SX.body, fontSize: 16, fontWeight: 500, color: SX.ink }}>
+                        <Check />
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Proof: one real, attributable quote. Same one the hero carries. */}
+                <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 40 }}>
+                  <span aria-hidden style={{ width: 1, height: 46, background: SX.hairline }} />
+                  <div>
+                    <div style={{ display: "flex", gap: 3, marginBottom: 8 }}>
+                      {[0, 1, 2, 3, 4].map((i) => <Star key={i} />)}
+                    </div>
+                    <div style={{ fontFamily: SX.body, fontSize: 14.5, lineHeight: "20px", color: SX.ink }}>
+                      &ldquo;Delta gives us back five hours a week per person, and we can handle more cases.&rdquo;
+                    </div>
+                    <div style={{ fontFamily: SX.body, fontSize: 13, lineHeight: "18px", color: SX.ink2, marginTop: 2 }}>
+                      Kirschbaum &amp; Nowotny, LLC &middot; Overland Park, KS
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* RIGHT: the ask */}
+            <Reveal delay={0.08} style={{ background: SX.surface, border: `1px solid ${SX.hairline}`, borderRadius: 20, boxShadow: "0 30px 70px -34px rgba(var(--sx-shadow-rgb), 0.28)", padding: "44px 40px", textAlign: "center" }}>
+              <div style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 30, letterSpacing: "-0.8px", lineHeight: 1.2, color: SX.ink }}>
+                Book your fifteen minutes
+              </div>
+              <p style={{ fontFamily: SX.body, fontSize: 16, lineHeight: "26px", color: SX.ink2, margin: "14px auto 0", maxWidth: 340 }}>
+                Pick a slot that works for you, and bring one real case.
+              </p>
+              <BookButton label="Pick a time" onClick={() => handleBook("card")} />
+              <p style={{ fontFamily: SX.body, fontSize: 14, lineHeight: "22px", color: SX.ink3, margin: "22px auto 0", maxWidth: 320 }}>
+                No migration, and nothing to rip out.
+              </p>
+            </Reveal>
           </div>
         </Container>
-      </Section>
+        <style>{`@media (max-width: 900px){ .sx-demo-grid { grid-template-columns: 1fr !important; gap: 40px !important; } }`}</style>
+        </section>
 
-      {/* BOOKING (this page is the conversion, so this stands in for the final CTA band) */}
-      <Section bg={BG.ctaBand}>
-        <Container narrow center>
-          <motion.div {...rise(0)} style={{ textAlign: "center" }}>
-            <Eyebrow light>Pick a time</Eyebrow>
-            <h2 style={{ fontFamily: SERIF, fontWeight: 400, fontSize: "clamp(34px, 4.8vw, 56px)", lineHeight: 1.04, letterSpacing: "-1.4px", color: "#fff", margin: "0 auto", maxWidth: 720 }}>
-              Book your fifteen minutes.
-            </h2>
-            <p style={{ fontFamily: SANS, fontSize: 18, lineHeight: 1.5, color: "rgba(255,255,255,0.72)", margin: "20px auto 0", maxWidth: 540 }}>
-              Grab a slot that works for you. Bring one real case, and we will work it together in your own tools.
-            </p>
-            <div style={{ marginTop: 34, display: "flex", justifyContent: "center" }}>
-              <BookButton label="Pick a time" onClick={() => handleBook("booking")} onDark />
-            </div>
-            <p style={{ fontFamily: SANS, fontSize: 14, color: "rgba(255,255,255,0.55)", letterSpacing: "-0.1px", margin: "20px auto 0" }}>
-              No migration, and nothing to rip out.
-            </p>
-          </motion.div>
-        </Container>
-      </Section>
+    </PageShell>
+  );
+}
 
-      <FooterV2 />
+/**
+ * A button, not a link: booking fires three conversion events before it opens the
+ * scheduler, and a plain href would race them.
+ */
+function BookButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="sx-btn"
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 28,
+        background: SX.ink,
+        color: SX.onInk,
+        border: "none",
+        cursor: "pointer",
+        borderRadius: 12,
+        padding: "15px 30px",
+        fontFamily: SX.body,
+        fontSize: 16,
+        fontWeight: 500,
+      }}
+    >
+      {label}
+    </button>
+  );
+}
 
-      <style>{`
-        @media (max-width: 880px) {
-          .cd-expect-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
-    </main>
+function Check() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SX.accent} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "0 0 auto" }} aria-hidden>
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  );
+}
+
+function Star() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 20 20" fill={STAR_GOLD} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z" />
+    </svg>
   );
 }

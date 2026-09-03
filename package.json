@@ -6,16 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "tsc --noEmit",
     "meta:insights": "tsx --env-file=.env.local scripts/meta-insights.ts",
     "meta:refresh-token": "tsx --env-file=.env.local scripts/meta-refresh-token.ts",
     "meta:creatives": "tsx --env-file=.env.local scripts/meta-creatives.ts",
     "meta:budget": "tsx --env-file=.env.local scripts/meta-budget.ts",
     "meta:pause": "tsx --env-file=.env.local scripts/meta-pause.ts",
     "meta:resume": "tsx --env-file=.env.local scripts/meta-resume.ts",
-    "meta:create-ad": "tsx --env-file=.env.local scripts/meta-create-ad.ts",
-    "design:extract": "tsx scripts/design-extract.ts",
-    "design:diff": "tsx scripts/design-diff.ts"
+    "meta:create-ad": "tsx --env-file=.env.local scripts/meta-create-ad.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

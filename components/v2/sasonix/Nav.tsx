@@ -20,6 +20,12 @@ import { scrollToSection } from "./scrollToSection";
  * real route. The nav carries the homepage anchors plus Blog; the footer carries the
  * full site map.
  *
+ * THE ORDER IS THE PAGE'S ORDER, top to bottom: what it does, why Delta, security,
+ * pricing. A nav that lists sections in a different order than the reader will meet
+ * them turns every click into a jump backwards or forwards, and the reader stops
+ * trusting it as a map of the page. Security sits before pricing here because Trust
+ * sits before Pricing in Sasonix.tsx. Reorder the sections and reorder this with them.
+ *
  * "Contact" used to sit here pointing at #contact. No element with that id has ever
  * existed on the page, so scrollToSection fell through to its /#contact fallback and
  * the link did nothing. Contact is the demo booking, and the button to its right
@@ -32,8 +38,8 @@ const LINKS: { label: string; id?: string; href?: string }[] = [
   // have been a duplicate. It carries #why instead: the comparison section is the one
   // homepage band with no other way in.
   { label: "Why Delta", id: "why" },
-  { label: "Pricing", id: "pricing" },
   { label: "Security", id: "security" },
+  { label: "Pricing", id: "pricing" },
   { label: "Blog", href: "/blog" },
 ];
 

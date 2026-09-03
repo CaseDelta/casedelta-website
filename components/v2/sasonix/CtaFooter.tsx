@@ -30,6 +30,9 @@ import { scrollToSection } from "./scrollToSection";
  * An `id` link still renders a real href ("/#features"), so it is a working link
  * with the middle button, on another page, and with JavaScript off. The click
  * handler only upgrades a same-page jump into the eased scroll.
+ *
+ * The Product column runs in the page's own top-to-bottom order, and matches the
+ * nav's. Security before pricing, because Trust comes before Pricing on the page.
  */
 const COLS: { head: string; links: { label: string; href?: string; id?: string }[] }[] = [
   {
@@ -37,8 +40,8 @@ const COLS: { head: string; links: { label: string; href?: string; id?: string }
     links: [
       { label: "What it does", id: "features" },
       { label: "Why Delta", id: "why" },
-      { label: "Pricing", id: "pricing" },
       { label: "Security", id: "security" },
+      { label: "Pricing", id: "pricing" },
       { label: "Book a demo", href: "/demo" },
     ],
   },

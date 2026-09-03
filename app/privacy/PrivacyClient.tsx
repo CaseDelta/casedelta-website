@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  LegalPageLayoutV2,
-  LegalSectionV2,
-  LegalClosingV2,
+  LegalPage,
+  LegalSection,
+  LegalClosing,
   LEGAL_LINK_STYLE,
-} from "@/components/LegalPageLayoutV2";
+} from "@/components/v2/sasonix/LegalPage";
 
 export default function PrivacyClient() {
   return (
-    <LegalPageLayoutV2 title="Privacy Policy" lastUpdated="May 6, 2026">
-      <LegalSectionV2 title="How We Process Your Data">
+    <LegalPage title="Privacy Policy" lastUpdated="May 6, 2026">
+      <LegalSection title="How We Process Your Data">
         <p>
           Each firm&apos;s data is isolated and encrypted both at rest and in transit. Your documents are never used to train AI, and never sold or shared. You control your data: you can export it and request its deletion at any time.
         </p>
@@ -20,9 +20,9 @@ export default function PrivacyClient() {
         <p style={{ marginTop: 12 }}>
           Every action Delta takes is logged with a timestamp, the document involved, the query, the response, and the sources cited. This audit trail is exportable for bar compliance and your own records.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Google Workspace API Data">
+      <LegalSection title="Google Workspace API Data">
         <p>
           CaseDelta integrates with Google Workspace APIs &mdash; Google Drive, Gmail, and Google Calendar &mdash; to act on behalf of attorneys within their own Google accounts. The agent reads case documents from Drive (read-only), reads and drafts client correspondence in Gmail, and reads and creates case-related events in Calendar.
         </p>
@@ -100,9 +100,9 @@ export default function PrivacyClient() {
           </a>
           . When a subscription is canceled, all Google-derived data is permanently deleted 30 days after cancellation.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="What We Never Do">
+      <LegalSection title="What We Never Do">
         <p>These commitments are core to how CaseDelta operates:</p>
         <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
           <li style={{ marginBottom: 8 }}>
@@ -118,9 +118,9 @@ export default function PrivacyClient() {
             <strong>We never access your data without authorization.</strong> CaseDelta engineers cannot view your documents or case data without explicit permission for a specific support request.
           </li>
         </ul>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Cookies, Analytics, and Advertising">
+      <LegalSection title="Cookies, Analytics, and Advertising">
         <p>
           The CaseDelta marketing site (the public pages at casedelta.com) uses a small set of third-party tools to measure how people find this site and to attribute the performance of our paid ad campaigns. These tools have no access to client data inside the CaseDelta product. They only see public marketing-site activity such as which pages you visit, when you submit our demo form, and basic device and browser information.
         </p>
@@ -186,18 +186,18 @@ export default function PrivacyClient() {
             You can also block all of the above with a tracking-blocker browser extension or your browser&apos;s built-in privacy controls.
           </li>
         </ul>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Data Retention">
+      <LegalSection title="Data Retention">
         <p>
           Documents are retained according to your firm&apos;s configured retention settings within CaseDelta. You control how long your data is kept.
         </p>
         <p style={{ marginTop: 12 }}>
           Account data is retained while your account is active. If you cancel your subscription, you have 30 days to export all of your data. After that period, all data &mdash; documents, case information, and Delta&apos;s learned intelligence about your firm &mdash; is permanently deleted.
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalSectionV2 title="Your Rights">
+      <LegalSection title="Your Rights">
         <p>You have full control over your data at all times:</p>
         <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
           <li style={{ marginBottom: 8 }}>
@@ -220,11 +220,11 @@ export default function PrivacyClient() {
           </a>
           .
         </p>
-      </LegalSectionV2>
+      </LegalSection>
 
-      <LegalClosingV2>
+      <LegalClosing>
         By using CaseDelta, you acknowledge understanding and accepting this Privacy Policy.
-      </LegalClosingV2>
-    </LegalPageLayoutV2>
+      </LegalClosing>
+    </LegalPage>
   );
 }

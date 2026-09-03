@@ -1,109 +1,62 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from "next/server";
 
-// Variant configuration - all your existing variant routes
-const VARIANTS = [
-  'light/side',
-  'light/bottom',
-  'light/fullscreen',
-  'dark/side',
-  'dark/bottom',
-  'dark/fullscreen',
-] as const
+/**
+ * Edge middleware. In Next 16 the `middleware.ts` convention was renamed to
+ * `proxy.ts`, so this file exports `proxy()` plus a `config.matcher`.
+ *
+ * IT DOES EXACTLY ONE THING, and that thing is a legal obligation: it suppresses the
+ * Meta Pixel for visitors in jurisdictions with strict consent rules. Do not weaken
+ * it, and do not add unrelated work here. This runs before every page render, so
+ * anything put in it is on the critical path of every request the site serves.
+ *
+ * An A/B variant rewrite used to live here too, gated behind
+ * NEXT_PUBLIC_ENABLE_AB_TESTING and pointed at /light/* and /dark/* routes that were
+ * deleted long ago. It could not have worked if the flag had ever been turned on: the
+ * rewrite targets 404. Removed on 2026-09-02 along with the env var.
+ */
 
-type Variant = typeof VARIANTS[number]
+const COOKIE_PIXEL_BLOCKED = "cd_pixel_blocked";
 
-// Cookie names for persistence
-const COOKIE_VARIANT = 'casedelta_variant'
-const COOKIE_DISTINCT_ID = 'casedelta_distinct_id'
-const COOKIE_PIXEL_BLOCKED = 'cd_pixel_blocked'
-
-// EU + EEA + UK + Switzerland: jurisdictions where strict consent rules apply
-// to advertising pixels and where we suppress the Meta Pixel by default.
+/**
+ * EU, EEA, UK and Switzerland. Where a visitor is from is read from
+ * `x-vercel-ip-country`, which Vercel sets at the edge and a client cannot forge.
+ */
 const PIXEL_BLOCKED_COUNTRIES = new Set([
-  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR',
-  'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK',
-  'SI', 'ES', 'SE',
-  'IS', 'LI', 'NO',
-  'GB',
-  'CH',
-])
-
-function shouldBlockPixel(country: string | null): boolean {
-  if (!country) return false
-  return PIXEL_BLOCKED_COUNTRIES.has(country.toUpperCase())
-}
-
-function applyGeoCookie(request: NextRequest, response: NextResponse): NextResponse {
-  const country = request.headers.get('x-vercel-ip-country')
-  const block = shouldBlockPixel(country)
-
-  if (block) {
-    response.cookies.set(COOKIE_PIXEL_BLOCKED, '1', {
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      path: '/',
-      sameSite: 'lax',
-      httpOnly: false, // Client component must read it to suppress the pixel
-    })
-  } else if (request.cookies.get(COOKIE_PIXEL_BLOCKED)?.value === '1') {
-    // Visitor moved out of a blocked region; clear the stale cookie.
-    response.cookies.delete(COOKIE_PIXEL_BLOCKED)
-  }
-
-  return response
-}
-
-function maybeAbTestRewrite(request: NextRequest): NextResponse | null {
-  const abTestingEnabled = process.env.NEXT_PUBLIC_ENABLE_AB_TESTING === 'true'
-  if (!abTestingEnabled) return null
-  if (request.nextUrl.pathname !== '/') return null
-
-  try {
-    let distinctId = request.cookies.get(COOKIE_DISTINCT_ID)?.value
-    if (!distinctId) {
-      distinctId = crypto.randomUUID()
-    }
-
-    let variant = request.cookies.get(COOKIE_VARIANT)?.value as Variant | undefined
-    if (variant && !VARIANTS.includes(variant)) {
-      variant = undefined
-    }
-    if (!variant) {
-      variant = VARIANTS[Math.floor(Math.random() * VARIANTS.length)]
-    }
-
-    const url = request.nextUrl.clone()
-    url.pathname = `/${variant}`
-
-    const response = NextResponse.rewrite(url)
-
-    response.cookies.set(COOKIE_VARIANT, variant, {
-      maxAge: 60 * 60 * 24 * 30,
-      path: '/',
-      sameSite: 'lax',
-      httpOnly: false,
-    })
-
-    response.cookies.set(COOKIE_DISTINCT_ID, distinctId, {
-      maxAge: 60 * 60 * 24 * 365,
-      path: '/',
-      sameSite: 'lax',
-      httpOnly: false,
-    })
-
-    return response
-  } catch (error) {
-    console.error('AB test middleware error:', error)
-    return null
-  }
-}
+  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR",
+  "HU", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT", "RO", "SK",
+  "SI", "ES", "SE",
+  "IS", "LI", "NO",
+  "GB",
+  "CH",
+]);
 
 export async function proxy(request: NextRequest) {
-  const response = maybeAbTestRewrite(request) ?? NextResponse.next()
-  return applyGeoCookie(request, response)
+  const response = NextResponse.next();
+  const country = request.headers.get("x-vercel-ip-country");
+  const blocked = country ? PIXEL_BLOCKED_COUNTRIES.has(country.toUpperCase()) : false;
+
+  if (blocked) {
+    response.cookies.set(COOKIE_PIXEL_BLOCKED, "1", {
+      maxAge: 60 * 60 * 24 * 30,
+      path: "/",
+      sameSite: "lax",
+      // MetaPixel is a client component and has to read this to refuse to render,
+      // so it cannot be httpOnly.
+      httpOnly: false,
+    });
+  } else if (request.cookies.get(COOKIE_PIXEL_BLOCKED)?.value === "1") {
+    // The visitor has moved out of a blocked region. Clear the stale cookie rather
+    // than leaving them suppressed for the rest of its thirty days.
+    response.cookies.delete(COOKIE_PIXEL_BLOCKED);
+  }
+
+  return response;
 }
 
-// Run on all routes except Next internals, API, and static assets so the
-// pixel-block cookie is set on every page entry.
+/**
+ * Every route except Next internals, the API and static assets, so the cookie is set
+ * on any page entry rather than only on the homepage.
+ */
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon|api/|.*\\..*).*)'],
-}
+  matcher: ["/((?!_next/static|_next/image|favicon|api/|.*\\..*).*)"],
+};

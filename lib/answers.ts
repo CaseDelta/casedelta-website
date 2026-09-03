@@ -1,10 +1,26 @@
-/* ─── Knowledge base / answers hub data ───
-   GEO-optimized: each answer is a self-contained 40-60 word direct answer,
-   definition-first where applicable ("CaseDelta is a ..."). Used to render the
-   /answers page AND a single FAQPage JSON-LD block for AI-search citation.
-   Security answers use the defensible data-handling framing (no "no third-party
-   LLM" claim until the architecture ships).
-*/
+/**
+ * Knowledge base / answers hub data.
+ *
+ * Each answer is a self-contained 40 to 60 word direct answer, definition-first
+ * where it can be ("CaseDelta is a ..."). It renders the visible /answers page AND a
+ * single FAQPage JSON-LD block, from the same source, because Google requires FAQ
+ * markup to match the text visible on the page.
+ *
+ * Security answers use the defensible data-handling framing. Never write "no
+ * third-party LLM" or "client data never leaves our infrastructure": production runs
+ * on enterprise AI under zero-retention and BAA terms, so both are false.
+ *
+ * EVERY `href` POINTS AT SOMETHING THAT EXISTS. This file used to link /features,
+ * /use-cases, /compare, /compare/casedelta-vs-clio, /use-cases/medical-malpractice,
+ * /pricing and /security. All seven were deleted on 2026-09-02, so they now point at
+ * the homepage sections that carry the same argument. Two answers lost their link
+ * entirely rather than being pointed somewhere approximate: there is no longer a
+ * practice-area page or a med-mal page, and a "Med-mal use case" link that lands on a
+ * general capability band is worse than no link.
+ *
+ * The price is imported, never retyped. See lib/pricing.ts for why.
+ */
+import { PRICE_PARAGRAPH } from "./pricing";
 
 export interface AnswerItem {
   question: string;
@@ -29,22 +45,20 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
         question: "What is CaseDelta?",
         answer:
           "CaseDelta is an AI associate for plaintiff law firms. The assistant, Delta, drives the tools a firm already uses, including Clio, Filevine, MyCase, Google, Microsoft, and billing, from one chat. It works real cases end to end: chronologies, demand letters, discovery, intake, and client follow-up.",
-        href: "/features",
+        href: "/#features",
         hrefLabel: "See what Delta does",
       },
       {
         question: "Who is CaseDelta built for?",
         answer:
           "CaseDelta is built for plaintiff law firms of 5 to 50 attorneys, with a primary focus on personal injury, medical malpractice, and mass tort. The same product also serves employment and other litigation practices. It is designed for document-heavy, integration-rich, chronology-driven work.",
-        href: "/use-cases",
-        hrefLabel: "Browse practice areas",
       },
       {
         question: "What makes CaseDelta different from other legal AI?",
         answer:
           "Most legal AI is a destination: you upload work to it, move your firm onto it, or work inside it. CaseDelta is the opposite shape. Delta drives the tools you already run, so every answer is grounded in your real case, not generic law.",
-        href: "/compare",
-        hrefLabel: "Compare CaseDelta",
+        href: "/#why",
+        hrefLabel: "See how it compares",
       },
       {
         question: "Is Delta the same as CaseDelta?",
@@ -61,8 +75,8 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
         question: "Does CaseDelta integrate with Clio?",
         answer:
           "Yes. Delta drives Clio directly from one chat: it reads matters, builds chronologies, drafts and logs work, and updates the case file. Unlike a built-in assistant that only sees Clio's own data, Delta also unifies the rest of a firm's stack, including email, drive, and billing.",
-        href: "/compare/casedelta-vs-clio",
-        hrefLabel: "CaseDelta vs Clio's AI",
+        href: "/#why",
+        hrefLabel: "See how it compares",
       },
       {
         question: "What tools does CaseDelta connect to?",
@@ -84,8 +98,6 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
         question: "How does CaseDelta build medical chronologies?",
         answer:
           "Delta uses multi-agent orchestration to build cited chronologies from 100 to 5,000-plus page document sets in minutes, with citations to the primary source. There is no human-review queue, so a firm gets a chronology in real time inside its own stack rather than waiting days for a reviewed deliverable.",
-        href: "/use-cases/medical-malpractice",
-        hrefLabel: "Med-mal use case",
       },
       {
         question: "How long does a chronology take with CaseDelta?",
@@ -106,8 +118,8 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
       {
         question: "How much does CaseDelta cost?",
         answer:
-          "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, and $2,099 for up to 20. Firms above 20 accounts get a custom plan. There are no add-ons, no per-case or per-demand metering, no setup fees, and no required underlying subscription like Westlaw or Salesforce. The price is published and self-serve, so a firm knows its cost before the demo.",
-        href: "/pricing",
+          `${PRICE_PARAGRAPH} There is also no required underlying subscription, the way a research add-on assumes Westlaw or a CRM assistant assumes Salesforce.`,
+        href: "/#pricing",
         hrefLabel: "See pricing",
       },
       {
@@ -125,7 +137,7 @@ export const ANSWER_CATEGORIES: AnswerCategory[] = [
         question: "Is CaseDelta secure?",
         answer:
           "Each firm's data is isolated and encrypted at rest and in transit. Client data is never sold, never shared, and never used to train AI models. Every action Delta takes is logged in a full audit trail you can export, which supports reasonable efforts under ABA Rule 1.6.",
-        href: "/security",
+        href: "/#security",
         hrefLabel: "Security details",
       },
       {

@@ -1,32 +1,45 @@
 import type { Metadata } from "next";
-import { Inter, Hanken_Grotesk, Newsreader } from "next/font/google";
+import { Geist, Inter, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
-import { ClientLayout } from "@/components/ClientLayout";
 import { LinkedInInsightTag } from "@/components/LinkedInInsightTag";
 import { MetaPixel } from "@/components/MetaPixel";
 import { OrganizationSchema, WebAppSchema } from "@/components/JsonLd";
 
-const inter = Inter({
-  subsets: ["latin"],
+/**
+ * THE FOUR FACES, mounted here so EVERY page has them.
+ *
+ * They used to be mounted in a "(home)" route group, which meant they reached the
+ * homepage and nothing else. That was correct while the homepage was the only page on
+ * this design; it stopped being correct on 2026-09-02 when the rest of the site moved
+ * onto the same kit. A page without them does not fall back gracefully: every token in
+ * tokens.ts resolves through var(--sx-*), so the page renders in the metric-fallback
+ * face and looks broken rather than plain.
+ *
+ * Archivo is self-hosted from the EXACT static masters (Fontshare cuts: 400=Book,
+ * 500=Medium, 700=Bold). Google Fonts' Archivo is a variable font whose interpolated
+ * 400 and 700 measurably diverge from those masters. 500 matched; 400 and 700 did not.
+ * Geist and JetBrains Mono measured identical to the originals (same upstream), so
+ * they stay on next/font/google.
+ *
+ *   Archivo        display and headings
+ *   Geist          body and buttons
+ *   JetBrains Mono mono eyebrow labels
+ *   Inter          small UI labels inside the product panels
+ */
+const archivo = localFont({
+  src: [
+    { path: "./fonts/archivo-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/archivo-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/archivo-700.woff2", weight: "700", style: "normal" },
+  ],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--sx-archivo",
 });
-
-const hanken = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-hanken",
-});
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-newsreader",
-});
+const geist = Geist({ subsets: ["latin"], weight: ["400", "500", "600", "700", "900"], display: "swap", variable: "--sx-geist" });
+const jbmono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"], display: "swap", variable: "--sx-mono" });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", variable: "--sx-inter" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://casedelta.com"),
@@ -104,7 +117,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="light"
-      className={`${inter.variable} ${hanken.variable} ${newsreader.variable}`}
+      className={`${archivo.variable} ${geist.variable} ${jbmono.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -114,9 +127,10 @@ export default function RootLayout({
       <body>
         <LinkedInInsightTag />
         <MetaPixel />
-        <PostHogProvider>
-          <ClientLayout>{children}</ClientLayout>
-        </PostHogProvider>
+        {/* No global nav or footer. Every page carries its own chrome through
+            PageShell (or, on the homepage, through Sasonix). A global navbar here
+            would stack a second header on top of every one of them. */}
+        <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
   );
