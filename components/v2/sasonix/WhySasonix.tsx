@@ -69,6 +69,7 @@
  */
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal } from "./reveal";
 
 /**
@@ -85,7 +86,8 @@ const RIVALS: { name: string; what: string; diff: string }[] = [
 
 export function WhySasonix() {
   return (
-    <section id="why" style={{ background: SX.surface, padding: "60px 0 60px" }}>
+    <section id="why" style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules />
       <Container>
         {/* THE SETUP, THEN THE ANSWER. Camren's line, 2026-09-02, kept verbatim.
             It poses the question this whole section exists to answer, so it sits

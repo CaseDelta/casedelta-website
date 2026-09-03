@@ -61,6 +61,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal } from "./reveal";
 
 /** The cycle. "you" is last and dwells; see the header comment. */
@@ -190,7 +191,8 @@ export function Stakes() {
        sections. The statement wants air between it and the fold: it is the first
        thing after the hero and the only thing in its section, and at 120 it read
        as attached to the belt rather than as its own beat. */
-    <section id="stakes" style={{ background: SX.surface, padding: "180px 0 60px" }}>
+    <section id="stakes" style={{ position: "relative", background: SX.surface, padding: "180px 0 60px" }}>
+      <Rules />
       <Container>
         <Reveal>
           {/* THE PROBLEM, ON ITS OWN (Camren, 2026-09-02). This was inside a dark

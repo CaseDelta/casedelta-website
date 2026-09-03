@@ -54,12 +54,14 @@
 import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal, revealProps } from "./reveal";
 import { TIERS } from "@/lib/pricing";
 
 export function Pricing() {
   return (
-    <section id="pricing" style={{ background: SX.surface, padding: "60px 0 60px" }}>
+    <section id="pricing" style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules bottom />
       <Container>
         <Reveal>
           {/* ONE LINE, NOT TWO (Camren, 2026-09-02). This was a heading, "Delta

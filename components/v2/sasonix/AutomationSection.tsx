@@ -25,6 +25,7 @@
  */
 import { SX } from "./tokens";
 import { Container } from "./kit";
+import { Rules } from "./Rules";
 import { Reveal } from "./reveal";
 import { HubSpokes } from "./HubSpokes";
 import { ComputerPanel, MemoryPanel, ProductPanelStyles, TeammatePanel } from "./ProductPanels";
@@ -152,7 +153,8 @@ const CARDS: Card[] = [
  */
 export function AutomationThesis() {
   return (
-    <section id="features" style={{ background: SX.surface, padding: "60px 0 60px" }}>
+    <section id="features" style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules />
       <Container>
         {/* THE DARK CARD LIVES HERE NOW (Camren, 2026-09-02). It was around the
             Stakes sentence with a stack of records beside it. Both moved: this is
@@ -232,9 +234,23 @@ export function AutomationThesis() {
               back into Filevine. On 2026-09-01 it wrote 34 dates back and re-read
               every one to confirm. It is also where the approval promise belongs,
               which nothing on this card currently makes. */}
+          {/* The name is in the brand colour, the way corgi.insure sets "Corgi" in
+              their orange in the equivalent sentence. It does real work beyond
+              decoration: the paragraph opens by naming the product, and the colour
+              is what makes a reader register that as a name rather than a word.
+
+              accentOnMedia, NOT accent. The raw brand blue is #5170FF, which is
+              3.6:1 on this card: legal for 38px type and muddy against a dark
+              navy. accentOnMedia is the role that exists for exactly this, the
+              accent as used over a dark surface, and it is far brighter.
+
+              It differs on purpose from the accent-FILLED hub core beside it,
+              which carries the same word. Fill and text are different problems:
+              the circle is a solid brand shape with white on it, this is brand
+              colour AS text. Matching them would make one of the two wrong. */}
           <h2 className="sx-thesis">
-            Delta is the AI you can hand real work to, like finding a missing SOL, chasing money stuck in
-            disbursement, or writing a file review into Filevine.
+            <span className="sx-thesis-name">Delta</span> is the AI you can hand real work to, like finding a
+            missing SOL, chasing money stuck in disbursement, or writing a file review into Filevine.
           </h2>
           {/* Camren's line, verbatim, and at the SAME SIZE as the paragraph above
               it. That is the point of it: the first paragraph is three specifics,
@@ -263,7 +279,8 @@ export function AutomationThesis() {
 /** The three capability cards. The "value props", in Camren's words. */
 export function AutomationCards() {
   return (
-    <section style={{ background: SX.surface, padding: "60px 0 60px" }}>
+    <section style={{ position: "relative", background: SX.surface, padding: "60px 0 60px" }}>
+      <Rules />
       <ProductPanelStyles />
       <Container>
         <div style={{ display: "flex", flexDirection: "column", gap: 60 }}>
@@ -406,6 +423,8 @@ export function AutomationCards() {
         }
         @media (max-width: 1100px) { .sx-thesis-close { font-size: 32px; line-height: 42px; } }
         @media (max-width: 760px)  { .sx-thesis-close { font-size: 26px; line-height: 35px; letter-spacing: -0.6px; margin-top: 20px; } }
+
+        .sx-thesis-name { color: var(--sx-accent-on-media); }
 
         .sx-thesis {
           max-width: 640px;
