@@ -3,9 +3,15 @@
 /**
  * Why Delta is different, said by naming the field rather than gesturing at it.
  *
- * THE HEADING MAKES THREE CLAIMS AT ONCE, and they are the three no competitor can
- * make together: it signs in to the systems the firm already runs, it CAN work
- * without being prompted, and it is working the firm's case five minutes later.
+ * THE HEADING MAKES TWO CLAIMS, not three. It signs in to the systems the firm
+ * already runs, and it is working the firm's case five minutes later.
+ *
+ * A third clause, "can work without being prompted", sat between them until
+ * 2026-09-02, when Camren cut it. Two claims land; three is a list, and the reader
+ * stops counting. The capability itself is not gone: it is still a bullet in the
+ * claims card below and still described in AutomationSection. It just stopped being
+ * one of the two things this heading exists to say.
+ *
  * Three earlier wordings and why each moved: "live in five minutes" is a claim about
  * our onboarding rather than about the firm's day, and being live is our milestone
  * while work coming back is theirs; "paralegal work" boxed Delta into one job title,
@@ -13,14 +19,14 @@
  * that and said nothing, because all work is real. Naming the CASE is what makes the
  * claim concrete.
  *
- * "CAN work" is deliberate and was a correction (Camren, 2026-08-28): an assistant
+ * IF THE CLAUSE EVER COMES BACK, it comes back as "CAN work without being prompted"
+ * and never as "works without being prompted" (Camren, 2026-08-28). An assistant
  * that simply acts on its own reads as a liability to a lawyer who is personally
- * responsible for the file. Capability the firm switches on is the selling point.
- * Do not shorten it back to "works without being prompted".
- *
- * PROMPTED, NOT ASKED. Same correction, same day. "Asked" is what you do to a
- * person and it makes the sentence sound like Delta is being managed; "prompted" is
- * what you do to software, and it names the thing every other tool requires.
+ * responsible for the file; capability the firm switches on is the selling point.
+ * And PROMPTED, never "asked": "asked" is what you do to a person and makes it sound
+ * like Delta is being managed, where "prompted" is what you do to software and names
+ * the thing every other tool requires. The same two rules govern the bullet in
+ * CLAIMS below, which still carries the claim today.
  *
  * THERE IS NO "OTHER LEGAL AI" COLUMN ANY MORE. It used to be a generic third
  * column of crosses, which is the weakest form this section can take: a reader
@@ -114,7 +120,7 @@ export function WhySasonix() {
         </Reveal>
         <Reveal delay={0.06}>
           <SectionHead
-            title="No other legal AI signs in to your systems, can work without being prompted, and is working your case in five minutes."
+            title="No other legal AI signs in to your systems and is working your case in five minutes."
             titleMaxW={900}
           />
         </Reveal>

@@ -8,7 +8,7 @@
  * then ask the question the whole product answers. Nothing else belongs here.
  *
  * THE DEVICE: the subject of the sentence dissolves and reforms. "your paralegals",
- * "your case managers" and "your intake specialists" name the roles a firm hires to
+ * "your case managers" and "your legal assistants" name the roles a firm hires to
  * lift the cap, and then it lands on "you" and HOLDS there, roughly twice as long,
  * because that is the one the reader was not expecting and the one that actually
  * stings. Keep "you" last and keep it dwelling; reorder the list and the section
@@ -59,7 +59,36 @@ import { Container } from "./kit";
 import { Reveal } from "./reveal";
 
 /** The cycle. "you" is last and dwells; see the header comment. */
-const ROLES = ["your paralegals", "your case managers", "your intake specialists", "you"] as const;
+/**
+ * The three roles, then "you".
+ *
+ * THESE ARE MEASURED, NOT GUESSED, as of 2026-09-02. The first draft said
+ * paralegals, case managers and INTAKE SPECIALISTS. A sweep of live plaintiff-firm
+ * postings put intake specialist at roughly a fifth of the others and legal
+ * assistant well above it, on the same query shape:
+ *
+ *   paralegal        1,520
+ *   case manager       764
+ *   legal assistant    612
+ *   intake specialist  149
+ *
+ * So intake specialist is out and legal assistant is in. Two caveats worth keeping,
+ * because the next person to edit this list will want them:
+ *
+ * "Intake specialist" was the right WORDS, just the smallest role. Never change it to
+ * "intake coordinator": in a law firm that phrase means BigLaw conflicts and
+ * new-business intake, which is a different job at a different kind of firm.
+ *
+ * CASE MANAGER IS A PI WORD. It is weak in med mal and all but absent in mass tort,
+ * where firms say case coordinator or docket specialist. The list leans plaintiff PI
+ * because that is the primary outbound ICP, but it does undersell the other two
+ * practice areas, and that is a known trade rather than an oversight.
+ *
+ * The counts come from one job board; the boards that would have corroborated them
+ * refused the request, and every plaintiff-bar job board was gated. Treat the
+ * ordering as well-evidenced and the exact numbers as one source.
+ */
+const ROLES = ["your paralegals", "your case managers", "your legal assistants", "you"] as const;
 
 /** The two halves of the sentence, either side of the word. */
 const LEDE = "Your entire firm is bottlenecked by what";
