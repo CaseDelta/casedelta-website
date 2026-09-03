@@ -11,12 +11,15 @@
  *   5. WhySasonix        -> why it is different: the Context Wedge, proved row by row
  *   6. Trust             -> security, the objection a firm actually raises
  *   7. Pricing           -> three flat tiers priced by account count
- *   8. CtaFooter         -> the ask, an email address
+ *   8. SecondProof       -> a second voice, the last word before the ask
+ *   9. CtaFooter         -> the ask, an email address
  *
- * THE TWO PROOF SECTIONS ARE NOW ONE (2026-09-02). A SecondProof section carried the
- * Poletti quote between pricing and the ask, four sections below the first quote.
- * Both quotes are in Testimonials now, which already renders a marquee at two or
- * more, so the page argues its proof once instead of twice.
+ * THE TWO PROOF SECTIONS STAY TWO. They were merged into a single two-card marquee
+ * on 2026-09-02 and Camren reverted it the same day. The quotes do different jobs in
+ * different places: Recker sits under AutomationSection as evidence for the
+ * capability claim just made, Poletti sits after pricing as the last word before the
+ * ask. Merging them stacks both arguments in one place and leaves the whole back half
+ * of the page without a voice. Do not consolidate them again.
  *
  * PROOF SITS BEFORE THE ARGUMENT, which is the reordering that matters most here.
  * A reader who has just been told what Delta does wants evidence, not a comparison
@@ -56,6 +59,7 @@ import { Hero } from "./Hero";
 import { Stakes } from "./Stakes";
 import { AutomationSection } from "./AutomationSection";
 import { Testimonials } from "./Testimonials";
+import { SecondProof } from "./SecondProof";
 import { WhySasonix } from "./WhySasonix";
 import { Trust } from "./Trust";
 import { Pricing } from "./Pricing";
@@ -75,8 +79,8 @@ export function Sasonix() {
       <Stakes />
       {/* 3. What Delta is, in three capability cards */}
       <AutomationSection />
-      {/* 4. Proof, before any argument about why we are different. BOTH real quotes
-             now, in one row; there is no second proof section further down. */}
+      {/* 4. Proof, straight after the capability claim it is evidence for. Recker
+             answers "does it really do that" while the claim is still on screen. */}
       <Testimonials />
       {/* 5. Why it is different: the Context Wedge, proved row by row */}
       <WhySasonix />
@@ -84,7 +88,10 @@ export function Sasonix() {
       <Trust />
       {/* 7. Pricing */}
       <Pricing />
-      {/* 8. The ask: an email address */}
+      {/* 8. A second, different voice: the last word before the ask. Renders nothing
+             until there is a real quote in it; see SecondProof.tsx. */}
+      <SecondProof />
+      {/* 9. The ask: an email address */}
       <CtaFooter />
       {/* Shared hover polish (nav links dim, logo softens, buttons scale up). */}
       <style>{`

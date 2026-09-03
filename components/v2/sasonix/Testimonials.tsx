@@ -4,16 +4,30 @@
  * Beat 4: Testimonials. A horizontal, auto-scrolling row of quote cards on ambient
  * imagery.
  *
- * EVERY QUOTE IN THIS FILE IS REAL AND ATTRIBUTABLE. It shipped with two fabricated
+ * CARDS IS EMPTY, AND THAT IS DELIBERATE. This section shipped with two fabricated
  * testimonials inherited from the Sasonix template ("Marcus Chen, NovaTech Legal" and
- * "Lucifer Jason, Q.tube Law"). Neither person, firm, nor quote existed. They were
- * deleted rather than left unmounted, because a fabricated quote sitting in the file
- * is one import away from being live again. Do not add one here.
+ * "Lucifer Jason, Q.tube Law"). Neither person, firm, nor quote exists. They were
+ * deleted on promotion to production rather than left unmounted, because a fabricated
+ * quote sitting in the file is one import away from being live again.
  *
- * (The firm names in FirmMarquee.tsx ARE invented, on Camren's explicit instruction,
- * and that file says so at the top in a banner. This file is not that file.)
+ * Social proof on this site is real or it is absent. The one real, attributable quote
+ * is Kirschbaum & Nowotny, LLC of Overland Park, KS, and it also carries the hero, so
+ * the same voice appears twice on the homepage. Worth fixing when a second real quote
+ * arrives.
  *
- * CARRIES JAMES RECKER AND ALAN POLETTI.
+ * ONE EXCEPTION EXISTS ON THIS PAGE AND IT IS NOT THIS FILE. The firm names in
+ * FirmMarquee.tsx ARE invented, on Camren's explicit instruction of 2026-09-02, as a
+ * placeholder until real logos are cleared. That file opens with a banner saying so.
+ * Nothing here is a placeholder, and the rule above still governs this file.
+ *
+ * THIS SECTION AND SecondProof ARE DELIBERATELY TWO SECTIONS. They were briefly
+ * merged into one two-card marquee on 2026-09-02 and Camren reverted it the same day:
+ * the quotes do different jobs in different places. Recker lands immediately after
+ * AutomationSection, as evidence for the capability claim just made. Poletti lands
+ * after pricing, as the last word before the ask. Merging them puts both arguments in
+ * one place and leaves the back half of the page with no voice in it.
+ *
+ * CARRIES JAMES RECKER since 2026-08-28.
  *
  * THREE WORDS ARE DOING ALL THE WORK IN THIS QUOTE and none of them is decoration:
  *   "signed into"    -> the database is behind a paid login. That is the whole
@@ -51,9 +65,10 @@
  * NEVER INVENT ONE. See CLAUDE.md: two fabricated quotes shipped here once and a
  * real one was later deleted as "fabricated" and had to be restored.
  *
- * THE `stat` LINE BELONGS TO WHOEVER IS QUOTED. It is Kirschbaum & Nowotny's usage
- * and nobody else's; there is no data behind it for any other firm. Never attach it
- * to a different firm's quote.
+ * THE `stat` LINE BELONGS TO WHOEVER IS QUOTED, and it moved with them. It is
+ * Kirschbaum & Nowotny's usage, so it now sits under their quote in SecondProof.tsx,
+ * where the measurement and the caveats are recorded. Never attach it to a different
+ * firm's quote; there is no data behind it for anyone else.
  *
  * IT ALSO UNDERSTATES REAL USE, deliberately. Scheduled automations run without
  * anyone typing and are not in this count at all.
@@ -72,13 +87,6 @@ import { Reveal } from "./reveal";
  */
 export type Testimonial = { quote: string; name: string; title?: string; bg: string; stat?: string };
 
-/**
- * BOTH REAL QUOTES LIVE HERE as of 2026-09-02. They used to be two sections four
- * apart: this one, and a SecondProof that put Poletti just before the closing ask.
- * Proof lands harder in one place than split across the page, and the split cost
- * the homepage a whole section without making an argument this one does not.
- * SecondProof is deleted; its notes are folded in below.
- */
 const CARDS: Testimonial[] = [
   {
     quote:
@@ -87,41 +95,6 @@ const CARDS: Testimonial[] = [
     // No `title`: nobody has given us his firm or city, and the caption renders the
     // name alone rather than inventing one. Fill it in when we have it.
     bg: "/v2/ambient/cloud-pastel.webp",
-  },
-  {
-    // ALAN POLETTI, carried since 2026-08-28.
-    //
-    // WHY THE LAST CLAUSE MATTERS. "Named what was blocking each one" is the part
-    // that stops this reading as a saved report. A case system can show you rows of
-    // settled matters; the blocker on each, across all of them, is synthesis. Do not
-    // trim the quote to just the money.
-    //
-    // THE PATTERN IT COMES FROM is real and repeatable, from Rudin Law in
-    // production: Delta reported ten settlement and disbursement matters carrying
-    // $502,102 in settlement value with open checklist friction, naming the specific
-    // blocker on each, unprompted, inside a morning brief. Poletti's $400,000 is his
-    // own firm's figure from his own call, not that one. Never mix them.
-    //
-    // A NOTE ON THE WORDING. This opened "In our fifteen-minute Zoom, it found" and
-    // Camren changed it to "In our demo, it already found" (2026-08-28). Both halves
-    // earn their place: "demo" is the moment a reader recognises, where a Zoom of a
-    // stated length is a detail about a call they were not on, and "already" is what
-    // makes the sentence land, because the money was found before the firm had
-    // bought anything. Do not tidy "already" out as redundant against "had already
-    // settled"; one is about the timing of the discovery, the other about the state
-    // of the cases.
-    quote:
-      "In our demo, it already found $400,000 sitting in cases we had already settled, and named what was blocking each one.",
-    name: "Alan Poletti",
-    // No `title` yet, and no `stat`. A usage figure once sat with this quote and it
-    // was Kirschbaum & Nowotny's, not Poletti's: 328 requests from 4 people over 86
-    // days of actual use, from assistant_conversations where role='user'. It has no
-    // support for any other firm, so it moved out rather than moving across.
-    //
-    // cloud-swirl, NOT cloud-pastel: the first card has that one, and the same
-    // photograph twice in one row reads as a mistake. Also not mountain (hero) or
-    // forest-dark (the security band).
-    bg: "/v2/ambient/cloud-swirl.webp",
   },
 ];
 
