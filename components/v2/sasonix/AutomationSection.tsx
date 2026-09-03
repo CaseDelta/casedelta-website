@@ -387,16 +387,32 @@ export function AutomationCards() {
           gap: 48px;
         }
         .sx-thesis-copy { position: relative; z-index: 2; flex: 1 1 auto; }
+        /* THE ARC STAYS ON THE COPY SIDE. It was pinned from the left and its
+           right edge swept straight through the hub, where it collided with the
+           diagram's own two rings: three faint circles crossing each other, and
+           the eye cannot tell which belongs to the picture. Anchored from the
+           RIGHT at 58%, its rightmost point lands around 42% of the card, well
+           clear of the diagram, and it does what it is for, which is to keep a
+           1280px slab of flat colour from reading as a rectangle.
+
+           Crossing the copy is fine and is what the reference does: at 6% white
+           it is a gesture, not a line. Crossing the diagram was not fine, because
+           the diagram is made of lines. */
         .sx-thesis-ellipse {
           position: absolute;
-          left: -18%;
-          top: -320px;
+          right: 58%;
+          top: -300px;
           width: 1053px;
           height: 1053px;
           border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.07);
+          border: 1px solid rgba(255, 255, 255, 0.06);
           pointer-events: none;
           z-index: 0;
+        }
+        /* Stacked layout: the copy is full width, so the arc would run through
+           all of it. Pull it off the left edge entirely. */
+        @media (max-width: 980px) {
+          .sx-thesis-ellipse { right: auto; left: -70%; top: -420px; }
         }
         @media (max-width: 980px) {
           .sx-thesis-card { flex-direction: column; align-items: stretch; padding: 44px 32px; gap: 24px; min-height: 0; }

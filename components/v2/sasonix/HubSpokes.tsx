@@ -71,6 +71,26 @@ const NODES = [
 /** Not a product. Rendered differently on purpose; see CATEGORY_NODE below. */
 const CATEGORY = "Anything Else";
 
+/** Seconds between one spoke firing and the next. The full cycle is this times
+ *  the node count, so adding a system slows the loop rather than crowding it. */
+const STEP = 0.5;
+
+/**
+ * Cycle length and the keyframe stops, derived rather than typed.
+ *
+ * Every packet shares one keyframe set and differs only by animation-delay, so
+ * the percentages have to be computed from the cycle: a packet must finish
+ * travelling and fade out before its own next turn comes round, or two dots run
+ * the same spoke at once.
+ */
+const CYCLE = +(STEP * NODES.length).toFixed(2);
+const TRAVEL = 1.05; // seconds a packet spends in flight
+const HOLD = 0.35; // seconds it sits on the node before fading
+const pct = (sec: number) => +((sec / CYCLE) * 100).toFixed(2);
+const TRAVEL_END = pct(TRAVEL);
+const ARRIVE_MID = pct(TRAVEL + HOLD / 2);
+const ARRIVE_END = pct(TRAVEL + HOLD);
+
 const SIZE = 420;
 const R = 168; // node ring radius
 const HUB = 74; // hub diameter
@@ -100,15 +120,31 @@ export function HubSpokes() {
           const x2 = SIZE / 2 + Math.cos(a) * (R - 20);
           const y2 = SIZE / 2 + Math.sin(a) * (R - 20);
           return (
-            <line
-              key={name}
-              x1={x1} y1={y1} x2={x2} y2={y2}
-              stroke="rgba(255,255,255,0.20)"
-              strokeWidth="1"
-              strokeDasharray="3 4"
-              className="sx-hub-spoke"
-              style={{ animationDelay: `${i * 0.35}s` }}
-            />
+            <g key={name}>
+              <line
+                x1={x1} y1={y1} x2={x2} y2={y2}
+                stroke="rgba(255,255,255,0.16)"
+                strokeWidth="1"
+                strokeDasharray="3 4"
+              />
+              {/* The packet. Starts at the hub edge and is translated the length
+                  of its own spoke, so one keyframe serves all seven and only the
+                  two custom properties differ. transform-box: view-box puts the
+                  translation in viewBox units, which is what makes it survive the
+                  box being resized. */}
+              <circle
+                className="sx-hub-packet"
+                cx={x1}
+                cy={y1}
+                r="3.5"
+                fill={SX.accentOnMedia}
+                style={{
+                  ["--dx" as string]: `${x2 - x1}`,
+                  ["--dy" as string]: `${y2 - y1}`,
+                  animationDelay: `${i * STEP}s`,
+                }}
+              />
+            </g>
           );
         })}
       </svg>
@@ -157,7 +193,9 @@ export function HubSpokes() {
           <span
             key={name}
             className={name === CATEGORY ? "sx-hub-node sx-hub-node-any" : "sx-hub-node"}
-            style={{ position: "absolute", left: `${x}%`, top: `${y}%`, animationDelay: `${0.15 + i * 0.07}s` }}
+            /* Same delay as its own packet, so the pill brightens at the moment
+               the packet lands on it rather than on a rhythm of its own. */
+            style={{ position: "absolute", left: `${x}%`, top: `${y}%`, animationDelay: `${i * STEP}s` }}
           >
             {name}
           </span>
@@ -190,19 +228,51 @@ export function HubSpokes() {
           color: var(--sx-on-media-muted);
         }
 
-        /* The spokes pulse outward one after another, slowly. It reads as traffic
-           rather than decoration, and at 3.2s a cycle it is background motion
-           instead of something competing with the sentence beside it. */
-        .sx-hub-spoke {
-          animation: sx-hub-pulse 3.2s ease-in-out infinite;
+        /* ── The animation ──
+           Every spoke used to fade its whole length up and down together. That
+           reads as blinking: it says something is happening, not WHAT. A packet
+           travelling out from the hub to one system at a time says the thing the
+           paragraph beside it says, which is that Delta goes to the systems.
+
+           Outward, not inward, and that is the argument. Inward would mean the
+           systems feed Delta, which is the shape of every other tool. Outward is
+           Delta signing in and doing the work where the work lives.
+
+           One at a time, half a second apart, so the eye follows a single object
+           instead of watching seven things flicker. The full cycle is STEP times
+           the node count, so adding a system lengthens the loop rather than
+           crowding it. */
+        .sx-hub-packet {
+          transform-box: view-box;
+          opacity: 0;
+          animation: sx-hub-travel ${CYCLE}s linear infinite;
         }
-        @keyframes sx-hub-pulse {
-          0%, 70%, 100% { stroke-opacity: 0.35; }
-          35% { stroke-opacity: 1; }
+        @keyframes sx-hub-travel {
+          0%   { transform: translate(0, 0); opacity: 0; }
+          4%   { opacity: 1; }
+          ${TRAVEL_END}%  { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)); opacity: 1; }
+          ${ARRIVE_END}%  { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)); opacity: 0; }
+          100% { transform: translate(calc(var(--dx) * 1px), calc(var(--dy) * 1px)); opacity: 0; }
+        }
+
+        /* The pill brightens as its packet lands, then settles back. */
+        .sx-hub-node {
+          animation: sx-hub-arrive ${CYCLE}s ease-out infinite;
+        }
+        @keyframes sx-hub-arrive {
+          0%, ${TRAVEL_END}%, 100% {
+            border-color: rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.09);
+          }
+          ${ARRIVE_MID}% {
+            border-color: rgba(156, 176, 255, 0.75);
+            background: rgba(156, 176, 255, 0.18);
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .sx-hub-spoke { animation: none; stroke-opacity: 0.6; }
+          .sx-hub-packet { animation: none; opacity: 0; }
+          .sx-hub-node { animation: none; }
         }
 
         /* THE BOX SHRINKS, IT DOES NOT SCALE. transform: scale() only changes
