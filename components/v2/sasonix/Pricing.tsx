@@ -55,7 +55,7 @@ import { motion } from "framer-motion";
 import { SX } from "./tokens";
 import { Container, SectionHead } from "./kit";
 import { Reveal, revealProps } from "./reveal";
-import { TIERS, TOP_BAND_ACCOUNTS } from "@/lib/pricing";
+import { TIERS } from "@/lib/pricing";
 
 export function Pricing() {
   return (
@@ -82,7 +82,11 @@ export function Pricing() {
           />
         </Reveal>
 
-        {/* Three equivalent bands as rows. No cards, no featured tier. */}
+        {/* Every published band as a row. No cards, no featured tier, and no
+            "contact us" line under the table: the fourth band is a real tier
+            with a real price in lib/pricing.ts, which is why this renders TIERS
+            and nothing else. A row that answers a different question than the
+            rows above it is not a row, it is a footnote in a table's clothing. */}
         <div style={{ maxWidth: 860, margin: "52px auto 0", borderTop: `1px solid ${SX.hairline}` }}>
           {TIERS.map((t, i) => (
               <motion.div key={t.band} {...revealProps({ delay: i * 0.06, amount: 0.3 })} style={{ borderBottom: `1px solid ${SX.hairline}` }}>
@@ -112,49 +116,6 @@ export function Pricing() {
               </motion.div>
           ))}
 
-          {/* THE OVERFLOW BAND IS A ROW, not a footnote (Camren, 2026-09-02). It
-              was a sentence under the table, "More than N accounts? Contact us
-              for a custom plan.", which put the largest firms outside the thing
-              they were reading. A firm at 25 accounts is a customer, not an
-              exception, and the table is the place that answers "what do I pay".
-
-              It is NOT a TIERS entry. TIERS carries a monthly number that
-              annualCost and perAccount do arithmetic on, and TOP_BAND_ACCOUNTS
-              is derived from its last element, so a fourth entry with no price
-              would either break those or need a fake one. The band label reads
-              off TOP_BAND_ACCOUNTS so it follows the table rather than repeating
-              a number that lives in lib/pricing.ts. */}
-          <motion.div {...revealProps({ delay: TIERS.length * 0.06, amount: 0.3 })} style={{ borderBottom: `1px solid ${SX.hairline}` }}>
-            <div
-              className="sx-price-row"
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "space-between",
-                gap: 20,
-                padding: "26px 4px",
-              }}
-            >
-              <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span className="sx-price-band" style={{ fontFamily: SX.body, fontSize: 19, fontWeight: 500, color: SX.ink }}>
-                  More than {TOP_BAND_ACCOUNTS} accounts
-                </span>
-              </span>
-              <span style={{ display: "flex", alignItems: "baseline", gap: 6, flex: "0 0 auto" }}>
-                {/* Set at the price size, not as body copy: it occupies the same
-                    slot as $599 and has to read as an answer to the same
-                    question, not as an apology for not having one. */}
-                <a
-                  href="/demo"
-                  className="sx-price-custom"
-                  style={{ fontFamily: SX.display, fontWeight: 500, fontSize: 40, letterSpacing: "-1px", color: SX.accentText, lineHeight: 1, textDecoration: "none" }}
-                >
-                  Let&rsquo;s talk
-                </a>
-              </span>
-            </div>
-          </motion.div>
         </div>
 
       </Container>
@@ -169,16 +130,13 @@ export function Pricing() {
         </Reveal>
       </Container>
       <style>{`
-        .sx-price-custom { transition: color 0.2s ease; }
-        .sx-price-custom:hover { color: var(--sx-accent); text-decoration: underline; }
-
         /* Narrow screens: shrink the row rather than stacking it. The band and the
            price belong on one line, which is the whole point of a line item, and at
            these sizes the longest pair still fits a 360px viewport. */
         @media (max-width: 560px) {
           .sx-price-row { padding: 20px 2px !important; gap: 12px !important; }
           .sx-price-band { font-size: 16px !important; white-space: nowrap; }
-          .sx-price-amt, .sx-price-custom { font-size: 30px !important; }
+          .sx-price-amt { font-size: 30px !important; }
           /* "/month" contracts to "/mo" so the longest pair still holds one line. */
           .sx-price-per { font-size: 0 !important; }
           .sx-price-per::after { content: "/mo"; font-size: 14px; }
