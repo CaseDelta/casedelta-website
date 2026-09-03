@@ -53,6 +53,7 @@
  *
  * THE "TRUST" PILL IS GONE, along with every other section eyebrow on this page.
  */
+import { ShieldCheck, EyeOff } from "lucide-react";
 import { SX } from "./tokens";
 import { Container } from "./kit";
 import { Reveal } from "./reveal";
@@ -86,8 +87,28 @@ const BAND_IMAGE = "/v2/ambient/horizon-blue.webp";
 const LEAD =
   "Delta works inside the systems your records already live in, and leaves them there.";
 
-/** Short enough to scan, specific enough to check. No sentence should join these. */
-const LABELS = ["HIPAA and bar compliant", "We sign a BAA", "Never used to train a model"];
+/**
+ * TWO, not three. "We sign a BAA" came off on 2026-09-02 (Camren). It is still
+ * true and still something the company does; it is a term you negotiate, not a
+ * property of the product, and it was the one of the three a reader could not
+ * check at a glance. The BAA belongs in a conversation with a firm's compliance
+ * lead, not on a homepage between two facts.
+ *
+ * Each one now carries an icon, because at two items the row needed to read as
+ * deliberate rather than as leftovers.
+ *
+ * ShieldCheck for compliance: the shield is the one piece of iconography that
+ * means "held to a standard" without needing a caption. EyeOff for training:
+ * the claim is about something NOT happening, and a crossed eye is the only
+ * common glyph that says a negative without a red slash, which would read as an
+ * error state on a page that is supposed to reassure.
+ *
+ * Short enough to scan, specific enough to check. No sentence should join these.
+ */
+const BADGES = [
+  { Icon: ShieldCheck, label: "HIPAA and bar compliant" },
+  { Icon: EyeOff, label: "Never used to train a model" },
+];
 
 export function Trust() {
   return (
@@ -150,12 +171,17 @@ export function Trust() {
           </div>
         </Reveal>
 
-        {/* The compliance answer, as labels rather than paragraphs. A reader here
-            is checking for words, not reading an argument. */}
+        {/* The compliance answer, as two badges rather than paragraphs. A reader
+            here is checking for words, not reading an argument.
+
+            Frosted glass over the photograph, using the glass roles that exist
+            for exactly this: a solid fill would punch two holes in the image, and
+            a bare label would disappear into it. */}
         <Reveal delay={0.08}>
-          <div className="sx-trust-labels">
-            {LABELS.map((label) => (
-              <span key={label} className="sx-trust-label">
+          <div className="sx-trust-badges">
+            {BADGES.map(({ Icon, label }) => (
+              <span key={label} className="sx-trust-badge">
+                <Icon size={19} strokeWidth={1.9} aria-hidden className="sx-trust-icon" />
                 {label}
               </span>
             ))}
@@ -170,43 +196,42 @@ export function Trust() {
            doing the work the copy used to: this is the one place on the page that
            should feel unhurried, because it is where a reader is deciding whether
            they trust us with medical records. */
-        .sx-trust-labels {
+        .sx-trust-badges {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          align-items: center;
-          gap: 0 34px;
-          margin-top: 72px;
+          gap: 16px;
+          margin-top: 76px;
         }
-        .sx-trust-label {
-          font-family: var(--sx-mono), 'JetBrains Mono Placeholder', monospace;
-          font-size: 13px;
-          letter-spacing: 0.04em;
+        /* Frosted glass, not a solid chip: a solid fill would punch two holes in
+           the photograph. The blur is what makes these read as sitting ON the
+           image rather than pasted over it. */
+        .sx-trust-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 11px;
+          padding: 13px 22px;
+          border-radius: 999px;
+          background: var(--sx-glass);
+          border: 1px solid var(--sx-glass-edge);
+          backdrop-filter: blur(10px) saturate(1.1);
+          -webkit-backdrop-filter: blur(10px) saturate(1.1);
+          font-family: var(--sx-geist), 'Geist Placeholder', sans-serif;
+          font-size: 15px;
+          font-weight: 500;
           line-height: 20px;
           color: var(--sx-on-media);
-          padding: 0 0 0 34px;
-          position: relative;
           white-space: nowrap;
         }
-        .sx-trust-label:first-child { padding-left: 0; }
-        /* A hairline between, not around. Chips would make three claims look like
-           three buttons. */
-        .sx-trust-label + .sx-trust-label::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 3px;
-          bottom: 3px;
-          width: 1px;
-          background: var(--sx-glass-edge);
-        }
+        /* The icon takes the accent, so the two badges are the only colour in a
+           band that is otherwise a photograph and white type. */
+        .sx-trust-icon { color: var(--sx-accent-on-media); flex: 0 0 auto; }
 
         @media (max-width: 900px) {
           .sx-trust-band { padding: 112px 0 120px !important; margin: 44px 0 !important; }
           .sx-trust-lead { font-size: 19px !important; line-height: 30px !important; }
-          .sx-trust-labels { flex-direction: column; gap: 16px; margin-top: 48px; }
-          .sx-trust-label { padding-left: 0; }
-          .sx-trust-label + .sx-trust-label::before { display: none; }
+          .sx-trust-badges { flex-direction: column; align-items: center; gap: 14px; margin-top: 52px; }
+          .sx-trust-badge { font-size: 14px; padding: 12px 20px; white-space: normal; text-align: left; }
         }
       `}</style>
     </section>
