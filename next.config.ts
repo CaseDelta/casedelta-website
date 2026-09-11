@@ -29,6 +29,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  experimental: { turbopackFileSystemCacheForDev: false },
+  turbopack: { root: require("node:path").resolve(__dirname, "..") },
 
   // /setup reads content/rep-setup.html at request time. Without this the file is left out
   // of the deployed function bundle and the route answers 500 in production while working
