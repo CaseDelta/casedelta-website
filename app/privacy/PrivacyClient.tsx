@@ -5,7 +5,7 @@ import {
   LegalSection,
   LegalClosing,
   LEGAL_LINK_STYLE,
-} from "@/components/v2/sasonix/LegalPage";
+} from "@/components/concept/ConceptLegal";
 
 export default function PrivacyClient() {
   return (
