@@ -264,11 +264,12 @@
       "toolKey": "step-26"
     }
   ],
-  "finalAnswer": "Built and audited the 19-entry treatment chronology. Every row cites its source record and page.\n\n- **Word chronology**\n- **Excel chronology**\n\nThe supplied records contain no MRI result, and no Bates or exhibit labels. Save the files into the firm’s system, as the download links expire. I can add the MRI results when received or prepare a concise treatment summary from this chronology.",
+  "finalAnswer": "Built and audited the 19-entry treatment chronology. Every row cites its source record and page.\n\n- **Word chronology**\n- **Excel chronology**\n\nThe supplied records contain no MRI result, and no Bates or exhibit labels. I can add the MRI results when received or prepare a concise treatment summary from this chronology.",
   "source": {
     "run_id": "01a097d4-4815-72dd-b01a-78ab67f4296e",
     "steps": 27,
     "real_seconds": 257,
-    "speedup": 17.14
+    "speedup": 17.14,
+    "edits": "Signed download links became file names; the sentence about the links expiring was trimmed (Camren, 2026-09-12). Otherwise Delta’s words as written."
   }
 }
