@@ -1,3 +1,0 @@
-[submodule "vendor/delta-ui"]
-	path = vendor/delta-ui
-	url = https://github.com/CaseDelta/casedelta-delta-ui.git
