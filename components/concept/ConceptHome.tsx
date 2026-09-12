@@ -1,42 +1,49 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { ArrowDown, ArrowUpRight, Check, FileText, Mail, FolderOpen, Pause, Play, Plus, X } from 'lucide-react';
 import { TIERS } from '@/lib/pricing';
 import { LOGO } from '@/components/v2/sasonix/brand';
 import { SmoothScroll } from '@/components/v2/sasonix/SmoothScroll';
 import s from './ConceptHome.module.css';
+import dynamic from 'next/dynamic';
+// Client only: the product's components assume a browser (portals, timers), and
+// the replay's code has no business in the first paint.
+const DeltaReplay = dynamic(() => import('@/components/replay/DeltaReplay').then((m) => m.DeltaReplay), { ssr: false });
+import type { Scenario } from 'delta-ui/scenario/types';
+import type { ReplayPhase } from '@/components/replay/DeltaReplay';
+import CHRONOLOGY from '@/content/replay/morgan-chronology.json';
 
 const BOOK = 'https://calendar.app.google/LB4f9aLuz5a4RCrz6';
+const PROMPT = 'Build a treatment chronology from the Morgan records I attached. Cite every entry.';
 const chapters = [
   { name: 'The request', title: 'Start with the work.', copy: 'Ask Delta for a treatment chronology, with a source for every entry.' },
-  { name: 'The sources', title: 'Follow the record.', copy: 'Delta reads the connected file and brings the relevant records together.' },
+  { name: 'The work', title: 'Follow the record.', copy: 'Delta reads each record, keeps track of where every fact came from, and says what it is doing as it goes.' },
   { name: 'The result', title: 'A chronology you can check.', copy: 'Read the sequence. Open the source. Review the work before you use it.' },
 ];
 function DemoGraphic() {
-  const [chapter, setChapter] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [source, setSource] = useState<number | null>(null);
-  useEffect(() => {
-    if (!playing) return;
-    const timer = setTimeout(() => {
-      if (chapter === 2) setPlaying(false);
-      else setChapter(chapter + 1);
-    }, 6500);
-    return () => clearTimeout(timer);
-  }, [playing, chapter]);
-  const select = (index: number) => { setChapter(index); setPlaying(false); setSource(null); };
+  // The chapters follow the recorded run: the request, Delta working through
+  // the records, and the cited result. Play runs the real timeline; a chapter
+  // button jumps to that state. Reduced motion skips straight to the result.
+  const reduced = useReducedMotion();
+  const [chapter, setChapter] = useState(reduced ? 2 : 0);
+  const playing = chapter === 1;
+  const phase: ReplayPhase = chapter === 0 ? 'request' : chapter === 1 ? 'working' : 'result';
+  const finish = useCallback(() => setChapter(2), []);
   return <div className={s.demonstration}>
-    <div className={s.demoHeader}><span>ONE REQUEST. A REVIEWABLE RESULT.</span><span>Illustrative workflow · Fictional records</span></div>
+    <div className={s.demoHeader}><span>ONE REQUEST. A REVIEWABLE RESULT.</span><span>A recorded Delta run · Fictional records</span></div>
     <div className={s.demoStage}>
       <div className={s.demoNarrative}><span className={s.chapterNumber}>0{chapter + 1} / 03</span><h3>{chapters[chapter].title}</h3><p>{chapters[chapter].copy}</p></div>
       <div className={s.graphic} aria-live="polite">
         <div className={s.graphicTop}><span className={s.deltaMark}><img src={LOGO.mark} alt="" /></span><strong>Delta</strong><span className={s.graphicContext}>Treatment chronology</span></div>
-        {chapter === 0 && <div className={s.requestScene} key="request"><div className={s.prompt}>Build a treatment chronology from the Morgan records. Cite every entry.</div><div className={s.attachment}><FileText size={23}/><div><strong>Morgan · Medical records</strong><span>Fictional demonstration file</span></div></div><div className={s.response}><span className={s.responseDot}/><p>I’ll read the records and organize the treatment by date, with a source for each entry.</p></div></div>}
-        {chapter === 1 && <div className={s.sourcesScene} key="sources"><p className={s.sceneLabel}>READING THE CONNECTED FILE</p>{['Emergency department record', 'Orthopedic consultation', 'Physical therapy notes'].map((name,i) => <div className={s.sourceRow} key={name}><FileText size={23}/><div><strong>{name}</strong><span>{['Initial visit and imaging','Examination and treatment plan','Treatment and follow-up'][i]}</span></div><Check size={20}/></div>)}<p className={s.sourceFoot}>Every entry stays connected to its record.</p></div>}
-        {chapter === 2 && <div className={s.resultScene} key="result"><div className={s.resultTitle}><strong>Morgan treatment chronology</strong><span>Ready for team review</span></div>{['Emergency evaluation','Orthopedic consultation','Physical therapy begins'].map((name,i) => <div className={s.timelineRow} key={name}><span>{['May 04','May 12','May 19'][i]}</span><div><strong>{name}</strong><button onClick={() => setSource(source === i ? null : i)} aria-expanded={source === i}>Source {i + 1} <ArrowUpRight size={15}/></button>{source === i && <p className={s.sourceExcerpt}>{['Emergency department record: patient evaluated following the collision. Imaging and discharge instructions documented.', 'Orthopedic consultation: symptoms and examination findings reviewed. Conservative treatment recommended.', 'Physical therapy note: initial evaluation completed and treatment plan documented.'][i]} <em>Fictional excerpt.</em></p>}</div></div>)}</div>}
+        <div className={s.replayScene}>
+          <p className={s.prompt}>{PROMPT}</p>
+          <div className={s.attachment}><FileText size={23}/><div><strong>Morgan · Medical records</strong><span>3 fictional records</span></div></div>
+          <DeltaReplay scenario={CHRONOLOGY as unknown as Scenario} phase={phase} onFinished={finish} />
+        </div>
       </div>
     </div>
-    <div className={s.demoControls}><div className={s.chapters}>{chapters.map((item,i) => <button aria-pressed={chapter === i} onClick={() => select(i)} key={item.name}><span>0{i+1}</span>{item.name}</button>)}</div><button className={s.play} onClick={() => { setSource(null); if (!playing && chapter === 2) setChapter(0); setPlaying(!playing); }} aria-label={playing ? 'Pause walkthrough' : 'Play walkthrough'}>{playing ? <Pause size={19}/> : <Play size={19}/>}<span>{playing ? 'Pause' : 'Play walkthrough'}</span></button></div>
+    <div className={s.demoControls}><div className={s.chapters}>{chapters.map((item,i) => <button aria-pressed={chapter === i} onClick={() => setChapter(reduced && i === 1 ? 2 : i)} key={item.name}><span>0{i+1}</span>{item.name}</button>)}</div><button className={s.play} onClick={() => setChapter(playing ? 2 : reduced ? 2 : 1)} aria-label={playing ? 'Skip to the result' : 'Play the recorded run'}>{playing ? <Pause size={19}/> : <Play size={19}/>}<span>{playing ? 'Skip to result' : chapter === 2 ? 'Play again' : 'Play the run'}</span></button></div>
   </div>;
 }
 export function ConceptHome() {
