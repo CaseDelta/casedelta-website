@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-// The brand faces the product ships (delta-ui). Headings on the concept pages
-// use its variable Archivo, never --sx-archivo, whose 400 cut renders oblique.
-import "../vendor/delta-ui/fonts.css";
 import { PostHogProvider } from "./providers/PostHogProvider";
 import { LinkedInInsightTag } from "@/components/LinkedInInsightTag";
 import { MetaPixel } from "@/components/MetaPixel";
