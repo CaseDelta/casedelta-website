@@ -12,6 +12,9 @@ export default function TermsClient() {
     <LegalPage title="Terms of Service">
       <LegalSection title="Using CaseDelta">
         <p>
+          CaseDelta is operated by Blueprint Venture Capital LLC, a Wyoming limited liability company, 30 N Gould St Ste N, Sheridan, WY 82801. In these Terms, &ldquo;CaseDelta,&rdquo; &ldquo;we,&rdquo; and &ldquo;us&rdquo; refer to Blueprint Venture Capital LLC.
+        </p>
+        <p style={{ marginTop: 12 }}>
           By using CaseDelta, you agree to these Terms and our{" "}
           <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>.
           CaseDelta provides Delta, a personal assistant that connects to the tools your firm already uses (such as Clio, Microsoft Word, Gmail, Outlook, Google Drive, and Calendar) and runs legal and administrative work across them at the firm&rsquo;s direction.
