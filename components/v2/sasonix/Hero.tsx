@@ -34,7 +34,6 @@ import { useEffect, useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SX, STAR_GOLD } from "./tokens";
-import { FirmMarquee } from "./FirmMarquee";
 import { NAV_ACTIONS } from "./navConfig";
 
 const EASE_TEXT = [0.44, 0, 0.56, 1] as [number, number, number, number];
@@ -209,10 +208,7 @@ export function Hero() {
           align-items: center;
           gap: 56px;
           height: 100%;
-          /* Room for the firm belt, which is absolutely positioned and so
-             contributes no height of its own. Without this the proof line sits
-             underneath it. */
-          padding-bottom: 118px;
+          padding-bottom: 72px;
         }
 
         /* No video asset: one column, copy left over the photograph. The scrim is
@@ -223,7 +219,7 @@ export function Hero() {
         /* Short laptop windows: pull the type down so the whole argument still
            fits inside one viewport instead of pushing the proof off the fold. */
         @media (min-width: 1101px) and (max-height: 800px) {
-          .sx-hero-grid { padding-bottom: 92px; }
+          .sx-hero-grid { padding-bottom: 64px; }
           .sx-hero-title { font-size: 54px !important; line-height: 58px !important; }
           .sx-hero-subhead { font-size: 19px !important; line-height: 30px !important; margin-top: 18px !important; }
           .sx-hero-actions { margin-top: 24px !important; }
@@ -248,7 +244,7 @@ export function Hero() {
             gap: 44px;
             height: auto !important;
             align-content: start;
-            padding: 132px 0 150px;
+            padding: 132px 0 96px;
           }
           .sx-hero-copy { max-width: 680px !important; }
           .sx-hero-media { max-width: 620px; }
@@ -259,7 +255,7 @@ export function Hero() {
           .sx-hero-grid {
             height: auto !important;
             align-content: start;
-            padding: 112px 0 140px !important;
+            padding: 112px 0 88px !important;
           }
           .sx-hero-copy { max-width: 100% !important; }
           .sx-hero-title { font-size: 46px !important; line-height: 50px !important; }
@@ -447,10 +443,6 @@ export function Hero() {
         </div>
       </div>
 
-      {/* The firm belt, laid over the photograph along the bottom of the fold.
-          Absolutely positioned, so it costs the grid no height; the grid's own
-          bottom padding is what keeps the copy clear of it. */}
-      <FirmMarquee />
     </section>
   );
 }
