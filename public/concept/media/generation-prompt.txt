@@ -1,0 +1,5 @@
+Tool: OpenAI built-in imagegen
+Generated: September 11, 2026
+Output: coastal-blue-hour.png (1536 × 1024)
+
+Use case: photorealistic-natural. Asset: ultra-wide cinematic photograph for a restrained law firm software website, no text. Generate a high-resolution horizontal 3:2 landscape: Pacific coastline seen from a distant high vantage point at blue hour, soft silver-blue ocean receding into mist, a slender soft warm-pink band at the distant horizon, dark slate rocky coastline confined to lower right quarter. Real fine-art intentional camera movement photography, subtle horizontal optical motion in water and clouds but enough natural texture to read as photography. Expansive tonal blue negative space on left and upper half. Restrained cool blue, blue gray, pale pink light. No green wash, no people, buildings, cars, logos, lettering, or watermarks. Premium photographic print, gentle contrast, not a digital gradient. Save as project background image.

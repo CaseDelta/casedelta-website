@@ -43,8 +43,27 @@ export function SmoothScroll() {
       raf = requestAnimationFrame(animate);
     };
 
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      running = false;
+      target = current = window.scrollY;
+    };
+    const onAnchor = (e: MouseEvent) => {
+      if (e.target instanceof Element && e.target.closest('a[href*="#"]')) stop();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " ", "Tab"].includes(e.key)) stop();
+    };
+
     const onWheel = (e: WheelEvent) => {
       if (e.ctrlKey) return; // let pinch-zoom through
+      // Preserve independently scrollable areas such as an open source panel.
+      let node = e.target instanceof Element ? e.target : null;
+      while (node && node !== document.body) {
+        const overflow = getComputedStyle(node).overflowY;
+        if (/(auto|scroll)/.test(overflow) && node.scrollHeight > node.clientHeight) return;
+        node = node.parentElement;
+      }
       e.preventDefault();
       // deltaMode 1 = lines, 2 = pages; normalize to pixels
       const factor = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
@@ -61,9 +80,15 @@ export function SmoothScroll() {
       if (!running) target = window.scrollY;
     };
 
+    document.addEventListener("click", onAnchor, true);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", stop);
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
+      document.removeEventListener("click", onAnchor, true);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", stop);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
