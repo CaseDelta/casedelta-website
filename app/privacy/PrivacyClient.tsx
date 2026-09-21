@@ -12,6 +12,9 @@ export default function PrivacyClient() {
     <LegalPage title="Privacy Policy" lastUpdated="May 6, 2026">
       <LegalSection title="How We Process Your Data">
         <p>
+          CaseDelta is operated by Blueprint Venture Capital LLC, a Wyoming limited liability company, 30 N Gould St Ste N, Sheridan, WY 82801. In this policy, &ldquo;CaseDelta,&rdquo; &ldquo;we,&rdquo; and &ldquo;us&rdquo; refer to Blueprint Venture Capital LLC.
+        </p>
+        <p style={{ marginTop: 12 }}>
           Each firm&apos;s data is isolated and encrypted both at rest and in transit. Your documents are never used to train AI, and never sold or shared. You control your data: you can export it and request its deletion at any time.
         </p>
         <p style={{ marginTop: 12 }}>

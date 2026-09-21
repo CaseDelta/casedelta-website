@@ -327,7 +327,7 @@ export function CtaFooter({ showCta = true }: { showCta?: boolean } = {}) {
           ))}
         </Reveal>
         <Reveal className="sx-foot-base" delay={0.06} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, marginTop: 60, paddingTop: 28, borderTop: `1px solid ${SX.hairline}`, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>© 2026 CaseDelta. All rights reserved.</span>
+          <span style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>© 2026 CaseDelta. All rights reserved. CaseDelta is operated by Blueprint Venture Capital LLC.</span>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <span style={{ fontFamily: SX.body, fontSize: 16, color: SX.ink2 }}>Follow us on:</span>
             <Socials />
