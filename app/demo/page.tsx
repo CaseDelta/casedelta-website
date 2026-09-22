@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { BreadcrumbSchema } from "@/components/JsonLd";
-import { ConceptDemo } from "@/components/concept/ConceptDemo";
+import { DemoClient } from "./DemoClient";
 
 export const metadata: Metadata = {
-  title: "Book a demo",
+  title: "Book a Demo. See Delta Running on Your Firm's Workflow",
   description:
     "20 minutes. See Delta connect every tool your firm uses (Clio, Word, Gmail, Drive) and turn hours of legal work into one sentence. Built for plaintiff firms.",
   alternates: { canonical: "https://casedelta.com/demo" },
@@ -30,7 +30,7 @@ export default function DemoPage() {
           { name: "Book a Demo", url: "https://casedelta.com/demo" },
         ]}
       />
-      <ConceptDemo />
+      <DemoClient />
     </>
   );
 }

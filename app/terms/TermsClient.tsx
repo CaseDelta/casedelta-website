@@ -5,7 +5,7 @@ import {
   LegalSection,
   LegalClosing,
   LEGAL_LINK_STYLE,
-} from "@/components/concept/ConceptLegal";
+} from "@/components/v2/sasonix/LegalPage";
 
 export default function TermsClient() {
   return (

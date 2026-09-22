@@ -1,8 +1,0 @@
-/* The product's chat components on the marketing site. Theme and utilities
-   only, in layers, so the site's own unlayered CSS always wins and no reset
-   reaches any other page. Utilities are generated for vendor/delta-ui alone. */
-@layer theme, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
-@source "../../vendor/delta-ui/src";
-@import "../../vendor/delta-ui/tokens.css";

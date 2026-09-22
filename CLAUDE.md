@@ -26,26 +26,24 @@ Nine pages exist. Everything else 308s.
 
 | Route | What it is |
 |---|---|
-| `/` | the homepage, `components/concept/ConceptHome.tsx` (promoted from `/concept` 2026-09-12) |
+| `/` | the homepage, `components/v2/sasonix/Sasonix.tsx` |
 | `/about` | mission, the problem, four beliefs, founder, early-stage honesty |
 | `/blog`, `/blog/[slug]`, `/blog/tag/[tag]` | DB-backed, ISR, auto-published by an agent |
 | `/answers` | knowledge-base hub, renders FAQPage JSON-LD for AI search |
 | `/demo` | the only conversion surface on the site. noindex |
-| `/privacy`, `/terms` | legal, on the concept layout (`ConceptLegal.tsx`). Google's OAuth consent screen links to these |
+| `/privacy`, `/terms` | legal. Google's OAuth consent screen links to these |
 | `/setup`, `/install.sh`, `/install.ps1`, `/outreach-kit.zip` | internal rep onboarding, noindex, key-gated |
 
 **Five marketing pages were folded into the homepage on 2026-09-02** and now redirect to
-the section carrying their argument (re-aimed at the concept homepage's anchors 2026-09-12):
+the section carrying their argument:
 
 | was | now | section |
 |---|---|---|
-| `/features` | `/#work` | 02 Ask. Then review., the recorded run |
-| `/use-cases`, `/use-cases/:slug` | `/#work` | same section |
-| `/compare`, `/compare/:slug` | `/#work` | same section |
-| `/security` | `/#privacy` | 05 privacy |
-| `/pricing` | `/#pricing` | 06 pricing |
-
-`/concept`, `/concept/privacy` and `/concept/terms` redirect to `/`, `/privacy` and `/terms`.
+| `/features` | `/#features` | AutomationSection, what Delta does |
+| `/use-cases`, `/use-cases/:slug` | `/#features` | same section |
+| `/compare`, `/compare/:slug` | `/#why` | WhySasonix, the competitive argument |
+| `/security` | `/#security` | Trust |
+| `/pricing` | `/#pricing` | Pricing |
 
 Do not recreate any of them. Five pages restating what the homepage already says is how
 the site came to publish two different prices at the same time.
@@ -60,49 +58,26 @@ the site came to publish two different prices at the same time.
 
 ## The homepage
 
-`app/page.tsx` renders `ConceptHome` (`components/concept/`), styled by its own module
-`ConceptHome.module.css`. Sections in order: hero, 01 the capacity problem, 02 Ask. Then
-review. (`#work`), a quote, 03 Your systems (`#connections`), 04 support and standards, a
-second quote, 05 privacy (`#privacy`), 06 pricing (`#pricing`, from `lib/pricing.ts`), FAQ
-(`#questions`), closing CTA, footer.
+`Sasonix.tsx` composes nine sections and the order is the argument:
 
-**The old homepage `components/v2/sasonix/Sasonix.tsx` is unrouted but still in the repo**;
-reverting is `app/page.tsx` alone. `/about`, `/blog`, `/answers` and `/demo` still wear the
-Sasonix `PageShell` and nav, so they do not match the homepage yet.
+1. Hero, 2. Stakes (the problem in one sentence), 3. AutomationSection (`#features`),
+4. Testimonials, 5. WhySasonix (`#why`), 6. Trust (`#security`), 7. Pricing (`#pricing`),
+8. SecondProof, 9. CtaFooter.
 
-**`app/template.tsx` skips its page-transition wrapper for `/`, `/privacy`, `/terms`**
-(`OWN_MOTION`), so the concept's fixed nav is not inside a transformed element.
+**Proof sits before the argument**, deliberately. A reader who has just been told what
+Delta does wants evidence, not a comparison table.
 
-**The concept palette is the approved brand** (Camren, 2026-09-12): ink `#233c54`, muted
-`#60758a`, paper `#f9fbfe`, line `#dce5ee`, pale `#eef3f8`, accent `#5170FF`, small accent
-text `#3B54E8`. The dark sections keep `#142d3d`, which has no approved equivalent.
-**Headings stay in Geist.** Archivo was tried and rejected the same day.
+**Section spacing: 60px top AND 60px bottom on every section**, so the gap between any
+two is 120px and deleting one leaves its neighbours intact. Bottom-only padding is how
+removing a section once silently collapsed a gap to zero.
 
-### The recorded run (`#work`)
-
-`components/replay/DeltaReplay.tsx` replays a real Delta run through the product's own
-components from the private `delta-ui` package, loaded with `next/dynamic` and
-`ssr: false` because the package's `Modal` touches `document` during render. The scenario
-is `content/replay/morgan-chronology.json`, a real QA run over three fictional records,
-compressed to 15 s; its `source.edits` lists every change from what Delta said.
-`components/replay/delta-ui.css` loads Tailwind's theme and utilities only, with **no
-preflight**, so no reset reaches any other page.
-
-**How the build gets `delta-ui`.** `scripts/fetch-delta-ui.mjs` runs as npm `prebuild` and
-`predev`. It fetches `CaseDelta/casedelta-delta-ui` at the commit in `vendor-delta-ui.sha`
-into `vendor/delta-ui` (gitignored) and strips the remote so no token stays in
-`.git/config`. Locally it uses your git credentials; on Vercel it needs `DELTA_UI_TOKEN`.
-To bump the package, publish it from casedelta-cloud, then change `vendor-delta-ui.sha`.
-
-- **Not a submodule:** Vercel never fetched the private submodule, so every preview failed
-  `Module not found: delta-ui/...`.
-- **Vercel Hobby cannot deploy a private repo owned by a GitHub organization**, which is
-  why this repo stays public. Making it private needs Vercel Pro.
+The nav and the footer's Product column list sections in the page's own top-to-bottom
+order. Reorder the sections and reorder both with them.
 
 ## One design system
 
-`components/v2/sasonix/` is the kit the non-homepage pages still wear. The homepage and
-the legal pages use the concept's CSS modules instead, until those pages move over.
+`components/v2/sasonix/`. There is exactly one, and the repo carried four until
+2026-09-02. Do not start a second.
 
 - **`theme.ts`** is the brand. One `Palette` object per direction, emitted as CSS custom
   properties. Preview live with `/?theme=sasonix|achromatic|dark`, no rebuild. Roles are
@@ -201,9 +176,6 @@ npm run lint         # tsc --noEmit
 npm run build        # the only real pre-deploy gate
 ```
 
-A local `npm run build` fails at `/api/send`, which constructs a Resend client at build
-time. Run `RESEND_API_KEY=re_placeholder_local_build npm run build`; Vercel has the real key.
-
 `npm run lint` used to be `next lint`, which Next 16 removed from the CLI, so it had
 only ever errored. It is `tsc --noEmit` now.
 
@@ -217,7 +189,6 @@ NEXT_PUBLIC_LINKEDIN_PARTNER_ID=...
 NEXT_PUBLIC_DEMO_BOOKING_URL=...           # Google appointment scheduler the /demo button opens
 DATABASE_URL=postgres://...                # blog CMS. No sslmode; the pool sets SSL. Unset = file-only blog
 REVALIDATE_SECRET=...                      # authorizes POST /api/revalidate
-DELTA_UI_TOKEN=...                         # Vercel only (Production + Preview, Secret): read-only token for casedelta-delta-ui
 # NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID / _BOOKED_  optional, deferred until LinkedIn ads launch
 ```
 
