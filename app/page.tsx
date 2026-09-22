@@ -1,12 +1,8 @@
 import { BreadcrumbSchema } from "@/components/JsonLd";
-import { ConceptHome } from "@/components/concept/ConceptHome";
+import { Sasonix } from "@/components/v2/sasonix/Sasonix";
 
 /**
  * The CaseDelta homepage.
- *
- * Promoted from /concept on 2026-09-12 (the photographic redesign on
- * design/cinematic-concept). The previous homepage, components/v2/sasonix/Sasonix,
- * is still in the repo and unrouted, so reverting is this one file.
  *
  * This page lived at /v2 behind robots:noindex while it was built, and replaced the
  * previous homepage on 2026-08-18. The old one (app/HomeClient.tsx, the lib/variants
@@ -31,7 +27,7 @@ export default function HomePage() {
   return (
     <>
       <BreadcrumbSchema items={[{ name: "Home", url: "https://casedelta.com" }]} />
-      <ConceptHome />
+      <Sasonix />
     </>
   );
 }
