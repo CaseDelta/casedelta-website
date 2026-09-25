@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import { ArrowUpRight } from 'lucide-react';
 import { BreadcrumbSchema, FAQSchema } from '@/components/JsonLd';
 import { SiteShell } from '@/components/site/SiteShell';
-import { Band, PageHero, QAList, Updated } from '@/components/site/kit/kit';
+import { Band, PageHero, QAList } from '@/components/site/kit/kit';
 import { CtaBand } from '@/components/site/kit/CtaBand';
 import { HubMap } from './HubMap';
-import { ANYTHING_ELSE, CATEGORIES, INTEGRATIONS_CHECKED, PLATFORMS, platformHref } from '@/lib/integrations';
+import { ANYTHING_ELSE, CATEGORIES, PLATFORMS, platformHref } from '@/lib/integrations';
 import { claim } from '@/lib/security';
 import { CONNECT_TIME_ANSWER, NOT_LISTED_ANSWER } from '@/lib/answers';
 import g from './integrations.module.css';
@@ -34,7 +34,6 @@ export default function IntegrationsPage() {
     <FAQSchema faqs={QA.map((x) => ({ question: x.q, answer: x.a }))}/>
     <SiteShell variant="solid">
       <PageHero title="Delta works inside the systems you already use." lead="Any system your team signs into. Nothing to migrate.">
-        <Updated date={INTEGRATIONS_CHECKED}/>
       </PageHero>
       <Band title="One paralegal across every system." tone="pale" split>
         <div className={g.map}><HubMap/></div>

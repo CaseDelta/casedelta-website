@@ -16,7 +16,7 @@ const Mail = () => <a href={`mailto:${CONCIERGE}`} style={LEGAL_LINK_STYLE}>{CON
 
 export default function PrivacyClient() {
   return (
-    <LegalPage title="Privacy Policy" lastUpdated="September 25, 2026">
+    <LegalPage title="Privacy Policy">
       <LegalSection title="About this policy">
         <p>This policy covers the CaseDelta service, including Delta, our AI paralegal, and this website. Questions go to <Mail/>.</p>
       </LegalSection>

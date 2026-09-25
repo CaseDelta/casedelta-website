@@ -81,12 +81,6 @@ export function Checklist({ can, cannot, canLabel = 'Can', cannotLabel = 'Cannot
   return <div className={`${k.checklist} ${cannot?.length ? k.checkTwo : ''}`}>{col(canLabel, can, true)}{cannot?.length ? col(cannotLabel, cannot, false) : null}</div>;
 }
 
-/** A visible "Updated <date>" line. Pass an ISO date (YYYY-MM-DD) from the page's data file. */
-export function Updated({ date }: { date: string }) {
-  const iso = /^\d{4}-\d{2}-\d{2}$/.test(date);
-  const shown = iso ? new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }) : date;
-  return <p className={k.updated}>Updated {iso ? <time dateTime={date}>{shown}</time> : shown}</p>;
-}
 
 /** Long text: blog posts and legal pages. Typography on the site's tokens. */
 export function ProseArticle({ children }: { children: React.ReactNode }) {

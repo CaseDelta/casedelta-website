@@ -68,10 +68,6 @@
 .markNo { background: var(--pale); color: var(--muted); border: 1px solid var(--line); }
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* ── Updated ── */
-p.updated { font-size: var(--t-label); color: var(--muted); }
-.hero p.updated { margin-top: 22px; }
-.heroPhoto p.updated { color: var(--on-navy); }
 
 /* ── ProseArticle ── */
 article.prose { max-width: 720px; font-size: 18px; line-height: 1.75; color: var(--ink); }

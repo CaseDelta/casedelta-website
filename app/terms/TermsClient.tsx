@@ -9,7 +9,7 @@ const CONCIERGE = "concierge@casedelta.com";
 
 export default function TermsClient() {
   return (
-    <LegalPage title="Terms of Service" lastUpdated="September 25, 2026">
+    <LegalPage title="Terms of Service">
       <LegalSection title="Agreement">
         <p>These Terms are an agreement between you and CaseDelta (&ldquo;we,&rdquo; &ldquo;us&rdquo;). By using CaseDelta you agree to them and to our <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>. If you use CaseDelta for a firm, you agree for the firm and confirm you may bind it. If your firm has a signed agreement with us, that agreement controls where it differs.</p>
       </LegalSection>

@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BreadcrumbSchema, FAQSchema } from '@/components/JsonLd';
 import { SiteShell } from '@/components/site/SiteShell';
-import { Band, CheckColumns, LinkList, MoreLink, PageHero, Prompts, QAList, Tag, Updated } from '@/components/site/kit/kit';
+import { Band, CheckColumns, LinkList, MoreLink, PageHero, Prompts, QAList, Tag } from '@/components/site/kit/kit';
 import { CtaBand } from '@/components/site/kit/CtaBand';
 import { ConnectBand } from '@/components/site/kit/ConnectBand';
-import { INTEGRATIONS_CHECKED, PAGE_PLATFORMS, platform, worksWithAnswer } from '@/lib/integrations';
+import { PAGE_PLATFORMS, platform, worksWithAnswer } from '@/lib/integrations';
 import { CONNECT_TIME_ANSWER } from '@/lib/answers';
 import { claim } from '@/lib/security';
 import { STARTING_PRICE, TIERS } from '@/lib/pricing';
@@ -48,7 +48,6 @@ export default async function PlatformPage({ params }: { params: Promise<{ slug:
     <SiteShell variant="solid">
       <PageHero title={`Delta works inside ${p.name}.`} lead={p.does}>
         {p.page.live && <Tag>Connected at firms today</Tag>}
-        <Updated date={INTEGRATIONS_CHECKED}/>
       </PageHero>
       <Band title={`What Delta does in ${p.name}.`} split>
         <CheckColumns columns={[{ label: 'Reads', items: p.page.reads }, { label: 'Updates', items: p.page.updates }]}/>

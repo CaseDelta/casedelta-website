@@ -49,7 +49,7 @@ export interface SecurityClaim {
   answer: string;
 }
 
-/** Shown as "Updated <date>" on /security. Change it when a claim changes. */
+/** Last change to a claim. Feeds the sitemap lastmod. */
 export const SECURITY_UPDATED = "2026-09-25";
 
 export const SECURITY_CLAIMS: SecurityClaim[] = [
