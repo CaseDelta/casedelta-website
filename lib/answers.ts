@@ -32,7 +32,7 @@ export interface AnswerCategory {
   items: AnswerItem[];
 }
 
-/** Shown as "Updated <date>" on /answers. */
+/** Last change to an answer. Feeds the sitemap lastmod. */
 export const ANSWERS_UPDATED = "2026-09-25";
 
 /** Shared with /integrations and every platform page. Confirmed true by Camren 2026-09-25. */

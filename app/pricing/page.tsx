@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { BreadcrumbSchema } from '@/components/JsonLd';
 import { SiteShell } from '@/components/site/SiteShell';
-import { Band, Checklist, FactTable, PageHero, QAList, Updated } from '@/components/site/kit/kit';
+import { Band, Checklist, FactTable, PageHero, QAList } from '@/components/site/kit/kit';
 import { CtaBand } from '@/components/site/kit/CtaBand';
 import {
   ACCOUNT_COUNTS, INCLUDED, NEVER_CHANGES_PRICE, PRICE_LINE, PRICING_HEADING, PRICING_QA,
-  PRICING_TITLE, PRICING_UPDATED, SCALE_NOTE, STARTING_PRICE, TERM_NOTE, TIERS, perAccount,
+  PRICING_TITLE, SCALE_NOTE, STARTING_PRICE, TERM_NOTE, TIERS, perAccount,
 } from '@/lib/pricing';
 
 const URL = 'https://casedelta.com/pricing';
@@ -22,7 +22,6 @@ export default function PricingPage() {
     <BreadcrumbSchema items={[{ name: 'Home', url: 'https://casedelta.com' }, { name: 'Pricing', url: URL }]}/>
     <SiteShell variant="solid">
       <PageHero title={PRICING_HEADING} lead={`From ${STARTING_PRICE} a month for the firm, priced by account band, never per seat, month to month.`}>
-        <Updated date={PRICING_UPDATED}/>
       </PageHero>
       <Band title="Price by account band.">
         <FactTable caption="Monthly price for the firm" head={['Accounts', 'Price per firm, monthly', 'Per account', 'Automations']}

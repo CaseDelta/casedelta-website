@@ -168,7 +168,7 @@ export const PRICE_PARAGRAPH =
 /* ── /pricing and /answers. Everything below is composed from TIERS and the
    constants above; no number is typed twice. ── */
 
-/** Shown as "Updated <date>" on /pricing. Change it when a price or rule changes. */
+/** Last change to a price or rule. Feeds the sitemap lastmod. */
 export const PRICING_UPDATED = "2026-09-25";
 
 const FIRST = TIERS[0];

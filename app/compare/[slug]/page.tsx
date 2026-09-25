@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BreadcrumbSchema, FAQSchema } from '@/components/JsonLd';
 import { SiteShell } from '@/components/site/SiteShell';
-import { Band, Checklist, FactTable, PageHero, QAList, Updated } from '@/components/site/kit/kit';
+import { Band, Checklist, FactTable, PageHero, QAList } from '@/components/site/kit/kit';
 import { CtaBand } from '@/components/site/kit/CtaBand';
 import { CASEDELTA_ROW, COMPETITORS, ROW_LABELS, competitor } from '@/lib/compare';
 import c from '../compare.module.css';
@@ -27,7 +27,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-const checked = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 
 export default async function ComparePage({ params }: { params: Promise<{ slug: string }> }) {
   const x = competitor((await params).slug);
@@ -38,12 +37,11 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
     <FAQSchema faqs={x.qa.map((q) => ({ question: q.q, answer: q.a }))}/>
     <SiteShell variant="solid">
       <PageHero title={`CaseDelta vs ${x.name}`} lead={x.lead}>
-        <Updated date={x.checkedAt}/>
       </PageHero>
       <Band title="Side by side.">
         <div className={`${c.tableArea} ${x.columns.length > 1 ? c.tableWide : ''}`}><FactTable caption={`CaseDelta and ${x.name} compared`} head={['', 'CaseDelta', ...x.columns.map((col) => col.name)]}
           rows={ROW_LABELS.map((r) => [r.label, CASEDELTA_ROW[r.key], ...x.columns.map((col) => col.row[r.key])])}
-          note={`Competitor facts are from their public sites, checked ${checked(x.checkedAt)}. Sources below.`}/></div>
+          note="Competitor facts are from their public sites. Sources below."/></div>
       </Band>
       <Band title="Which one fits." tone="pale">
         <div className={c.choose}>
@@ -56,7 +54,6 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
       </Band>
       <Band title="Sources." split>
         <ul className={c.sources}>{x.sources.map((s) => <li key={s.url}><a href={s.url} rel="nofollow noopener" target="_blank">{s.label}</a></li>)}</ul>
-        <p className={c.checked}>Checked <time dateTime={x.checkedAt}>{checked(x.checkedAt)}</time>.</p>
       </Band>
       <CtaBand/>
     </SiteShell>

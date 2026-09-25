@@ -6,7 +6,6 @@
 .sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .sources li { font-size: var(--t-label); line-height: 1.5; color: var(--muted); }
 .sources a { color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; }
-.checked { margin-top: 22px; font-size: var(--t-label); color: var(--muted); }
 .us { font-weight: 500; }
 @media (max-width: 760px) {
   .choose { grid-template-columns: 1fr; gap: 48px; }

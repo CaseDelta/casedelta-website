@@ -45,7 +45,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <p className={b.meta}>
           <span>By CaseDelta</span>
           <span>Published <time dateTime={f.date}>{formatDate(f.date)}</time></span>
-          {f.updatedAt && f.updatedAt !== f.date && <span>Updated <time dateTime={f.updatedAt}>{formatDate(f.updatedAt)}</time></span>}
           <span>{readingTime(content)} min read</span>
         </p>
       </PageHero>

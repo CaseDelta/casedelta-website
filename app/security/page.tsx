@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { BreadcrumbSchema } from '@/components/JsonLd';
 import { SiteShell } from '@/components/site/SiteShell';
-import { Band, Checklist, PageHero, QAList, Updated } from '@/components/site/kit/kit';
+import { Band, Checklist, PageHero, QAList } from '@/components/site/kit/kit';
 import { CtaBand } from '@/components/site/kit/CtaBand';
-import { SECURITY_CLAIMS, SECURITY_GROUPS, SECURITY_PAGE, SECURITY_UPDATED, claim } from '@/lib/security';
+import { SECURITY_CLAIMS, SECURITY_GROUPS, SECURITY_PAGE, claim } from '@/lib/security';
 
 const URL = 'https://casedelta.com/security';
 const DESCRIPTION = SECURITY_CLAIMS.filter((c) => ['hipaa', 'training', 'isolation', 'encryption'].includes(c.id)).map((c) => c.answer.replace(/^(Yes|No)\. /, '')).join(' ');
@@ -21,7 +21,6 @@ export default function SecurityPage() {
     <BreadcrumbSchema items={[{ name: 'Home', url: 'https://casedelta.com' }, { name: 'Security', url: URL }]}/>
     <SiteShell variant="photo">
       <PageHero photo="/v2/ambient/valley-mist.webp" title={SECURITY_PAGE.heading} lead={SECURITY_PAGE.lead}>
-        <Updated date={SECURITY_UPDATED}/>
       </PageHero>
       <Band title="What is true today." tone="tint" split>
         <Checklist canLabel="In place for every firm" can={SECURITY_CLAIMS.map((c) => c.label)}/>
