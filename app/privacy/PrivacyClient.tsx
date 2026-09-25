@@ -11,8 +11,8 @@ import { LegalPage, LegalSection, LEGAL_LINK_STYLE } from "@/components/concept/
  *  - "Text messages": carrier registration for business texting (A2P 10DLC) checks
  *    that mobile numbers are never shared for marketing, and for STOP/HELP.
  */
-const SUPPORT = "support@casedelta.com";
-const Mail = () => <a href={`mailto:${SUPPORT}`} style={LEGAL_LINK_STYLE}>{SUPPORT}</a>;
+const CONCIERGE = "concierge@casedelta.com";
+const Mail = () => <a href={`mailto:${CONCIERGE}`} style={LEGAL_LINK_STYLE}>{CONCIERGE}</a>;
 
 export default function PrivacyClient() {
   return (

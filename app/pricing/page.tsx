@@ -5,7 +5,7 @@ import { Band, Checklist, FactTable, PageHero, QAList, Updated } from '@/compone
 import { CtaBand } from '@/components/site/kit/CtaBand';
 import {
   ACCOUNT_COUNTS, INCLUDED, NEVER_CHANGES_PRICE, PRICE_LINE, PRICING_HEADING, PRICING_QA,
-  PRICING_TITLE, PRICING_UPDATED, SCALE_NOTE, STARTING_PRICE, TIERS, perAccount,
+  PRICING_TITLE, PRICING_UPDATED, SCALE_NOTE, STARTING_PRICE, TERM_NOTE, TIERS, perAccount,
 } from '@/lib/pricing';
 
 const URL = 'https://casedelta.com/pricing';
@@ -21,13 +21,13 @@ export default function PricingPage() {
   return <>
     <BreadcrumbSchema items={[{ name: 'Home', url: 'https://casedelta.com' }, { name: 'Pricing', url: URL }]}/>
     <SiteShell variant="solid">
-      <PageHero title={PRICING_HEADING} lead={`From ${STARTING_PRICE} a month for the firm, priced by account band, never per seat.`}>
+      <PageHero title={PRICING_HEADING} lead={`From ${STARTING_PRICE} a month for the firm, priced by account band, never per seat, month to month.`}>
         <Updated date={PRICING_UPDATED}/>
       </PageHero>
       <Band title="Price by account band.">
         <FactTable caption="Monthly price for the firm" head={['Accounts', 'Price per firm, monthly', 'Per account', 'Automations']}
           rows={TIERS.map((t) => [t.band, t.price, perAccount(t), String(t.automations)])}
-          note={SCALE_NOTE}/>
+          note={`${TERM_NOTE} ${SCALE_NOTE}`}/>
       </Band>
       <Band title="What counts as an account." tone="pale" split>
         <Checklist canLabel="Counts as an account" can={ACCOUNT_COUNTS} cannotLabel="Does not count toward your band" cannot={NEVER_CHANGES_PRICE}/>
