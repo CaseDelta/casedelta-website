@@ -5,7 +5,7 @@ import { LegalPage, LegalSection, LEGAL_LINK_STYLE } from "@/components/concept/
  * individual features or platforms, so it does not need editing each time the
  * product changes. A signed order form or agreement with a firm overrides these.
  */
-const SUPPORT = "support@casedelta.com";
+const CONCIERGE = "concierge@casedelta.com";
 
 export default function TermsClient() {
   return (
@@ -63,7 +63,7 @@ export default function TermsClient() {
       </LegalSection>
 
       <LegalSection title="General">
-        <p>Kansas law governs these Terms. We may update these Terms; if a change is material, we will tell account holders by email or in the service before it takes effect, and continued use means acceptance. If any part is unenforceable, the rest remains in effect. Questions go to <a href={`mailto:${SUPPORT}`} style={LEGAL_LINK_STYLE}>{SUPPORT}</a>.</p>
+        <p>Kansas law governs these Terms. We may update these Terms; if a change is material, we will tell account holders by email or in the service before it takes effect, and continued use means acceptance. If any part is unenforceable, the rest remains in effect. Questions go to <a href={`mailto:${CONCIERGE}`} style={LEGAL_LINK_STYLE}>{CONCIERGE}</a>.</p>
       </LegalSection>
     </LegalPage>
   );

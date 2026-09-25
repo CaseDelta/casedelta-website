@@ -119,6 +119,9 @@ export const PRICE_UNIT = "per firm / month";
 export const SCALE_NOTE = "More than 40 accounts? Contact us for a custom plan.";
 
 /** The homepage #pricing heading. */
+/** Month to month, no lock-in (Camren, 2026-09-25). Shown under the price table on the home and /pricing. */
+export const TERM_NOTE = "Month to month, with no lock-in period.";
+
 export const PRICING_HEADING = "One flat price for the whole firm.";
 
 /** The lowest published price, for "starts at" phrasing. */
@@ -151,7 +154,7 @@ export const PRICE_CLAUSE =
  * room to say what the bands are.
  */
 export const PRICE_PARAGRAPH =
-  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20, and $4,099 for up to 40. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published, so a firm knows its cost before the demo.";
+  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20, and $4,099 for up to 40. There are no add-ons, no per-case or per-demand metering, and no setup fees. Plans are month to month with no lock-in period. The price is published, so a firm knows its cost before the demo.";
 
 /*
  * An INCLUDED list lived here and rendered as a checklist under the tiers, first
@@ -190,6 +193,7 @@ export const INCLUDED = [
   "The same product in every band",
   "Every system your firm signs into",
   `${FIRST.automations} to ${TIERS[TIERS.length - 1].automations} automations, by band`,
+  "Month to month, no lock-in",
   "No setup fee",
   "No per-case or per-document charge",
 ];
@@ -203,6 +207,8 @@ export const PRICING_QA: { id: string; question: string; answer: string }[] = [
     answer: "Every login is one account, whether it belongs to an attorney, a paralegal or other staff." },
   { id: "band", question: "Which band does my firm pay for?",
     answer: `The band your account count falls into. "Up to" is inclusive, so a firm with exactly ${FIRST.accounts} accounts pays ${FIRST.price} a month.` },
+  { id: "term", question: "Is there a contract or lock-in period?",
+    answer: "No. CaseDelta is month to month. Cancel any time, and access continues to the end of the month you paid for." },
   { id: "setup", question: "Is there a setup fee?", answer: "No. There are no setup fees and no add-ons." },
   { id: "metering", question: "Does CaseDelta charge per case or per document?",
     answer: "No. The price is flat for the firm. There is no per-case, per-demand or per-document charge." },

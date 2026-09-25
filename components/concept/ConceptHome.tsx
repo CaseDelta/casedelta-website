@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'framer-motion';
 import { ArrowUpRight, KeyRound, Lock, Pause, Play, ShieldCheck, Volume2, VolumeX } from 'lucide-react';
-import { PRICE_UNIT, PRICING_HEADING, SCALE_NOTE, TIERS } from '@/lib/pricing';
+import { PRICE_UNIT, PRICING_HEADING, SCALE_NOTE, TERM_NOTE, TIERS } from '@/lib/pricing';
 import { HOME_SECURITY, claim } from '@/lib/security';
 import { trackEvent } from '@/lib/posthog';
 import { SiteShell } from '@/components/site/SiteShell';
@@ -133,7 +133,7 @@ export function ConceptHome() {
       <section className={s.solution} id="work"><SolutionShowcase/></section>
       <ConnectBand id="how"/>
       <section className={s.privacy} id="privacy"><div className={`${s.container} ${s.privacyInner}`}><div><h2 data-reveal="words"><W>{HOME_SECURITY.heading}</W></h2><div data-reveal="up" data-delay=".5"><MoreLink href="/security">How we protect client data</MoreLink></div></div><ul className={s.privacyList} data-reveal="stagger" data-delay=".25">{HOME_SECURITY.points.map((id) => { const Icon = SECURITY_ICON[id] ?? ShieldCheck; return <li key={id}><i><Icon size={26}/></i>{claim(id).label}</li>; })}</ul></div></section>
-      <section className={s.pricing} id="pricing"><div className={s.container}><h2 className={s.pricingTitle} data-reveal="words"><W>{PRICING_HEADING}</W></h2><div className={s.priceTable} data-reveal="stagger" data-delay=".25">{TIERS.map(t => <a href={BOOK} key={t.accounts}><span>{t.band}</span><div><strong>{t.price}</strong><span>{PRICE_UNIT}</span></div><ArrowUpRight size={24}/></a>)}</div><p className={s.priceNote} data-reveal="up" data-delay=".6">{SCALE_NOTE}</p><div data-reveal="up" data-delay=".7"><MoreLink href="/pricing" onDark>See full pricing</MoreLink></div></div></section>
+      <section className={s.pricing} id="pricing"><div className={s.container}><h2 className={s.pricingTitle} data-reveal="words"><W>{PRICING_HEADING}</W></h2><div className={s.priceTable} data-reveal="stagger" data-delay=".25">{TIERS.map(t => <a href={BOOK} key={t.accounts}><span>{t.band}</span><div><strong>{t.price}</strong><span>{PRICE_UNIT}</span></div><ArrowUpRight size={24}/></a>)}</div><p className={s.priceNote} data-reveal="up" data-delay=".6">{TERM_NOTE} {SCALE_NOTE}</p><div data-reveal="up" data-delay=".7"><MoreLink href="/pricing" onDark>See full pricing</MoreLink></div></div></section>
       <CtaBand/>
   </SiteShell>;
 }
