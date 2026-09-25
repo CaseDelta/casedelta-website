@@ -17,6 +17,54 @@
  * reproduced explicitly here, where they can be read.
  */
 
+/* ─── Marketing palette: Blue hour ───
+ * FIVE colours. Everything on the marketing site is one of these, or one of
+ * them mixed into another. No sixth colour, no one-off hex, anywhere.
+ *
+ *   navy    #08162b   the dark. Body text, dark bands, and the scrim on photos.
+ *   blue    #27599b   the accent. Buttons, links, the Delta mark, focus rings.
+ *   tint    #d0dbe7   the pale blue surface. Alternating bands, the chat bubble.
+ *   paper   #f8fafb   the page.
+ *   orange  #e78340   the complement, at hue 24 against the blue at 214. Used
+ *                     sparingly and only to point: the underline in the headline,
+ *                     an inline link, the rating stars.
+ *
+ * White is not a palette colour, it is the absence of one, and is used only for
+ * cards that must lift off the page.
+ *
+ * Everything else is DERIVED with color-mix, so a grey is always the navy
+ * thinned into the paper and can never drift into a different family. Sections
+ * differ by which token they pick, never by a new colour.
+ */
+:root {
+  --navy: #08162b;
+  --blue: #27599b;
+  --tint: #d0dbe7;
+  --paper: #f8fafb;
+  --orange: #e78340;
+
+  --white: #ffffff;
+
+  /* derived: text */
+  --ink: var(--navy);
+  --muted: color-mix(in srgb, var(--navy) 58%, var(--paper));
+  --on-navy: color-mix(in srgb, var(--paper) 84%, var(--navy));
+  --blue-ink: color-mix(in srgb, var(--blue) 86%, var(--navy));
+
+  /* derived: lines and surfaces */
+  --line: color-mix(in srgb, var(--navy) 13%, var(--paper));
+  --pale: color-mix(in srgb, var(--tint) 46%, var(--paper));
+  --rule: color-mix(in srgb, var(--paper) 42%, transparent);
+  --rule-soft: color-mix(in srgb, var(--paper) 26%, transparent);
+
+  /* derived: photo scrim, one colour at many strengths */
+  --scrim: 8, 22, 43;
+
+  --shadow-s: 0 12px 30px color-mix(in srgb, var(--navy) 10%, transparent);
+  --shadow-m: 0 22px 60px color-mix(in srgb, var(--navy) 16%, transparent);
+  --shadow-l: 0 30px 80px color-mix(in srgb, var(--navy) 26%, transparent);
+}
+
 /* ─── Reset ─── */
 
 *,

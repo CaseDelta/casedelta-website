@@ -107,6 +107,20 @@ export const perAccount = (t: Tier) =>
   "$" + (t.monthly / t.accounts).toFixed(2);
 
 
+/** The unit under each price on the homepage and /pricing. */
+export const PRICE_UNIT = "per firm / month";
+
+/**
+ * The line under the homepage price table.
+ *
+ * Settled 2026-09-25 (Camren): past the top band is a conversation, not a published
+ * rate, matching the no-overflow decision at the top of this file.
+ */
+export const SCALE_NOTE = "More than 40 accounts? Contact us for a custom plan.";
+
+/** The homepage #pricing heading. */
+export const PRICING_HEADING = "One flat price for the whole firm.";
+
 /** The lowest published price, for "starts at" phrasing. */
 export const STARTING_PRICE = TIERS[0].price;
 
@@ -117,7 +131,7 @@ export const TOP_BAND_ACCOUNTS = TIERS[TIERS.length - 1].accounts;
  * The canonical one-line price, for a comparison table cell. A complete sentence.
  */
 export const PRICE_LINE =
-  "$599 to $4,099 a month per firm by account count. Flat, published, self-serve.";
+  "$599 to $4,099 a month per firm by account count. Flat and published.";
 
 /**
  * The same fact as a CLAUSE, with no internal sentence break, for dropping into
@@ -130,14 +144,14 @@ export const PRICE_LINE =
  * see. Never lowercase a sentence to make it fit a slot. Use this instead.
  */
 export const PRICE_CLAUSE =
-  "$599 to $4,099 a month for the firm by account count, flat, published, and self-serve";
+  "$599 to $4,099 a month for the firm by account count, flat and published";
 
 /**
  * The canonical paragraph, for FAQ answers and page descriptions where there is
  * room to say what the bands are.
  */
 export const PRICE_PARAGRAPH =
-  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20, and $4,099 for up to 40. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published and self-serve, so a firm knows its cost before the demo.";
+  "CaseDelta is priced per firm by account count, not per seat: $599 a month for up to 5 accounts, $1,099 for up to 10, $2,099 for up to 20, and $4,099 for up to 40. There are no add-ons, no per-case or per-demand metering, and no setup fees. The price is published, so a firm knows its cost before the demo.";
 
 /*
  * An INCLUDED list lived here and rendered as a checklist under the tiers, first
@@ -147,3 +161,53 @@ export const PRICE_PARAGRAPH =
  * show it. If a list like this comes back, it needs a surface of its own, not a
  * card wedged under the prices.
  */
+
+/* ── /pricing and /answers. Everything below is composed from TIERS and the
+   constants above; no number is typed twice. ── */
+
+/** Shown as "Updated <date>" on /pricing. Change it when a price or rule changes. */
+export const PRICING_UPDATED = "2026-09-25";
+
+const FIRST = TIERS[0];
+
+/** The /pricing title, written as the answer to "CaseDelta pricing". */
+export const PRICING_TITLE = `CaseDelta pricing: ${FIRST.price} a month for up to ${FIRST.accounts} accounts`;
+
+/**
+ * What an account is. Every login, attorney or not (see the UNLIMITED STAFF note
+ * at the top of this file: paralegals and staff are NOT free).
+ */
+export const ACCOUNT_COUNTS = ["Every attorney who signs in", "Every paralegal or staff member who signs in"];
+
+/** What never moves the price. True because the price is flat per band, with no metering and no add-ons. */
+export const NEVER_CHANGES_PRICE = ["Adding a case", "A large document set", "Connecting another system"];
+
+/**
+ * What every band includes. The value is identical across bands (see the top of
+ * this file); only the account limit and the automations included differ.
+ */
+export const INCLUDED = [
+  "The same product in every band",
+  "Every system your firm signs into",
+  `${FIRST.automations} to ${TIERS[TIERS.length - 1].automations} automations, by band`,
+  "No setup fee",
+  "No per-case or per-document charge",
+];
+
+/** Pricing questions, one to three sentences each, facts only. Read by /pricing and /answers. */
+export const PRICING_QA: { id: string; question: string; answer: string }[] = [
+  { id: "cost", question: "How much does CaseDelta cost?", answer: PRICE_PARAGRAPH },
+  { id: "per-seat", question: "Is CaseDelta priced per seat?",
+    answer: "No. CaseDelta is priced per firm by account band. There is no per-seat multiplier, and the price does not move as a firm adds people inside its band." },
+  { id: "account", question: "What counts as an account?",
+    answer: "Every login is one account, whether it belongs to an attorney, a paralegal or other staff." },
+  { id: "band", question: "Which band does my firm pay for?",
+    answer: `The band your account count falls into. "Up to" is inclusive, so a firm with exactly ${FIRST.accounts} accounts pays ${FIRST.price} a month.` },
+  { id: "setup", question: "Is there a setup fee?", answer: "No. There are no setup fees and no add-ons." },
+  { id: "metering", question: "Does CaseDelta charge per case or per document?",
+    answer: "No. The price is flat for the firm. There is no per-case, per-demand or per-document charge." },
+  { id: "bands", question: "Do higher bands get more features?",
+    answer: "No. Every band gets the same product. Only the account limit and the number of automations included change." },
+  // Settled 2026-09-25 (Camren): past 40 is a custom plan, "contact us".
+  { id: "past-top", question: `What happens past ${TOP_BAND_ACCOUNTS} accounts?`, answer: "Contact us and we set up a custom plan for your firm." },
+];

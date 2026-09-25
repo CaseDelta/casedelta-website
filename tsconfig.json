@@ -23,7 +23,6 @@
       }
     ],
     "paths": {
-      "delta-ui/*": ["./vendor/delta-ui/src/*"],
       "@/*": [
         "./*"
       ]
@@ -37,9 +36,6 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "vendor/**/*.test.ts",
-    "vendor/**/*.test.tsx",
-    "vendor/**/scripts/**",
     "node_modules",
     "_backup"
   ]

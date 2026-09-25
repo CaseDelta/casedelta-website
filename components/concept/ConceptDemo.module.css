@@ -5,11 +5,11 @@
 .title em{font-style:normal;color:var(--blue)}
 .widget{width:100%;max-width:560px;position:relative}
 .frame{display:block;position:relative;width:100%;height:440px;border:0;opacity:0;transition:opacity .25s}
-.skeleton{position:absolute;top:0;left:0;right:0;max-width:480px;margin:auto;height:421px;border:1px solid #e5e7eb;border-radius:6px;background:var(--white);overflow:hidden}
-.skTop{height:52px;border-bottom:1px solid #e5e7eb}
+.skeleton{position:absolute;top:0;left:0;right:0;max-width:480px;margin:auto;height:421px;border:1px solid var(--line);border-radius:6px;background:var(--white);overflow:hidden}
+.skTop{height:52px;border-bottom:1px solid var(--line)}
 .skBody{padding:26px 20px;display:flex;flex-direction:column;gap:16px}
-.skTitle,.skLine,.skField,.skButton{border-radius:6px;background:#eef1f5;animation:sk 1.2s ease-in-out infinite alternate}
-.skTitle{height:20px;width:45%}.skLine{height:14px;width:80%}.skField{height:40px}.skButton{height:44px;margin-top:40px;background:#5170ff;opacity:.35}
+.skTitle,.skLine,.skField,.skButton{border-radius:6px;background:var(--pale);animation:sk 1.2s ease-in-out infinite alternate}
+.skTitle{height:20px;width:45%}.skLine{height:14px;width:80%}.skField{height:40px}.skButton{height:44px;margin-top:40px;background:var(--blue);opacity:.35}
 @keyframes sk{to{opacity:.55}}
 @media(prefers-reduced-motion:reduce){.skTitle,.skLine,.skField,.skButton{animation:none}}
 .right{display:flex;flex-direction:column;gap:44px}

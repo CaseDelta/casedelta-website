@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { COMPARE_LINKS } from "./lib/compare-links";
 
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
@@ -43,6 +44,8 @@ const nextConfig: NextConfig = {
       // Old pages that no longer exist — redirect to homepage
       { source: "/download", destination: "/", permanent: true },
       { source: "/contact", destination: "/", permanent: true },
+      // /about carried founder and company details, removed from the site 2026-09-25.
+      { source: "/about", destination: "/", permanent: true },
       { source: "/book-a-demo", destination: "/demo", permanent: true },
       { source: "/book-demo", destination: "/demo", permanent: true },
 
@@ -78,12 +81,13 @@ const nextConfig: NextConfig = {
       //   /features   -> #work      the recorded Delta run (homepage promoted 2026-09-12)
       //   /use-cases  -> #work      same section; the practice-area pages argued capability
       //   /compare    -> #work      the new homepage has no comparison table
-      //   /security   -> #privacy   Built for confidential work
-      //   /pricing    -> #pricing   Pricing
+      //
+      // /pricing and /security were the other two; they are real pages again as of
+      // 2026-09-25 (built on the site kit), so their redirects are gone.
       //
       // A fragment survives a 308: the hash rides in the Location header and the browser
       // applies it after following the redirect. Search engines drop it and consolidate
-      // all five into "/", which is the accepted cost of collapsing them.
+      // them into "/", which is the accepted cost of collapsing them.
       //
       // The :slug forms must come FIRST. Next matches redirects in array order, and a bare
       // "/compare" source does not match "/compare/casedelta-vs-clio", so a child left
@@ -91,16 +95,23 @@ const nextConfig: NextConfig = {
       { source: "/features", destination: "/#work", permanent: true },
       { source: "/use-cases/:slug", destination: "/#work", permanent: true },
       { source: "/use-cases", destination: "/#work", permanent: true },
-      { source: "/compare/:slug", destination: "/#work", permanent: true },
-      { source: "/compare", destination: "/#work", permanent: true },
-      { source: "/security", destination: "/#privacy", permanent: true },
-      { source: "/pricing", destination: "/#pricing", permanent: true },
+      // Every OLD comparison slug still goes to the homepage; the ten pages in
+      // lib/compare.ts (via lib/compare-links.ts) are real pages and are excluded.
+      { source: `/compare/:slug((?!(?:${COMPARE_LINKS.map((c) => c.slug).join("|")})$).*)`, destination: "/compare", permanent: true },
 
       // Old legal page path → current path. The /legal/* paths are also what
       // Google's OAuth consent screen links to for Privacy Policy and Terms of
       // Service, so they must remain valid permanently.
       { source: "/legal/privacy-policy", destination: "/privacy", permanent: true },
       { source: "/legal/terms-of-service", destination: "/terms", permanent: true },
+
+      // The blog was cut to four posts on 2026-09-25. Each cut post goes to the page
+      // that now answers its question; tag pages are gone and go to the index.
+      { source: "/blog/ai-for-law-firms-guide", destination: "/blog/best-ai-personal-injury-law-firms", permanent: true },
+      { source: "/blog/why-legal-ai-forgets-your-firm", destination: "/compare/casedelta-vs-chatgpt", permanent: true },
+      { source: "/blog/reduce-client-follow-up-ai", destination: "/integrations", permanent: true },
+      { source: "/blog/legal-ai-security-aba-rule-1-6", destination: "/security", permanent: true },
+      { source: "/blog/tag/:tag*", destination: "/blog", permanent: true },
 
       // Old blog posts that were removed — redirect to blog index
       { source: "/blog/building-brand-loyalty-through-exceptional-customer-support", destination: "/blog", permanent: true },

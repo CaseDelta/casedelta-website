@@ -42,12 +42,10 @@ the section carrying their argument (re-aimed at the concept homepage's anchors 
 | `/features` | `/#work` | 02 Ask. Then review., the recorded run |
 | `/use-cases`, `/use-cases/:slug` | `/#work` | same section |
 | `/compare`, `/compare/:slug` | `/#work` | same section |
-| `/security` | `/#privacy` | 05 privacy |
-| `/pricing` | `/#pricing` | 06 pricing |
 
 `/concept`, `/concept/privacy` and `/concept/terms` redirect to `/`, `/privacy` and `/terms`.
 
-Do not recreate any of them. Five pages restating what the homepage already says is how
+**Exception, 2026-09-25:** `/pricing` and `/security` are real pages again, built on the site kit (`components/site/`) and composed from `lib/pricing.ts` and `lib/security.ts`, so they cannot drift from the homepage. Do not recreate the others. Five pages restating what the homepage already says is how
 the site came to publish two different prices at the same time.
 
 - **A `:slug` redirect must sit ABOVE its parent** in `next.config.ts`. Next matches in
@@ -169,16 +167,17 @@ once and a prospect could read both in one session.
 
 ## The blog
 
-DB-backed. Posts ship without a code push. Full detail in `docs/BLOG_CMS.md`.
+**MDX files in `content/blog/`, nothing else** (since 2026-09-25). Four posts. A post is a
+file, reviewed in a PR like any page. The Supabase `marketing_blog_posts` table and the
+autonomous `blog_writer` that fed it are retired: the writer's launchd job was unloaded,
+the GTM engine that inherited it is deleted, its last row was 2026-06-15, and the three
+published rows were exported to MDX verbatim before editing. `/api/revalidate` is gone.
+The table still exists in prod Supabase and nothing reads it.
 
-1. `INSERT` into Supabase `public.marketing_blog_posts` with `status='published'`.
-2. `POST /api/revalidate?secret=$REVALIDATE_SECRET` with the paths to refresh.
-
-- Generation is autonomous: the `blog_writer` skill in the GTM engine researches, writes
-  and **auto-publishes with no human review**. It lives in `openclaw-vps/engine/skills/`,
-  not here.
-- `content/blog/*.mdx` still render and merge by slug, **DB wins**. They are the fallback
-  when the DB is unreachable, so the site never breaks.
+- Frontmatter: `title`, `description`, `date`, optional `updatedAt`, optional `related`
+  (links under the post). Posts may use `<BuyersTable />` and `<BuyersEntries />` from
+  `components/site/blog/mdx.tsx`, which read `lib/compare.ts`.
+- Cut posts and `/blog/tag/*` redirect in `next.config.ts`.
 - `lib/blog-format.ts` holds `formatDate` and `readingTime` because the post page is a
   server component and calls them. **A plain function exported from a `"use client"`
   module cannot be called from the server**; React treats it as a client reference and
@@ -215,8 +214,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://...
 NEXT_PUBLIC_META_PIXEL_ID=957094783732140  # inlined at build time, a swap needs a redeploy
 NEXT_PUBLIC_LINKEDIN_PARTNER_ID=...
 NEXT_PUBLIC_DEMO_BOOKING_URL=...           # Google appointment scheduler the /demo button opens
-DATABASE_URL=postgres://...                # blog CMS. No sslmode; the pool sets SSL. Unset = file-only blog
-REVALIDATE_SECRET=...                      # authorizes POST /api/revalidate
+DATABASE_URL=postgres://...                # /api/lead writes the CRM. No sslmode; the pool sets SSL
 DELTA_UI_TOKEN=...                         # Vercel only (Production + Preview, Secret): read-only token for casedelta-delta-ui
 # NEXT_PUBLIC_LINKEDIN_DEMO_STARTED_CONVERSION_ID / _BOOKED_  optional, deferred until LinkedIn ads launch
 ```

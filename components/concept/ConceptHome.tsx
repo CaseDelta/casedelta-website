@@ -1,50 +1,62 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
-import { ArrowUpRight, Check, FileText, Mail, FolderOpen, Pause, Play, Plus, X } from 'lucide-react';
-import { TIERS } from '@/lib/pricing';
-import { LOGO } from '@/components/v2/sasonix/brand';
+import { useEffect, useRef, useState } from 'react';
+import { useInView } from 'framer-motion';
+import { ArrowUpRight, KeyRound, Lock, Pause, Play, ShieldCheck, Volume2, VolumeX } from 'lucide-react';
+import { PRICE_UNIT, PRICING_HEADING, SCALE_NOTE, TIERS } from '@/lib/pricing';
+import { HOME_SECURITY, claim } from '@/lib/security';
 import { trackEvent } from '@/lib/posthog';
-import { SmoothScroll } from '@/components/v2/sasonix/SmoothScroll';
+import { SiteShell } from '@/components/site/SiteShell';
+import { BOOK_HREF } from '@/components/site/nav';
+import { CtaBand } from '@/components/site/kit/CtaBand';
+import { ConnectBand } from '@/components/site/kit/ConnectBand';
+import { MoreLink } from '@/components/site/kit/kit';
 import s from './ConceptHome.module.css';
-import dynamic from 'next/dynamic';
-// Client only: the product's components assume a browser (portals, timers), and
-// the replay's code has no business in the first paint.
-const DeltaReplay = dynamic(() => import('@/components/replay/DeltaReplay').then((m) => m.DeltaReplay), { ssr: false });
-import type { Scenario } from 'delta-ui/scenario/types';
-import type { ReplayPhase } from '@/components/replay/DeltaReplay';
-import CHRONOLOGY from '@/content/replay/morgan-chronology.json';
+import { SystemMap, MAP_STEPS } from './SystemMap';
+import { W, useCalm } from './motion';
 
-const BOOK = '/demo';
-const PROMPT = 'Build a treatment chronology from the Morgan records I attached. Cite every entry.';
-const chapters = [
-  { name: 'The request', title: 'Start with the work.', copy: 'Ask Delta for a treatment chronology, with a source for every entry.' },
-  { name: 'The work', title: 'Follow the record.', copy: 'Delta reads each record, keeps track of where every fact came from, and says what it is doing as it goes.' },
-  { name: 'The result', title: 'A chronology you can check.', copy: 'Read the sequence. Open the source. Review the work before you use it.' },
+const BOOK = BOOK_HREF;
+// The icon beside each security claim on the #privacy band, by claim id.
+const SECURITY_ICON: Record<string, typeof Lock> = { hipaa: ShieldCheck, training: Lock, 'in-place': KeyRound };
+// The solution section: the three things Delta does, as a list on the left that
+// walks itself, with the system map on the right lighting the systems each one uses.
+//
+// Auto-advance every 5s, click a row to jump, hover to hold. The progress line
+// is keyed on the active index so it restarts cleanly, and reduced motion turns
+// the whole thing into a plain list with the first card showing.
+const SOLUTION_STEPS = [
+  { title: 'Pull reports across the entire firm' },
+  { title: 'Update cases, build spreadsheets, and draft documents' },
+  { title: 'Set Delta to run on a schedule' },
 ];
-function DemoGraphic() {
-  // The chapters follow the recorded run: the request, Delta working through
-  // the records, and the cited result. Play runs the real timeline; a chapter
-  // button jumps to that state. Reduced motion skips straight to the result.
-  const reduced = useReducedMotion();
-  const [chapter, setChapter] = useState(reduced ? 2 : 0);
-  const playing = chapter === 1;
-  const phase: ReplayPhase = chapter === 0 ? 'request' : chapter === 1 ? 'working' : 'result';
-  const finish = useCallback(() => setChapter(2), []);
-  return <div className={s.demonstration}>
-    
-    <div className={s.demoStage}>
-      <div className={s.demoNarrative}><h3>{chapters[chapter].title}</h3><p>{chapters[chapter].copy}</p></div>
-      <div className={s.graphic} aria-live="polite">
-        <div className={s.graphicTop}><span className={s.deltaMark}><img src={LOGO.mark} alt="" /></span><strong>Delta</strong><span className={s.graphicContext}>Treatment chronology</span></div>
-        <div className={s.replayScene}>
-          <p className={s.prompt}>{PROMPT}</p>
-          <div className={s.attachment}><FileText size={23}/><div><strong>Morgan · Medical records</strong><span>3 fictional records</span></div></div>
-          <DeltaReplay scenario={CHRONOLOGY as unknown as Scenario} phase={phase} onFinished={finish} />
-        </div>
-      </div>
+const STEP_MS = 5000;
+
+function SolutionShowcase() {
+  const reduced = useCalm();
+  const [active, setActive] = useState(0);
+  const [held, setHeld] = useState(false);
+  const box = useRef<HTMLDivElement>(null);
+  const inView = useInView(box, { amount: 0.35 });
+  useEffect(() => {
+    if (reduced || held || !inView) return;
+    const id = setTimeout(() => setActive((i) => (i + 1) % SOLUTION_STEPS.length), STEP_MS);
+    return () => clearTimeout(id);
+  }, [active, held, reduced, inView]);
+  return <div ref={box} className={`${s.container} ${s.solutionInner}`}>
+    <div className={s.solutionCopy}>
+      <h2 data-reveal="words"><W>CaseDelta pulls case details, keeps the file updated, and automates entire workflows</W> <span><W>across the system your firm already uses.</W></span></h2>
+      <ul className={s.steps} data-reveal="stagger" data-delay=".35" onMouseEnter={() => setHeld(true)} onMouseLeave={() => setHeld(false)}>
+        {SOLUTION_STEPS.map((step, i) => <li key={step.title} className={i === active ? s.stepOn : undefined}>
+          <button type="button" onClick={() => setActive(i)} aria-current={i === active}>
+            <span className={s.stepText}><h3>{step.title}</h3><small>{MAP_STEPS[i].systems}</small></span>
+            <ArrowUpRight size={20}/>
+          </button>
+          <span className={s.stepRail} aria-hidden="true">
+            {i === active && !reduced && <span key={active} className={s.stepFill} style={{ animationDuration: `${STEP_MS}ms`, animationPlayState: held ? 'paused' : 'running' }}/>}
+          </span>
+        </li>)}
+      </ul>
     </div>
-    <div className={s.demoControls}><div className={s.chapters}>{chapters.map((item,i) => <button aria-pressed={chapter === i} onClick={() => setChapter(reduced && i === 1 ? 2 : i)} key={item.name}><span>0{i+1}</span>{item.name}</button>)}</div><button className={s.play} onClick={() => setChapter(playing ? 2 : reduced ? 2 : 1)} aria-label={playing ? 'Skip to the result' : 'Play the recorded run'}>{playing ? <Pause size={19}/> : <Play size={19}/>}<span>{playing ? 'Skip to result' : chapter === 2 ? 'Play again' : 'Play the run'}</span></button></div>
+    <div className={s.solutionStage} data-reveal="map"><SystemMap active={active} still={!!reduced}/></div>
   </div>;
 }
 // The hero's phone box, as on sendblue.com: a number is the only ask here. It
@@ -65,54 +77,63 @@ function HeroBook() {
   };
   return <div className={`${s.heroBook} ${s.heroCta}`}>
     <form className={s.bookCard} onSubmit={submit}>
-      <h2>Get a demo</h2>
+      <h2>Get info</h2>
       <div className={s.bookRow}>
         <label className={s.bookPhone}><span className={s.bookCountry} aria-hidden="true">🇺🇸 +1</span>
           <input type="tel" inputMode="tel" autoComplete="tel-national" aria-label="Your mobile number" placeholder="Enter your number" value={shown}
             onChange={(e) => { let d = e.target.value.replace(/\D/g, ''); if (d.length === 11 && d.startsWith('1')) d = d.slice(1); setDigits(d.slice(0, 10)); }}/></label>
         <button type="submit" disabled={!ready}>Submit</button>
       </div>
+      <p className={s.rating}><svg className={s.googleMark} width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2045c0-.6381-.0573-1.2518-.1636-1.8409H9v3.4814h4.8436c-.2086 1.125-.8427 2.0782-1.7959 2.7164v2.2582h2.9087c1.7018-1.5668 2.6836-3.874 2.6836-6.6151z"/><path fill="#34A853" d="M9 18c2.43 0 4.4673-.806 5.9564-2.1805l-2.9087-2.2582c-.8059.54-1.8368.859-3.0477.859-2.344 0-4.3282-1.5831-5.036-3.7104H.9574v2.3318C2.4382 15.9832 5.4818 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.2822-1.1168-.2822-1.71s.1023-1.17.2823-1.71V4.9582H.9573A8.9965 8.9965 0 0 0 0 9c0 1.4523.3477 2.8268.9573 4.0418L3.964 10.71z"/><path fill="#EA4335" d="M9 3.5795c1.3214 0 2.5077.4541 3.4405 1.346l2.5813-2.5814C13.4636.8918 11.426 0 9 0 5.4818 0 2.4382 2.0168.9573 4.9582L3.964 7.29C4.6718 5.1627 6.656 3.5795 9 3.5795z"/></svg><strong>4.8</strong><span className={s.stars} role="img" aria-label="Rated 4.8 out of 5 on Google"><span className={s.starsBase} aria-hidden="true"><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg></span><span className={s.starsFill} aria-hidden="true"><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg><svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.472 5.008 5.528.803-4 3.898.944 5.506L10 15.117l-4.944 2.598.944-5.506-4-3.898 5.528-.803L10 1.5z"/></svg></span></span></p>
     </form>
-    <p className={s.rating}><span aria-hidden="true">★★★★★</span> 5.0 rating</p>
+    
   </div>;
 }
-export function ConceptHome() {
-  const [menu, setMenu] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const menuRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const scroll = () => setScrolled(window.scrollY > 40);
-    scroll(); window.addEventListener('scroll',scroll,{passive:true});
-    const escape = (e: KeyboardEvent) => { if (e.key === 'Escape' && menuRef.current?.getAttribute('aria-expanded') === 'true') { setMenu(false); menuRef.current?.focus(); } };
-    window.addEventListener('keydown',escape);
-    return () => { window.removeEventListener('scroll',scroll); window.removeEventListener('keydown',escape); };
-  }, []);
-  return <div className={s.site}>
-    <SmoothScroll/>
-    <a className={s.skip} href="#content">Skip to content</a>
-    <header className={`${s.navigation} ${scrolled || menu ? s.navigationSolid : ''}`}>
-      <a href="/" aria-label="CaseDelta home"><img className={s.logo} src={scrolled || menu ? LOGO.onLight : LOGO.onDark} alt="CaseDelta"/></a>
-      <nav className={s.desktopNav} aria-label="Main navigation"><a href="#work">The work</a><a href="#connections">Your systems</a><a href="#pricing">Pricing</a></nav>
-      <div className={s.navActions}><a className={s.login} href="https://app.casedelta.com">Log in</a><a className={s.navBook} href={BOOK}>Book a demo <ArrowUpRight size={18}/></a><button ref={menuRef} className={s.menuButton} aria-expanded={menu} aria-controls="concept-menu" aria-label={menu ? 'Close menu' : 'Open menu'} onClick={() => setMenu(!menu)}>{menu ? <X/> : <Plus/>}</button></div>
-      {menu && <nav id="concept-menu" className={s.mobileNav} aria-label="Mobile navigation">{[['The work','#work'],['Your systems','#connections'],['Pricing','#pricing'],['Questions','#questions']].map(([name,href])=><a key={href} href={href} onClick={()=>setMenu(false)}>{name}<ArrowUpRight/></a>)}</nav>}
-    </header>
-    <main id="content">
-      <section className={s.hero}>
-        <img className={s.heroImage} src="/v2/ambient/mountain.webp" alt="" fetchPriority="high"/>
-        <div className={s.heroShade}/>
-        <div className={s.heroContent}><h1 className={s.heroTitle}><span>Meet Delta</span></h1><div className={s.heroBottom}><div><p className={s.heroLead}><span>The only legal AI that works your case, no matter where it lives.</span><span>Run like a firm twice your size, without changing the way you work.</span></p><HeroBook/></div></div></div>
-      </section>
-      <section className={`${s.problem} ${s.container}`} id="problem"><div><h2>Your entire firm is<br/>bottlenecked by what<br/><span>your team can handle.</span></h2></div></section>
-      <section className={s.work} id="work"><div className={`${s.sectionHeading} ${s.container}`}><div><h2>Ask. Then review.</h2></div><p>A practical look at how one request becomes work your team can check.</p></div><DemoGraphic/></section>
-      <section className={s.quotePhoto}><div className={s.pastel}/><div className={s.photoShade}/><div className={s.quoteInner}><blockquote>“It signed into the verdict database we pay for and pulled the five biggest results in my circuit for a two-level lumbar with no fusion, in today's dollars.”</blockquote><p className={s.attribution}>James Recker</p></div></section>
-      <section className={`${s.connections} ${s.container}`} id="connections"><div className={s.connectionIntro}><h2>Your systems.<br/>One associate.</h2><p>The case file is in one place. The email is in another. Delta works across the tools your firm already uses.</p></div><div className={s.connectionMap}><div className={s.mapCenter}><img src={LOGO.mark} alt=""/><span>Delta</span></div><div className={s.mapBranches}>{[[FolderOpen,'Case management','Filevine · Clio · MyCase'],[Mail,'Email','Outlook · Gmail'],[FileText,'Documents','Google Drive · Dropbox']].map(([Icon,title,detail]) => { const Symbol = Icon as typeof FolderOpen; return <div key={String(title)} className={s.mapRow}><Symbol size={25}/><div><strong>{String(title)}</strong><span>{String(detail)}</span></div></div>; })}</div></div></section>
-      <section className={s.oversight}><div className={s.oversightPhoto}><img src="/concept/media/coastal-blue-hour.png" alt="A quiet, misty coastline under blue and pink evening light" loading="lazy"/></div><div className={s.oversightCopy}><h2>More support.<br/>The same standards.</h2><div className={s.ruleRow}><span>01</span><div><h3>Check the sources.</h3></div></div><div className={s.ruleRow}><span>02</span><div><h3>Direct the work.</h3></div></div><div className={s.ruleRow}><span>03</span><div><h3>Review before use.</h3></div></div></div></section>
-      <section className={`${s.secondQuote} ${s.container}`}><span className={s.quoteGlyph} aria-hidden="true">“</span><div><blockquote>In our demo, it already found $400,000 sitting in cases we had already settled, and named what was blocking each one.</blockquote><p className={s.attribution}>Alan Poletti</p></div></section>
-      <section className={s.privacy} id="privacy"><div className={s.container}><div><h2>Your firm’s data.<br/>Handled with care.</h2></div><div className={s.privacyDetails}><p>Encrypted in transit and at rest. Never used to train AI models.</p></div></div></section>
-      <section className={`${s.pricing} ${s.container}`} id="pricing"><div className={s.sectionHeading}><div><h2>One firm.<br/>One monthly price.</h2></div><p>Choose the account band that fits your team. Every login counts, including attorneys, paralegals, and staff.</p></div><div className={s.priceTable}>{TIERS.map(t => <a href={BOOK} key={t.accounts}><span>{t.band}</span><div><strong>{t.price}</strong><span>per firm / month</span></div><ArrowUpRight size={24}/></a>)}</div></section>
-      <section className={`${s.faq} ${s.container}`} id="questions"><div><h2>A few good<br/>questions.</h2></div><div>{[['Do we have to move our files?','Delta connects to the systems your firm already uses. Your team can keep its existing case management, email, and document workflow.'],['What work can we give Delta?','Start with a concrete task: review a file, build a cited chronology, find missing information, or draft a document. Your team reviews the result before using it.'],['Does Delta replace attorney review?','No. Delta supports your team. Attorneys remain responsible for legal judgment, checking the sources, and approving the work.'],['What happens in a demo?','We walk through a representative case task and show how Delta works with connected systems. You can ask about your firm’s tools and the work you want to hand over.']].map(([question,answer])=><details key={question}><summary>{question}<Plus size={22}/></summary><p>{answer}</p></details>)}</div></section>
-      <section className={s.close}><div className={s.closeImage}/><div className={s.closeShade}/><div className={s.closeInner}><h2>Bring the work<br/>that’s waiting.</h2><p>See what handing it to Delta looks like.</p><a className={s.primary} href={BOOK}>Book a demo <ArrowUpRight size={21}/></a></div></section>
-    </main>
-    <footer className={`${s.footer} ${s.container}`}><div><a href="/"><img src={LOGO.onLight} alt="CaseDelta" className={s.logo}/></a><p>An AI associate for law firms.</p></div><nav aria-label="Footer"><a href="#work">The work</a><a href="#pricing">Pricing</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:camren@casedelta.com">Contact</a></nav><div className={s.copyright}><span>© 2026 CaseDelta</span></div></footer>
+// The hero film. Click anywhere on it to play or pause; the controls only
+// appear on hover so the picture is uninterrupted the rest of the time. It
+// starts muted because a browser will not autoplay a film with sound.
+function HeroFilm() {
+  const video = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(true);
+  const [muted, setMuted] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const toggle = () => { const el = video.current; if (!el) return; if (el.paused) { el.play(); } else { el.pause(); } };
+  const sound = (e: React.MouseEvent) => { e.stopPropagation(); const el = video.current; if (!el) return; el.muted = !el.muted; setMuted(el.muted); };
+  const seek = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const el = video.current; if (!el || !el.duration) return;
+    const box = e.currentTarget.getBoundingClientRect();
+    el.currentTime = ((e.clientX - box.left) / box.width) * el.duration;
+  };
+  return <div className={s.heroFilm} data-reveal="scale" data-delay=".5">
+    <video ref={video} src="/concept/media/hero-spot-v08.mp4" poster="/concept/media/hero-spot-v08-poster.jpg"
+      autoPlay muted loop playsInline preload="metadata" disablePictureInPicture disableRemotePlayback controlsList="nodownload noplaybackrate nofullscreen" aria-label="A short film of Delta at work"
+      onClick={toggle} onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
+      onTimeUpdate={(e) => { const el = e.currentTarget; if (el.duration) setProgress((el.currentTime / el.duration) * 100); }}/>
+    <div className={s.filmControls}>
+      <button type="button" className={s.filmButton} onClick={toggle} aria-label={playing ? 'Pause the film' : 'Play the film'}>
+        {playing ? <Pause size={16}/> : <Play size={16}/>}
+      </button>
+      <div className={s.filmTrack} onClick={seek} role="presentation"><span style={{ width: `${progress}%` }}/></div>
+      <button type="button" className={s.filmButton} onClick={sound} aria-label={muted ? 'Unmute the film' : 'Mute the film'}>
+        {muted ? <VolumeX size={16}/> : <Volume2 size={16}/>}
+      </button>
+    </div>
   </div>;
+}
+
+export function ConceptHome() {
+  return <SiteShell variant="photo" home>
+      <section className={s.hero}>
+        <img className={s.heroImage} data-parallax=".08" src="/v2/ambient/mountain.webp" alt="" fetchPriority="high"/>
+        <div className={s.heroShade}/>
+        <div className={s.heroContent}><div className={s.heroCopy}><h1 className={s.heroTitle}><span>Run the firm like there were <em className={s.heroEm}>100 of you.</em></span></h1><HeroBook/></div><HeroFilm/></div>
+      </section>
+      <section className={s.problem} id="problem"><div className={`${s.container} ${s.problemInner}`}><h2 data-reveal="words"><W>Your case info lives in several places that</W> <span className={s.problemRule}><W>don’t talk to each other.</W></span></h2></div></section>
+      <section className={s.solution} id="work"><SolutionShowcase/></section>
+      <ConnectBand id="how"/>
+      <section className={s.privacy} id="privacy"><div className={`${s.container} ${s.privacyInner}`}><div><h2 data-reveal="words"><W>{HOME_SECURITY.heading}</W></h2><div data-reveal="up" data-delay=".5"><MoreLink href="/security">How we protect client data</MoreLink></div></div><ul className={s.privacyList} data-reveal="stagger" data-delay=".25">{HOME_SECURITY.points.map((id) => { const Icon = SECURITY_ICON[id] ?? ShieldCheck; return <li key={id}><i><Icon size={26}/></i>{claim(id).label}</li>; })}</ul></div></section>
+      <section className={s.pricing} id="pricing"><div className={s.container}><h2 className={s.pricingTitle} data-reveal="words"><W>{PRICING_HEADING}</W></h2><div className={s.priceTable} data-reveal="stagger" data-delay=".25">{TIERS.map(t => <a href={BOOK} key={t.accounts}><span>{t.band}</span><div><strong>{t.price}</strong><span>{PRICE_UNIT}</span></div><ArrowUpRight size={24}/></a>)}</div><p className={s.priceNote} data-reveal="up" data-delay=".6">{SCALE_NOTE}</p><div data-reveal="up" data-delay=".7"><MoreLink href="/pricing" onDark>See full pricing</MoreLink></div></div></section>
+      <CtaBand/>
+  </SiteShell>;
 }

@@ -58,5 +58,3 @@ _ref/
 # Claude Code session state and agent worktrees
 .claude/
 
-# fetched at build time by scripts/fetch-delta-ui.mjs
-/vendor/delta-ui/

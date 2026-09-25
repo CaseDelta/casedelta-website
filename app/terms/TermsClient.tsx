@@ -1,104 +1,70 @@
-"use client";
+import { LegalPage, LegalSection, LEGAL_LINK_STYLE } from "@/components/concept/ConceptLegal";
 
-import {
-  LegalPage,
-  LegalSection,
-  LegalClosing,
-  LEGAL_LINK_STYLE,
-} from "@/components/concept/ConceptLegal";
+/*
+ * Written 2026-09-25 to cover every dimension in plain terms, without describing
+ * individual features or platforms, so it does not need editing each time the
+ * product changes. A signed order form or agreement with a firm overrides these.
+ */
+const SUPPORT = "support@casedelta.com";
 
 export default function TermsClient() {
   return (
-    <LegalPage title="Terms of Service">
-      <LegalSection title="Using CaseDelta">
-        <p>
-          CaseDelta is operated by Blueprint Venture Capital LLC, a Wyoming limited liability company, 30 N Gould St Ste N, Sheridan, WY 82801. In these Terms, &ldquo;CaseDelta,&rdquo; &ldquo;we,&rdquo; and &ldquo;us&rdquo; refer to Blueprint Venture Capital LLC.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          By using CaseDelta, you agree to these Terms and our{" "}
-          <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>.
-          CaseDelta provides Delta, a personal assistant that connects to the tools your firm already uses (such as Clio, Microsoft Word, Gmail, Outlook, Google Drive, and Calendar) and runs legal and administrative work across them at the firm&rsquo;s direction.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          <strong>Delta is a productivity tool, not a lawyer.</strong> CaseDelta does not provide legal advice and does not create an attorney-client relationship between CaseDelta and you or your clients. Delta generates analyses, chronologies, and reports to assist your professional judgment. You remain fully responsible for all legal work, professional obligations, and the accuracy of any work product you deliver to clients or courts.
-        </p>
+    <LegalPage title="Terms of Service" lastUpdated="September 25, 2026">
+      <LegalSection title="Agreement">
+        <p>These Terms are an agreement between you and CaseDelta (&ldquo;we,&rdquo; &ldquo;us&rdquo;). By using CaseDelta you agree to them and to our <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>. If you use CaseDelta for a firm, you agree for the firm and confirm you may bind it. If your firm has a signed agreement with us, that agreement controls where it differs.</p>
       </LegalSection>
 
-      <LegalSection title="AI-Generated Output">
-        <p>
-          Delta generates analyses, chronologies, anomaly reports, case briefs, and other work product based on the documents you provide. These outputs are tools to assist your professional judgment &mdash; not substitutes for it.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          <strong>CaseDelta does not guarantee the accuracy, completeness, or legal sufficiency of any AI-generated output.</strong> You must independently verify all findings, conclusions, and recommendations before relying on them in any legal matter. Delta may miss relevant information, misinterpret documents, or produce errors. Professional review of all output is required.
-        </p>
+      <LegalSection title="The service">
+        <p>CaseDelta provides Delta, an AI paralegal that works inside the systems your firm connects and does work at your firm&apos;s direction, including work you schedule. We may improve or change features over time. We will not materially reduce the core service during a paid period without notice.</p>
       </LegalSection>
 
-      <LegalSection title="Acceptable Use">
-        <p>You agree to use CaseDelta only for lawful purposes and in accordance with these Terms. You will not:</p>
-        <ul style={{ marginTop: 12, paddingLeft: 20, listStyleType: "disc" }}>
-          <li style={{ marginBottom: 8 }}>
-            Attempt to compromise, disrupt, or gain unauthorized access to CaseDelta&apos;s systems or infrastructure.
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            Share your account credentials with unauthorized individuals.
-          </li>
-          <li style={{ marginBottom: 8 }}>
-            Reverse-engineer, decompile, or attempt to extract the source code or underlying algorithms of the service.
-          </li>
-          <li>
-            Use the service in any way that violates applicable laws, regulations, or professional conduct rules.
-          </li>
-        </ul>
+      <LegalSection title="Accounts">
+        <p>Keep account information accurate and sign-ins secure. Your firm is responsible for everything done under its accounts and for who it gives access to. Each person who signs in counts as an account for pricing.</p>
       </LegalSection>
 
-      <LegalSection title="Subscription and Billing">
-        <p>
-          CaseDelta operates on a subscription basis. Current pricing is available on our website or through our sales team. Either party may cancel at any time.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          Upon cancellation, you retain access through the end of your current billing period. You then have 30 days to export your data before it is permanently deleted. See our{" "}
-          <a href="/privacy" style={LEGAL_LINK_STYLE}>Privacy Policy</a>{" "}
-          for data retention details.
-        </p>
+      <LegalSection title="Connected systems">
+        <p>When your firm connects a system, you authorize Delta to sign in and act in it on your behalf, as you direct. You confirm your firm is allowed to give that access under the system&apos;s own terms. Your use of those systems stays governed by their terms, and we are not responsible for their availability or changes.</p>
       </LegalSection>
 
-      <LegalSection title="Limitation of Liability">
-        <p>
-          CaseDelta is provided &ldquo;as is&rdquo; without warranties of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          To the maximum extent permitted by law, CaseDelta shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the service, including but not limited to loss of data, loss of revenue, or damages arising from reliance on AI-generated output.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          If you integrate CaseDelta with third-party services (such as Clio, Google Drive, or Outlook), those integrations are subject to their respective terms and conditions. CaseDelta is not responsible for the availability or functionality of third-party services.
-        </p>
+      <LegalSection title="Your data">
+        <p>Your firm owns its data. You give us permission to use it only to provide and support the service, as described in the Privacy Policy. We never use it to train AI models and never sell it. We keep it confidential, and you keep confidential any non-public information about CaseDelta.</p>
       </LegalSection>
 
-      <LegalSection title="Termination">
-        <p>
-          Either party may terminate this agreement at any time. CaseDelta may suspend or terminate your access if you violate these Terms or engage in conduct that harms the service or other users.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          Upon termination, your right to use CaseDelta ceases immediately (or at the end of your billing period for voluntary cancellation). You will have 30 days to export your data before permanent deletion.
-        </p>
+      <LegalSection title="AI output and your professional judgment">
+        <p>Delta is not a lawyer. CaseDelta does not give legal advice and creates no attorney-client relationship. AI output can be incomplete or wrong. You are responsible for reviewing it before relying on it, sending it, or filing it, and for meeting your professional obligations.</p>
       </LegalSection>
 
-      <LegalSection title="Changes and Governing Law">
-        <p>
-          We may update these Terms from time to time. When we make material changes, we&apos;ll notify you via email or through the CaseDelta interface. Continued use of the service after changes constitutes acceptance of the updated Terms.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          These Terms are governed by the laws of the State of Kansas, without regard to conflict of law principles. For questions about these Terms, contact{" "}
-          <a href="mailto:support@casedelta.com" style={LEGAL_LINK_STYLE}>
-            support@casedelta.com
-          </a>
-          .
-        </p>
+      <LegalSection title="Acceptable use">
+        <p>Use CaseDelta lawfully and within the rules of professional conduct. Do not attempt to break, overload or gain unauthorized access to the service; share sign-ins outside your firm; reverse engineer the service; or use it to infringe anyone&apos;s rights or send unlawful messages.</p>
       </LegalSection>
 
-      <LegalClosing>
-        By using CaseDelta, you acknowledge understanding and agreeing to these Terms of Service.
-      </LegalClosing>
+      <LegalSection title="Fees and billing">
+        <p>Subscriptions are billed in advance at the price on our website or in your order. Fees exclude taxes. We may suspend the service for unpaid fees after notice. We will give at least 30 days&apos; notice of a price change, which applies from your next billing period. Fees already paid are not refunded, and access continues to the end of the paid period.</p>
+      </LegalSection>
+
+      <LegalSection title="Our property">
+        <p>We own CaseDelta, including its software and content. If you send us feedback, we may use it without obligation to you.</p>
+      </LegalSection>
+
+      <LegalSection title="Disclaimers">
+        <p>CaseDelta is provided &ldquo;as is.&rdquo; To the extent the law allows, we disclaim all warranties, including merchantability, fitness for a particular purpose, and non-infringement, and we do not promise the service will be uninterrupted or error-free.</p>
+      </LegalSection>
+
+      <LegalSection title="Limitation of liability">
+        <p>To the extent the law allows, neither party is liable for indirect, incidental, special, consequential or punitive damages, or for lost profits or data. Our total liability for any claim is limited to the fees your firm paid us in the 12 months before the claim arose.</p>
+      </LegalSection>
+
+      <LegalSection title="Indemnity">
+        <p>Your firm will defend and hold us harmless from claims arising from its data, its use of the service in breach of these Terms, or its breach of a connected system&apos;s terms.</p>
+      </LegalSection>
+
+      <LegalSection title="Ending the agreement">
+        <p>Either party may cancel at any time; cancellation takes effect at the end of the paid period. We may suspend or end access for a breach of these Terms or conduct that harms the service or others. After the service ends, your firm has 30 days to export its data before it is deleted.</p>
+      </LegalSection>
+
+      <LegalSection title="General">
+        <p>Kansas law governs these Terms. We may update these Terms; if a change is material, we will tell account holders by email or in the service before it takes effect, and continued use means acceptance. If any part is unenforceable, the rest remains in effect. Questions go to <a href={`mailto:${SUPPORT}`} style={LEGAL_LINK_STYLE}>{SUPPORT}</a>.</p>
+      </LegalSection>
     </LegalPage>
   );
 }

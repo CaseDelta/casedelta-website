@@ -1,219 +1,84 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "CaseDelta: AI Paralegal";
+export const alt = "CaseDelta: the AI paralegal for law firms";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
- * The link-preview card for casedelta.com. This is the rectangle a prospect sees
- * when someone texts or posts the link, so it has to read as the site.
+ * The link-preview card for casedelta.com: the rectangle a prospect sees when the
+ * link is texted or posted. It mirrors the homepage hero: the mountain photograph
+ * under the hero's solid navy scrim, the hero headline in Geist 400 with the orange
+ * underline, the white logo. Solid colours and the photo only, no gradients.
  *
- * It mirrors the live hero (components/v2/sasonix/Hero.tsx): the same mountain
- * ambient photograph, the same left-to-right scrim over an ink ground, the same
- * Archivo display face, the same subhead. Palette values are the resolved
- * casedelta theme from components/v2/sasonix/theme.ts, written as literals
- * because Satori cannot read CSS custom properties.
- *
- * BOTH the photograph and the webfont are fetched at render time, and neither is
- * bundled. That is not a style choice. next/og carries Satori and a resvg wasm
- * build, which puts this route at roughly 770 KB before it draws anything, against
- * a 1 MB Vercel edge-function limit. Bundling the hero photograph took it to
- * 1.16 MB and the deploy failed on 2026-08-28 AFTER a clean local `npm run build`,
- * because the size ceiling exists only on Vercel. Do not import a binary here.
- *
- * Both fetches are therefore allowed to fail, and each falls back to something that
- * still reads as the site: a blue gradient in the ink family for the photograph,
- * and Satori's built-in sans for the type. A card in the wrong typeface is much
- * better than no preview at all. (Archivo has to come from Google because it ships
- * as woff2 and Satori cannot parse woff2.)
- *
- * The self-fetch is close to free in practice. The route carries a one-year
- * immutable cache header, and Next appends a content hash to the og:image URL, so a
- * deploy that changes this file changes the URL. Each deploy renders roughly once
- * per region and every scrape after that is a cache hit.
- *
- * If the hero backdrop is ever swapped (BACKDROPS in Hero.tsx), change the URL
- * below to match.
- *
- * History: the previous card said "An AI associate that knows every case" on flat
- * white, three positionings behind the site, and the page title underneath it said
- * "for Small Law Firms". A prospect got sent that combination on 2026-08-28.
+ * Satori cannot read CSS custom properties, so the palette from app/globals.css is
+ * written out here: navy #08162b (scrim 8,22,43), tint #d0dbe7, orange #e78340.
+ * Satori cannot parse webp or woff2: the photo is the .jpg copy of mountain.webp,
+ * and Geist comes from Google Fonts' TrueType response.
  */
+const SITE = "https://casedelta.com";
+const NAVY = "#08162b";
+const TINT = "#d0dbe7";
+const ORANGE = "#e78340";
 
-// Resolved [data-sx-theme="casedelta"] values.
-const INK = "#0F1115";
-const ON_MEDIA = "#FFFFFF";
-const ON_MEDIA_MUTED = "rgba(255,255,255,0.88)";
-const ACCENT_ON_MEDIA = "#9CB0FF";
+const LEAD = "Run the firm like there were ";
+const EM = "100 of you.";
+const SUB = "The AI paralegal that works inside every system your firm uses.";
+const STACK = "Filevine · Clio · Lead Docket · Outlook · Gmail · and anything else";
 
-const HEADLINE = "The AI paralegal you can give real work to.";
-const SUBHEAD =
-  "Delta signs in to your firm’s tools, uses them just like you do, and comes back with finished work.";
-const STACK = "Clio · Filevine · MyCase · Microsoft 365 · Google";
-
-/**
- * Google's CSS endpoint hands back a TrueType face to a plain fetch and woff2 only
- * to a browser user-agent. Satori cannot parse woff2, so do not add one here.
- */
-async function archivo(weight: number, text: string) {
+async function geist(text: string) {
   const css = await fetch(
-    `https://fonts.googleapis.com/css2?family=Archivo:wght@${weight}&text=${encodeURIComponent(text)}`
+    `https://fonts.googleapis.com/css2?family=Geist:wght@400&text=${encodeURIComponent(text)}`
   ).then((r) => r.text());
   const url = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
-  if (!url) throw new Error("no truetype face in the Archivo css");
+  if (!url) throw new Error("no truetype face in the Geist css");
   return fetch(url).then((r) => r.arrayBuffer());
 }
 
-export default async function OGImage() {
-  const [fonts, photo] = await Promise.all([
-    Promise.all([
-      archivo(700, `CaseDelta${HEADLINE}`),
-      archivo(400, `${SUBHEAD}${STACK}casedelta.com`),
-    ])
-      .then(([bold, regular]) => [
-        { name: "Archivo", data: bold, weight: 700 as const, style: "normal" as const },
-        { name: "Archivo", data: regular, weight: 400 as const, style: "normal" as const },
-      ])
-      .catch(() => undefined),
-    fetch("https://casedelta.com/v2/ambient/mountain.jpg")
-      .then((r) => (r.ok ? r.arrayBuffer() : null))
-      .catch(() => null),
-  ]);
+const load = (path: string) =>
+  fetch(`${SITE}${path}`).then((r) => (r.ok ? r.arrayBuffer() : null)).catch(() => null);
 
-  const family = fonts ? "Archivo" : "sans-serif";
+export default async function OGImage() {
+  const [font, photo, logo] = await Promise.all([
+    geist(`${LEAD}${EM}${SUB}${STACK}casedelta.com`).catch(() => null),
+    load("/v2/ambient/mountain.jpg"),
+    load("/assets/branding/trimmed-logo-white.png"),
+  ]);
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          position: "relative",
-          backgroundColor: INK,
-          fontFamily: family,
-        }}
-      >
-        {/* The hero photograph, or a cool gradient in the same family when it is unreachable. */}
-        {photo ? (
-          <img
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            src={photo as any}
-            width={1200}
-            height={630}
-            style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }}
-          />
-        ) : (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: 1200,
-              height: 630,
-              display: "flex",
-              backgroundImage:
-                "radial-gradient(120% 120% at 78% 22%, #3E5AA8 0%, #1B2440 46%, #0F1115 78%)",
-            }}
-          />
+      <div style={{ width: 1200, height: 630, display: "flex", position: "relative", backgroundColor: NAVY, fontFamily: font ? "Geist" : "sans-serif" }}>
+        {photo && (
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          <img src={photo as any} width={1200} height={630} style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }} />
         )}
+        <div style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, display: "flex", backgroundColor: "rgba(8,22,43,0.62)" }} />
 
-        {/* The hero's own scrim: heavy at the left where the type sits, clear at the right. */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: 1200,
-            height: 630,
-            display: "flex",
-            backgroundImage:
-              "linear-gradient(90deg, rgba(8,12,24,0.94) 0%, rgba(8,12,24,0.86) 38%, rgba(8,12,24,0.62) 68%, rgba(8,12,24,0.42) 100%)",
-          }}
-        />
-
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            padding: "68px 80px",
-          }}
-        >
-          {/* Wordmark */}
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ fontSize: 30, fontWeight: 700, color: ON_MEDIA, letterSpacing: "-0.03em" }}>
-              Case
-            </span>
-            <span
-              style={{ fontSize: 30, fontWeight: 700, color: ACCENT_ON_MEDIA, letterSpacing: "-0.03em" }}
-            >
-              Delta
-            </span>
-          </div>
+        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "64px 80px" }}>
+          {logo ? (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <img src={logo as any} height={52} width={Math.round((52 * 1860) / 567)} />
+          ) : (
+            <div style={{ display: "flex", fontSize: 34, color: "#fff" }}>CaseDelta</div>
+          )}
 
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div
-              style={{
-                width: 56,
-                height: 4,
-                backgroundColor: ACCENT_ON_MEDIA,
-                borderRadius: 2,
-                marginBottom: 26,
-              }}
-            />
-            <div
-              style={{
-                fontSize: 62,
-                fontWeight: 700,
-                color: ON_MEDIA,
-                letterSpacing: "-0.035em",
-                lineHeight: 1.08,
-                maxWidth: 880,
-              }}
-            >
-              {HEADLINE}
+            <div style={{ display: "flex", flexWrap: "wrap", fontSize: 74, color: "#fff", letterSpacing: "-0.045em", lineHeight: 1.1, maxWidth: 980 }}>
+              <span>{LEAD}</span>
+              <span style={{ borderBottom: `5px solid ${ORANGE}`, paddingBottom: 2 }}>{EM}</span>
             </div>
-            <div
-              style={{
-                fontSize: 27,
-                fontWeight: 400,
-                color: ON_MEDIA_MUTED,
-                letterSpacing: "-0.01em",
-                lineHeight: 1.42,
-                maxWidth: 820,
-                marginTop: 24,
-              }}
-            >
-              {SUBHEAD}
+            <div style={{ display: "flex", fontSize: 32, color: TINT, letterSpacing: "-0.02em", lineHeight: 1.35, maxWidth: 900, marginTop: 28 }}>
+              {SUB}
             </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              fontSize: 20,
-              letterSpacing: "-0.01em",
-            }}
-          >
-            <span style={{ color: ON_MEDIA }}>casedelta.com</span>
-            <span style={{ color: "rgba(255,255,255,0.62)" }}>{STACK}</span>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22, color: TINT, letterSpacing: "-0.01em" }}>
+            <span>{STACK}</span>
+            <span style={{ color: "#fff" }}>casedelta.com</span>
           </div>
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts,
-      headers: {
-        "cache-control": "public, immutable, no-transform, max-age=31536000",
-      },
-    }
+    { ...size, fonts: font ? [{ name: "Geist", data: font, weight: 400, style: "normal" }] : undefined }
   );
 }
