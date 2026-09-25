@@ -4,9 +4,9 @@ import { getAllAnswers } from "@/lib/answers";
 import { AnswersContent } from "./AnswersContent";
 
 export const metadata: Metadata = {
-  title: "CaseDelta Answers: What It Is, Integrations, Pricing, Security",
+  title: { absolute: "CaseDelta answers: what it is, what it works with, pricing and security" },
   description:
-    "CaseDelta is an AI associate for plaintiff law firms that drives the tools you already use. Direct answers on what CaseDelta does, integrations, chronologies, pricing, and security.",
+    "CaseDelta is an AI paralegal that works inside Filevine, Clio, Lead Docket, Outlook and any system your firm signs into. Direct answers on integrations, pricing and security.",
   alternates: { canonical: "https://casedelta.com/answers" },
   openGraph: {
     title: "CaseDelta Answers",

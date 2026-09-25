@@ -37,7 +37,7 @@ export default async function OGImage({ params }: RouteProps) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          backgroundColor: "#0A0A0A",
+          backgroundColor: "#08162b",
           fontFamily: "Inter, sans-serif",
         }}
       >
@@ -57,7 +57,7 @@ export default async function OGImage({ params }: RouteProps) {
             style={{
               fontSize: 28,
               fontWeight: 700,
-              color: "#2563EB",
+              color: "#27599b",
               letterSpacing: "-0.03em",
             }}
           >
@@ -72,7 +72,7 @@ export default async function OGImage({ params }: RouteProps) {
             style={{
               width: 48,
               height: 4,
-              backgroundColor: "#2563EB",
+              backgroundColor: "#27599b",
               borderRadius: 2,
             }}
           />

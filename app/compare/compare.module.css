@@ -1,0 +1,16 @@
+/*
+ * The comparison pages' own layout: the two "Choose ... when" lists side by side
+ * and the small sources list. Tokens only, no raw hex, no gradients.
+ */
+.choose { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
+.sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.sources li { font-size: var(--t-label); line-height: 1.5; color: var(--muted); }
+.sources a { color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; }
+.checked { margin-top: 22px; font-size: var(--t-label); color: var(--muted); }
+.us { font-weight: 500; }
+@media (max-width: 760px) {
+  .choose { grid-template-columns: 1fr; gap: 48px; }
+}
+/* The kit table squeezes every column into a phone's width; give it room to scroll instead. */
+.tableArea table { min-width: 640px; }
+.tableWide table { min-width: 980px; }

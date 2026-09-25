@@ -1,0 +1,144 @@
+/*
+ * The page kit. Readable on purpose (the homepage stylesheet is minified; this one
+ * is not). Tokens only, from app/globals.css :root and the .site scale in
+ * ConceptHome.module.css. No raw hex, no gradients.
+ *
+ * Selectors that style a heading, paragraph or list use TWO classes (or an element
+ * plus a class) so they outrank the homepage's `.site h2` / `.site p` resets,
+ * which are one class plus one element.
+ */
+
+/* ── PageHero ── */
+.hero { position: relative; background: var(--paper); color: var(--ink); padding: calc(100px + var(--sec-sm)) 0 var(--sec-sm); border-bottom: 1px solid var(--line); }
+.hero.heroPhoto { color: var(--white); min-height: 640px; display: flex; align-items: flex-end; overflow: hidden; border-bottom: 0; padding: 200px 0 var(--sec-sm); }
+.heroImage, .heroShade { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.heroImage { object-position: 50% 60%; filter: saturate(.82) hue-rotate(4deg); }
+.heroShade { background: rgba(var(--scrim), .55); }
+.heroInner { position: relative; }
+.hero .heroTitle { font-size: var(--t-display); line-height: 1.1; letter-spacing: -.05em; max-width: 980px; }
+.hero .heroLead { margin-top: 26px; font-size: var(--t-lead); line-height: 1.5; max-width: 640px; color: var(--muted); }
+.heroPhoto .heroLead { color: var(--on-navy); }
+.heroExtra { margin-top: 30px; }
+
+/* ── Band ── */
+.band { padding: var(--sec-md) 0; }
+.paper { background: var(--paper); color: var(--ink); }
+.pale { background: var(--pale); color: var(--ink); }
+.tint { background: var(--tint); color: var(--ink); }
+.navy { background: var(--navy); color: var(--white); }
+.band .bandTitle { font-size: var(--t-h1); line-height: 1.12; max-width: 900px; margin-bottom: 48px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 110px; align-items: start; }
+.split .bandTitle { margin-bottom: 0; max-width: 560px; position: sticky; top: 130px; }
+.bandBody { min-width: 0; }
+
+/* ── QA ── */
+.qaList { border-top: 1px solid var(--line); }
+.navy .qaList, .navy .qa { border-color: var(--rule-soft); }
+.qa { display: grid; grid-template-columns: 5fr 7fr; gap: 48px; padding: 30px 0; border-bottom: 1px solid var(--line); }
+.split .qa { grid-template-columns: 1fr; gap: 12px; }
+.qa .q { font-size: var(--t-h3); letter-spacing: -.035em; line-height: 1.2; font-weight: 400; }
+.qa .a { font-size: var(--t-body); line-height: 1.6; color: var(--muted); max-width: 620px; }
+.navy .qa .a { color: var(--on-navy); }
+/* On tint the paper-based line and muted grey wash out; darken both, as the homepage security band does. */
+.tint .qaList, .tint .qa, .tint .checkList, .tint .checkList li, .tint .links, .tint .links a { border-color: color-mix(in srgb, var(--navy) 18%, transparent); }
+.tint .qa .a { color: color-mix(in srgb, var(--navy) 74%, var(--tint)); }
+.qa .a p + p { margin-top: 10px; }
+.qa .a a { color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── FactTable ── */
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--t-body); line-height: 1.45; }
+.table caption { caption-side: top; text-align: left; font-size: var(--t-label); color: var(--muted); padding-bottom: 14px; }
+.table th, .table td { text-align: left; vertical-align: top; padding: 20px 24px 20px 0; border-bottom: 1px solid var(--line); }
+.table thead th { font-size: var(--t-label); font-weight: 500; color: var(--muted); padding-top: 0; border-bottom-color: var(--ink); }
+.table tbody th { font-weight: 500; font-size: 20px; letter-spacing: -.02em; }
+.navy .table th, .navy .table td { border-color: var(--rule-soft); }
+.navy .table thead th { color: var(--on-navy); border-bottom-color: var(--rule); }
+.tableWrap .tableNote { margin-top: 18px; font-size: var(--t-label); color: var(--muted); }
+
+/* ── Checklist ── */
+.checklist { display: grid; gap: 56px; }
+.checkTwo { grid-template-columns: 1fr 1fr; }
+.split .checkTwo { grid-template-columns: 1fr; gap: 40px; }
+.checkCol .checkLabel { font-size: var(--t-label); font-weight: 500; letter-spacing: 0; color: var(--muted); margin-bottom: 8px; }
+.checkList { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.checkList li { display: flex; align-items: center; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--line); font-size: 21px; letter-spacing: -.02em; line-height: 1.3; }
+.markYes, .markNo { flex: 0 0 auto; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; }
+.markYes { background: var(--blue); color: var(--white); }
+.markNo { background: var(--pale); color: var(--muted); border: 1px solid var(--line); }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── Updated ── */
+p.updated { font-size: var(--t-label); color: var(--muted); }
+.hero p.updated { margin-top: 22px; }
+.heroPhoto p.updated { color: var(--on-navy); }
+
+/* ── ProseArticle ── */
+article.prose { max-width: 720px; font-size: 18px; line-height: 1.75; color: var(--ink); }
+article.prose > section { margin-bottom: 48px; }
+article.prose h2 { font-size: 30px; font-weight: 400; letter-spacing: -.035em; line-height: 1.25; margin: 0 0 18px; }
+article.prose h3 { font-size: 21px; font-weight: 500; letter-spacing: -.02em; line-height: 1.35; margin: 32px 0 12px; }
+article.prose p { margin: 0 0 16px; }
+article.prose ul, article.prose ol { margin: 0 0 16px; padding-left: 22px; }
+article.prose ul { list-style: disc; }
+article.prose ol { list-style: decimal; }
+article.prose li { margin-bottom: 8px; }
+article.prose a { color: var(--blue-ink); text-decoration: underline; text-underline-offset: 3px; }
+article.prose strong { font-weight: 600; }
+article.prose code { font-size: .88em; background: var(--pale); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+article.prose blockquote { margin: 28px 0; padding-left: 22px; border-left: 3px solid var(--blue); font-size: 22px; letter-spacing: -.02em; line-height: 1.45; }
+article.prose table { width: 100%; border-collapse: collapse; margin: 24px 0 32px; font-size: 16px; line-height: 1.45; }
+article.prose th, article.prose td { text-align: left; vertical-align: top; padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line); }
+article.prose thead th { font-weight: 500; color: var(--muted); border-bottom-color: var(--ink); }
+article.prose hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+/* ── LinkList ── */
+.links { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.links a { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 2px; border-bottom: 1px solid var(--line); transition: color .3s; }
+.links a > span { display: flex; flex-direction: column; gap: 6px; }
+.links .linkLabel { font-size: var(--t-h3); letter-spacing: -.035em; line-height: 1.2; }
+.links small { font-size: var(--t-label); color: var(--muted); }
+.links svg { flex: 0 0 auto; color: var(--blue); transition: transform .3s; }
+.links a:hover { color: var(--blue-ink); }
+.links a:hover svg { transform: translate(3px, -3px); }
+
+/* ── Prompts and Tag ── */
+.prompts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.prompts li { position: relative; background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-s); padding: 26px 26px 28px; font-size: 21px; letter-spacing: -.02em; line-height: 1.35; }
+.promptMark { display: block; width: 28px; height: 3px; border-radius: 2px; background: var(--blue); margin-bottom: 18px; }
+.tag { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-label); padding: 6px 13px; border-radius: 999px; background: var(--pale); color: var(--blue-ink); border: 1px solid var(--line); }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+.heroPhoto .tag { background: var(--rule-soft); color: var(--white); border-color: var(--rule); }
+.heroPhoto .tag::before { background: var(--white); }
+
+/* ── JumpLinks and MoreLink ── */
+.jump { display: flex; flex-wrap: wrap; gap: 10px; }
+.jump a { font-size: var(--t-label); padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); transition: border-color .2s, color .2s; }
+.jump a:hover { border-color: var(--blue); color: var(--blue-ink); }
+.more { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; font-size: var(--t-label); color: var(--blue-ink); border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+.navy .more, .more.moreOnDark { color: var(--on-navy); }
+.more.moreOnDark:hover { color: var(--white); }
+.more svg { transition: transform .25s; }
+.more:hover svg { transform: translate(2px, -2px); }
+
+@media (max-width: 1100px) { .split { gap: 64px; } .prompts { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) {
+  .hero { padding: calc(80px + 56px) 0 56px; }
+  .hero.heroPhoto { min-height: 520px; padding: 160px 0 56px; }
+  .hero .heroLead { font-size: 19px; }
+  .split, .checkTwo { grid-template-columns: 1fr; gap: 40px; }
+  .split .bandTitle { position: static; }
+  .band .bandTitle { margin-bottom: 36px; }
+  .qa { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+  .qa .q { font-size: 22px; }
+  .table { font-size: 16px; }
+  .table tbody th { font-size: 17px; }
+  .table th, .table td { padding: 16px 16px 16px 0; }
+  .prompts { grid-template-columns: 1fr; gap: 14px; }
+  .prompts li { font-size: 18px; padding: 20px 20px 22px; }
+  .links a { padding: 20px 2px; }
+  .links .linkLabel { font-size: 22px; }
+  .checkList li { font-size: 18px; gap: 14px; padding: 16px 0; }
+  article.prose { font-size: 17px; }
+  article.prose h2 { font-size: 25px; }
+}

@@ -1,169 +1,59 @@
+/**
+ * The blog: MDX files in content/blog, nothing else.
+ *
+ * Until 2026-09-25 posts could also come from a Supabase table
+ * (public.marketing_blog_posts), written by an autonomous blog_writer agent. That
+ * writer is gone: its launchd job was unloaded, the GTM engine that inherited it
+ * was deleted, and the last row is from 2026-06-15. The three published rows were
+ * exported here verbatim and then edited, so the files are now the only source and
+ * a post ships like any other page, reviewed in a PR.
+ *
+ * Frontmatter: title, description, date (YYYY-MM-DD), optional updatedAt, optional
+ * related (links shown under the post), optional draft.
+ */
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { getDbPool } from "./db";
-
-/* ─── Types ─── */
 
 export interface PostFrontmatter {
   title: string;
   description: string;
   date: string;
   updatedAt?: string;
-  author: string;
-  authorSlug?: string;
-  tags: string[];
   image?: string;
   draft?: boolean;
+  /** A short related-links block under the post: integration or compare pages. */
+  related?: { label: string; href: string }[];
 }
 
-export interface Post {
-  slug: string;
-  frontmatter: PostFrontmatter;
-}
-
-export interface PostWithContent extends Post {
-  content: string;
-}
-
-/* ─── Constants ─── */
+export interface Post { slug: string; frontmatter: PostFrontmatter }
+export interface PostWithContent extends Post { content: string }
 
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const iso = (d: unknown) => (d instanceof Date ? d.toISOString().split("T")[0] : (d as string | undefined));
 
-/* ─── File-based source (legacy posts committed in content/blog) ─── */
-
-function getMdxFiles(): string[] {
-  if (!fs.existsSync(BLOG_DIR)) return [];
-  return fs
-    .readdirSync(BLOG_DIR)
-    .filter((file) => file.endsWith(".mdx") || file.endsWith(".md"));
-}
-
-function parsePost(filename: string): PostWithContent | null {
-  const slug = filename.replace(/\.mdx?$/, "");
-  const filePath = path.join(BLOG_DIR, filename);
-  const raw = fs.readFileSync(filePath, "utf-8");
+function read(filename: string): PostWithContent | null {
+  const raw = fs.readFileSync(path.join(BLOG_DIR, filename), "utf-8");
   const { data, content } = matter(raw);
-
-  const frontmatter = data as PostFrontmatter;
-
-  if ((frontmatter.date as unknown) instanceof Date) {
-    frontmatter.date = (frontmatter.date as unknown as Date).toISOString().split("T")[0];
-  }
-  if (frontmatter.updatedAt && (frontmatter.updatedAt as unknown) instanceof Date) {
-    frontmatter.updatedAt = (frontmatter.updatedAt as unknown as Date).toISOString().split("T")[0];
-  }
-
+  const frontmatter = { ...data, date: iso(data.date), updatedAt: iso(data.updatedAt) } as PostFrontmatter;
   if (IS_PRODUCTION && frontmatter.draft) return null;
-
-  return { slug, frontmatter, content };
+  return { slug: filename.replace(/\.mdx?$/, ""), frontmatter, content };
 }
 
-function getFilePosts(): PostWithContent[] {
-  return getMdxFiles()
-    .map(parsePost)
-    .filter((p): p is PostWithContent => p !== null);
+function all(): PostWithContent[] {
+  if (!fs.existsSync(BLOG_DIR)) return [];
+  return fs.readdirSync(BLOG_DIR)
+    .filter((f) => /\.mdx?$/.test(f))
+    .map(read)
+    .filter((p): p is PostWithContent => p !== null)
+    .sort((a, b) => b.frontmatter.date.localeCompare(a.frontmatter.date));
 }
-
-/* ─── DB-based source (CMS posts in marketing_blog_posts) ─── */
-
-interface DbRow {
-  slug: string;
-  title: string;
-  description: string;
-  body_mdx: string;
-  tags: string[] | null;
-  author: string;
-  author_slug: string | null;
-  og_image: string | null;
-  published_at: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-function toIsoDate(d: string | Date | null): string {
-  if (!d) return new Date().toISOString().split("T")[0];
-  const dt = typeof d === "string" ? new Date(d) : d;
-  return dt.toISOString().split("T")[0];
-}
-
-function rowToPost(row: DbRow): PostWithContent {
-  return {
-    slug: row.slug,
-    frontmatter: {
-      title: row.title,
-      description: row.description,
-      date: toIsoDate(row.published_at ?? row.created_at),
-      updatedAt: toIsoDate(row.updated_at),
-      author: row.author,
-      authorSlug: row.author_slug ?? undefined,
-      tags: row.tags ?? [],
-      image: row.og_image ?? undefined,
-    },
-    content: row.body_mdx,
-  };
-}
-
-/** Fetch published CMS posts. Returns [] (never throws) if the DB is unwired or errors. */
-async function getDbPosts(): Promise<PostWithContent[]> {
-  const db = getDbPool();
-  if (!db) return [];
-  try {
-    const { rows } = await db.query<DbRow>(
-      `select slug, title, description, body_mdx, tags, author, author_slug, og_image,
-              published_at, created_at, updated_at
-       from public.marketing_blog_posts
-       where status = 'published'`
-    );
-    return rows.map(rowToPost);
-  } catch (err) {
-    console.error("[blog] DB fetch failed, falling back to file posts:", (err as Error).message);
-    return [];
-  }
-}
-
-/* ─── Merge ─── */
-
-async function getAllPostsWithContent(): Promise<PostWithContent[]> {
-  const [filePosts, dbPosts] = await Promise.all([
-    Promise.resolve(getFilePosts()),
-    getDbPosts(),
-  ]);
-  // DB takes precedence on slug collision.
-  const bySlug = new Map<string, PostWithContent>();
-  for (const p of filePosts) bySlug.set(p.slug, p);
-  for (const p of dbPosts) bySlug.set(p.slug, p);
-  return Array.from(bySlug.values()).sort(
-    (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-  );
-}
-
-/* ─── Public API (async) ─── */
 
 export async function getAllPosts(): Promise<Post[]> {
-  const posts = await getAllPostsWithContent();
-  return posts.map(({ slug, frontmatter }) => ({ slug, frontmatter }));
+  return all().map(({ slug, frontmatter }) => ({ slug, frontmatter }));
 }
 
 export async function getPostBySlug(slug: string): Promise<PostWithContent | null> {
-  const posts = await getAllPostsWithContent();
-  return posts.find((p) => p.slug === slug) ?? null;
-}
-
-export async function getPostsByTag(tag: string): Promise<Post[]> {
-  const normalizedTag = tag.toLowerCase();
-  const posts = await getAllPosts();
-  return posts.filter((post) =>
-    post.frontmatter.tags.some((t) => t.toLowerCase() === normalizedTag)
-  );
-}
-
-export async function getAllTags(): Promise<string[]> {
-  const posts = await getAllPosts();
-  const tagSet = new Set<string>();
-  for (const post of posts) {
-    for (const tag of post.frontmatter.tags) tagSet.add(tag);
-  }
-  return Array.from(tagSet).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  return all().find((p) => p.slug === slug) ?? null;
 }

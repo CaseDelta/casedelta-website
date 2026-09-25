@@ -4,7 +4,6 @@ import type {
   BreadcrumbList,
   BlogPosting,
   FAQPage,
-  Person,
   WithContext,
 } from "schema-dts";
 
@@ -12,7 +11,7 @@ const BASE_URL = "https://casedelta.com";
 
 /* ─── Helpers ─── */
 
-function JsonLdScript({ data }: { data: WithContext<Organization | WebApplication | BreadcrumbList | BlogPosting | FAQPage | Person> }) {
+function JsonLdScript({ data }: { data: WithContext<Organization | WebApplication | BreadcrumbList | BlogPosting | FAQPage> }) {
   return (
     <script
       type="application/ld+json"
@@ -32,11 +31,6 @@ export function OrganizationSchema() {
     logo: `${BASE_URL}/assets/branding/casedelta-logo-full.png`,
     description:
       "CaseDelta is an AI paralegal that works inside the tools law firms already use, including Clio, MyCase, Filevine, Google, and Microsoft, and does the routine case work: requesting records, drafting, updating files, and tracking deadlines. Your team reviews and approves. Firms run more cases without hiring. Each firm's data is isolated and is never sold or used to train AI models.",
-    founder: {
-      "@type": "Person",
-      name: "Camren Hall",
-      jobTitle: "Founder & CEO",
-    },
     sameAs: [
       "https://www.youtube.com/@casedelta-us",
       "https://www.linkedin.com/company/casedelta",
@@ -99,8 +93,6 @@ interface BlogPostSchemaProps {
   slug: string;
   publishedAt: string;
   updatedAt?: string;
-  authorName: string;
-  authorSlug?: string;
   image?: string;
 }
 
@@ -110,8 +102,6 @@ export function BlogPostSchema({
   slug,
   publishedAt,
   updatedAt,
-  authorName,
-  authorSlug,
   image,
 }: BlogPostSchemaProps) {
   const data: WithContext<BlogPosting> = {
@@ -121,11 +111,7 @@ export function BlogPostSchema({
     description,
     datePublished: publishedAt,
     ...(updatedAt && { dateModified: updatedAt }),
-    author: {
-      "@type": "Person",
-      name: authorName,
-      ...(authorSlug && { url: `${BASE_URL}/about` }),
-    },
+    author: { "@type": "Organization", name: "CaseDelta", url: BASE_URL },
     publisher: {
       "@type": "Organization",
       name: "CaseDelta",
@@ -171,34 +157,3 @@ export function FAQSchema({ faqs }: { faqs: FAQItem[] }) {
   return <JsonLdScript data={data} />;
 }
 
-/* ─── Person (about page) ─── */
-
-export function PersonSchema({
-  name,
-  jobTitle,
-  description,
-  image,
-  sameAs,
-}: {
-  name: string;
-  jobTitle: string;
-  description: string;
-  image?: string;
-  sameAs?: string[];
-}) {
-  const data: WithContext<Person> = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name,
-    jobTitle,
-    description,
-    worksFor: {
-      "@type": "Organization",
-      name: "CaseDelta",
-      url: BASE_URL,
-    },
-    ...(image && { image }),
-    ...(sameAs && { sameAs }),
-  };
-  return <JsonLdScript data={data} />;
-}
