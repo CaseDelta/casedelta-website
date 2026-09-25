@@ -4,10 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
  * Edge middleware. In Next 16 the `middleware.ts` convention was renamed to
  * `proxy.ts`, so this file exports `proxy()` plus a `config.matcher`.
  *
- * IT DOES EXACTLY ONE THING, and that thing is a legal obligation: it suppresses the
- * Meta Pixel for visitors in jurisdictions with strict consent rules. Do not weaken
- * it, and do not add unrelated work here. This runs before every page render, so
- * anything put in it is on the critical path of every request the site serves.
+ * IT DOES TWO THINGS. The first is a legal obligation: it suppresses the Meta Pixel
+ * for visitors in jurisdictions with strict consent rules. Do not weaken it. The second
+ * is one log line when an AI crawler or AI assistant fetches a page, so we can see
+ * which pages AI search actually reads (Vercel keeps no user agent in its own request
+ * logs on our plan). Search runtime logs for "[ai-bot]". Do not add anything else
+ * here: this runs before every page render, so anything put in it is on the critical
+ * path of every request the site serves.
  *
  * An A/B variant rewrite used to live here too, gated behind
  * NEXT_PUBLIC_ENABLE_AB_TESTING and pointed at /light/* and /dark/* routes that were
@@ -30,7 +33,25 @@ const PIXEL_BLOCKED_COUNTRIES = new Set([
   "CH",
 ]);
 
+/**
+ * User-agent tokens of AI crawlers (training and search indexing) and AI assistants
+ * fetching a page live because a person asked a question. Order does not matter; the
+ * first match names the bot.
+ */
+const AI_BOTS = [
+  "GPTBot", "OAI-SearchBot", "ChatGPT-User",
+  "ClaudeBot", "Claude-User", "Claude-SearchBot", "anthropic-ai",
+  "PerplexityBot", "Perplexity-User",
+  "Google-Extended", "Google-CloudVertexBot", "Googlebot",
+  "bingbot", "Applebot", "CCBot", "meta-externalagent", "Bytespider",
+  "Amazonbot", "DuckAssistBot", "MistralAI-User", "cohere-ai",
+];
+
 export async function proxy(request: NextRequest) {
+  const ua = request.headers.get("user-agent") ?? "";
+  const bot = AI_BOTS.find((b) => ua.toLowerCase().includes(b.toLowerCase()));
+  if (bot) console.log(`[ai-bot] ${bot} ${request.method} ${request.nextUrl.pathname}`);
+
   const response = NextResponse.next();
   const country = request.headers.get("x-vercel-ip-country");
   const blocked = country ? PIXEL_BLOCKED_COUNTRIES.has(country.toUpperCase()) : false;
@@ -58,5 +79,9 @@ export async function proxy(request: NextRequest) {
  * on any page entry rather than only on the homepage.
  */
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon|api/|.*\\..*).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon|api/|.*\\..*).*)",
+    // Files AI crawlers ask for first. Listed so the bot log sees them.
+    "/robots.txt", "/sitemap.xml", "/llms.txt",
+  ],
 };
