@@ -15,7 +15,7 @@ export const BOOK_HREF = "/demo";
 export const LOGIN_HREF = "https://app.casedelta.com";
 
 export const NAV: NavLink[] = [
-  { label: "How it works", href: "/#how", home: "#how" },
+  { label: "Product", href: "/#work", home: "#work" },
   { label: "Integrations", href: "/integrations" },
   { label: "Pricing", href: "/pricing", home: "#pricing" },
   { label: "Security", href: "/security", home: "#privacy" },
@@ -28,6 +28,7 @@ export const NAV: NavLink[] = [
  */
 export const FOOTER: { title: string; links: NavLink[] }[] = [
   { title: "Product", links: [
+    { label: "What Delta does", href: "/#work", home: "#work" },
     { label: "How it works", href: "/#how", home: "#how" },
     { label: "Integrations", href: "/integrations" },
     { label: "Pricing", href: "/pricing" },
