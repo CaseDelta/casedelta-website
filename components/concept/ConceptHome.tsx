@@ -8,6 +8,7 @@ import { trackEvent } from '@/lib/posthog';
 import { SiteShell } from '@/components/site/SiteShell';
 import { BOOK_HREF } from '@/components/site/nav';
 import { CtaBand } from '@/components/site/kit/CtaBand';
+import { Quote } from '@/components/site/kit/Quote';
 import { ConnectBand } from '@/components/site/kit/ConnectBand';
 import { MoreLink } from '@/components/site/kit/kit';
 import s from './ConceptHome.module.css';
@@ -131,9 +132,11 @@ export function ConceptHome() {
       </section>
       <section className={s.problem} id="problem"><div className={`${s.container} ${s.problemInner}`}><h2 data-reveal="words"><W>Your case info lives in several places that</W> <span className={s.problemRule}><W>don’t talk to each other.</W></span></h2></div></section>
       <section className={s.solution} id="work"><SolutionShowcase/></section>
+      <Quote photo="/v2/ambient/cloud-swirl.webp" name="James Recker" quote="It signed into the verdict database we pay for and pulled the five biggest results in my circuit for a two-level lumbar with no fusion, in today's dollars."/>
       <ConnectBand id="how"/>
       <section className={s.privacy} id="privacy"><div className={`${s.container} ${s.privacyInner}`}><div><h2 data-reveal="words"><W>{HOME_SECURITY.heading}</W></h2><div data-reveal="up" data-delay=".5"><MoreLink href="/security">How we protect client data</MoreLink></div></div><ul className={s.privacyList} data-reveal="stagger" data-delay=".25">{HOME_SECURITY.points.map((id) => { const Icon = SECURITY_ICON[id] ?? ShieldCheck; return <li key={id}><i><Icon size={26}/></i>{claim(id).label}</li>; })}</ul></div></section>
       <section className={s.pricing} id="pricing"><div className={s.container}><h2 className={s.pricingTitle} data-reveal="words"><W>{PRICING_HEADING}</W></h2><div className={s.priceTable} data-reveal="stagger" data-delay=".25">{TIERS.map(t => <a href={BOOK} key={t.accounts}><span>{t.band}</span><div><strong>{t.price}</strong><span>{PRICE_UNIT}</span></div><ArrowUpRight size={24}/></a>)}</div><p className={s.priceNote} data-reveal="up" data-delay=".6">{TERM_NOTE} {SCALE_NOTE}</p><div data-reveal="up" data-delay=".7"><MoreLink href="/pricing" onDark>See full pricing</MoreLink></div></div></section>
+      <Quote photo="/concept/media/coastal-blue-hour.png" name="Alan Poletti" quote="In our demo, it already found $400,000 sitting in cases we had already settled, and named what was blocking each one."/>
       <CtaBand/>
   </SiteShell>;
 }
