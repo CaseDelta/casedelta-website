@@ -49,6 +49,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // The vercel.app host duplicates the site; send it to the real domain.
+      { source: "/:path*", has: [{ type: "host", value: "casedelta-website.vercel.app" }], destination: "https://casedelta.com/:path*", permanent: true },
       // Old pages that no longer exist — redirect to homepage
       { source: "/download", destination: "/", permanent: true },
       { source: "/contact", destination: "/", permanent: true },
