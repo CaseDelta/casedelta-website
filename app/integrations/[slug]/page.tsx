@@ -52,7 +52,7 @@ export default async function PlatformPage({ params }: { params: Promise<{ slug:
       <Band title={`What Delta does in ${p.name}.`} split>
         <CheckColumns columns={[{ label: 'Reads', items: p.page.reads }, { label: 'Updates', items: p.page.updates }]}/>
       </Band>
-      <Band title="Ask it things like." tone="pale">
+      <Band title="Ask it things like." tone="tint">
         <Prompts items={p.page.tasks}/>
       </Band>
       <ConnectBand heading={`Connect ${p.name} in minutes.`} platforms={[{ name: p.name, logo: p.page.logo, host: p.page.host, found: p.page.found }]}/>
@@ -60,7 +60,7 @@ export default async function PlatformPage({ params }: { params: Promise<{ slug:
         <QAList as="h3" items={qa}/>
         <MoreLink href="/security">How we protect client data</MoreLink>
       </Band>
-      <Band title="Works alongside." tone="pale" split>
+      <Band title="Works alongside." tone="tint" split>
         <LinkList links={[...related.map((x) => ({ label: x.name, href: `/integrations/${x.slug}` })), { label: 'Every system Delta works in', href: '/integrations' }]}/>
       </Band>
       <CtaBand/>

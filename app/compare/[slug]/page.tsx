@@ -43,7 +43,7 @@ export default async function ComparePage({ params }: { params: Promise<{ slug: 
           rows={ROW_LABELS.map((r) => [r.label, CASEDELTA_ROW[r.key], ...x.columns.map((col) => col.row[r.key])])}
           note="Competitor facts are from their public sites. Sources below."/></div>
       </Band>
-      <Band title="Which one fits." tone="pale">
+      <Band title="Which one fits." tone="tint">
         <div className={c.choose}>
           <Checklist canLabel={`Choose ${x.name} when`} can={x.chooseThem}/>
           <Checklist canLabel="Choose CaseDelta when" can={x.chooseUs}/>

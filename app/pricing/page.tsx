@@ -28,7 +28,7 @@ export default function PricingPage() {
           rows={TIERS.map((t) => [t.band, t.price, perAccount(t), String(t.automations)])}
           note={`${TERM_NOTE} ${SCALE_NOTE}`}/>
       </Band>
-      <Band title="What counts as an account." tone="pale" split>
+      <Band title="What counts as an account." tone="tint" split>
         <Checklist canLabel="Counts as an account" can={ACCOUNT_COUNTS} cannotLabel="Does not count toward your band" cannot={NEVER_CHANGES_PRICE}/>
       </Band>
       <Band title="What is included." split>

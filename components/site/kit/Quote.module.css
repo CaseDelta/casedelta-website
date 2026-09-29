@@ -1,4 +1,4 @@
-.band { background: var(--pale); padding: var(--sec-md) 0; }
+.band { background: var(--tint); padding: var(--sec-md) 0; }
 .card { position: relative; margin: 0; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow-l); color: #fff; }
 .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .shade { position: absolute; inset: 0; background: rgba(var(--scrim), .55); }
@@ -7,3 +7,12 @@
 .inner blockquote { margin: 28px 0 0; font-size: clamp(28px, 3.3vw, 48px); line-height: 1.22; letter-spacing: -.04em; font-weight: 400; text-wrap: balance; }
 .inner figcaption { margin-top: 30px; font-size: var(--t-body); color: var(--on-navy); }
 @media (max-width: 760px) { .card { border-radius: 16px; } .inner blockquote { font-size: 26px; } }
+/* Flat: no photo card. A tint band with the quote on a hairline, as the page's QA bands sit. */
+.band.flat { background: var(--tint); color: var(--navy); }
+.flatInner { margin-top: 0; margin-bottom: 0; }
+.flatInner .stars { justify-content: flex-start; padding-top: 40px; border-top: 1px solid var(--line-tint); }
+.flatInner blockquote { margin: 28px 0 0; max-width: 1040px; font-size: clamp(28px, 3.3vw, 48px); line-height: 1.22; letter-spacing: -.04em; font-weight: 400; text-wrap: balance; }
+.flatInner figcaption { margin-top: 30px; font-size: var(--t-body); color: var(--muted-tint); }
+.band.flat.flatPaper { background: var(--paper); }
+.flatPaper .flatInner .stars { border-top-color: var(--line); }
+.flatPaper .flatInner figcaption { color: var(--muted); }

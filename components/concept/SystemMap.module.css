@@ -20,12 +20,12 @@
 .tileOn rect { stroke: color-mix(in srgb, var(--blue) 40%, var(--line)); }
 .tile .more { stroke: var(--blue); stroke-width: 1.5; stroke-dasharray: 5 5; filter: none; fill: var(--paper); }
 .logo { transition: opacity .6s ease; }
-.label { font-size: 15px; font-weight: 500; fill: var(--ink); text-anchor: middle; letter-spacing: -.01em; }
+.label { font-size: 15px; font-weight: 500; fill: var(--navy); text-anchor: middle; letter-spacing: -.01em; }
 .plus { font-size: 34px; font-weight: 300; fill: var(--blue); text-anchor: middle; }
 
 .envelope { animation: fade .5s ease both; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-.envelope rect { fill: var(--white); stroke: var(--blue); stroke-width: 1.5; filter: drop-shadow(0 8px 14px color-mix(in srgb, var(--navy) 18%, transparent)); }
+.envelope rect { fill: var(--white); stroke: var(--blue); stroke-width: 1.5; filter: drop-shadow(0 8px 14px var(--line-tint)); }
 .envelope path { fill: none; stroke: var(--blue); stroke-width: 1.8; stroke-linejoin: round; }
 
 .clock circle { fill: var(--navy); stroke: var(--white); stroke-width: 2.5; }
@@ -41,7 +41,7 @@
 .icons { display: flex; flex: none; }
 .icons img { width: 40px; height: 40px; padding: 7px; border-radius: 11px; background: var(--white); border: 1px solid var(--line); object-fit: contain; }
 .icons img + img { margin-left: -10px; }
-.text { font-size: 20px; letter-spacing: -.02em; color: var(--ink); line-height: 1.25; }
+.text { font-size: 20px; letter-spacing: -.02em; color: var(--navy); line-height: 1.25; }
 .text small { display: block; font-size: 14px; color: var(--blue); font-weight: 500; letter-spacing: 0; margin-bottom: 2px; }
 
 @media (prefers-reduced-motion: reduce) {

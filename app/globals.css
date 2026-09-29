@@ -46,15 +46,13 @@
   --white: #ffffff;
 
   /* derived: text */
-  --ink: var(--navy);
   --muted: color-mix(in srgb, var(--navy) 58%, var(--paper));
   --on-navy: color-mix(in srgb, var(--paper) 84%, var(--navy));
-  --blue-ink: color-mix(in srgb, var(--blue) 86%, var(--navy));
+  --muted-tint: color-mix(in srgb, var(--navy) 74%, var(--tint));
 
   /* derived: lines and surfaces */
   --line: color-mix(in srgb, var(--navy) 13%, var(--paper));
-  --pale: color-mix(in srgb, var(--tint) 46%, var(--paper));
-  --rule: color-mix(in srgb, var(--paper) 42%, transparent);
+  --line-tint: color-mix(in srgb, var(--navy) 18%, transparent);
   --rule-soft: color-mix(in srgb, var(--paper) 26%, transparent);
 
   /* derived: photo scrim, one colour at many strengths */

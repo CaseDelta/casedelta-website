@@ -10,15 +10,16 @@ import { useInView } from 'framer-motion';
 import { ConnectFlow, CONNECT_STEPS, type ConnectPlatform } from '@/components/concept/ConnectFlow';
 import { W, useCalm } from '@/components/concept/motion';
 import s from '@/components/concept/ConceptHome.module.css';
+import k from './kit.module.css';
 
-export function ConnectBand({ id, heading = 'Connected in minutes, working the same day.', platforms }: { id?: string; heading?: string; platforms?: ConnectPlatform[] }) {
+export function ConnectBand({ id, heading = 'Connected in minutes, working the same day.', platforms, flat }: { id?: string; heading?: string; platforms?: ConnectPlatform[]; flat?: boolean }) {
   const reduced = useCalm();
   const [step, setStep] = useState(0);
   const card = useRef<HTMLDivElement>(null);
   const inView = useInView(card, { once: true, amount: 0.5 });
-  return <section className={s.how} id={id}>
-    <img className={s.howPhoto} data-parallax=".1" src="/v2/ambient/valley-mist.webp" alt="" aria-hidden/>
-    <div className={s.howShade}/>
+  return <section className={`${s.how} ${flat ? k.flatHow : ''}`} id={id}>
+    {!flat && <><img className={s.howPhoto} data-parallax=".1" src="/v2/ambient/valley-mist.webp" alt="" aria-hidden/>
+    <div className={s.howShade}/></>}
     <div className={`${s.container} ${s.howInner}`}>
       <div className={s.howIntro}>
         <h2 data-reveal="words"><W>{heading}</W></h2>

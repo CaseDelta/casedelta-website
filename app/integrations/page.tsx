@@ -35,7 +35,7 @@ export default function IntegrationsPage() {
     <SiteShell variant="solid">
       <PageHero title="Delta works inside the systems you already use." lead="Any system your team signs into. Nothing to migrate.">
       </PageHero>
-      <Band title="One paralegal across every system." tone="pale" split>
+      <Band title="One paralegal across every system." tone="tint" split>
         <div className={g.map}><HubMap/></div>
       </Band>
       <Band title="Systems Delta works in.">

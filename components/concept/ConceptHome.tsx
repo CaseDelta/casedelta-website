@@ -25,7 +25,7 @@ const SECURITY_ICON: Record<string, typeof Lock> = { hipaa: ShieldCheck, trainin
 // Auto-advance every 5s, click a row to jump, hover to hold. The progress line
 // is keyed on the active index so it restarts cleanly, and reduced motion turns
 // the whole thing into a plain list with the first card showing.
-const SOLUTION_STEPS = [
+export const SOLUTION_STEPS = [
   { title: 'Ask it anything about a case' },
   { title: 'Tell it to update your files' },
   { title: 'Let it run on its own' },
@@ -63,7 +63,7 @@ function SolutionShowcase() {
 }
 // The possibilities band: real things Delta has done at firms, one line each.
 // Every line is from a real run (hero-film/USE_CASES.md); add only what a firm has actually had it do.
-const USE_CASES: { icons: [typeof Lock, typeof Lock]; text: string }[] = [
+export const USE_CASES: { icons: [typeof Lock, typeof Lock]; text: string }[] = [
   { icons: [Inbox, FileSearch], text: 'Read *4,373 emails* to find the one IME notice missing from the file.' },
   { icons: [Mail, FolderOpen], text: 'Filed *98 emails* into one client’s case, attachments and all.' },
   { icons: [PhoneIncoming, MessageSquareText], text: 'Texts your team the intake brief *before the call is transferred.*' },
@@ -87,7 +87,7 @@ function UseCases() {
 // opens /demo with the number already in the iClosed form (iClosed reads
 // iclosedPhone). A full page load on purpose: /demo's inline iframe script
 // does not run on a client-side route change.
-function HeroBook() {
+export function HeroBook() {
   const [digits, setDigits] = useState('');
   const shown = digits.length <= 3 ? digits : digits.length <= 6 ? `(${digits.slice(0,3)}) ${digits.slice(3)}` : `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
   const ready = digits.length === 10;
@@ -116,7 +116,7 @@ function HeroBook() {
 // The hero film. Click anywhere on it to play or pause; the controls only
 // appear on hover so the picture is uninterrupted the rest of the time. It
 // starts muted because a browser will not autoplay a film with sound.
-function HeroFilm() {
+export function HeroFilm() {
   const video = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(true);

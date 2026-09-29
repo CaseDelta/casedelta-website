@@ -11,7 +11,7 @@ import { Band, JumpLinks, MoreLink, PageHero, QAList } from '@/components/site/k
 import { CtaBand } from '@/components/site/kit/CtaBand';
 import { ANSWER_CATEGORIES } from '@/lib/answers';
 
-const TONES = ['paper', 'pale'] as const;
+const TONES = ['paper', 'tint'] as const;
 
 export function AnswersContent() {
   return <SiteShell variant="solid">

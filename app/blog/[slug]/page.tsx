@@ -53,7 +53,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <MDXRemote source={content} components={MDX_COMPONENTS} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}/>
         </ProseArticle>
       </div>
-      {f.related?.length ? <Band title="Related." tone="pale" split><LinkList links={[...f.related, { label: 'All posts', href: '/blog' }]}/></Band> : null}
+      {f.related?.length ? <Band title="Related." tone="tint" split><LinkList links={[...f.related, { label: 'All posts', href: '/blog' }]}/></Band> : null}
       <CtaBand/>
     </SiteShell>
   </>;

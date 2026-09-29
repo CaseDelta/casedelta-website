@@ -7,7 +7,7 @@ import { SECURITY_CLAIMS, SECURITY_GROUPS, SECURITY_PAGE, claim } from '@/lib/se
 
 const URL = 'https://casedelta.com/security';
 const DESCRIPTION = SECURITY_CLAIMS.filter((c) => ['hipaa', 'training', 'isolation', 'encryption'].includes(c.id)).map((c) => c.answer.replace(/^(Yes|No)\. /, '')).join(' ');
-const TONES = ['paper', 'pale'] as const;
+const TONES = ['paper', 'tint'] as const;
 
 export const metadata: Metadata = {
   title: { absolute: SECURITY_PAGE.title },

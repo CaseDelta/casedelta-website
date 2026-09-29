@@ -12,20 +12,23 @@ import { W } from '@/components/concept/motion';
 import h from '@/components/concept/ConceptHome.module.css';
 import k from './kit.module.css';
 
-type Tone = 'paper' | 'pale' | 'tint' | 'navy';
+type Tone = 'paper' | 'tint' | 'navy';
 
 /**
  * The top of a subpage. Without a photo it sits on paper under a solid nav; with
  * one it is a photographic band under the homepage's scrim, and the page should
  * give SiteShell variant="photo" so the nav starts transparent over it.
  */
-export function PageHero({ title, lead, photo, children }: { title: string; lead?: string; photo?: string; children?: React.ReactNode }) {
+export function PageHero({ title, lead, photo, media, children }: { title: string; lead?: string; photo?: string; media?: React.ReactNode; children?: React.ReactNode }) {
   return <section className={`${k.hero} ${photo ? k.heroPhoto : ''}`}>
     {photo && <><img className={k.heroImage} data-parallax=".08" src={photo} alt="" fetchPriority="high"/><div className={k.heroShade}/></>}
-    <div className={`${h.container} ${k.heroInner}`}>
-      <h1 className={k.heroTitle} data-reveal="words"><W>{title}</W></h1>
-      {lead && <p className={k.heroLead} data-reveal="up" data-delay=".3">{lead}</p>}
-      {children && <div className={k.heroExtra} data-reveal="up" data-delay=".45">{children}</div>}
+    <div className={`${h.container} ${k.heroInner} ${media ? k.heroWithMedia : ''}`}>
+      <div>
+        <h1 className={k.heroTitle} data-reveal="words"><W>{title}</W></h1>
+        {lead && <p className={k.heroLead} data-reveal="up" data-delay=".3">{lead}</p>}
+        {children && <div className={k.heroExtra} data-reveal="up" data-delay=".45">{children}</div>}
+      </div>
+      {media && <div className={k.heroMedia}>{media}</div>}
     </div>
   </section>;
 }
