@@ -1,0 +1,55 @@
+/* Palette tokens only (app/globals.css). The map is one SVG; sizes are in its
+   600x420 viewBox units, so they scale together. */
+.map { position: relative; width: 100%; }
+.svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* Every wire keeps the same dash, so lighting one is only a colour change. */
+.wire { fill: none; stroke: var(--line); stroke-width: 2.5; stroke-dasharray: 5 9; transition: stroke .5s; }
+.wireOn { stroke: var(--blue); }
+.flow { animation: flow 1.1s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -28; } }
+
+.hub circle { fill: var(--blue); }
+.hub circle:first-child { filter: drop-shadow(0 14px 24px color-mix(in srgb, var(--blue) 35%, transparent)); }
+.ring { fill: none !important; stroke: var(--blue); stroke-width: 2; transform-origin: 300px 196px; animation: ring 1.6s ease-out 1 forwards; }
+@keyframes ring { from { transform: scale(1); opacity: .6; } to { transform: scale(1.9); opacity: 0; } }
+
+.tile { opacity: .42; transition: opacity .45s; }
+.tileOn { opacity: 1; }
+.tile rect { fill: var(--white); stroke: var(--line); stroke-width: 1; filter: drop-shadow(0 8px 16px color-mix(in srgb, var(--navy) 10%, transparent)); }
+.tileOn rect { stroke: color-mix(in srgb, var(--blue) 40%, var(--line)); }
+.tile .more { stroke: var(--blue); stroke-width: 1.5; stroke-dasharray: 5 5; filter: none; fill: var(--paper); }
+.logo { transition: opacity .6s ease; }
+.label { font-size: 15px; font-weight: 500; fill: var(--ink); text-anchor: middle; letter-spacing: -.01em; }
+.plus { font-size: 34px; font-weight: 300; fill: var(--blue); text-anchor: middle; }
+
+.envelope { animation: fade .5s ease both; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.envelope rect { fill: var(--white); stroke: var(--blue); stroke-width: 1.5; filter: drop-shadow(0 8px 14px color-mix(in srgb, var(--navy) 18%, transparent)); }
+.envelope path { fill: none; stroke: var(--blue); stroke-width: 1.8; stroke-linejoin: round; }
+
+.clock circle { fill: var(--navy); stroke: var(--white); stroke-width: 2.5; }
+.clock path { fill: none; stroke: var(--white); stroke-width: 2; stroke-linecap: round; }
+.clock { animation: pop .5s cubic-bezier(.34, 1.56, .64, 1) both; transform-box: fill-box; transform-origin: center; }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+
+.results { display: grid; margin-top: 10px; }
+.result { grid-area: 1 / 1; place-self: center; display: flex; align-items: center; gap: 18px; width: fit-content; max-width: 100%; padding: 16px 26px 16px 18px;
+  background: var(--white); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-m);
+  opacity: 0; transform: translateY(12px); transition: opacity .45s ease, transform .6s cubic-bezier(.16, 1, .3, 1); }
+.resultOn { opacity: 1; transform: none; transition-delay: .15s; }
+.icons { display: flex; flex: none; }
+.icons img { width: 40px; height: 40px; padding: 7px; border-radius: 11px; background: var(--white); border: 1px solid var(--line); object-fit: contain; }
+.icons img + img { margin-left: -10px; }
+.text { font-size: 20px; letter-spacing: -.02em; color: var(--ink); line-height: 1.25; }
+.text small { display: block; font-size: 14px; color: var(--blue); font-weight: 500; letter-spacing: 0; margin-bottom: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flow, .ring, .clock, .envelope { animation: none; }
+  .result { transition: none; }
+}
+@media (max-width: 760px) {
+  /* The drawing scales to ~60% here, so its labels are set larger in viewBox units. */
+  .label { font-size: 23px; }
+  .text { font-size: 17px; }
+}

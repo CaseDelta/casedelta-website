@@ -1,0 +1,60 @@
+/*
+ * One reveal system for the homepage. An element opts in with data-reveal and
+ * fires once, when a fifth of it is on screen (motion.ts sets data-in).
+ *
+ *   up      rises 24px and fades in
+ *   scale   rises and settles from 96%
+ *   stagger its direct children rise one after another
+ *   words   its [data-w] words rise from behind a mask, one after another
+ *   zoom    its photograph settles from a slight zoom
+ *   map     the system map assembles: hub, then wires, then tiles, then result
+ *
+ * Content is hidden only when scripting is on and motion is allowed, and if the
+ * script never reports in (.site lacks data-motion), everything shows after 3s.
+ * data-done lands after the reveal so elements get their own transitions back.
+ */
+:root { --ease-out: cubic-bezier(.16, 1, .3, 1); }
+[data-w] { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+[data-w] > span { display: inline-block; }
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal="up"]:not([data-done]), [data-reveal="scale"]:not([data-done]) {
+    transition: opacity .9s var(--ease-out) var(--d, 0s), transform 1.1s var(--ease-out) var(--d, 0s);
+  }
+  [data-reveal="up"]:not([data-in]) { opacity: 0; transform: translateY(24px); }
+  [data-reveal="scale"]:not([data-in]) { opacity: 0; transform: translateY(18px) scale(.96); }
+
+  [data-reveal="stagger"]:not([data-done]) > * {
+    transition: opacity .8s var(--ease-out) calc(var(--d, 0s) + var(--i, 0) * 80ms), transform 1s var(--ease-out) calc(var(--d, 0s) + var(--i, 0) * 80ms);
+  }
+  [data-reveal="stagger"]:not([data-in]) > * { opacity: 0; transform: translateY(20px); }
+
+  [data-reveal="words"]:not([data-done]) [data-w] > span { transition: transform 1.05s var(--ease-out) calc(var(--d, 0s) + var(--i, 0) * 36ms); }
+  [data-reveal="words"]:not([data-in]) [data-w] > span { transform: translateY(112%); }
+
+  [data-reveal="zoom"]:not([data-done]) img { transition: transform 1.8s var(--ease-out), opacity 1s ease; }
+  [data-reveal="zoom"]:not([data-in]) img { transform: scale(1.1); opacity: .6; }
+
+  [data-reveal="map"]:not([data-done]) [data-part] {
+    transform-box: fill-box; transform-origin: center;
+    transition: opacity .7s var(--ease-out) calc(var(--o, 0s) + var(--i, 0) * 70ms), transform .95s var(--ease-out) calc(var(--o, 0s) + var(--i, 0) * 70ms);
+  }
+  [data-reveal="map"] [data-part="wire"] { --o: .35s; }
+  [data-reveal="map"] [data-part="tile"] { --o: .45s; }
+  [data-reveal="map"] [data-part="result"] { --o: 1.05s; }
+  [data-reveal="map"]:not([data-in]) [data-part="hub"] { opacity: 0; transform: scale(.4); }
+  [data-reveal="map"]:not([data-in]) [data-part="wire"] { opacity: 0; }
+  [data-reveal="map"]:not([data-in]) [data-part="tile"] { opacity: 0; transform: scale(.6); }
+  [data-reveal="map"]:not([data-in]) [data-part="result"] { opacity: 0; transform: translateY(16px); }
+
+  /* The safety net: if motion.ts never runs, show everything after 3s. */
+  .motionSite:not([data-motion]) [data-reveal]:not([data-in]),
+  .motionSite:not([data-motion]) [data-reveal]:not([data-in]) > *,
+  .motionSite:not([data-motion]) [data-reveal]:not([data-in]) [data-w] > span,
+  .motionSite:not([data-motion]) [data-reveal]:not([data-in]) [data-part],
+  .motionSite:not([data-motion]) [data-reveal]:not([data-in]) img { animation: motionShow 0s 3s forwards; }
+  @keyframes motionShow { to { opacity: 1; transform: none; } }
+
+  /* Photographs behind the dark bands drift slower than the page. */
+  [data-parallax] { top: -12% !important; bottom: auto !important; height: 124% !important; will-change: transform; }
+}

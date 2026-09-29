@@ -1,0 +1,161 @@
+/**
+ * The global stylesheet. Deliberately small.
+ *
+ * Almost everything on this site is styled inline from components/v2/sasonix/tokens.ts,
+ * or in a scoped <style> block next to the component that owns it. What is left here is
+ * the reset, the handful of element defaults the whole document depends on, and the
+ * anchor offsets.
+ *
+ * This file used to be 305 lines: a full set of --color-* and --spacing-* design tokens
+ * (zero references anywhere), a dark-theme block, .container, .section, a marquee
+ * animation, dropdown keyframes, and .mobile-nav-accordion rules for a navbar that no
+ * longer exists. All of it belonged to design systems that were deleted on 2026-09-02.
+ *
+ * Tailwind went with them. Not one Tailwind utility class remained in the codebase, so
+ * the framework was doing nothing but supplying a reset, and its preflight was mostly
+ * redundant with the universal reset below. The three rules we actually relied on are
+ * reproduced explicitly here, where they can be read.
+ */
+
+/* ─── Marketing palette: Blue hour ───
+ * FIVE colours. Everything on the marketing site is one of these, or one of
+ * them mixed into another. No sixth colour, no one-off hex, anywhere.
+ *
+ *   navy    #08162b   the dark. Body text, dark bands, and the scrim on photos.
+ *   blue    #27599b   the accent. Buttons, links, the Delta mark, focus rings.
+ *   tint    #d0dbe7   the pale blue surface. Alternating bands, the chat bubble.
+ *   paper   #f8fafb   the page.
+ *   orange  #e78340   the complement, at hue 24 against the blue at 214. Used
+ *                     sparingly and only to point: the underline in the headline,
+ *                     an inline link, the rating stars.
+ *
+ * White is not a palette colour, it is the absence of one, and is used only for
+ * cards that must lift off the page.
+ *
+ * Everything else is DERIVED with color-mix, so a grey is always the navy
+ * thinned into the paper and can never drift into a different family. Sections
+ * differ by which token they pick, never by a new colour.
+ */
+:root {
+  --navy: #08162b;
+  --blue: #27599b;
+  --tint: #d0dbe7;
+  --paper: #f8fafb;
+  --orange: #e78340;
+
+  --white: #ffffff;
+
+  /* derived: text */
+  --ink: var(--navy);
+  --muted: color-mix(in srgb, var(--navy) 58%, var(--paper));
+  --on-navy: color-mix(in srgb, var(--paper) 84%, var(--navy));
+  --blue-ink: color-mix(in srgb, var(--blue) 86%, var(--navy));
+
+  /* derived: lines and surfaces */
+  --line: color-mix(in srgb, var(--navy) 13%, var(--paper));
+  --pale: color-mix(in srgb, var(--tint) 46%, var(--paper));
+  --rule: color-mix(in srgb, var(--paper) 42%, transparent);
+  --rule-soft: color-mix(in srgb, var(--paper) 26%, transparent);
+
+  /* derived: photo scrim, one colour at many strengths */
+  --scrim: 8, 22, 43;
+
+  --shadow-s: 0 12px 30px color-mix(in srgb, var(--navy) 10%, transparent);
+  --shadow-m: 0 22px 60px color-mix(in srgb, var(--navy) 16%, transparent);
+  --shadow-l: 0 30px 80px color-mix(in srgb, var(--navy) 26%, transparent);
+}
+
+/* ─── Reset ─── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Preflight set this, and components write `border: 1px solid X` expecting a solid
+     default to already be in place. */
+  border: 0 solid;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #ffffff;
+  color: #0f1115;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* An inline image sits on the text baseline, which opens a few pixels of gap under any
+   image in a block. Preflight fixed that; keep it fixed. */
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Markers are off by default, because every list on the marketing pages is a layout
+   rather than prose. Prose turns them back on for itself; see kit.tsx. */
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Keyboard focus stays visible everywhere. Never remove this without a replacement. */
+:focus-visible {
+  outline: 2px solid rgba(15, 17, 21, 0.35);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Homepage section anchors ───
+   Every one of these is a redirect target: /features, /use-cases, /compare, /security
+   and /pricing all land on a fragment here. The nav is fixed, so without a
+   scroll-margin the browser puts the section heading underneath the bar and the reader
+   arrives at a page that looks like it did not move.
+
+   156px is the nav plus breathing room, and it matches NAV_OFFSET in
+   components/v2/sasonix/scrollToSection.ts, which does the same job for an in-page
+   click. Change one and change the other. */
+
+#stakes,
+#features,
+#why,
+#security,
+#pricing,
+#contact {
+  scroll-margin-top: 156px;
+}
